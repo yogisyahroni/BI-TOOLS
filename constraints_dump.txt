@@ -1,0 +1,80 @@
+        table_name        
+--------------------------
+ _prisma_migrations
+ workspaces
+ workspace_members
+ Collection
+ User
+ Connection
+ Story
+ Metric
+ Dashboard
+ SavedQuery
+ Dimension
+ DashboardCard
+ SystemSetting
+ semantic_models
+ semantic_dimensions
+ VirtualRelationship
+ Workspace
+ WorkspaceMember
+ WorkspaceConnection
+ WorkspaceDashboard
+ semantic_metrics
+ QualityRule
+ connections
+ encryption_keys
+ AlertHistory
+ Dataflow
+ DataflowRun
+ semantic_relationships
+ Comment
+ Activity
+ ApiKey
+ QueryVersion
+ DashboardVersion
+ ModelDefinition
+ VirtualMetric
+ Canvas
+ DataflowStep
+ RLSPolicy
+ CanvasWidget
+ Theme
+ QueryFeed
+ Agent
+ DataApp
+ AppPage
+ ShareLink
+ BusinessMetric
+ rate_limit_configs
+ collections
+ PushSubscription
+ Authenticator
+ scheduler_jobs
+ encryption_key_rotations
+ visual_queries
+ collection_items
+ saved_queries
+ RawData
+ JobExecution
+ Pipeline
+ Alert
+ data_classifications
+ column_metadata
+ roles
+ column_permissions
+ webhooks
+ webhook_logs
+ shares
+ share_permissions
+ notifications
+ activity_logs
+ users
+(70 rows)
+
+       constraint_name       | table_name | column_name  | foreign_table_name | foreign_column_name 
+-----------------------------+------------+--------------+--------------------+---------------------
+ Dashboard_collectionId_fkey | Dashboard  | collectionId | Collection         | id
+ Dashboard_userId_fkey       | Dashboard  | userId       | User               | id
+(2 rows)
+

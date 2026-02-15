@@ -1,0 +1,201 @@
+package handlers
+
+import (
+	"insight-engine-backend/services"
+	"strconv"
+	"time"
+
+	"github.com/gofiber/fiber/v2"
+)
+
+// SystemHealthHandler handles system health API requests
+type SystemHealthHandler struct {
+	healthService *services.SystemHealthService
+}
+
+// NewSystemHealthHandler creates a new system health handler
+func NewSystemHealthHandler(healthService *services.SystemHealthService) *SystemHealthHandler {
+	return &SystemHealthHandler{
+		healthService: healthService,
+	}
+}
+
+// RegisterRoutes registers the health routes
+func (h *SystemHealthHandler) RegisterRoutes(router fiber.Router) {
+	// All routes under /api/admin/health
+	router.Get("/health", h.GetHealth)
+	router.Get("/health/database", h.GetDatabaseHealth)
+	router.Get("/health/queries", h.GetQueryPerformance)
+	router.Get("/health/cache", h.GetCacheStats)
+	router.Get("/health/services", h.GetServiceStatus)
+	router.Get("/health/metrics", h.GetSystemMetrics)
+	router.Get("/health/errors", h.GetRecentErrors)
+}
+
+// GetHealth handles GET /api/admin/health
+func (h *SystemHealthHandler) GetHealth(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	summary, err := h.healthService.GetHealthSummary(ctx)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve health summary",
+			"details": err.Error(),
+		})
+	}
+
+	return c.JSON(summary)
+}
+
+// GetDatabaseHealth handles GET /api/admin/health/database
+func (h *SystemHealthHandler) GetDatabaseHealth(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	health, err := h.healthService.GetDatabaseHealth(ctx)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve database health",
+			"details": err.Error(),
+		})
+	}
+
+	return c.JSON(health)
+}
+
+// GetQueryPerformance handles GET /api/admin/health/queries
+func (h *SystemHealthHandler) GetQueryPerformance(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	perf, err := h.healthService.GetQueryPerformance(ctx)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve query performance",
+			"details": err.Error(),
+		})
+	}
+
+	return c.JSON(perf)
+}
+
+// GetCacheStats handles GET /api/admin/health/cache
+func (h *SystemHealthHandler) GetCacheStats(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	stats, err := h.healthService.GetCacheStats(ctx)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve cache stats",
+			"details": err.Error(),
+		})
+	}
+
+	return c.JSON(stats)
+}
+
+// GetServiceStatus handles GET /api/admin/health/services
+func (h *SystemHealthHandler) GetServiceStatus(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	services := h.healthService.GetServiceStatus(ctx)
+
+	return c.JSON(fiber.Map{
+		"services": services,
+		"count":    len(services),
+	})
+}
+
+// GetSystemMetrics handles GET /api/admin/health/metrics
+func (h *SystemHealthHandler) GetSystemMetrics(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	metrics, err := h.healthService.GetSystemMetrics(ctx)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve system metrics",
+			"details": err.Error(),
+		})
+	}
+
+	return c.JSON(metrics)
+}
+
+// GetRecentErrors handles GET /api/admin/health/errors
+func (h *SystemHealthHandler) GetRecentErrors(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	// Parse limit parameter
+	limit := 10
+	if limitStr := c.Query("limit"); limitStr != "" {
+		if parsedLimit, err := strconv.Atoi(limitStr); err == nil && parsedLimit > 0 {
+			if parsedLimit > 100 {
+				parsedLimit = 100
+			}
+			limit = parsedLimit
+		}
+	}
+
+	errors, err := h.healthService.GetRecentErrors(ctx, limit)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to retrieve recent errors",
+			"details": err.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"errors": errors,
+		"count":  len(errors),
+	})
+}
+
+// HealthCheckRequest represents health check query parameters
+type HealthCheckRequest struct {
+	Detailed bool `query:"detailed"`
+}
+
+// HealthCheck handles basic health check (can be used without auth for load balancers)
+func (h *SystemHealthHandler) HealthCheck(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	result := h.healthService.HealthCheck(ctx)
+
+	// Determine status code based on health status
+	statusCode := fiber.StatusOK
+	if result.Status == "critical" {
+		statusCode = fiber.StatusServiceUnavailable
+	} else if result.Status == "warning" {
+		statusCode = fiber.StatusOK // Still OK but flagged
+	}
+
+	return c.Status(statusCode).JSON(result)
+}
+
+// HealthReportRequest represents health report export parameters
+type HealthReportRequest struct {
+	StartDate string `query:"start_date"`
+	EndDate   string `query:"end_date"`
+	Format    string `query:"format"` // "json" or "csv"
+}
+
+// ExportHealthReport handles GET /api/admin/health/export
+func (h *SystemHealthHandler) ExportHealthReport(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	summary, err := h.healthService.GetHealthSummary(ctx)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error":   "Failed to generate health report",
+			"details": err.Error(),
+		})
+	}
+
+	// Generate filename with timestamp
+	timestamp := time.Now().Format("2006-01-02_15-04-05")
+	filename := "health_report_" + timestamp + ".json"
+
+	// Set headers for file download
+	c.Set("Content-Type", "application/json")
+	c.Set("Content-Disposition", "attachment; filename="+filename)
+
+	return c.JSON(summary)
+}

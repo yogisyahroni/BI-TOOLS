@@ -1,0 +1,16 @@
+=== RUN   TestRegister_Success
+Middleware: POST /api/auth/register BodyLen: 117
+DEBUG: BodyLen: 117 Content: {"email":"test.success@example.com","username":"testuser_success","password":"SecurePass123!","fullName":"Test User"}
+DEBUG: Unmarshal Success: {Email:test.success@example.com Username:testuser_success Password:SecurePass123! FullName:Test User}
+DEBUG: Local Unmarshal: {Email:test.success@example.com}
+    auth_handler_test.go:121: Response Body: {"errors":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'alphanumunicode' tag","message":"Validation failed","status":"error"}
+    auth_handler_test.go:123: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/handlers/auth_handler_test.go:123
+        	Error:      	Not equal: 
+        	            	expected: 201
+        	            	actual  : 400
+        	Test:       	TestRegister_Success
+--- FAIL: TestRegister_Success (0.01s)
+FAIL
+FAIL	insight-engine-backend/handlers	0.234s
+FAIL

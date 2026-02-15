@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InsightEngine Embedded Example</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        #dashboard-container {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+        .controls { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Embedded Analytics Demo</h1>
+    
+    <div class="controls">
+        <label>Dashboard ID: <input type="text" id="dashId" value="dash_123"></label>
+        <label>Token: <input type="text" id="token" placeholder="Paste JWT here"></label>
+        <button onclick="loadDashboard()">Load Dashboard</button>
+    </div>
+
+    <div class="controls">
+        <button onclick="setFilter('status', 'active')">Filter: Status=Active</button>
+        <button onclick="setFilter('status', 'pending')">Filter: Status=Pending</button>
+    </div>
+
+    <div id="dashboard-container"></div>
+
+    <!-- Import SDK from local build -->
+    <script src="../../dist/index.js"></script>
+    
+    <script>
+        let embed = null;
+
+        function loadDashboard() {
+            const dashboardId = document.getElementById('dashId').value;
+            const token = document.getElementById('token').value;
+            const container = document.getElementById('dashboard-container');
+
+            if (!token) {
+                alert('Please provide a token');
+                return;
+            }
+
+            if (embed) {
+                embed.destroy();
+            }
+
+            // Initialize SDK
+            // Assuming InsightEngine is running at localhost:3000
+            embed = new InsightEmbed({
+                url: 'http://localhost:3000',
+                dashboardId: dashboardId,
+                token: token,
+                container: container
+            });
+
+            embed.render();
+            console.log('Dashboard rendered');
+        }
+
+        function setFilter(key, value) {
+            if (embed) {
+                embed.setFilter(key, value);
+                console.log('Filter set:', key, value);
+            }
+        }
+    </script>
+</body>
+</html>

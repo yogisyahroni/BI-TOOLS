@@ -1,0 +1,141 @@
+package bootstrap
+
+import (
+	"insight-engine-backend/controllers"
+	"insight-engine-backend/handlers"
+	"insight-engine-backend/routes"
+	"insight-engine-backend/services"
+
+	"github.com/gofiber/fiber/v2"
+)
+
+// App is the main application struct
+type App struct {
+	FiberApp   *fiber.App
+	Services   *ServiceContainer
+	Handlers   *HandlerContainer
+	Middleware *routes.MiddlewareContainer
+}
+
+// ServiceContainer holds all initialized services
+type ServiceContainer struct {
+	EncryptionService        *services.EncryptionService
+	AIService                *services.AIService
+	AIReasoningService       *services.AIReasoningService
+	AIOptimizerService       *services.AIOptimizerService
+	StoryGeneratorService    *services.StoryGeneratorService
+	SemanticLayerService     *services.SemanticLayerService
+	ModelingService          *services.ModelingService
+	RateLimiterService       *services.RateLimiter
+	UsageTrackerService      *services.UsageTracker
+	CronService              *services.CronService
+	WebSocketHub             *services.WebSocketHub
+	NotificationService      *services.NotificationService
+	ActivityService          *services.ActivityService
+	SchedulerService         *services.SchedulerService
+	AuditService             *services.AuditService
+	QueryExecutor            *services.QueryExecutor
+	QueryQueueService        *services.QueryQueueService
+	SchemaDiscovery          *services.SchemaDiscovery
+	QueryValidator           *services.QueryValidator
+	ReportingService         *services.ReportingService
+	ForecastingService       *services.ForecastingService
+	AnomalyDetectionService  *services.AnomalyDetectionService
+	InsightsService          *services.InsightsService
+	CorrelationService       *services.CorrelationService
+	GlossaryService          *services.GlossaryService
+	NLService                *services.NLService
+	WebhookService           *services.WebhookService
+	QueryCache               *services.QueryCache
+	RLSService               *services.RLSService
+	DataGovernanceService    *services.DataGovernanceService
+	EngineService            *services.EngineService
+	PaginationService        *services.PaginationService
+	QueryBuilder             *services.QueryBuilder
+	GeoJSONService           *services.GeoJSONService
+	EmailService             *services.EmailService
+	AuthService              *services.AuthService
+	OAuthService             *services.OAuthService
+	MaterializedViewService  *services.MaterializedViewService
+	AlertNotificationService *services.AlertNotificationService
+	AlertService             *services.AlertService
+	OrganizationService      *services.OrganizationService
+	EmbedService             *services.EmbedService
+	CommentService           *services.CommentService
+	ScheduledReportService   *services.ScheduledReportService
+}
+
+// HandlerContainer holds all initialized handlers
+type HandlerContainer struct {
+	AIHandler                *handlers.AIHandler
+	AuthHandler              *handlers.AuthHandler
+	OAuthHandler             *handlers.OAuthHandler
+	PermissionHandler        *handlers.PermissionHandler
+	QueryHandler             *handlers.QueryHandler
+	VisualQueryHandler       *handlers.VisualQueryHandler
+	ConnectionHandler        *handlers.ConnectionHandler
+	QueryAnalyzerHandler     *handlers.QueryAnalyzerHandler
+	MaterializedViewHandler  *handlers.MaterializedViewHandler
+	EngineHandler            *handlers.EngineHandler
+	GeoJSONHandler           *handlers.GeoJSONHandler
+	DataGovernanceHandler    *handlers.DataGovernanceHandler
+	SemanticLayerHandler     *handlers.SemanticLayerHandler
+	ModelingHandler          *handlers.ModelingHandler
+	DashboardHandler         *handlers.DashboardHandler
+	DashboardCardHandler     *handlers.DashboardCardHandler
+	NotificationHandler      *handlers.NotificationHandler
+	ActivityHandler          *handlers.ActivityHandler
+	SchedulerHandler         *handlers.SchedulerHandler
+	WebSocketHandler         *handlers.WebSocketHandler
+	CommentHandler           *handlers.CommentHandler
+	ShareHandler             *handlers.ShareHandler
+	EmbedHandler             *handlers.EmbedHandler
+	AuditHandler             *handlers.AuditHandler
+	FrontendLogHandler       *handlers.FrontendLogHandler
+	RateLimitHandler         *handlers.RateLimitHandler
+	AIUsageHandler           *handlers.AIUsageHandler
+	AlertHandler             *handlers.AlertHandler
+	AlertNotificationHandler *handlers.AlertNotificationHandler
+	AnalyticsHandler         *handlers.AnalyticsHandler
+	AdminOrgHandler          *handlers.AdminOrganizationHandler
+	AdminUserHandler         *handlers.AdminUserHandler
+	AdminSystemHandler       *handlers.AdminSystemHandler
+	ScheduledReportHandler   *handlers.ScheduledReportHandler
+	VersionHandler           *handlers.VersionHandler
+	QueryVersionHandler      *handlers.QueryVersionHandler
+	GlossaryHandler          *handlers.GlossaryHandler
+	NLHandler                *handlers.NLHandler
+	WebhookHandler           *handlers.WebhookHandler
+	ReportingHandler         *handlers.ReportingHandler
+	ForecastingHandler       *handlers.ForecastingHandler
+	AnomalyHandler           *handlers.AnomalyHandler
+	LineageController        *controllers.LineageController
+	CollectionHandler        *handlers.CollectionHandler
+}
+
+// NewApp initializes the entire application
+func NewApp() *App {
+	// 1. Initialize Logger
+	InitLogger()
+
+	// 2. Load Config
+	LoadConfig()
+
+	// 3. Connect DB
+	ConnectDatabase()
+
+	// 4. Initialize Services
+	svcContainer := InitServices()
+
+	// 5. Initialize Handlers
+	hdlContainer := InitHandlers(svcContainer)
+
+	// 6. Initialize Fiber App
+	app := InitServer(svcContainer, hdlContainer)
+
+	return &App{
+		FiberApp: app,
+		Services: svcContainer,
+		Handlers: hdlContainer,
+	}
+}

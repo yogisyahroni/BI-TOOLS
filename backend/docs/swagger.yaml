@@ -1,0 +1,1544 @@
+basePath: /api
+definitions:
+  dtos.RegisterRequest:
+    properties:
+      email:
+        type: string
+      fullName:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  dtos.RegisterResponse:
+    properties:
+      email:
+        type: string
+      message:
+        type: string
+      userId:
+        type: string
+      username:
+        type: string
+    type: object
+  handlers.ChangePasswordRequest:
+    properties:
+      currentPassword:
+        type: string
+      newPassword:
+        type: string
+    type: object
+  handlers.CreateDimensionRequest:
+    properties:
+      columnName:
+        type: string
+      dataType:
+        type: string
+      description:
+        type: string
+      isHidden:
+        type: boolean
+      name:
+        type: string
+    type: object
+  handlers.CreateMetricRequest:
+    properties:
+      description:
+        type: string
+      format:
+        type: string
+      formula:
+        type: string
+      name:
+        type: string
+    type: object
+  handlers.CreateSemanticModelRequest:
+    properties:
+      dataSourceId:
+        type: string
+      description:
+        type: string
+      dimensions:
+        items:
+          $ref: '#/definitions/handlers.CreateDimensionRequest'
+        type: array
+      metrics:
+        items:
+          $ref: '#/definitions/handlers.CreateMetricRequest'
+        type: array
+      name:
+        type: string
+      tableName:
+        type: string
+    type: object
+  handlers.ForgotPasswordRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  handlers.LoginRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  handlers.LoginResponse:
+    properties:
+      token:
+        description: 'Optional: If we want to issue token from backend directly'
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
+  handlers.ResendVerificationRequest:
+    properties:
+      email:
+        type: string
+    type: object
+  handlers.ResetPasswordRequest:
+    properties:
+      newPassword:
+        type: string
+      token:
+        type: string
+    type: object
+  handlers.SemanticQueryRequest:
+    properties:
+      dimensions:
+        items:
+          type: string
+        type: array
+      filters:
+        additionalProperties: true
+        type: object
+      limit:
+        type: integer
+      metrics:
+        items:
+          type: string
+        type: array
+      modelId:
+        type: string
+    type: object
+  handlers.SemanticQueryResponse:
+    properties:
+      args:
+        items: {}
+        type: array
+      dimensions:
+        items:
+          type: string
+        type: array
+      metrics:
+        items:
+          type: string
+        type: array
+      rowCount:
+        type: integer
+      sql:
+        type: string
+    type: object
+  models.CalculateCorrelationRequest:
+    properties:
+      cols:
+        description: Columns to correlate
+        items:
+          type: string
+        type: array
+      data:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+    type: object
+  models.Connection:
+    properties:
+      createdAt:
+        type: string
+      database:
+        type: string
+      host:
+        type: string
+      id:
+        type: string
+      isActive:
+        type: boolean
+      name:
+        type: string
+      options:
+        additionalProperties: true
+        description: Database-specific options (warehouse, role, schema, etc)
+        type: object
+      password:
+        description: AES-256 Encrypted
+        type: string
+      port:
+        type: integer
+      type:
+        description: postgres, mysql, bigquery, etc
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: string
+      username:
+        type: string
+    type: object
+  models.CorrelationResult:
+    properties:
+      coefficient:
+        description: -1.0 to 1.0
+        type: number
+      significance:
+        description: p-value (optional/simulated)
+        type: number
+      strength:
+        description: Strong, Moderate, Weak, None
+        type: string
+      variableA:
+        type: string
+      variableB:
+        type: string
+    type: object
+  models.GenerateInsightsRequest:
+    properties:
+      data:
+        items:
+          additionalProperties: true
+          type: object
+        type: array
+      metricCol:
+        type: string
+      timeCol:
+        type: string
+    type: object
+  models.Insight:
+    properties:
+      confidence:
+        description: 0.0 to 1.0
+        type: number
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      metadata:
+        additionalProperties: true
+        type: object
+      metric:
+        type: string
+      title:
+        type: string
+      type:
+        $ref: '#/definitions/models.InsightType'
+      value: {}
+    type: object
+  models.InsightType:
+    enum:
+    - trend
+    - anomaly
+    - correlation
+    - descriptive
+    type: string
+    x-enum-varnames:
+    - InsightTypeTrend
+    - InsightTypeAnomaly
+    - InsightTypeCorrelation
+    - InsightTypeDescriptive
+  models.Permission:
+    properties:
+      action:
+        description: e.g., 'create', 'read', 'update', 'delete'
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      name:
+        description: e.g., 'query:create'
+        type: string
+      resource:
+        description: e.g., 'query', 'dashboard'
+        type: string
+    type: object
+  models.QueryExecutionRequest:
+    properties:
+      connectionId:
+        type: string
+      limit:
+        type: integer
+      offset:
+        type: integer
+      parameters:
+        additionalProperties: true
+        type: object
+      sql:
+        type: string
+    required:
+    - connectionId
+    - sql
+    type: object
+  models.QueryVersion:
+    properties:
+      aiPrompt:
+        type: string
+      changeSummary:
+        description: e.g., "Modified SQL query"
+        type: string
+      createdAt:
+        type: string
+      createdBy:
+        description: Metadata
+        type: string
+      createdByUser:
+        $ref: '#/definitions/models.User'
+      description:
+        type: string
+      id:
+        type: string
+      isAutoSave:
+        type: boolean
+      metadata:
+        description: Additional metadata
+        items:
+          type: integer
+        type: array
+      name:
+        description: Snapshot data
+        type: string
+      query:
+        allOf:
+        - $ref: '#/definitions/models.SavedQuery'
+        description: Relationships
+      queryId:
+        type: string
+      sql:
+        type: string
+      tags:
+        items:
+          type: integer
+        type: array
+      version:
+        description: Auto-increment per query
+        type: integer
+      visualizationConfig:
+        items:
+          type: integer
+        type: array
+    type: object
+  models.Role:
+    properties:
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      is_system_role:
+        description: TRUE for built-in roles
+        type: boolean
+      name:
+        type: string
+      permissions:
+        items:
+          $ref: '#/definitions/models.Permission'
+        type: array
+      updated_at:
+        type: string
+    type: object
+  models.SavedQuery:
+    properties:
+      aiPrompt:
+        type: string
+      businessMetricId:
+        type: string
+      collectionId:
+        type: string
+      connection:
+        allOf:
+        - $ref: '#/definitions/models.Connection'
+        description: Relationships (optional for queries)
+      connectionId:
+        type: string
+      createdAt:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      pinned:
+        type: boolean
+      sql:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+      userId:
+        type: string
+      versions:
+        items:
+          $ref: '#/definitions/models.QueryVersion'
+        type: array
+      visualizationConfig:
+        description: JSON
+        items:
+          type: integer
+        type: array
+    type: object
+  models.SemanticDimension:
+    properties:
+      columnName:
+        type: string
+      createdAt:
+        type: string
+      dataType:
+        description: string, number, date, boolean
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      isHidden:
+        type: boolean
+      modelId:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.SemanticMetric:
+    properties:
+      createdAt:
+        type: string
+      description:
+        type: string
+      format:
+        description: currency, percentage, number, etc.
+        type: string
+      formula:
+        description: e.g., "SUM(revenue)", "COUNT(*)", "AVG(price)"
+        type: string
+      id:
+        type: string
+      modelId:
+        type: string
+      name:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.SemanticModel:
+    properties:
+      createdAt:
+        type: string
+      createdBy:
+        type: string
+      dataSourceId:
+        type: string
+      description:
+        type: string
+      dimensions:
+        items:
+          $ref: '#/definitions/models.SemanticDimension'
+        type: array
+      id:
+        type: string
+      metrics:
+        items:
+          $ref: '#/definitions/models.SemanticMetric'
+        type: array
+      name:
+        type: string
+      tableName:
+        type: string
+      updatedAt:
+        type: string
+      workspaceId:
+        type: string
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      deactivatedAt:
+        type: string
+      deactivatedBy:
+        type: string
+      deactivationReason:
+        type: string
+      email:
+        type: string
+      emailVerified:
+        type: boolean
+      emailVerifiedAt:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      provider:
+        description: OAuth fields
+        type: string
+      providerId:
+        description: OAuth provider user ID
+        type: string
+      role:
+        description: user, admin
+        type: string
+      roles:
+        description: RBAC
+        items:
+          $ref: '#/definitions/models.Role'
+        type: array
+      status:
+        description: Status
+        type: string
+      updatedAt:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@insightengine.ai
+    name: API Support
+  description: Enterprise BI Platform API with Power BI/Tableau parity.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: InsightEngine API
+  version: "1.0"
+paths:
+  /api/analytics/correlations:
+    post:
+      consumes:
+      - application/json
+      description: Calculates Pearson correlation coefficient between specified columns
+        in the dataset.
+      parameters:
+      - description: Data and columns
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CalculateCorrelationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.CorrelationResult'
+            type: array
+      summary: Calculate correlation between columns
+      tags:
+      - analytics
+  /api/analytics/insights:
+    post:
+      consumes:
+      - application/json
+      description: Analyzes the provided data and returns a list of insights including
+        trends, anomalies, and descriptive statistics.
+      parameters:
+      - description: Data and configuration
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.GenerateInsightsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Insight'
+            type: array
+      summary: Generate insights from data
+      tags:
+      - analytics
+  /api/v1/semantic/metrics:
+    get:
+      consumes:
+      - application/json
+      description: Get all metrics for a model or workspace
+      parameters:
+      - description: Model ID to filter by
+        in: query
+        name: modelId
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.SemanticMetric'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List semantic metrics
+      tags:
+      - semantic-layer
+  /api/v1/semantic/models:
+    get:
+      consumes:
+      - application/json
+      description: Get all semantic models for the user's workspace
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.SemanticModel'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: List semantic models
+      tags:
+      - semantic-layer
+    post:
+      consumes:
+      - application/json
+      description: Create a new semantic model with dimensions and metrics
+      parameters:
+      - description: Model data
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateSemanticModelRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.SemanticModel'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create semantic model
+      tags:
+      - semantic-layer
+  /api/v1/semantic/models/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a semantic model
+      parameters:
+      - description: Model ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete semantic model
+      tags:
+      - semantic-layer
+    get:
+      consumes:
+      - application/json
+      description: Get a semantic model by ID
+      parameters:
+      - description: Model ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SemanticModel'
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get semantic model details
+      tags:
+      - semantic-layer
+    put:
+      consumes:
+      - application/json
+      description: Update an existing semantic model
+      parameters:
+      - description: Model ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Model data
+        in: body
+        name: model
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.CreateSemanticModelRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SemanticModel'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update semantic model
+      tags:
+      - semantic-layer
+  /api/v1/semantic/query:
+    post:
+      consumes:
+      - application/json
+      description: Execute a query using business terms (dimensions and metrics)
+      parameters:
+      - description: Query data
+        in: body
+        name: query
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SemanticQueryRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.SemanticQueryResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Execute semantic query
+      tags:
+      - semantic-layer
+  /auth/change-password:
+    post:
+      consumes:
+      - application/json
+      description: Changes password after verifying current password. Requires authentication.
+      parameters:
+      - description: Change Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ChangePasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Change password
+      tags:
+      - Auth
+  /auth/forgot-password:
+    post:
+      consumes:
+      - application/json
+      description: Generates reset token and sends reset email. Always returns success.
+      parameters:
+      - description: Forgot Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ForgotPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Request password reset
+      tags:
+      - Auth
+  /auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Authenticates user and returns JWT token. Checks if email is verified.
+      parameters:
+      - description: Login Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: User login
+      tags:
+      - Auth
+  /auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user account with validated input and sends a verification
+        email.
+      parameters:
+      - description: Registration Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/dtos.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/dtos.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "409":
+          description: Conflict
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a new user
+      tags:
+      - Auth
+  /auth/resend-verification:
+    post:
+      consumes:
+      - application/json
+      description: Resends verification email to user.
+      parameters:
+      - description: Resend Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ResendVerificationRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Resend verification email
+      tags:
+      - Auth
+  /auth/reset-password:
+    post:
+      consumes:
+      - application/json
+      description: Resets user password using valid token.
+      parameters:
+      - description: Reset Password Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.ResetPasswordRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Reset password
+      tags:
+      - Auth
+  /auth/verify-email:
+    get:
+      description: Verifies user email using token from email link.
+      parameters:
+      - description: Verification Token
+        in: query
+        name: token
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Verify email address
+      tags:
+      - Auth
+  /connection:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of database connections for the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List connections
+      tags:
+      - Connection
+    post:
+      consumes:
+      - application/json
+      description: Creates a new database connection.
+      parameters:
+      - description: Connection Details
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Connection'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a connection
+      tags:
+      - Connection
+  /connection/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a database connection by ID.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a connection
+      tags:
+      - Connection
+    get:
+      consumes:
+      - application/json
+      description: Returns a single database connection by ID.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get a connection
+      tags:
+      - Connection
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing database connection.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Connection Updates
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Connection'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update a connection
+      tags:
+      - Connection
+  /connection/{id}/schema:
+    get:
+      consumes:
+      - application/json
+      description: Discovers and returns the schema for a database connection.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get connection schema
+      tags:
+      - Connection
+  /connection/{id}/test:
+    post:
+      consumes:
+      - application/json
+      description: Tests connectivity to a database connection.
+      parameters:
+      - description: Connection ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Test connection
+      tags:
+      - Connection
+  /query:
+    get:
+      consumes:
+      - application/json
+      description: Returns a list of saved queries for the authenticated user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: List saved queries
+      tags:
+      - Query
+    post:
+      consumes:
+      - application/json
+      description: Creates a new saved query.
+      parameters:
+      - description: Saved Query
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SavedQuery'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Create a saved query
+      tags:
+      - Query
+  /query/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deletes a saved query by ID.
+      parameters:
+      - description: Query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Delete a saved query
+      tags:
+      - Query
+    get:
+      consumes:
+      - application/json
+      description: Returns a single saved query by ID.
+      parameters:
+      - description: Query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Get a saved query
+      tags:
+      - Query
+    put:
+      consumes:
+      - application/json
+      description: Updates an existing saved query.
+      parameters:
+      - description: Query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Saved Query Updates
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SavedQuery'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Update a saved query
+      tags:
+      - Query
+  /query/{id}/run:
+    post:
+      consumes:
+      - application/json
+      description: Executes a saved query by ID with optional limit and offset.
+      parameters:
+      - description: Query ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Run Parameters (limit, offset)
+        in: body
+        name: request
+        schema:
+          additionalProperties: true
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Run a saved query
+      tags:
+      - Query
+  /query/execute:
+    post:
+      consumes:
+      - application/json
+      description: Executes a raw SQL query on a specific connection.
+      parameters:
+      - description: Query Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.QueryExecutionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties: true
+            type: object
+        "404":
+          description: Not Found
+          schema:
+            additionalProperties: true
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            additionalProperties: true
+            type: object
+      security:
+      - BearerAuth: []
+      summary: Execute ad-hoc query
+      tags:
+      - Query
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

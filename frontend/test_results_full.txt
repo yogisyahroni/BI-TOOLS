@@ -1,0 +1,1105 @@
+
+Running 35 tests using 8 workers
+
+[1A[2K[1/35] [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:5:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should not make authenticated API calls before login
+[1A[2K[2/35] [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:47:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should show login page when navigating to protected route
+[1A[2K[3/35] [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:74:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should connect WebSocket only after login
+[1A[2K[4/35] [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:55:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should allow login and access protected pages
+[1A[2K[5/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:9:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should support complete keyboard navigation
+[1A[2K[6/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:77:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should detect and warn about Caps Lock
+[1A[2K[7/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:62:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should announce errors to screen readers
+[1A[2K[8/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:42:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should display proper ARIA labels
+[1A[2K[chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:74:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should connect WebSocket only after login
+WebSocket logs before login: []
+
+[1A[2K[9/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:90:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should toggle password visibility
+[1A[2K[10/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:109:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should open forgot password modal with keyboard
+[1A[2K[11/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:137:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should validate email format
+[1A[2K[chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:5:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should not make authenticated API calls before login
+=== Console Logs ===
+
+[1A[2K[info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+
+[1A[2K=== End Console Logs ===
+
+[1A[2KAll 401 errors: []
+
+[1A[2KAPI 401 errors (should be 0): []
+
+[1A[2K[12/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:160:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should validate password length
+[1A[2K[13/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:175:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should normalize email to lowercase
+[1A[2K[14/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:197:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display loading state during authentication
+[1A[2K[15/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:213:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should remember me checkbox work
+[1A[2K[16/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:228:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display security indicators
+[1A[2K[17/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:237:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should animate background blobs
+[1A[2K[18/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:249:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display SSO providers
+[1A[2K[19/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:9:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should support complete keyboard navigation (retry #1)
+[1A[2K[20/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:137:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should validate email format (retry #1)
+[1A[2K[21/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:109:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should open forgot password modal with keyboard (retry #1)
+[1A[2K[22/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:175:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should normalize email to lowercase (retry #1)
+[1A[2K[23/35] [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:55:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should allow login and access protected pages (retry #1)
+
+[1A[2K[WebServer]  Γ¿» ReferenceError: window is not defined
+[WebServer]     at (ssr)/./node_modules/monaco-editor/esm/vs/base/browser/window.js (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\vendor-chunks\monaco-editor.js:1770:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at (ssr)/./node_modules/monaco-editor/esm/vs/base/browser/browser.js (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\vendor-chunks\monaco-editor.js:980:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at (ssr)/./node_modules/monaco-editor/esm/vs/editor/browser/coreCommands.js (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\vendor-chunks\monaco-editor.js:4740:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at (ssr)/./node_modules/monaco-editor/esm/vs/language/css/monaco.contribution.js (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\vendor-chunks\monaco-editor.js:10680:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at (ssr)/./node_modules/monaco-editor/esm/vs/editor/editor.main.js (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\vendor-chunks\monaco-editor.js:10370:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at eval (webpack-internal:///(ssr)/./components/sql-editor/autocomplete.ts:5:71)
+[WebServer]     at (ssr)/./components/sql-editor/autocomplete.ts (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\app\dashboards\page.js:564:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at eval (webpack-internal:///(ssr)/./components/query-editor/monaco-sql-editor.tsx:12:82)
+[WebServer]     at (ssr)/./components/query-editor/monaco-sql-editor.tsx (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\app\dashboards\page.js:520:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at eval (webpack-internal:///(ssr)/./components/dual-engine-editor.tsx:29:101)
+[WebServer]     at (ssr)/./components/dual-engine-editor.tsx (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\app\dashboards\page.js:432:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at eval (webpack-internal:///(ssr)/./components/dashboard/query-builder-dialog.tsx:10:88)
+[WebServer]     at (ssr)/./components/dashboard/query-builder-dialog.tsx (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\app\dashboards\page.js:421:1)
+[WebServer]     at __webpack_require__ (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at eval (webpack-internal:///(ssr)/./app/dashboards/page.tsx:41:101)
+[WebServer]     at (ssr)/./app/dashboards/page.tsx (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\app\dashboards\page.js:201:1)
+[WebServer]     at Object.__webpack_require__ [as require] (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\.next\server\webpack-runtime.js:33:43)
+[WebServer]     at JSON.parse (<anonymous>) {
+[WebServer]   digest: '4261285849'
+[WebServer] }
+[1A[2K  1) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:9:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should support complete keyboard navigation 
+
+    Error: [2mexpect([22m[31mreceived[39m[2m).[22mtoBe[2m([22m[32mexpected[39m[2m) // Object.is equality[22m
+
+    Expected: [32m"password"[39m
+    Received: [31m""[39m
+
+      16 |         await page.keyboard.press('Tab');
+      17 |         focused = await page.evaluate(() => document.activeElement?.id);
+    > 18 |         expect(focused).toBe('password');
+         |                         ^
+      19 |
+      20 |         // Tab to forgot password link
+      21 |         await page.keyboard.press('Tab');
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:18:25
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-8c04f-omplete-keyboard-navigation-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-8c04f-omplete-keyboard-navigation-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      2 |
+      3 | test.describe('Enterprise Login - Accessibility Tests', () => {
+    > 4 |     test.beforeEach(async ({ page }) => {
+        |          ^
+      5 |         await page.goto('http://localhost:3000/auth/signin');
+      6 |         await page.waitForLoadState('networkidle');
+      7 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:4:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      3 | test.describe('Enterprise Login - Accessibility Tests', () => {
+      4 |     test.beforeEach(async ({ page }) => {
+    > 5 |         await page.goto('http://localhost:3000/auth/signin');
+        |                    ^
+      6 |         await page.waitForLoadState('networkidle');
+      7 |     });
+      8 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:5:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-8c04f-omplete-keyboard-navigation-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-8c04f-omplete-keyboard-navigation-chromium-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-8c04f-omplete-keyboard-navigation-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-8c04f-omplete-keyboard-navigation-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  2) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:137:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should validate email format 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('#email-error')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('#email-error')[22m
+
+
+      146 |         // Should show error
+      147 |         const errorMessage = page.locator('#email-error');
+    > 148 |         await expect(errorMessage).toBeVisible();
+          |                                    ^
+      149 |         await expect(errorMessage).toContainText('Invalid email address');
+      150 |
+      151 |         // Enter valid email
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:148:36
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-7d552-hould-validate-email-format-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-7d552-hould-validate-email-format-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      130 |
+      131 | test.describe('Enterprise Login - Validation Tests', () => {
+    > 132 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      133 |         await page.goto('http://localhost:3000/auth/signin');
+      134 |         await page.waitForLoadState('networkidle');
+      135 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:132:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      131 | test.describe('Enterprise Login - Validation Tests', () => {
+      132 |     test.beforeEach(async ({ page }) => {
+    > 133 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      134 |         await page.waitForLoadState('networkidle');
+      135 |     });
+      136 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:133:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-7d552-hould-validate-email-format-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-7d552-hould-validate-email-format-chromium-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-7d552-hould-validate-email-format-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-7d552-hould-validate-email-format-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  3) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:175:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should normalize email to lowercase 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).not.[22mtoHaveText[2m([22m[32mexpected[39m[2m)[22m failed
+
+    Locator: locator('#email-error')
+    Expected: not [32m"Invalid email address"[39m
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "not toHaveText" with timeout 5000ms[22m
+    [2m  - waiting for locator('#email-error')[22m
+
+
+      185 |
+      186 |         // As long as no email format error appears, normalization worked
+    > 187 |         await expect(page.locator('#email-error')).not.toHaveText('Invalid email address');
+          |                                                        ^
+      188 |     });
+      189 | });
+      190 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:187:56
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-3955a-ormalize-email-to-lowercase-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-3955a-ormalize-email-to-lowercase-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      130 |
+      131 | test.describe('Enterprise Login - Validation Tests', () => {
+    > 132 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      133 |         await page.goto('http://localhost:3000/auth/signin');
+      134 |         await page.waitForLoadState('networkidle');
+      135 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:132:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      131 | test.describe('Enterprise Login - Validation Tests', () => {
+      132 |     test.beforeEach(async ({ page }) => {
+    > 133 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      134 |         await page.waitForLoadState('networkidle');
+      135 |     });
+      136 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:133:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-3955a-ormalize-email-to-lowercase-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-3955a-ormalize-email-to-lowercase-chromium-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-3955a-ormalize-email-to-lowercase-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-3955a-ormalize-email-to-lowercase-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  4) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:109:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should open forgot password modal with keyboard 
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('dialog')
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('dialog')[22m
+
+
+      119 |         // Modal should be visible
+      120 |         const modal = page.getByRole('dialog');
+    > 121 |         await expect(modal).toBeVisible();
+          |                             ^
+      122 |         await expect(modal).toContainText('Reset Password');
+      123 |
+      124 |         // Should be able to close with Escape
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:121:29
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-1b229-assword-modal-with-keyboard-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-1b229-assword-modal-with-keyboard-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      2 |
+      3 | test.describe('Enterprise Login - Accessibility Tests', () => {
+    > 4 |     test.beforeEach(async ({ page }) => {
+        |          ^
+      5 |         await page.goto('http://localhost:3000/auth/signin');
+      6 |         await page.waitForLoadState('networkidle');
+      7 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:4:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      3 | test.describe('Enterprise Login - Accessibility Tests', () => {
+      4 |     test.beforeEach(async ({ page }) => {
+    > 5 |         await page.goto('http://localhost:3000/auth/signin');
+        |                    ^
+      6 |         await page.waitForLoadState('networkidle');
+      7 |     });
+      8 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:5:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-1b229-assword-modal-with-keyboard-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-1b229-assword-modal-with-keyboard-chromium-retry1\error-context.md
+
+    attachment #3: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-1b229-assword-modal-with-keyboard-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-1b229-assword-modal-with-keyboard-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K[24/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:249:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display SSO providers (retry #1)
+[1A[2K[25/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:237:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should animate background blobs (retry #1)
+[1A[2K[26/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:228:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display security indicators (retry #1)
+[1A[2K[27/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:262:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should open and close forgot password modal
+[1A[2K[28/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:280:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should submit password reset request
+[1A[2K[29/35] [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:297:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should validate email in forgot password modal
+[1A[2K[30/35] [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should allow user to login and logout
+[1A[2K  5) [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:55:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should allow login and access protected pages 
+
+    TimeoutError: page.waitForURL: Timeout 15000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      65 |
+      66 |         // Wait for redirect (should go to dashboards)
+    > 67 |         await page.waitForURL(/\/dashboards/, { timeout: 15000 });
+         |                    ^
+      68 |
+      69 |         // Verify we're logged in by checking for sidebar or logout button
+      70 |         await expect(page.locator('aside')).toBeVisible({ timeout: 5000 });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\api-auth-guard.spec.ts:67:20
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.waitForURL: Test timeout of 30000ms exceeded.
+    =========================== logs ===========================
+    waiting for navigation until "load"
+    ============================================================
+
+      65 |
+      66 |         // Wait for redirect (should go to dashboards)
+    > 67 |         await page.waitForURL(/\/dashboards/, { timeout: 15000 });
+         |                    ^
+      68 |
+      69 |         // Verify we're logged in by checking for sidebar or logout button
+      70 |         await expect(page.locator('aside')).toBeVisible({ timeout: 5000 });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\api-auth-guard.spec.ts:67:20
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\api-auth-guard-API-and-Web-f711b--and-access-protected-pages-chromium-retry1\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\api-auth-guard-API-and-Web-f711b--and-access-protected-pages-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\api-auth-guard-API-and-Web-f711b--and-access-protected-pages-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\api-auth-guard-API-and-Web-f711b--and-access-protected-pages-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\api-auth-guard-API-and-Web-f711b--and-access-protected-pages-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K[31/35] [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:45:9 ΓÇ║ Authentication Flow ΓÇ║ should redirect unauthenticated access to login
+[1A[2K[chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should allow user to login and logout
+[Browser Console] info: %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+
+[1A[2K  6) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:237:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should animate background blobs 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      190 |
+      191 | test.describe('Enterprise Login - UX Features', () => {
+    > 192 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      193 |         await page.goto('http://localhost:3000/auth/signin');
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:192:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      191 | test.describe('Enterprise Login - UX Features', () => {
+      192 |     test.beforeEach(async ({ page }) => {
+    > 193 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+      196 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:193:20
+
+    Error Context: test-results\auth-enterprise-login-Ente-329f8-ld-animate-background-blobs-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      190 |
+      191 | test.describe('Enterprise Login - UX Features', () => {
+    > 192 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      193 |         await page.goto('http://localhost:3000/auth/signin');
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:192:10
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-329f8-ld-animate-background-blobs-chromium-retry1\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-329f8-ld-animate-background-blobs-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-329f8-ld-animate-background-blobs-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-329f8-ld-animate-background-blobs-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-329f8-ld-animate-background-blobs-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  7) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:228:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display security indicators 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      190 |
+      191 | test.describe('Enterprise Login - UX Features', () => {
+    > 192 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      193 |         await page.goto('http://localhost:3000/auth/signin');
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:192:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      191 | test.describe('Enterprise Login - UX Features', () => {
+      192 |     test.beforeEach(async ({ page }) => {
+    > 193 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+      196 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:193:20
+
+    Error Context: test-results\auth-enterprise-login-Ente-db939-display-security-indicators-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      190 |
+      191 | test.describe('Enterprise Login - UX Features', () => {
+    > 192 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      193 |         await page.goto('http://localhost:3000/auth/signin');
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:192:10
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-db939-display-security-indicators-chromium-retry1\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-db939-display-security-indicators-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-db939-display-security-indicators-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-db939-display-security-indicators-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-db939-display-security-indicators-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  8) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:249:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display SSO providers 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      190 |
+      191 | test.describe('Enterprise Login - UX Features', () => {
+    > 192 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      193 |         await page.goto('http://localhost:3000/auth/signin');
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:192:10
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      191 | test.describe('Enterprise Login - UX Features', () => {
+      192 |     test.beforeEach(async ({ page }) => {
+    > 193 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+      196 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:193:20
+
+    Error Context: test-results\auth-enterprise-login-Ente-93173-hould-display-SSO-providers-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      190 |
+      191 | test.describe('Enterprise Login - UX Features', () => {
+    > 192 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      193 |         await page.goto('http://localhost:3000/auth/signin');
+      194 |         await page.waitForLoadState('networkidle');
+      195 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:192:10
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-93173-hould-display-SSO-providers-chromium-retry1\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-93173-hould-display-SSO-providers-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-93173-hould-display-SSO-providers-chromium-retry1\error-context.md
+
+    attachment #4: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-93173-hould-display-SSO-providers-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-93173-hould-display-SSO-providers-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K[32/35] [chromium] ΓÇ║ tests\e2e\core-features.spec.ts:12:9 ΓÇ║ InsightEngine AI - Industrial BI Smoke Test ΓÇ║ should allow switching between AI Prompt and SQL Editor
+[1A[2K[33/35] [chromium] ΓÇ║ tests\e2e\core-features.spec.ts:25:9 ΓÇ║ InsightEngine AI - Industrial BI Smoke Test ΓÇ║ should execute a standard SQL query and display results
+[1A[2K[34/35] [chromium] ΓÇ║ tests\e2e\core-features.spec.ts:42:9 ΓÇ║ InsightEngine AI - Industrial BI Smoke Test ΓÇ║ should support AI prompt generation flow
+[1A[2K[35/35] [chromium] ΓÇ║ tests\e2e\core-features.spec.ts:63:9 ΓÇ║ InsightEngine AI - Industrial BI Smoke Test ΓÇ║ should toggle schema browser
+[1A[2K[36/35] (retries) [chromium] ΓÇ║ tests\e2e\core-features.spec.ts:75:9 ΓÇ║ InsightEngine AI - Industrial BI Smoke Test ΓÇ║ should allow searching and filtering query results
+[1A[2K[37/35] (retries) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:280:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should submit password reset request (retry #1)
+[1A[2K[38/35] (retries) [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should allow user to login and logout (retry #1)
+[1A[2K[39/35] (retries) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:262:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should open and close forgot password modal (retry #1)
+[1A[2K[40/35] (retries) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:297:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should validate email in forgot password modal (retry #1)
+[1A[2K[41/35] (retries) [chromium] ΓÇ║ tests\e2e\auth.spec.ts:55:9 ΓÇ║ Authentication Flow ΓÇ║ should show error for invalid credentials
+[1A[2K[42/35] (retries) [chromium] ΓÇ║ tests\e2e\auth.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should register a new user and login successfully
+[1A[2K[43/35] (retries) [chromium] ΓÇ║ tests\e2e\dashboard.spec.ts:4:9 ΓÇ║ Dashboard Management ΓÇ║ should create a new dashboard successfully
+[1A[2K[44/35] (retries) [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:45:9 ΓÇ║ Authentication Flow ΓÇ║ should redirect unauthenticated access to login (retry #1)
+[1A[2K[45/35] (retries) [chromium] ΓÇ║ tests\e2e\auth.spec.ts:55:9 ΓÇ║ Authentication Flow ΓÇ║ should show error for invalid credentials (retry #1)
+[1A[2K[46/35] (retries) [chromium] ΓÇ║ tests\e2e\auth.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should register a new user and login successfully (retry #1)
+[1A[2K[47/35] (retries) [chromium] ΓÇ║ tests\e2e\dashboard.spec.ts:4:9 ΓÇ║ Dashboard Management ΓÇ║ should create a new dashboard successfully (retry #1)
+[1A[2K  9) [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should allow user to login and logout 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.fill: Test timeout of 30000ms exceeded.
+    Call log:
+    [2m  - waiting for locator('#password')[22m
+    [2m    - locator resolved to <input value="" id="password" type="password" name="password" data-slot="input" aria-invalid="false" placeholder="Enter your password" class="file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabledΓÇª/>[22m
+
+
+      17 |         // Using ID selectors from the page source
+      18 |         await page.fill('#email', 'demo@spectra.id');
+    > 19 |         await page.fill('#password', 'password123');
+         |                    ^
+      20 |
+      21 |         // 3. Click Sign In
+      22 |         // button type="submit" with text "Sign In"
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth-flow.spec.ts:19:20
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-780c8-ow-user-to-login-and-logout-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-flow-Authentication-F-780c8-ow-user-to-login-and-logout-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+       9 |
+      10 |         // 1. Navigate to Login Page (Correct Path)
+    > 11 |         await page.goto('/auth/signin');
+         |                    ^
+      12 |
+      13 |         // Check if we are really on login page
+      14 |         await expect(page).toHaveURL(/.*\/auth\/signin/);
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth-flow.spec.ts:11:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-780c8-ow-user-to-login-and-logout-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-780c8-ow-user-to-login-and-logout-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-flow-Authentication-F-780c8-ow-user-to-login-and-logout-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K[48/35] (retries) [chromium] ΓÇ║ tests\e2e\semantic-layer.spec.ts:17:9 ΓÇ║ Semantic Layer (Modeling Center) ΓÇ║ should allow selecting a connection and switch tabs
+[1A[2K[49/35] (retries) [chromium] ΓÇ║ tests\e2e\semantic-layer.spec.ts:31:9 ΓÇ║ Semantic Layer (Modeling Center) ΓÇ║ should show empty states for new connection
+[1A[2K[50/35] (retries) [chromium] ΓÇ║ tests\e2e\semantic-layer.spec.ts:41:9 ΓÇ║ Semantic Layer (Modeling Center) ΓÇ║ should verify virtual join form fields
+[1A[2K  10) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:280:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should submit password reset request 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      255 |
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+    > 257 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      258 |         await page.goto('http://localhost:3000/auth/signin');
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:257:10
+
+    Error Context: test-results\auth-enterprise-login-Ente-be203-bmit-password-reset-request-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      255 |
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+    > 257 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      258 |         await page.goto('http://localhost:3000/auth/signin');
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:257:10
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+      257 |     test.beforeEach(async ({ page }) => {
+    > 258 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+      261 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:258:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-be203-bmit-password-reset-request-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-be203-bmit-password-reset-request-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-be203-bmit-password-reset-request-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  11) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:262:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should open and close forgot password modal 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      255 |
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+    > 257 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      258 |         await page.goto('http://localhost:3000/auth/signin');
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:257:10
+
+    attachment #1: screenshot (image/png) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-3f09c-close-forgot-password-modal-chromium\test-failed-1.png
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    Error Context: test-results\auth-enterprise-login-Ente-3f09c-close-forgot-password-modal-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      255 |
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+    > 257 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      258 |         await page.goto('http://localhost:3000/auth/signin');
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:257:10
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+      257 |     test.beforeEach(async ({ page }) => {
+    > 258 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+      261 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:258:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-3f09c-close-forgot-password-modal-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-3f09c-close-forgot-password-modal-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-3f09c-close-forgot-password-modal-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  12) [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:297:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should validate email in forgot password modal 
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      255 |
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+    > 257 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      258 |         await page.goto('http://localhost:3000/auth/signin');
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:257:10
+
+    Error Context: test-results\auth-enterprise-login-Ente-c5455-il-in-forgot-password-modal-chromium\error-context.md
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded while running "beforeEach" hook.[39m
+
+      255 |
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+    > 257 |     test.beforeEach(async ({ page }) => {
+          |          ^
+      258 |         await page.goto('http://localhost:3000/auth/signin');
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:257:10
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      256 | test.describe('Enterprise Login - Forgot Password Flow', () => {
+      257 |     test.beforeEach(async ({ page }) => {
+    > 258 |         await page.goto('http://localhost:3000/auth/signin');
+          |                    ^
+      259 |         await page.waitForLoadState('networkidle');
+      260 |     });
+      261 |
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth\enterprise-login.spec.ts:258:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-c5455-il-in-forgot-password-modal-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-enterprise-login-Ente-c5455-il-in-forgot-password-modal-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-enterprise-login-Ente-c5455-il-in-forgot-password-modal-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K[51/35] (retries) [chromium] ΓÇ║ tests\e2e\settings.spec.ts:4:9 ΓÇ║ Settings Page ΓÇ║ should allow saving AI configuration
+[1A[2K  13) [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:45:9 ΓÇ║ Authentication Flow ΓÇ║ should redirect unauthenticated access to login 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/", waiting until "load"[22m
+
+
+      45 |     test('should redirect unauthenticated access to login', async ({ page }) => {
+      46 |         await page.context().clearCookies();
+    > 47 |         await page.goto('/');
+         |                    ^
+      48 |         // Should be redirected to /auth/signin
+      49 |         await expect(page).toHaveURL(/.*\/auth\/signin/);
+      50 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth-flow.spec.ts:47:20
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/", waiting until "load"[22m
+
+
+      45 |     test('should redirect unauthenticated access to login', async ({ page }) => {
+      46 |         await page.context().clearCookies();
+    > 47 |         await page.goto('/');
+         |                    ^
+      48 |         // Should be redirected to /auth/signin
+      49 |         await expect(page).toHaveURL(/.*\/auth\/signin/);
+      50 |     });
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth-flow.spec.ts:47:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-9e8f5-thenticated-access-to-login-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-flow-Authentication-F-9e8f5-thenticated-access-to-login-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-flow-Authentication-F-9e8f5-thenticated-access-to-login-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  14) [chromium] ΓÇ║ tests\e2e\auth.spec.ts:55:9 ΓÇ║ Authentication Flow ΓÇ║ should show error for invalid credentials 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      54 |
+      55 |     test('should show error for invalid credentials', async ({ page }) => {
+    > 56 |         await page.goto('/auth/signin');
+         |                    ^
+      57 |
+      58 |         await page.getByLabel('Email Address').fill('wrong@example.com');
+      59 |         await page.getByLabel('Password', { exact: true }).fill('wrongpass');
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth.spec.ts:56:20
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/signin", waiting until "load"[22m
+
+
+      54 |
+      55 |     test('should show error for invalid credentials', async ({ page }) => {
+    > 56 |         await page.goto('/auth/signin');
+         |                    ^
+      57 |
+      58 |         await page.getByLabel('Email Address').fill('wrong@example.com');
+      59 |         await page.getByLabel('Password', { exact: true }).fill('wrongpass');
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth.spec.ts:56:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-Authentication-Flow-s-c1b41-ror-for-invalid-credentials-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-Authentication-Flow-s-c1b41-ror-for-invalid-credentials-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-Authentication-Flow-s-c1b41-ror-for-invalid-credentials-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  15) [chromium] ΓÇ║ tests\e2e\auth.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should register a new user and login successfully 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/register", waiting until "load"[22m
+
+
+      10 |
+      11 |         // --- REGISTRATION ---
+    > 12 |         await page.goto('/auth/register');
+         |                    ^
+      13 |
+      14 |         // Check elements
+      15 |         await expect(page.getByLabel('Email Address')).toBeVisible();
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth.spec.ts:12:20
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/register", waiting until "load"[22m
+
+
+      10 |
+      11 |         // --- REGISTRATION ---
+    > 12 |         await page.goto('/auth/register');
+         |                    ^
+      13 |
+      14 |         // Check elements
+      15 |         await expect(page.getByLabel('Email Address')).toBeVisible();
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\auth.spec.ts:12:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-Authentication-Flow-s-9ef0d-user-and-login-successfully-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\auth-Authentication-Flow-s-9ef0d-user-and-login-successfully-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\auth-Authentication-Flow-s-9ef0d-user-and-login-successfully-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  16) [chromium] ΓÇ║ tests\e2e\dashboard.spec.ts:4:9 ΓÇ║ Dashboard Management ΓÇ║ should create a new dashboard successfully 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/register", waiting until "load"[22m
+
+
+       9 |
+      10 |         // --- SETUP: Register & Login ---
+    > 11 |         await page.goto('/auth/register');
+         |                    ^
+      12 |         await page.getByLabel('Email Address').fill(email);
+      13 |         await page.getByLabel('Username').fill(username);
+      14 |         await page.getByLabel('Password', { exact: true }).fill(password);
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\dashboard.spec.ts:11:20
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/register", waiting until "load"[22m
+
+
+       9 |
+      10 |         // --- SETUP: Register & Login ---
+    > 11 |         await page.goto('/auth/register');
+         |                    ^
+      12 |         await page.getByLabel('Email Address').fill(email);
+      13 |         await page.getByLabel('Username').fill(username);
+      14 |         await page.getByLabel('Password', { exact: true }).fill(password);
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\dashboard.spec.ts:11:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\dashboard-Dashboard-Manage-10dad--new-dashboard-successfully-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\dashboard-Dashboard-Manage-10dad--new-dashboard-successfully-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\dashboard-Dashboard-Manage-10dad--new-dashboard-successfully-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K[52/35] (retries) [chromium] ΓÇ║ tests\e2e\settings.spec.ts:4:9 ΓÇ║ Settings Page ΓÇ║ should allow saving AI configuration (retry #1)
+[1A[2K  17) [chromium] ΓÇ║ tests\e2e\settings.spec.ts:4:9 ΓÇ║ Settings Page ΓÇ║ should allow saving AI configuration 
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/register", waiting until "load"[22m
+
+
+       9 |
+      10 |         // --- SETUP: Register & Login ---
+    > 11 |         await page.goto('/auth/register');
+         |                    ^
+      12 |         await page.getByLabel('Email Address').fill(email);
+      13 |         await page.getByLabel('Username').fill(username);
+      14 |         await page.getByLabel('Password', { exact: true }).fill(password);
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\settings.spec.ts:11:20
+
+    Retry #1 ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    [31mTest timeout of 30000ms exceeded.[39m
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+    [2m  - navigating to "http://localhost:3000/auth/register", waiting until "load"[22m
+
+
+       9 |
+      10 |         // --- SETUP: Register & Login ---
+    > 11 |         await page.goto('/auth/register');
+         |                    ^
+      12 |         await page.getByLabel('Email Address').fill(email);
+      13 |         await page.getByLabel('Username').fill(username);
+      14 |         await page.getByLabel('Password', { exact: true }).fill(password);
+        at E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\tests\e2e\settings.spec.ts:11:20
+
+    attachment #1: video (video/webm) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\settings-Settings-Page-should-allow-saving-AI-configuration-chromium-retry1\video.webm
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+    attachment #2: trace (application/zip) ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+    test-results\settings-Settings-Page-should-allow-saving-AI-configuration-chromium-retry1\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\settings-Settings-Page-should-allow-saving-AI-configuration-chromium-retry1\trace.zip
+
+    ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
+
+
+[1A[2K  17 failed
+    [chromium] ΓÇ║ tests\e2e\api-auth-guard.spec.ts:55:9 ΓÇ║ API and WebSocket Auth Guard Tests ΓÇ║ should allow login and access protected pages 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:9:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should support complete keyboard navigation 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:109:9 ΓÇ║ Enterprise Login - Accessibility Tests ΓÇ║ should open forgot password modal with keyboard 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:137:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should validate email format 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:175:9 ΓÇ║ Enterprise Login - Validation Tests ΓÇ║ should normalize email to lowercase 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:228:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display security indicators 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:237:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should animate background blobs 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:249:9 ΓÇ║ Enterprise Login - UX Features ΓÇ║ should display SSO providers 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:262:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should open and close forgot password modal 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:280:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should submit password reset request 
+    [chromium] ΓÇ║ tests\e2e\auth\enterprise-login.spec.ts:297:9 ΓÇ║ Enterprise Login - Forgot Password Flow ΓÇ║ should validate email in forgot password modal 
+    [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should allow user to login and logout 
+    [chromium] ΓÇ║ tests\e2e\auth-flow.spec.ts:45:9 ΓÇ║ Authentication Flow ΓÇ║ should redirect unauthenticated access to login 
+    [chromium] ΓÇ║ tests\e2e\auth.spec.ts:5:9 ΓÇ║ Authentication Flow ΓÇ║ should register a new user and login successfully 
+    [chromium] ΓÇ║ tests\e2e\auth.spec.ts:55:9 ΓÇ║ Authentication Flow ΓÇ║ should show error for invalid credentials 
+    [chromium] ΓÇ║ tests\e2e\dashboard.spec.ts:4:9 ΓÇ║ Dashboard Management ΓÇ║ should create a new dashboard successfully 
+    [chromium] ΓÇ║ tests\e2e\settings.spec.ts:4:9 ΓÇ║ Settings Page ΓÇ║ should allow saving AI configuration 
+  8 skipped
+  10 passed (4.3m)

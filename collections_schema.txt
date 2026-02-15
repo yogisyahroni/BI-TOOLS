@@ -1,0 +1,19 @@
+                                 Table "public.collections"
+    Column    |            Type             | Collation | Nullable |         Default         
+--------------+-----------------------------+-----------+----------+-------------------------
+ id           | text                        |           | not null | gen_random_uuid()::text
+ name         | text                        |           | not null | 
+ description  | text                        |           |          | 
+ user_id      | text                        |           | not null | 
+ workspace_id | text                        |           |          | 
+ created_at   | timestamp without time zone |           |          | now()
+ updated_at   | timestamp without time zone |           |          | now()
+Indexes:
+    "collections_pkey" PRIMARY KEY, btree (id)
+Foreign-key constraints:
+    "collections_user_id_fkey" FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+Referenced by:
+    TABLE "collection_items" CONSTRAINT "collection_items_collection_id_fkey" FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+    TABLE "saved_queries" CONSTRAINT "saved_queries_collection_id_fkey" FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+    TABLE "visual_queries" CONSTRAINT "visual_queries_collection_id_fkey" FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+

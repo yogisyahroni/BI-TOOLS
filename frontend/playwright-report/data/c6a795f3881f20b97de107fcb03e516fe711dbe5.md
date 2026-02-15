@@ -1,0 +1,108 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - generic [ref=e3]:
+      - generic [ref=e6]: IE
+      - generic [ref=e7]: Create Account
+      - generic [ref=e8]: Sign up to start your AI-powered analytics journey
+    - generic [ref=e9]:
+      - generic [ref=e10]:
+        - generic [ref=e11]:
+          - generic [ref=e12]: Full Name (Optional)
+          - generic [ref=e13]:
+            - img [ref=e14]
+            - textbox "Full Name (Optional)" [ref=e17]:
+              - /placeholder: John Doe
+              - text: Audit User
+        - generic [ref=e18]:
+          - generic [ref=e19]: Email Address
+          - generic [ref=e20]:
+            - img [ref=e21]
+            - textbox "Email Address" [ref=e24]:
+              - /placeholder: name@company.com
+              - text: verify_audit_1771042407350@example.com
+        - generic [ref=e25]:
+          - generic [ref=e26]: Username
+          - generic [ref=e27]:
+            - img [ref=e28]
+            - textbox "Username" [ref=e31]:
+              - /placeholder: johndoe123
+              - text: audit_user_1771042407350
+          - paragraph [ref=e32]: 3-50 characters, letters, numbers, underscores, hyphens only
+        - generic [ref=e33]:
+          - generic [ref=e34]: Password
+          - generic [ref=e35]:
+            - generic [ref=e36]:
+              - textbox "Password" [ref=e37]:
+                - /placeholder: Create a strong password
+                - text: TestPassword123!
+              - button "Show password" [ref=e38]:
+                - img [ref=e39]
+            - paragraph [ref=e44]: "Password strength: Strong"
+          - generic [ref=e45]:
+            - generic [ref=e46]: "Strength:"
+            - generic [ref=e47]: Strong
+        - generic [ref=e48]:
+          - generic [ref=e49]: Confirm Password
+          - generic [ref=e51]:
+            - textbox "Confirm Password" [active] [ref=e52]:
+              - /placeholder: Confirm your password
+              - text: TestPassword123!
+            - button "Show password" [ref=e53]:
+              - img [ref=e54]
+        - generic [ref=e58]:
+          - checkbox "Agree to terms and conditions" [ref=e59]
+          - checkbox
+          - generic [ref=e61] [cursor=pointer]:
+            - text: I agree to the
+            - link "Terms of Service" [ref=e62]:
+              - /url: /terms
+            - text: and
+            - link "Privacy Policy" [ref=e63]:
+              - /url: /privacy
+        - button "Create Account" [ref=e64]:
+          - text: Create Account
+          - img
+      - generic [ref=e69]: Or continue with
+      - generic [ref=e71]:
+        - button "Continue with Google Workspace" [ref=e72]:
+          - img
+          - generic [ref=e73]: Continue with Google Workspace
+        - button "Continue with Microsoft 365" [ref=e74]:
+          - img
+          - generic [ref=e75]: Continue with Microsoft 365
+        - button "Continue with Okta" [ref=e76]:
+          - img
+          - generic [ref=e77]: Continue with Okta
+        - paragraph [ref=e78]: Google Workspace SSO available • Other providers coming soon
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - generic [ref=e81]:
+          - img [ref=e82]
+          - generic [ref=e85]: Secure Connection
+        - generic [ref=e86]:
+          - img [ref=e87]
+          - generic [ref=e89]: SOC 2
+        - generic [ref=e90]:
+          - img [ref=e91]
+          - generic [ref=e94]: GDPR
+      - paragraph [ref=e95]:
+        - text: Already have an account?
+        - link "Sign in" [ref=e96] [cursor=pointer]:
+          - /url: /auth/signin
+  - region "Notifications alt+T"
+  - generic [ref=e97]:
+    - img [ref=e99]
+    - button "Open Tanstack query devtools" [ref=e147] [cursor=pointer]:
+      - img [ref=e148]
+  - status [ref=e196]:
+    - generic [ref=e197]:
+      - img [ref=e199]
+      - generic [ref=e201]:
+        - text: Static route
+        - button "Hide static indicator" [ref=e202] [cursor=pointer]:
+          - img [ref=e203]
+  - alert [ref=e206]
+```
