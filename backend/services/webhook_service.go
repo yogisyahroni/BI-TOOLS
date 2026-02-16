@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
+	"crypto/tls"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
+	"os"
 	"time"
 
 	"insight-engine-backend/models"
@@ -213,6 +215,12 @@ func (s *WebhookService) sendWebhook(webhook models.Webhook, eventType string, p
 
 	// Retry logic (Simplified exponential backoff)
 	client := &http.Client{Timeout: 10 * time.Second}
+	if os.Getenv("SKIP_TLS_VERIFY") == "true" {
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		client.Transport = tr
+	}
 	var resp *http.Response
 	var reqErr error
 

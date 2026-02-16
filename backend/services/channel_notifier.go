@@ -3,10 +3,12 @@ package services
 import (
 	"bytes"
 	"context"
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -26,11 +28,20 @@ type SlackNotifier struct {
 
 // NewSlackNotifier creates a new Slack notifier for the given webhook URL
 func NewSlackNotifier(webhookURL string) *SlackNotifier {
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+
+	if os.Getenv("SKIP_TLS_VERIFY") == "true" {
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		client.Transport = tr
+	}
+
 	return &SlackNotifier{
 		webhookURL: webhookURL,
-		client: &http.Client{
-			Timeout: 10 * time.Second,
-		},
+		client:     client,
 	}
 }
 
@@ -138,11 +149,20 @@ type TeamsNotifier struct {
 
 // NewTeamsNotifier creates a new Teams notifier for the given webhook URL
 func NewTeamsNotifier(webhookURL string) *TeamsNotifier {
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+
+	if os.Getenv("SKIP_TLS_VERIFY") == "true" {
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
+		}
+		client.Transport = tr
+	}
+
 	return &TeamsNotifier{
 		webhookURL: webhookURL,
-		client: &http.Client{
-			Timeout: 10 * time.Second,
-		},
+		client:     client,
 	}
 }
 

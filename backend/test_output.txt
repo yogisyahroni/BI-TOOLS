@@ -1,16 +1,8 @@
-=== RUN   TestRegister_Success
-Middleware: POST /api/auth/register BodyLen: 117
-DEBUG: BodyLen: 117 Content: {"email":"test.success@example.com","username":"testuser_success","password":"SecurePass123!","fullName":"Test User"}
-DEBUG: Unmarshal Success: {Email:test.success@example.com Username:testuser_success Password:SecurePass123! FullName:Test User}
-DEBUG: Local Unmarshal: {Email:test.success@example.com}
-    auth_handler_test.go:121: Response Body: {"errors":"Key: 'RegisterRequest.Username' Error:Field validation for 'Username' failed on the 'alphanumunicode' tag","message":"Validation failed","status":"error"}
-    auth_handler_test.go:123: 
-        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/handlers/auth_handler_test.go:123
-        	Error:      	Not equal: 
-        	            	expected: 201
-        	            	actual  : 400
-        	Test:       	TestRegister_Success
---- FAIL: TestRegister_Success (0.01s)
+=== RUN   TestWebhookFlow
+{"timestamp":"2026-02-16T12:47:08.2899346Z","level":"INFO","service":"integration-test","operation":"logger_init","message":"Structured logger initialized","metadata":{"service":"integration-test"},"sourceFile":"E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/logger.go","sourceLine":241,"environment":"development"}
+    webhook_test.go:142: Got token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IndlYmhvb2tfdGVzdF84ZGZlODUxOWM3M2M0YzI0YjlmN2EwYWQzMzFlNTYzYUBleGFtcGxlLmNvbSIsImV4cCI6MTc3MTUwNTIyOSwic3ViIjoiNjk5ZTA5YjAtOGE4MC00ZmZkLTkzZTMtNDMxZjRhMzAxZjYwIn0.AXyQBimxk-15SNYCGtEKtWmhHBIfDbZ3JVX2FBc7pfk
+    webhook_test.go:161: Create Webhook failed (Status 500): {"error":"Failed to create webhook configuration"}
+--- FAIL: TestWebhookFlow (0.77s)
 FAIL
-FAIL	insight-engine-backend/handlers	0.234s
+FAIL	insight-engine-backend/tests/integration	1.016s
 FAIL

@@ -47,6 +47,7 @@ func Migrate() {
 	// Migrate Webhooks separately to ensure they are created even if core migration has warnings
 	if err := DB.AutoMigrate(
 		&models.Webhook{},
+		&models.WebhookConfig{},
 		&models.WebhookLog{},
 	); err != nil {
 		log.Printf("⚠️ Webhook migration warning: %v", err)

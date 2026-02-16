@@ -24,7 +24,10 @@ func NewWebhookHandler(db *gorm.DB) *WebhookHandler {
 
 // CreateWebhook registers a new Slack/Teams webhook
 func (h *WebhookHandler) CreateWebhook(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	parsedUserID, err := uuid.Parse(userID)
 	if err != nil {
 		return c.Status(400).JSON(fiber.Map{"error": "Invalid user ID"})
@@ -72,7 +75,8 @@ func (h *WebhookHandler) CreateWebhook(c *fiber.Ctx) error {
 	}
 
 	if err := h.db.Create(&webhook).Error; err != nil {
-		return c.Status(500).JSON(fiber.Map{"error": "Failed to create webhook configuration"})
+		services.LogError("webhook_create_failed", "Failed to create webhook", map[string]interface{}{"error": err.Error()})
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to create webhook configuration", "details": err.Error()}) // DEBUG: Exposed details
 	}
 
 	// Mask the webhook URL in response for security
@@ -83,7 +87,10 @@ func (h *WebhookHandler) CreateWebhook(c *fiber.Ctx) error {
 
 // ListWebhooks returns all webhook configurations for the current user
 func (h *WebhookHandler) ListWebhooks(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 
 	var webhooks []models.WebhookConfig
 	if err := h.db.Where("user_id = ?", userID).
@@ -105,7 +112,10 @@ func (h *WebhookHandler) ListWebhooks(c *fiber.Ctx) error {
 
 // DeleteWebhook removes a webhook configuration
 func (h *WebhookHandler) DeleteWebhook(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	webhookID := c.Params("id")
 
 	result := h.db.Where("id = ? AND user_id = ?", webhookID, userID).
@@ -119,12 +129,15 @@ func (h *WebhookHandler) DeleteWebhook(c *fiber.Ctx) error {
 		return c.Status(404).JSON(fiber.Map{"error": "Webhook not found or access denied"})
 	}
 
-	return c.JSON(fiber.Map{"message": "Webhook deleted successfully"})
+	return c.SendStatus(204)
 }
 
 // ToggleWebhook enables or disables a webhook
 func (h *WebhookHandler) ToggleWebhook(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	webhookID := c.Params("id")
 
 	var input struct {
@@ -156,7 +169,10 @@ func (h *WebhookHandler) ToggleWebhook(c *fiber.Ctx) error {
 
 // TestWebhook sends a test message to the configured webhook
 func (h *WebhookHandler) TestWebhook(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	webhookID := c.Params("id")
 
 	var webhook models.WebhookConfig
@@ -202,7 +218,10 @@ func (h *WebhookHandler) GetWebhooks(c *fiber.Ctx) error {
 
 // GetWebhook retrieves a single webhook configuration by ID
 func (h *WebhookHandler) GetWebhook(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	webhookID := c.Params("id")
 
 	var webhook models.WebhookConfig
@@ -217,7 +236,10 @@ func (h *WebhookHandler) GetWebhook(c *fiber.Ctx) error {
 
 // UpdateWebhook updates webhook configuration fields
 func (h *WebhookHandler) UpdateWebhook(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userID, ok := c.Locals("userID").(string)
+	if !ok || userID == "" {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	webhookID := c.Params("id")
 
 	var webhook models.WebhookConfig

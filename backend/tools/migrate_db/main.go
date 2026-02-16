@@ -122,6 +122,13 @@ func main() {
 	}
 	fmt.Println("QualityRule migration success!")
 
+	// Webhooks
+	err = db.AutoMigrate(&models.WebhookConfig{})
+	if err != nil {
+		log.Fatal("Failed to migrate WebhookConfig:", err)
+	}
+	fmt.Println("WebhookConfig migration success!")
+
 	// Check if table exists
 	if db.Migrator().HasTable("workspaces") {
 		fmt.Println("Table 'workspaces' exists.")
