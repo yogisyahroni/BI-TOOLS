@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { useCrossFilter, FilterOperator } from '@/lib/cross-filter-context';
+import { useCrossFilter, type FilterOperator } from '@/lib/cross-filter-context';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';

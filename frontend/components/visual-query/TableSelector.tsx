@@ -18,7 +18,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { connectionsApi } from "@/lib/api/connections";
-import { SchemaTable } from "@/types/visual-query";
+import { type SchemaTable } from "@/types/visual-query";
 import { useQueryBuilderStore } from "@/stores/useQueryBuilderStore";
 import { toast } from "sonner";
 

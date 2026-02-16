@@ -242,8 +242,10 @@ export default function BigQueryForm({ onSubmit, onTest, initialData }: BigQuery
                     <ol className="text-xs text-gray-600 space-y-1 list-decimal ml-4">
                         <li>Go to GCP Console → IAM & Admin → Service Accounts</li>
                         <li>Create or select a service account</li>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <li>Click "Keys" → "Add Key" → "Create new key"</li>
                         <li>Select JSON format and download</li>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <li>Grant "BigQuery Data Viewer" and "BigQuery Job User" roles</li>
                     </ol>
                 </div>

@@ -5,7 +5,7 @@ import { CartesianGrid, ComposedChart, Line, Scatter, XAxis, YAxis, Tooltip, Leg
 import { format } from "date-fns"
 
 import {
-    ChartConfig,
+    type ChartConfig,
     ChartContainer,
     ChartLegend,
     ChartLegendContent,

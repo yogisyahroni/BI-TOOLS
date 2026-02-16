@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
-import { HomePageContent } from '@/components/home-page-content';
+import { redirect } from 'next/navigation';
 
 export default function QueryPage() {
-    return <HomePageContent />;
+    redirect('/query-builder');
 }

@@ -1,7 +1,9 @@
 package bootstrap
 
 import (
+	"context"
 	"os"
+	"time"
 
 	"insight-engine-backend/handlers"
 	"insight-engine-backend/middleware"
@@ -24,12 +26,57 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 	app.Use(logger.New())
 	app.Use(middleware.RecoveryMiddleware)
 
+	// Request ID (TASK-180: generates UUID v4 per request for log/trace correlation)
+	app.Use(middleware.RequestIDMiddleware())
+
+	// SSL/TLS Enforcement
+	sslConfig := middleware.LoadSSLConfigFromEnv()
+	app.Use(middleware.SSLRedirect(sslConfig))
+
+	// SQL Injection Protection
+	app.Use(middleware.SQLInjectionMiddleware())
+
+	// Privacy Compliance
+	privacyConfig := middleware.CreateDefaultPrivacyConfig()
+	app.Use(middleware.PrivacyComplianceMiddleware(privacyConfig))
+
+	// API Governance
+	apiVersionConfig := middleware.CreateDefaultAPIVersionConfig()
+	app.Use(middleware.APIVersionMiddleware(apiVersionConfig))
+
+	// Observability - Distributed Tracing
+	tracingConfig := middleware.CreateDefaultTracingConfig()
+	if tracerProvider, err := middleware.InitTracer(tracingConfig); err != nil {
+		services.LogWarn("tracing_init", "Failed to initialize tracer", map[string]interface{}{"error": err})
+	} else {
+		// Ensure tracer is shut down properly
+		defer func() {
+			if tracerProvider != nil {
+				tracerProvider.Shutdown(context.Background())
+			}
+		}()
+	}
+	app.Use(middleware.DistributedTracingMiddleware(tracingConfig))
+
+	// Observability - Enhanced Metrics
+	app.Use(middleware.EnhancedMetricsMiddleware())
+
+	// Observability - Performance Monitoring
+	app.Use(middleware.PerformanceMonitoringMiddleware(5 * time.Second)) // 5 second threshold
+
+	// Observability - Error Tracking
+	app.Use(middleware.ErrorTrackingMiddleware())
+
 	// Swagger
 	app.Get("/swagger/*", swagger.HandlerDefault)
 
 	// CORS
 	corsConfig := middleware.LoadCORSConfigFromEnv()
 	app.Use(middleware.HardenedCORS(corsConfig))
+
+	// Mass Assignment Protection (BOPLA)
+	boplaConfig := middleware.CreateDefaultBoplaConfig()
+	app.Use(middleware.MassAssignmentProtection(boplaConfig))
 
 	// Rate Limiting
 	comprehensiveRateLimit := middleware.ComprehensiveRateLimit(middleware.ComprehensiveRateLimitConfig{

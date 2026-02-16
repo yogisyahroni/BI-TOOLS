@@ -1,8 +1,10 @@
 "use client"
 
+import { Loader2 } from 'lucide-react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useState } from "react"
-import { ForecastChart, DataPoint } from "@/components/visualizations/forecast-chart"
-import { ForecastConfig, ForecastConfigData } from "@/components/analytics/forecast-config"
+import { ForecastChart, type DataPoint } from "@/components/visualizations/forecast-chart"
+import { ForecastConfig, type ForecastConfigData } from "@/components/analytics/forecast-config"
 import { useToast } from "@/components/ui/use-toast"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ReportGenerator } from "@/components/analytics/report-generator"
@@ -19,7 +21,7 @@ export function ForecastView({ history }: ForecastViewProps) {
     const handleGenerateForecast = async (config: ForecastConfigData) => {
         setLoading(true)
         try {
-            const response = await fetch("/api/forecast", {
+            const res = await fetchWithAuth('/api/go/forecast', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,11 +33,11 @@ export function ForecastView({ history }: ForecastViewProps) {
                 }),
             })
 
-            if (!response.ok) {
+            if (!res.ok) {
                 throw new Error("Failed to generate forecast")
             }
 
-            const result = await response.json()
+            const result = await res.json()
             setForecast(result.forecast)
 
             toast({

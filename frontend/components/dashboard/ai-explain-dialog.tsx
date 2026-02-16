@@ -11,6 +11,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Sparkles, Loader2, Copy } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface AIExplainDialogProps {
     open: boolean;
@@ -36,7 +37,7 @@ export function AIExplainDialog({ open, onOpenChange, title, data }: AIExplainDi
         setInsights([]);
 
         try {
-            const response = await fetch('/api/ai/explain', {
+            const response = await fetchWithAuth('/api/go/ai/explain', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

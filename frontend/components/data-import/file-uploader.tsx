@@ -36,7 +36,7 @@ import {
 } from '@/components/ui/table';
 import {
     Upload,
-    File,
+    type File,
     FileText,
     FileSpreadsheet,
     Code,
@@ -47,7 +47,7 @@ import {
     ChevronRight,
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { cn } from '@/lib/utils';
+import { cn, fetchWithAuth } from '@/lib/utils';
 
 /**
  * Types
@@ -195,7 +195,7 @@ export function FileUploader({
             formData.append('file', file);
             formData.append('options', JSON.stringify(options));
 
-            const response = await fetch(`/api/import/${fileType}/preview`, {
+            const response = await fetchWithAuth(`/api/go/upload/analyze?fileType=${fileType}&action=preview`, {
                 method: 'POST',
                 body: formData,
             });

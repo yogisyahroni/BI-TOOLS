@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -30,7 +31,7 @@ export function ConnectFeedDialog({ isOpen, onOpenChange, queryId }: ConnectFeed
     const fetchFeeds = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/queries/${queryId}/feeds`);
+            const res = await fetchWithAuth(`/api/go/queries/${queryId}/feeds`);
             if (res.ok) {
                 const data = await res.json();
                 setFeeds(data);
@@ -45,7 +46,7 @@ export function ConnectFeedDialog({ isOpen, onOpenChange, queryId }: ConnectFeed
     const createFeed = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/queries/${queryId}/feeds`, {
+            const res = await fetchWithAuth(`/api/go/queries/${queryId}/feeds`, {
                 method: 'POST',
                 body: JSON.stringify({ name: "Excel Live Feed", format: "csv" })
             });
@@ -64,7 +65,7 @@ export function ConnectFeedDialog({ isOpen, onOpenChange, queryId }: ConnectFeed
 
     const deleteFeed = async (feedId: string) => {
         try {
-            const res = await fetch(`/api/feeds/${feedId}`, { method: 'DELETE' });
+            const res = await fetchWithAuth(`/api/go/feeds/${feedId}`, { method: 'DELETE' });
             if (res.ok) {
                 setFeeds(feeds.filter(f => f.id !== feedId));
                 toast.success("Link Revoked");
@@ -96,7 +97,7 @@ export function ConnectFeedDialog({ isOpen, onOpenChange, queryId }: ConnectFeed
                         Connect to External Tools
                     </DialogTitle>
                     <DialogDescription>
-                        Generate a secure link to pull this query's data directly into Excel, Google Sheets, or Power BI.
+                        Generate a secure link to pull this query&apos;s data directly into Excel, Google Sheets, or Power BI.
                     </DialogDescription>
                 </DialogHeader>
 

@@ -85,23 +85,42 @@ func main() {
 	}
 	fmt.Println("CollectionItem migration success!")
 
-	err = db.AutoMigrate(&models.Dashboard{})
-	if err != nil {
-		log.Fatal("Failed to migrate Dashboard:", err)
-	}
-	fmt.Println("Dashboard migration success!")
+	// err = db.AutoMigrate(&models.Dashboard{})
+	// if err != nil {
+	// 	log.Fatal("Failed to migrate Dashboard:", err)
+	// }
+	// fmt.Println("Dashboard migration success!")
 
-	err = db.AutoMigrate(&models.DashboardCard{})
-	if err != nil {
-		log.Fatal("Failed to migrate DashboardCard:", err)
-	}
-	fmt.Println("DashboardCard migration success!")
+	// err = db.AutoMigrate(&models.DashboardCard{})
+	// if err != nil {
+	// 	log.Fatal("Failed to migrate DashboardCard:", err)
+	// }
+	// fmt.Println("DashboardCard migration success!")
 
 	err = db.AutoMigrate(&models.Connection{})
 	if err != nil {
 		log.Fatal("Failed to migrate Connection:", err)
 	}
 	fmt.Println("Connection migration success!")
+
+	// Pipelines
+	err = db.AutoMigrate(&models.Pipeline{})
+	if err != nil {
+		log.Fatal("Failed to migrate Pipeline:", err)
+	}
+	fmt.Println("Pipeline migration success!")
+
+	err = db.AutoMigrate(&models.JobExecution{})
+	if err != nil {
+		log.Fatal("Failed to migrate JobExecution:", err)
+	}
+	fmt.Println("JobExecution migration success!")
+
+	err = db.AutoMigrate(&models.QualityRule{})
+	if err != nil {
+		log.Fatal("Failed to migrate QualityRule:", err)
+	}
+	fmt.Println("QualityRule migration success!")
 
 	// Check if table exists
 	if db.Migrator().HasTable("workspaces") {

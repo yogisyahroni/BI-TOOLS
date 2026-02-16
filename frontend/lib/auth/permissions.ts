@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client';
+import { PrismaClient, type Role } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from './auth-options';
 

@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/table';
 import { CreateCalculatedFieldDialog } from '@/components/semantic/create-calculated-field-dialog';
 import { semanticApi } from '@/lib/api/semantic';
-import { SemanticModel, SemanticMetric, SemanticDimension } from '@/types/semantic';
+import { type SemanticModel, SemanticMetric, type SemanticDimension } from '@/types/semantic';
 
 interface ModelEditorPageProps {
     params: Promise<{

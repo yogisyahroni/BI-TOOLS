@@ -1,4 +1,4 @@
-import { IAIProvider } from "./base-provider";
+import { type IAIProvider } from "./base-provider";
 import { GeminiProvider } from "./gemini-provider";
 import { OpenAIProvider } from "./openai-provider";
 import { GroqProvider } from "./groq-provider";

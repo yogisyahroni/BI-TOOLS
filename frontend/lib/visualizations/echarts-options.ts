@@ -1,6 +1,6 @@
 import type { EChartsOption } from 'echarts';
-import { VisualizationConfig } from '@/lib/types';
-import { FilterCriteria } from '@/lib/cross-filter-context';
+import { type VisualizationConfig } from '@/lib/types';
+import { type FilterCriteria } from '@/lib/cross-filter-context';
 
 // Default semantic colors (Insight Engine Palette)
 const DEFAULT_COLORS = [
@@ -40,7 +40,7 @@ export function buildEChartsOptions(
 
         // Check if this item matches the filter
         const itemValue = dataItem[highlightedField];
-        const isSelected = itemValue == highlightedValue; // loose equality for string/number mix
+        const isSelected = itemValue === highlightedValue; // loose equality for string/number mix
 
         return {
             opacity: isSelected ? 1 : 0.3,
@@ -150,7 +150,7 @@ export function buildEChartsOptions(
         // Correction: getItemStyle needs the whole item or we just pass the value logic here
         // Re-map with itemStyle:
         const processedSeriesData = data.map(item => {
-            const isSelected = (!highlightedValue) || (item[xAxis] == highlightedValue);
+            const isSelected = (!highlightedValue) || (item[xAxis] === highlightedValue);
             return {
                 name: item[xAxis],
                 value: item[yAxis[0]],
@@ -263,7 +263,7 @@ export function buildEChartsOptions(
             const val = item[valueCol];
             if (!isXAxisFiltered || !highlightedValue) return val; // No filter or filter not on X-axis
 
-            const isSelected = item[xAxis] == highlightedValue;
+            const isSelected = item[xAxis] === highlightedValue;
             return {
                 value: val,
                 itemStyle: {
@@ -312,7 +312,7 @@ export function buildEChartsOptions(
                     const val = item[axisKey];
                     // Apply style if filtered
                     if (isXAxisFiltered && highlightedValue) {
-                        const isSelected = item[xAxis] == highlightedValue;
+                        const isSelected = item[xAxis] === highlightedValue;
                         return {
                             value: val,
                             itemStyle: { opacity: isSelected ? 1 : 0.3 }
@@ -345,7 +345,7 @@ export function buildEChartsOptions(
 
                     // Apply style if filtered
                     if (isXAxisFiltered && highlightedValue) {
-                        const isSelected = item[xAxis] == highlightedValue;
+                        const isSelected = item[xAxis] === highlightedValue;
                         return {
                             value: val,
                             itemStyle: { opacity: isSelected ? 1 : 0.3 }

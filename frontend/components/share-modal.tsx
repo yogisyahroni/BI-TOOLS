@@ -43,7 +43,7 @@ export function ShareModal({
       await onShare(email, permission);
       setEmail('');
       setPermission('view');
-      console.log('[v0] Shared with:', email);
+      console.warn('[v0] Shared with:', email);
     } finally {
       setIsLoading(false);
     }

@@ -26,7 +26,7 @@ import {
   AlertTriangle,
   Boxes,
 } from 'lucide-react';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 
 interface VisualizationSidebarProps {
   config: Partial<VisualizationConfig>;
@@ -826,7 +826,7 @@ export function VisualizationSidebar({
                 {COLOR_SCHEMES.map((scheme) => (
                   <Button
                     key={scheme.id}
-                    variant={'outline'}
+                    variant="outline"
                     size="sm"
                     className="h-8 gap-2 justify-start"
                     onClick={() => handleColorSchemeChange(scheme.id)}

@@ -24,7 +24,14 @@ func NewNotificationHandler(notificationService *services.NotificationService) *
 // GetNotifications retrieves user notifications with pagination
 // GET /api/v1/notifications?limit=20&offset=0
 func (h *NotificationHandler) GetNotifications(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -55,7 +62,14 @@ func (h *NotificationHandler) GetNotifications(c *fiber.Ctx) error {
 // GetUnreadNotifications retrieves unread notifications
 // GET /api/v1/notifications/unread
 func (h *NotificationHandler) GetUnreadNotifications(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -80,7 +94,14 @@ func (h *NotificationHandler) GetUnreadNotifications(c *fiber.Ctx) error {
 // GetUnreadCount retrieves the count of unread notifications
 // GET /api/v1/notifications/unread-count
 func (h *NotificationHandler) GetUnreadCount(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -103,7 +124,14 @@ func (h *NotificationHandler) GetUnreadCount(c *fiber.Ctx) error {
 // MarkAsRead marks a notification as read
 // PUT /api/v1/notifications/:id/read
 func (h *NotificationHandler) MarkAsRead(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -132,7 +160,14 @@ func (h *NotificationHandler) MarkAsRead(c *fiber.Ctx) error {
 // MarkAllAsRead marks all notifications as read
 // PUT /api/v1/notifications/read-all
 func (h *NotificationHandler) MarkAllAsRead(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -154,7 +189,14 @@ func (h *NotificationHandler) MarkAllAsRead(c *fiber.Ctx) error {
 // DeleteNotification deletes a notification
 // DELETE /api/v1/notifications/:id
 func (h *NotificationHandler) DeleteNotification(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -183,7 +225,14 @@ func (h *NotificationHandler) DeleteNotification(c *fiber.Ctx) error {
 // DeleteReadNotifications deletes all read notifications
 // DELETE /api/v1/notifications/read
 func (h *NotificationHandler) DeleteReadNotifications(c *fiber.Ctx) error {
-	userIDStr := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userIDStr, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	userID, err := uuid.Parse(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{

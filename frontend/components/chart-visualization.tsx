@@ -10,7 +10,7 @@ const EChartsWrapper = dynamic(() => import('./visualizations/echarts-wrapper').
 });
 import { useTheme } from 'next-themes';
 import { AlertCircle } from 'lucide-react';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 import { useWorkspaceTheme } from '@/components/theme/theme-provider';
 
 // Import specialized components
@@ -31,7 +31,7 @@ import {
 } from '@/components/ui/dialog';
 
 import type { Comment, CreateAnnotationRequest, AnnotationPosition } from '@/types/comments';
-import { FilterCriteria } from '@/lib/cross-filter-context';
+import { type FilterCriteria } from '@/lib/cross-filter-context';
 
 interface ChartVisualizationProps {
   data: Record<string, any>[];

@@ -1,0 +1,367 @@
+# Kubernetes Deployment Configuration for InsightEngine
+
+# Namespace
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insight-engine
+---
+# Backend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insight-engine-backend
+  namespace: insight-engine
+  labels:
+    app: insight-engine-backend
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: insight-engine-backend
+  template:
+    metadata:
+      labels:
+        app: insight-engine-backend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+      - name: backend
+        image: insightengine/backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: insight-engine-secrets
+              key: database-url
+        - name: JWT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: insight-engine-secrets
+              key: jwt-secret
+        - name: ENCRYPTION_KEY
+          valueFrom:
+            secretKeyRef:
+              name: insight-engine-secrets
+              key: encryption-key
+        - name: REDIS_HOST
+          value: "insight-engine-redis:6379"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /api/health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+---
+# Backend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: insight-engine-backend
+  namespace: insight-engine
+  labels:
+    app: insight-engine-backend
+spec:
+  selector:
+    app: insight-engine-backend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP
+---
+# Frontend Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insight-engine-frontend
+  namespace: insight-engine
+  labels:
+    app: insight-engine-frontend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: insight-engine-frontend
+  template:
+    metadata:
+      labels:
+        app: insight-engine-frontend
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        fsGroup: 2000
+      containers:
+      - name: frontend
+        image: insightengine/frontend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_API_URL
+          value: "http://insight-engine-backend"
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 3000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: false  # Next.js needs write access for temp files
+          capabilities:
+            drop:
+            - ALL
+---
+# Frontend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: insight-engine-frontend
+  namespace: insight-engine
+  labels:
+    app: insight-engine-frontend
+spec:
+  selector:
+    app: insight-engine-frontend
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: ClusterIP
+---
+# Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: insight-engine-ingress
+  namespace: insight-engine
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rate-limit: "100"
+    nginx.ingress.kubernetes.io/rate-limit-window: "1m"
+spec:
+  tls:
+  - hosts:
+    - api.yourdomain.com
+    - app.yourdomain.com
+    secretName: insight-engine-tls
+  rules:
+  - host: api.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: insight-engine-backend
+            port:
+              number: 80
+  - host: app.yourdomain.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: insight-engine-frontend
+            port:
+              number: 80
+---
+# PostgreSQL StatefulSet (for production)
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: insight-engine-postgres
+  namespace: insight-engine
+spec:
+  serviceName: insight-engine-postgres
+  replicas: 1  # For production, consider using a managed DB service
+  selector:
+    matchLabels:
+      app: insight-engine-postgres
+  template:
+    metadata:
+      labels:
+        app: insight-engine-postgres
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+        fsGroup: 2000
+      containers:
+      - name: postgres
+        image: postgres:15-alpine
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_DB
+          value: "insight_engine"
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: insight-engine-secrets
+              key: postgres-user
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: insight-engine-secrets
+              key: postgres-password
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+  volumeClaimTemplates:
+  - metadata:
+      name: postgres-storage
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      resources:
+        requests:
+          storage: 10Gi
+---
+# PostgreSQL Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: insight-engine-postgres
+  namespace: insight-engine
+spec:
+  selector:
+    app: insight-engine-postgres
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  type: ClusterIP
+---
+# Redis Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insight-engine-redis
+  namespace: insight-engine
+  labels:
+    app: insight-engine-redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insight-engine-redis
+  template:
+    metadata:
+      labels:
+        app: insight-engine-redis
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 999
+      containers:
+      - name: redis
+        image: redis:7-alpine
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "100m"
+          limits:
+            memory: "128Mi"
+            cpu: "200m"
+        securityContext:
+          allowPrivilegeEscalation: false
+          readOnlyRootFilesystem: true
+          capabilities:
+            drop:
+            - ALL
+---
+# Redis Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: insight-engine-redis
+  namespace: insight-engine
+spec:
+  selector:
+    app: insight-engine-redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+  type: ClusterIP
+---
+# Secrets (example - in production, use external secret management)
+apiVersion: v1
+kind: Secret
+metadata:
+  name: insight-engine-secrets
+  namespace: insight-engine
+type: Opaque
+data:
+  # These should be base64 encoded values
+  database-url: <base64-encoded-db-url>
+  jwt-secret: <base64-encoded-jwt-secret>
+  encryption-key: <base64-encoded-encryption-key>
+  postgres-user: <base64-encoded-postgres-user>
+  postgres-password: <base64-encoded-postgres-password>

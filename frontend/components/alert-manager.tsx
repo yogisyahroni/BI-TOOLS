@@ -2,10 +2,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Bell, Play, CheckCircle, AlertTriangle } from 'lucide-react';
-import { AlertRule } from '@/lib/services/alert-service';
+import { type AlertRule } from '@/lib/services/alert-service';
 
 export function AlertManager() {
     const [alerts, setAlerts] = useState<Partial<AlertRule>[]>([]);
@@ -18,7 +19,7 @@ export function AlertManager() {
         const fetchAlerts = async () => {
             try {
                 // Use Go Backend Proxy
-                const res = await fetch('/api/go/alerts');
+                const res = await fetchWithAuth('/api/go/alerts');
                 if (res.ok) {
                     const data = await res.json();
                     // Handle both Go (status: success) and Node (success: true) formats
@@ -38,10 +39,8 @@ export function AlertManager() {
     const handleManualCheck = async () => {
         setIsChecking(true);
         try {
-            const res = await fetch('/api/scheduler/check-alerts', {
-                headers: {
-                    'x-cron-secret': 'schedule_secret_123' // Hardcoded for dev
-                }
+            const res = await fetchWithAuth('/api/go/scheduler/check-alerts', {
+                method: 'POST',
             });
             const data = await res.json();
             setLastResult(data);

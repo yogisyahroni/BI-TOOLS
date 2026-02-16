@@ -1,10 +1,10 @@
-
 'use client';
 
 import { useState } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Upload, FileSpreadsheet, Check, Loader2 } from 'lucide-react';
+import { fetchWithAuth } from '@/lib/utils';
 import { toast } from 'sonner';
 
 export function DataBlender() {
@@ -26,12 +26,12 @@ export function DataBlender() {
         formData.append('file', file);
 
         try {
-            const res = await fetch('/api/upload', {
+            const response = await fetchWithAuth('/api/go/ai/blend', {
                 method: 'POST',
                 body: formData
             });
 
-            const data = await res.json();
+            const data = await response.json();
 
             if (!data.success) {
                 throw new Error(data.error || 'Upload failed');
@@ -99,6 +99,7 @@ export function DataBlender() {
                         </div>
                         <div className="text-xs text-muted-foreground max-w-xs text-center">
                             Try asking:
+                            {/* eslint-disable-next-line react/no-unescaped-entities */}
                             <span className="italic block mt-1">"Analyze revenue from {uploadedTable}"</span>
                         </div>
                         <Button variant="ghost" size="sm" onClick={() => setUploadedTable(null)}>

@@ -9,8 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 import { Loader2, HelpCircle, Plus, X } from 'lucide-react';
-import { RLSPolicy } from './rls-manager';
+import { type RLSPolicy } from './rls-manager';
 
 interface PolicyEditorProps {
     onSave: () => void;
@@ -45,11 +46,7 @@ export function PolicyEditor({ onSave, onCancel, initialData }: PolicyEditorProp
 
     const fetchConnections = async () => {
         try {
-            const res = await fetch('/api/connections', {
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
+            const res = await fetchWithAuth('/api/go/connections');
             if (res.ok) {
                 const data = await res.json();
                 setConnections(Array.isArray(data) ? data : []);
@@ -100,16 +97,15 @@ export function PolicyEditor({ onSave, onCancel, initialData }: PolicyEditorProp
             };
 
             const url = initialData?.id
-                ? `/api/rls/policies/${initialData.id}`
-                : '/api/rls/policies';
+                ? `/api/go/rls/policies/${initialData.id}`
+                : '/api/go/rls/policies';
 
             const method = initialData?.id ? 'PUT' : 'POST';
 
-            const res = await fetch(url, {
+            const res = await fetchWithAuth(url, {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify(payload),
             });

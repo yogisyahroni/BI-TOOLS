@@ -1,0 +1,2483 @@
+openapi: 3.1.0
+info:
+  title: InsightEngine Backend API
+  description: |
+    InsightEngine Backend — a comprehensive BI and analytics platform API.
+    Provides endpoints for query execution, dashboard management, data connections,
+    AI-powered analytics, alerting, collaboration, and admin operations.
+  version: 1.0.0
+  contact:
+    name: InsightEngine Team
+  license:
+    name: Proprietary
+
+servers:
+  - url: http://localhost:8080
+    description: Local development
+  - url: https://api.insightengine.io
+    description: Production
+
+tags:
+  - name: Auth
+    description: Authentication and authorization
+  - name: OAuth
+    description: OAuth/SSO providers
+  - name: Queries
+    description: SQL query management and execution
+  - name: QueryAnalysis
+    description: Query plan analysis and optimization
+  - name: VisualQueries
+    description: Visual drag-and-drop query builder
+  - name: MaterializedViews
+    description: Materialized view management
+  - name: Connections
+    description: Database connection management
+  - name: Engine
+    description: Analytics engine (aggregation, forecasting, clustering)
+  - name: Analytics
+    description: Advanced analytics (insights, correlations)
+  - name: GeoJSON
+    description: GeoJSON spatial data management
+  - name: Governance
+    description: Data governance (classifications, metadata, permissions)
+  - name: SemanticLayer
+    description: Semantic layer models and metrics
+  - name: Modeling
+    description: Data model and metric definitions
+  - name: Glossary
+    description: Business glossary terms
+  - name: NaturalLanguage
+    description: Natural language processing features
+  - name: Dashboards
+    description: Dashboard CRUD and certification
+  - name: DashboardCards
+    description: Dashboard card management
+  - name: Collections
+    description: Dashboard/query collections
+  - name: Workspaces
+    description: Workspace management
+  - name: Notifications
+    description: User notifications
+  - name: Activity
+    description: Activity feed and audit trail
+  - name: Scheduler
+    description: Job scheduling
+  - name: WebSocket
+    description: Real-time WebSocket connections
+  - name: Comments
+    description: Comments and annotations
+  - name: Sharing
+    description: Resource sharing
+  - name: Embed
+    description: Embedded analytics tokens
+  - name: AuditLogs
+    description: Admin audit logging
+  - name: FrontendLogs
+    description: Frontend error logging
+  - name: Admin
+    description: Admin dashboard (org, users, system)
+  - name: Permissions
+    description: RBAC permission and role management
+  - name: RateLimits
+    description: Rate limiting configuration
+  - name: AI
+    description: AI generation and usage tracking
+  - name: Alerts
+    description: Alerting and alert notifications
+  - name: Webhooks
+    description: Webhook management
+  - name: Reports
+    description: Scheduled and generated reports
+  - name: Health
+    description: Health checks and system status
+  - name: Metrics
+    description: Prometheus metrics endpoint
+
+security:
+  - BearerAuth: []
+
+paths:
+  # ============================================================
+  # AUTH
+  # ============================================================
+  /api/auth/register:
+    post:
+      tags: [Auth]
+      summary: Register a new user
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterRequest"
+      responses:
+        "201":
+          description: User registered
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+        "409":
+          description: Email or username already exists
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /api/auth/login:
+    post:
+      tags: [Auth]
+      summary: Login with email and password
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          $ref: "#/components/responses/Unauthorized"
+
+  /api/auth/verify-email:
+    get:
+      tags: [Auth]
+      summary: Verify email address via token
+      security: []
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Email verified
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/auth/resend-verification:
+    post:
+      tags: [Auth]
+      summary: Resend email verification link
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required: [email]
+      responses:
+        "200":
+          description: Verification email sent
+
+  /api/auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Request password reset
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+              required: [email]
+      responses:
+        "200":
+          description: Reset email sent (always returns 200 to prevent enumeration)
+
+  /api/auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Reset password using token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+                  minLength: 8
+              required: [token, password]
+      responses:
+        "200":
+          description: Password reset successful
+
+  /api/auth/validate-reset-token:
+    get:
+      tags: [Auth]
+      summary: Validate a password reset token
+      security: []
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Token is valid
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  /api/auth/change-password:
+    post:
+      tags: [Auth]
+      summary: Change password (authenticated)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                currentPassword:
+                  type: string
+                newPassword:
+                  type: string
+                  minLength: 8
+              required: [currentPassword, newPassword]
+      responses:
+        "200":
+          description: Password changed
+
+  # ============================================================
+  # OAUTH
+  # ============================================================
+  /api/auth/providers:
+    get:
+      tags: [OAuth]
+      summary: List available OAuth providers
+      security: []
+      responses:
+        "200":
+          description: OAuth provider list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  providers:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        name:
+                          type: string
+                        enabled:
+                          type: boolean
+
+  /api/auth/{provider}:
+    get:
+      tags: [OAuth]
+      summary: Initiate OAuth flow for a provider
+      security: []
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [google, github, microsoft]
+      responses:
+        "302":
+          description: Redirect to OAuth provider
+
+  /api/auth/{provider}/callback:
+    get:
+      tags: [OAuth]
+      summary: Handle OAuth callback
+      security: []
+      parameters:
+        - name: provider
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: code
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: state
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "302":
+          description: Redirect to frontend with token
+
+  # ============================================================
+  # HEALTH
+  # ============================================================
+  /api/health:
+    get:
+      tags: [Health]
+      summary: Basic health check
+      security: []
+      responses:
+        "200":
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  service:
+                    type: string
+                  version:
+                    type: string
+
+  /api/health/live:
+    get:
+      tags: [Health]
+      summary: Kubernetes liveness probe
+      security: []
+      responses:
+        "200":
+          description: Service is alive
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: alive
+
+  /api/metrics:
+    get:
+      tags: [Metrics]
+      summary: Prometheus metrics endpoint
+      security: []
+      responses:
+        "200":
+          description: Prometheus text format metrics
+          content:
+            text/plain:
+              schema:
+                type: string
+
+  # ============================================================
+  # QUERIES
+  # ============================================================
+  /api/queries:
+    get:
+      tags: [Queries]
+      summary: List saved queries
+      parameters:
+        - $ref: "#/components/parameters/PageParam"
+        - $ref: "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: Query list
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PaginatedResponse"
+    post:
+      tags: [Queries]
+      summary: Create a new saved query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryCreateRequest"
+      responses:
+        "201":
+          description: Query created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query"
+
+  /api/queries/{id}:
+    get:
+      tags: [Queries]
+      summary: Get query by ID
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Query details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Query"
+        "404":
+          $ref: "#/components/responses/NotFound"
+    put:
+      tags: [Queries]
+      summary: Update a query
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueryCreateRequest"
+      responses:
+        "200":
+          description: Query updated
+    delete:
+      tags: [Queries]
+      summary: Delete a query
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Query deleted
+
+  /api/queries/{id}/run:
+    post:
+      tags: [Queries]
+      summary: Run a saved query
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Query results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+
+  /api/queries/execute:
+    post:
+      tags: [Queries]
+      summary: Execute an ad-hoc SQL query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                connectionId:
+                  type: string
+                  format: uuid
+                sql:
+                  type: string
+                parameters:
+                  type: object
+                  additionalProperties: true
+                limit:
+                  type: integer
+                  default: 1000
+              required: [connectionId, sql]
+      responses:
+        "200":
+          description: Query execution results
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/QueryResult"
+        "400":
+          $ref: "#/components/responses/BadRequest"
+
+  # ============================================================
+  # QUERY ANALYSIS
+  # ============================================================
+  /api/query/analyze:
+    post:
+      tags: [QueryAnalysis]
+      summary: Analyze a query execution plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                connectionId:
+                  type: string
+                  format: uuid
+                sql:
+                  type: string
+              required: [connectionId, sql]
+      responses:
+        "200":
+          description: Query plan analysis
+
+  /api/query/complexity:
+    get:
+      tags: [QueryAnalysis]
+      summary: Get query complexity metrics
+      parameters:
+        - name: sql
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Complexity score and breakdown
+
+  /api/query/optimize:
+    post:
+      tags: [QueryAnalysis]
+      summary: Get optimization suggestions for a query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                connectionId:
+                  type: string
+                  format: uuid
+                sql:
+                  type: string
+              required: [connectionId, sql]
+      responses:
+        "200":
+          description: Optimization suggestions
+
+  # ============================================================
+  # VISUAL QUERIES
+  # ============================================================
+  /api/visual-queries:
+    get:
+      tags: [VisualQueries]
+      summary: List visual queries
+      responses:
+        "200":
+          description: Visual query list
+    post:
+      tags: [VisualQueries]
+      summary: Create a visual query
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualQueryRequest"
+      responses:
+        "201":
+          description: Visual query created
+
+  /api/visual-queries/{id}:
+    get:
+      tags: [VisualQueries]
+      summary: Get visual query by ID
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Visual query details
+    put:
+      tags: [VisualQueries]
+      summary: Update a visual query
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [VisualQueries]
+      summary: Delete a visual query
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/visual-queries/generate-sql:
+    post:
+      tags: [VisualQueries]
+      summary: Generate SQL from visual query definition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/VisualQueryRequest"
+      responses:
+        "200":
+          description: Generated SQL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  sql:
+                    type: string
+
+  /api/visual-queries/{id}/preview:
+    post:
+      tags: [VisualQueries]
+      summary: Preview visual query results
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Preview data
+
+  /api/visual-queries/cache/stats:
+    get:
+      tags: [VisualQueries]
+      summary: Get cache statistics
+      responses:
+        "200":
+          description: Cache stats
+
+  /api/visual-queries/join-suggestions:
+    post:
+      tags: [VisualQueries]
+      summary: Get join suggestions between tables
+      responses:
+        "200":
+          description: Join suggestions
+
+  # ============================================================
+  # MATERIALIZED VIEWS
+  # ============================================================
+  /api/materialized-views:
+    post:
+      tags: [MaterializedViews]
+      summary: Create a materialized view
+      responses:
+        "201":
+          description: Created
+    get:
+      tags: [MaterializedViews]
+      summary: List materialized views
+      responses:
+        "200":
+          description: Materialized view list
+
+  /api/materialized-views/{id}:
+    get:
+      tags: [MaterializedViews]
+      summary: Get materialized view
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: View details
+    delete:
+      tags: [MaterializedViews]
+      summary: Drop materialized view
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Dropped
+
+  /api/materialized-views/{id}/refresh:
+    post:
+      tags: [MaterializedViews]
+      summary: Refresh a materialized view
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Refresh started
+
+  /api/materialized-views/{id}/schedule:
+    put:
+      tags: [MaterializedViews]
+      summary: Update refresh schedule
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Schedule updated
+
+  /api/materialized-views/{id}/status:
+    get:
+      tags: [MaterializedViews]
+      summary: Get view status
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Status info
+
+  /api/materialized-views/{id}/history:
+    get:
+      tags: [MaterializedViews]
+      summary: Get refresh history
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Refresh history
+
+  # ============================================================
+  # CONNECTIONS
+  # ============================================================
+  /api/connections:
+    get:
+      tags: [Connections]
+      summary: List database connections
+      responses:
+        "200":
+          description: Connection list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Connection"
+    post:
+      tags: [Connections]
+      summary: Create a database connection
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConnectionCreateRequest"
+      responses:
+        "201":
+          description: Connection created
+
+  /api/connections/{id}:
+    get:
+      tags: [Connections]
+      summary: Get connection by ID
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Connection details
+    put:
+      tags: [Connections]
+      summary: Update connection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Connections]
+      summary: Delete connection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/connections/{id}/test:
+    post:
+      tags: [Connections]
+      summary: Test connection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Connection test result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  latencyMs:
+                    type: integer
+
+  /api/connections/{id}/schema:
+    get:
+      tags: [Connections]
+      summary: Get database schema for a connection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Schema tree
+
+  # ============================================================
+  # ENGINE & ANALYTICS
+  # ============================================================
+  /api/engine/aggregate:
+    post:
+      tags: [Engine]
+      summary: Run aggregation pipeline
+      responses:
+        "200":
+          description: Aggregation results
+
+  /api/engine/forecast:
+    post:
+      tags: [Engine]
+      summary: Run forecasting
+      responses:
+        "200":
+          description: Forecast results
+
+  /api/engine/clustering:
+    post:
+      tags: [Engine]
+      summary: Perform clustering analysis
+      responses:
+        "200":
+          description: Clustering results
+
+  /api/analytics/insights:
+    post:
+      tags: [Analytics]
+      summary: Generate AI-powered insights
+      responses:
+        "200":
+          description: Generated insights
+
+  /api/analytics/correlations:
+    post:
+      tags: [Analytics]
+      summary: Calculate correlation analysis
+      responses:
+        "200":
+          description: Correlation results
+
+  /api/analytics/anomalies:
+    post:
+      tags: [Analytics]
+      summary: Detect anomalies in data
+      responses:
+        "200":
+          description: Anomaly detection results
+
+  /api/forecast:
+    post:
+      tags: [Engine]
+      summary: Run forecast (legacy endpoint)
+      responses:
+        "200":
+          description: Forecast results
+
+  /api/reports/generate:
+    post:
+      tags: [Reports]
+      summary: Generate a report
+      responses:
+        "200":
+          description: Generated report
+
+  # ============================================================
+  # GEOJSON
+  # ============================================================
+  /api/geojson:
+    post:
+      tags: [GeoJSON]
+      summary: Upload GeoJSON data
+      responses:
+        "201":
+          description: Uploaded
+    get:
+      tags: [GeoJSON]
+      summary: List GeoJSON datasets
+      responses:
+        "200":
+          description: GeoJSON list
+
+  /api/geojson/{id}:
+    get:
+      tags: [GeoJSON]
+      summary: Get GeoJSON metadata
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Metadata
+    put:
+      tags: [GeoJSON]
+      summary: Update GeoJSON
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [GeoJSON]
+      summary: Delete GeoJSON
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/geojson/{id}/data:
+    get:
+      tags: [GeoJSON]
+      summary: Get GeoJSON feature data
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: GeoJSON feature collection
+
+  # ============================================================
+  # DATA GOVERNANCE
+  # ============================================================
+  /api/governance/classifications:
+    get:
+      tags: [Governance]
+      summary: List data classifications
+      responses:
+        "200":
+          description: Classification list
+
+  /api/governance/metadata:
+    get:
+      tags: [Governance]
+      summary: Get column metadata
+      responses:
+        "200":
+          description: Column metadata
+    post:
+      tags: [Governance]
+      summary: Update column metadata (admin only)
+      responses:
+        "200":
+          description: Metadata updated
+
+  /api/governance/permissions:
+    get:
+      tags: [Governance]
+      summary: Get column permissions
+      responses:
+        "200":
+          description: Column permissions
+    post:
+      tags: [Governance]
+      summary: Set column permission (admin only)
+      responses:
+        "200":
+          description: Permission set
+
+  # ============================================================
+  # SEMANTIC LAYER
+  # ============================================================
+  /api/semantic/models:
+    get:
+      tags: [SemanticLayer]
+      summary: List semantic models
+      responses:
+        "200":
+          description: Model list
+    post:
+      tags: [SemanticLayer]
+      summary: Create semantic model
+      responses:
+        "201":
+          description: Created
+
+  /api/semantic/models/{id}:
+    get:
+      tags: [SemanticLayer]
+      summary: Get semantic model
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Model details
+    put:
+      tags: [SemanticLayer]
+      summary: Update semantic model
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [SemanticLayer]
+      summary: Delete semantic model
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/semantic/metrics:
+    get:
+      tags: [SemanticLayer]
+      summary: List semantic metrics
+      responses:
+        "200":
+          description: Metric list
+
+  /api/semantic/query:
+    post:
+      tags: [SemanticLayer]
+      summary: Execute semantic query
+      responses:
+        "200":
+          description: Semantic query results
+
+  # ============================================================
+  # MODELING
+  # ============================================================
+  /api/modeling/definitions:
+    get:
+      tags: [Modeling]
+      summary: List model definitions
+      responses:
+        "200":
+          description: Definition list
+    post:
+      tags: [Modeling]
+      summary: Create model definition
+      responses:
+        "201":
+          description: Created
+
+  /api/modeling/definitions/{id}:
+    get:
+      tags: [Modeling]
+      summary: Get model definition
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Definition
+    put:
+      tags: [Modeling]
+      summary: Update model definition
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Modeling]
+      summary: Delete model definition
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/modeling/metrics:
+    get:
+      tags: [Modeling]
+      summary: List metric definitions
+      responses:
+        "200":
+          description: Metric list
+    post:
+      tags: [Modeling]
+      summary: Create metric definition
+      responses:
+        "201":
+          description: Created
+
+  /api/modeling/metrics/{id}:
+    get:
+      tags: [Modeling]
+      summary: Get metric definition
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Metric
+    put:
+      tags: [Modeling]
+      summary: Update metric definition
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Modeling]
+      summary: Delete metric definition
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  # ============================================================
+  # GLOSSARY
+  # ============================================================
+  /api/glossary/terms:
+    get:
+      tags: [Glossary]
+      summary: List business glossary terms
+      responses:
+        "200":
+          description: Term list
+    post:
+      tags: [Glossary]
+      summary: Create glossary term
+      responses:
+        "201":
+          description: Created
+
+  /api/glossary/terms/{id}:
+    get:
+      tags: [Glossary]
+      summary: Get glossary term
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Term details
+    put:
+      tags: [Glossary]
+      summary: Update glossary term
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Glossary]
+      summary: Delete glossary term
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  # ============================================================
+  # NATURAL LANGUAGE
+  # ============================================================
+  /api/nl/filter:
+    post:
+      tags: [NaturalLanguage]
+      summary: Parse natural language filter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                text:
+                  type: string
+                connectionId:
+                  type: string
+                  format: uuid
+              required: [text]
+      responses:
+        "200":
+          description: Parsed filter
+
+  /api/nl/dashboard:
+    post:
+      tags: [NaturalLanguage]
+      summary: Generate dashboard from natural language
+      responses:
+        "200":
+          description: Generated dashboard config
+
+  /api/nl/story:
+    post:
+      tags: [NaturalLanguage]
+      summary: Generate data story
+      responses:
+        "200":
+          description: Generated story
+
+  # ============================================================
+  # DASHBOARDS
+  # ============================================================
+  /api/dashboards:
+    get:
+      tags: [Dashboards]
+      summary: List dashboards
+      responses:
+        "200":
+          description: Dashboard list
+    post:
+      tags: [Dashboards]
+      summary: Create dashboard
+      responses:
+        "201":
+          description: Created
+
+  /api/dashboards/{id}:
+    get:
+      tags: [Dashboards]
+      summary: Get dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Dashboard details
+    put:
+      tags: [Dashboards]
+      summary: Update dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Dashboards]
+      summary: Delete dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/dashboards/{id}/certify:
+    post:
+      tags: [Dashboards]
+      summary: Certify a dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Dashboard certified
+
+  /api/dashboards/{id}/cards:
+    get:
+      tags: [DashboardCards]
+      summary: Get cards for a dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Card list
+    post:
+      tags: [DashboardCards]
+      summary: Add card to dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "201":
+          description: Card added
+    delete:
+      tags: [DashboardCards]
+      summary: Remove card from dashboard
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Card removed
+
+  /api/dashboards/{id}/cards/positions:
+    put:
+      tags: [DashboardCards]
+      summary: Update card positions
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Positions updated
+
+  # ============================================================
+  # COLLECTIONS
+  # ============================================================
+  /api/collections:
+    get:
+      tags: [Collections]
+      summary: List collections
+      responses:
+        "200":
+          description: Collection list
+    post:
+      tags: [Collections]
+      summary: Create collection
+      responses:
+        "201":
+          description: Created
+
+  /api/collections/{id}:
+    get:
+      tags: [Collections]
+      summary: Get collection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Collection details
+    put:
+      tags: [Collections]
+      summary: Update collection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Collections]
+      summary: Delete collection
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  # ============================================================
+  # WORKSPACES
+  # ============================================================
+  /api/workspaces:
+    get:
+      tags: [Workspaces]
+      summary: List workspaces
+      responses:
+        "200":
+          description: Workspace list
+    post:
+      tags: [Workspaces]
+      summary: Create workspace
+      responses:
+        "201":
+          description: Created
+
+  /api/workspaces/{id}:
+    get:
+      tags: [Workspaces]
+      summary: Get workspace
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Workspace details
+    put:
+      tags: [Workspaces]
+      summary: Update workspace
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Workspaces]
+      summary: Delete workspace
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/workspaces/members:
+    get:
+      tags: [Workspaces]
+      summary: Get workspace members
+      responses:
+        "200":
+          description: Member list
+    post:
+      tags: [Workspaces]
+      summary: Invite member to workspace
+      responses:
+        "201":
+          description: Member invited
+
+  # ============================================================
+  # NOTIFICATIONS
+  # ============================================================
+  /api/notifications:
+    get:
+      tags: [Notifications]
+      summary: Get all notifications
+      responses:
+        "200":
+          description: Notification list
+    post:
+      tags: [Notifications]
+      summary: Create notification (admin only)
+      responses:
+        "201":
+          description: Created
+
+  /api/notifications/unread:
+    get:
+      tags: [Notifications]
+      summary: Get unread notifications
+      responses:
+        "200":
+          description: Unread list
+
+  /api/notifications/unread-count:
+    get:
+      tags: [Notifications]
+      summary: Get unread notification count
+      responses:
+        "200":
+          description: Count
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+
+  /api/notifications/{id}/read:
+    put:
+      tags: [Notifications]
+      summary: Mark notification as read
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Marked as read
+
+  /api/notifications/read-all:
+    put:
+      tags: [Notifications]
+      summary: Mark all notifications as read
+      responses:
+        "200":
+          description: All marked as read
+
+  /api/notifications/{id}:
+    delete:
+      tags: [Notifications]
+      summary: Delete notification
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/notifications/read:
+    delete:
+      tags: [Notifications]
+      summary: Delete all read notifications
+      responses:
+        "204":
+          description: Read notifications deleted
+
+  /api/notifications/broadcast:
+    post:
+      tags: [Notifications]
+      summary: Broadcast system notification (admin only)
+      responses:
+        "201":
+          description: Broadcast sent
+
+  # ============================================================
+  # ACTIVITY
+  # ============================================================
+  /api/activity:
+    get:
+      tags: [Activity]
+      summary: Get user activity feed
+      responses:
+        "200":
+          description: Activity feed
+
+  /api/activity/workspace/{id}:
+    get:
+      tags: [Activity]
+      summary: Get workspace activity
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Workspace activity
+
+  /api/activity/recent:
+    get:
+      tags: [Activity]
+      summary: Get recent activity (admin only)
+      responses:
+        "200":
+          description: Recent activity
+
+  # ============================================================
+  # SCHEDULER
+  # ============================================================
+  /api/scheduler/jobs:
+    get:
+      tags: [Scheduler]
+      summary: List scheduled jobs
+      responses:
+        "200":
+          description: Job list
+    post:
+      tags: [Scheduler]
+      summary: Create job (admin only)
+      responses:
+        "201":
+          description: Job created
+
+  /api/scheduler/jobs/{id}:
+    get:
+      tags: [Scheduler]
+      summary: Get job
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Job details
+    put:
+      tags: [Scheduler]
+      summary: Update job (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Scheduler]
+      summary: Delete job (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/scheduler/jobs/{id}/pause:
+    post:
+      tags: [Scheduler]
+      summary: Pause job
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Job paused
+
+  /api/scheduler/jobs/{id}/resume:
+    post:
+      tags: [Scheduler]
+      summary: Resume job
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Job resumed
+
+  /api/scheduler/jobs/{id}/trigger:
+    post:
+      tags: [Scheduler]
+      summary: Manually trigger job
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Job triggered
+
+  # ============================================================
+  # WEBSOCKET
+  # ============================================================
+  /api/v1/ws:
+    get:
+      tags: [WebSocket]
+      summary: WebSocket connection endpoint
+      description: Upgrade to WebSocket for real-time collaboration
+      responses:
+        "101":
+          description: Switching protocols
+
+  /api/ws/stats:
+    get:
+      tags: [WebSocket]
+      summary: Get WebSocket connection statistics
+      responses:
+        "200":
+          description: Connection stats
+
+  # ============================================================
+  # SHARING
+  # ============================================================
+  /api/shares:
+    post:
+      tags: [Sharing]
+      summary: Create a share
+      responses:
+        "201":
+          description: Share created
+
+  /api/shares/resource/{type}/{id}:
+    get:
+      tags: [Sharing]
+      summary: Get shares for a resource
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [query, dashboard, collection]
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Share list
+
+  /api/shares/my:
+    get:
+      tags: [Sharing]
+      summary: Get shares shared with me
+      responses:
+        "200":
+          description: My shares
+
+  /api/shares/{id}:
+    get:
+      tags: [Sharing]
+      summary: Get share by ID
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Share details
+    put:
+      tags: [Sharing]
+      summary: Update share
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Sharing]
+      summary: Delete share
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/shares/{id}/accept:
+    post:
+      tags: [Sharing]
+      summary: Accept a share
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Share accepted
+
+  /api/shares/check:
+    get:
+      tags: [Sharing]
+      summary: Check share access
+      responses:
+        "200":
+          description: Access check result
+
+  /api/shares/validate:
+    post:
+      tags: [Sharing]
+      summary: Validate share access
+      responses:
+        "200":
+          description: Validation result
+
+  # ============================================================
+  # EMBED
+  # ============================================================
+  /api/embed/token:
+    post:
+      tags: [Embed]
+      summary: Generate embed token
+      responses:
+        "200":
+          description: Embed token
+
+  /api/embed/token/validate:
+    get:
+      tags: [Embed]
+      summary: Validate embed token
+      security: []
+      parameters:
+        - name: token
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Token valid
+
+  # ============================================================
+  # ADMIN & AUDIT
+  # ============================================================
+  /api/admin/audit-logs:
+    get:
+      tags: [AuditLogs]
+      summary: Get audit logs
+      responses:
+        "200":
+          description: Audit log list
+
+  /api/admin/audit-logs/recent:
+    get:
+      tags: [AuditLogs]
+      summary: Get recent audit activity
+      responses:
+        "200":
+          description: Recent activity
+
+  /api/admin/audit-logs/summary:
+    get:
+      tags: [AuditLogs]
+      summary: Get audit summary
+      responses:
+        "200":
+          description: Summary statistics
+
+  /api/admin/audit-logs/user/{id}:
+    get:
+      tags: [AuditLogs]
+      summary: Get user audit activity
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: User activity
+
+  /api/admin/audit-logs/export:
+    get:
+      tags: [AuditLogs]
+      summary: Export audit logs
+      responses:
+        "200":
+          description: Exported data
+
+  /api/logs/frontend:
+    post:
+      tags: [FrontendLogs]
+      summary: Submit frontend error log
+      security: []
+      responses:
+        "201":
+          description: Log recorded
+    get:
+      tags: [FrontendLogs]
+      summary: Get frontend logs (admin only)
+      responses:
+        "200":
+          description: Log list
+
+  /api/logs/frontend/cleanup:
+    delete:
+      tags: [FrontendLogs]
+      summary: Cleanup old frontend logs (admin only)
+      responses:
+        "200":
+          description: Cleanup complete
+
+  # ============================================================
+  # PERMISSIONS & ROLES
+  # ============================================================
+  /api/permissions:
+    get:
+      tags: [Permissions]
+      summary: Get all permissions
+      responses:
+        "200":
+          description: Permission list
+
+  /api/permissions/resource/{resource}:
+    get:
+      tags: [Permissions]
+      summary: Get permissions for a resource type
+      parameters:
+        - name: resource
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Resource permissions
+
+  /api/permissions/check:
+    post:
+      tags: [Permissions]
+      summary: Check user permission
+      responses:
+        "200":
+          description: Permission check result
+
+  /api/roles:
+    get:
+      tags: [Permissions]
+      summary: List roles
+      responses:
+        "200":
+          description: Role list
+    post:
+      tags: [Permissions]
+      summary: Create role (admin only)
+      responses:
+        "201":
+          description: Role created
+
+  /api/roles/{id}:
+    get:
+      tags: [Permissions]
+      summary: Get role
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Role details
+    put:
+      tags: [Permissions]
+      summary: Update role (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Permissions]
+      summary: Delete role (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/roles/{id}/permissions:
+    put:
+      tags: [Permissions]
+      summary: Assign permissions to role (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Permissions assigned
+
+  /api/users/{id}/roles:
+    get:
+      tags: [Permissions]
+      summary: Get user roles
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: User role list
+    post:
+      tags: [Permissions]
+      summary: Assign role to user (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Role assigned
+
+  /api/users/{id}/permissions:
+    get:
+      tags: [Permissions]
+      summary: Get user permissions
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: User permissions
+
+  /api/users/{id}/roles/{roleId}:
+    delete:
+      tags: [Permissions]
+      summary: Remove role from user (admin only)
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+        - name: roleId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: Role removed
+
+  # ============================================================
+  # RATE LIMITS
+  # ============================================================
+  /api/rate-limits:
+    get:
+      tags: [RateLimits]
+      summary: List rate limit configs
+      responses:
+        "200":
+          description: Config list
+    post:
+      tags: [RateLimits]
+      summary: Create rate limit config
+      responses:
+        "201":
+          description: Created
+
+  /api/rate-limits/{id}:
+    get:
+      tags: [RateLimits]
+      summary: Get config
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Config details
+    put:
+      tags: [RateLimits]
+      summary: Update config
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [RateLimits]
+      summary: Delete config
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/rate-limits/violations:
+    get:
+      tags: [RateLimits]
+      summary: Get rate limit violations
+      responses:
+        "200":
+          description: Violation list
+
+  # ============================================================
+  # AI
+  # ============================================================
+  /api/ai/generate:
+    post:
+      tags: [AI]
+      summary: Generate AI response
+      responses:
+        "200":
+          description: AI generation result
+
+  /api/ai/presentation:
+    post:
+      tags: [AI]
+      summary: Generate AI presentation
+      responses:
+        "200":
+          description: Presentation generated
+
+  /api/ai/stream:
+    post:
+      tags: [AI]
+      summary: Stream AI generation (SSE)
+      responses:
+        "200":
+          description: Server-sent events stream
+          content:
+            text/event-stream:
+              schema:
+                type: string
+
+  /api/ai/usage:
+    get:
+      tags: [AI]
+      summary: Get AI usage stats
+      responses:
+        "200":
+          description: Usage statistics
+
+  /api/ai/requests:
+    get:
+      tags: [AI]
+      summary: Get AI request history
+      responses:
+        "200":
+          description: Request list
+
+  /api/ai/request-history:
+    get:
+      tags: [AI]
+      summary: Get detailed AI request history
+      responses:
+        "200":
+          description: Request history
+
+  /api/ai/budgets:
+    get:
+      tags: [AI]
+      summary: Get AI budgets
+      responses:
+        "200":
+          description: Budget list
+    post:
+      tags: [AI]
+      summary: Create AI budget
+      responses:
+        "201":
+          description: Budget created
+
+  /api/ai/budgets/{id}:
+    put:
+      tags: [AI]
+      summary: Update AI budget
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [AI]
+      summary: Delete AI budget
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/ai/alerts:
+    get:
+      tags: [AI]
+      summary: Get AI usage alerts
+      responses:
+        "200":
+          description: Alert list
+
+  /api/ai/alerts/{id}/acknowledge:
+    post:
+      tags: [AI]
+      summary: Acknowledge AI alert
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Alert acknowledged
+
+  # ============================================================
+  # WEBHOOKS
+  # ============================================================
+  /api/webhooks:
+    post:
+      tags: [Webhooks]
+      summary: Create webhook
+      responses:
+        "201":
+          description: Created
+    get:
+      tags: [Webhooks]
+      summary: List webhooks
+      responses:
+        "200":
+          description: Webhook list
+
+  /api/webhooks/{id}:
+    get:
+      tags: [Webhooks]
+      summary: Get webhook
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Webhook details
+    put:
+      tags: [Webhooks]
+      summary: Update webhook
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Updated
+    delete:
+      tags: [Webhooks]
+      summary: Delete webhook
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "204":
+          description: Deleted
+
+  /api/webhooks/{id}/logs:
+    get:
+      tags: [Webhooks]
+      summary: Get webhook delivery logs
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Log list
+
+  /api/webhooks/{id}/test:
+    post:
+      tags: [Webhooks]
+      summary: Send test webhook
+      parameters:
+        - $ref: "#/components/parameters/IdParam"
+      responses:
+        "200":
+          description: Test result
+
+  # ============================================================
+  # LINEAGE
+  # ============================================================
+  /api/lineage:
+    get:
+      tags: [Governance]
+      summary: Get data lineage graph
+      responses:
+        "200":
+          description: Lineage graph
+
+# ============================================================
+# COMPONENTS
+# ============================================================
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /api/auth/login
+
+  parameters:
+    IdParam:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: Resource identifier
+
+    PageParam:
+      name: page
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: Page number
+
+    LimitParam:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+      description: Items per page
+
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+        code:
+          type: string
+          description: Machine-readable error code
+        details:
+          type: object
+          additionalProperties: true
+          description: Additional error context
+      required: [error]
+
+    RegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+          minLength: 3
+          maxLength: 50
+        password:
+          type: string
+          minLength: 8
+        displayName:
+          type: string
+      required: [email, username, password]
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT access token
+        refreshToken:
+          type: string
+          description: Refresh token
+        user:
+          $ref: "#/components/schemas/User"
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        username:
+          type: string
+        displayName:
+          type: string
+        role:
+          type: string
+          enum: [user, admin, viewer]
+        isVerified:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Query:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        sql:
+          type: string
+        connectionId:
+          type: string
+          format: uuid
+        parameters:
+          type: object
+          additionalProperties: true
+        createdBy:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    QueryCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        sql:
+          type: string
+        connectionId:
+          type: string
+          format: uuid
+        parameters:
+          type: object
+          additionalProperties: true
+      required: [name, sql, connectionId]
+
+    QueryResult:
+      type: object
+      properties:
+        columns:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              type:
+                type: string
+        rows:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        rowCount:
+          type: integer
+        executionTimeMs:
+          type: integer
+        truncated:
+          type: boolean
+
+    VisualQueryRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        connectionId:
+          type: string
+          format: uuid
+        tables:
+          type: array
+          items:
+            type: object
+        joins:
+          type: array
+          items:
+            type: object
+        columns:
+          type: array
+          items:
+            type: string
+        filters:
+          type: array
+          items:
+            type: object
+        groupBy:
+          type: array
+          items:
+            type: string
+        orderBy:
+          type: array
+          items:
+            type: object
+        limit:
+          type: integer
+
+    Connection:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            [
+              postgresql,
+              mysql,
+              sqlite,
+              mongodb,
+              mssql,
+              clickhouse,
+              bigquery,
+              snowflake,
+              rest_api,
+            ]
+        host:
+          type: string
+        port:
+          type: integer
+        database:
+          type: string
+        isActive:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    ConnectionCreateRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            [
+              postgresql,
+              mysql,
+              sqlite,
+              mongodb,
+              mssql,
+              clickhouse,
+              bigquery,
+              snowflake,
+              rest_api,
+            ]
+        host:
+          type: string
+        port:
+          type: integer
+        database:
+          type: string
+        username:
+          type: string
+        password:
+          type: string
+        sslMode:
+          type: string
+          enum: [disable, require, verify-ca, verify-full]
+      required: [name, type]
+
+    PaginatedResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            type: object
+        total:
+          type: integer
+        page:
+          type: integer
+        limit:
+          type: integer
+        totalPages:
+          type: integer
+
+  responses:
+    BadRequest:
+      description: Invalid request parameters
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    Unauthorized:
+      description: Missing or invalid authentication
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"
+
+    InternalError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ErrorResponse"

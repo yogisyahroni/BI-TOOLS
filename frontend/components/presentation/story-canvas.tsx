@@ -1,4 +1,4 @@
-import { Slide } from '@/types/presentation';
+import { type Slide } from '@/types/presentation';
 import { SlideView } from '@/components/presentation/slide-view';
 import { Button } from '@/components/ui/button';
 import { Wand2 } from 'lucide-react';

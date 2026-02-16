@@ -103,10 +103,12 @@ export default function RolesManagementPage() {
 
     const handleDeleteRole = async (role: Role) => {
         if (role.is_system_role) {
+            // eslint-disable-next-line no-alert
             alert('System roles cannot be deleted')
             return
         }
 
+        // eslint-disable-next-line no-alert
         if (!confirm(`Are you sure you want to delete role "${role.name}"? This action cannot be undone.`)) {
             return
         }
@@ -114,9 +116,11 @@ export default function RolesManagementPage() {
         try {
             await deleteRole(role.id)
             await loadData()
+            // eslint-disable-next-line no-alert
             alert('Role deleted successfully')
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to delete role'
+            // eslint-disable-next-line no-alert
             alert(message)
         }
     }
@@ -130,7 +134,7 @@ export default function RolesManagementPage() {
     if (loading) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
+                <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600" />
             </div>
         )
     }
@@ -368,6 +372,7 @@ function RoleEditorDialog({ mode, role, permissions, onClose, onSave }: RoleEdit
 
     const handleSubmit = async () => {
         if (!name.trim()) {
+            // eslint-disable-next-line no-alert
             alert('Role name is required')
             return
         }
@@ -381,6 +386,7 @@ function RoleEditorDialog({ mode, role, permissions, onClose, onSave }: RoleEdit
                     permission_ids: Array.from(selectedPermissions)
                 }
                 await createRole(data)
+                // eslint-disable-next-line no-alert
                 alert('Role created successfully')
             } else if (mode === 'edit' && role) {
                 await updateRole(role.id, {
@@ -388,6 +394,7 @@ function RoleEditorDialog({ mode, role, permissions, onClose, onSave }: RoleEdit
                     description: description.trim()
                 })
                 await assignPermissionsToRole(role.id, Array.from(selectedPermissions))
+                // eslint-disable-next-line no-alert
                 alert('Role updated successfully')
             }
 
@@ -395,6 +402,7 @@ function RoleEditorDialog({ mode, role, permissions, onClose, onSave }: RoleEdit
             onClose()
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to save role'
+            // eslint-disable-next-line no-alert
             alert(message)
         } finally {
             setIsSubmitting(false)
@@ -582,6 +590,7 @@ function UserRoleDialog({ role, onClose }: UserRoleDialogProps) {
             setUserRoles(roles)
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to load user roles'
+            // eslint-disable-next-line no-alert
             alert(message)
         } finally {
             setLoading(false)
@@ -591,16 +600,19 @@ function UserRoleDialog({ role, onClose }: UserRoleDialogProps) {
     const handleAssignRole = async () => {
         const id = parseInt(userId)
         if (isNaN(id) || id <= 0) {
+            // eslint-disable-next-line no-alert
             alert('Please enter a valid user ID')
             return
         }
 
         try {
             await assignRoleToUser(id, role.id)
+            // eslint-disable-next-line no-alert
             alert('Role assigned successfully')
             await loadUserRoles(id)
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to assign role'
+            // eslint-disable-next-line no-alert
             alert(message)
         }
     }
@@ -609,16 +621,19 @@ function UserRoleDialog({ role, onClose }: UserRoleDialogProps) {
         const id = parseInt(userId)
         if (isNaN(id)) return
 
+        // eslint-disable-next-line no-alert
         if (!confirm('Are you sure you want to remove this role from the user?')) {
             return
         }
 
         try {
             await removeRoleFromUser(id, roleId)
+            // eslint-disable-next-line no-alert
             alert('Role removed successfully')
             await loadUserRoles(id)
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to remove role'
+            // eslint-disable-next-line no-alert
             alert(message)
         }
     }
@@ -626,6 +641,7 @@ function UserRoleDialog({ role, onClose }: UserRoleDialogProps) {
     const handleSearchUser = async () => {
         const id = parseInt(userId)
         if (isNaN(id) || id <= 0) {
+            // eslint-disable-next-line no-alert
             alert('Please enter a valid user ID')
             return
         }
@@ -675,7 +691,7 @@ function UserRoleDialog({ role, onClose }: UserRoleDialogProps) {
                     {/* Loading */}
                     {loading && (
                         <div className="flex items-center justify-center py-8">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600" />
                         </div>
                     )}
 

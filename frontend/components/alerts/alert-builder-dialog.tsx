@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface AlertBuilderDialogProps {
     open: boolean;
@@ -56,7 +57,7 @@ export function AlertBuilderDialog({
 
         try {
             setIsSubmitting(true);
-            const res = await fetch('/api/alerts', {
+            const res = await fetchWithAuth('/api/alerts', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -141,11 +142,15 @@ export function AlertBuilderDialog({
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
+                                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                                         <SelectItem value=">">{'>'}</SelectItem>
+                                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                                         <SelectItem value="<">{'<'}</SelectItem>
+                                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                                         <SelectItem value=">=">{'>='}</SelectItem>
+                                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                                         <SelectItem value="<=">{'<='}</SelectItem>
-                                        <SelectItem value="=">{'='}</SelectItem>
+                                        <SelectItem value="=">=</SelectItem>
                                     </SelectContent>
                                 </Select>
                                 <Input
@@ -166,7 +171,7 @@ export function AlertBuilderDialog({
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <p className="text-xs text-muted-foreground">
-                            We'll verify this condition every hour.
+                            We&apos;ll verify this condition every hour.
                         </p>
                     </div>
 

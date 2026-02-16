@@ -1,5 +1,5 @@
 // import { BaseConnector, ConnectionConfig, DataSourceType } from './base-connector';
-import { BaseConnector, ConnectionConfig, DataSourceType } from './base-connector';
+import { type BaseConnector, type ConnectionConfig, type DataSourceType } from './base-connector';
 import { PostgresConnector } from './postgres-connector';
 // import { MySQLConnector } from './mysql-connector';
 // import { SnowflakeConnector } from './snowflake-connector';

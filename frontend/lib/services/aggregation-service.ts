@@ -2,7 +2,7 @@
 import { Client } from 'pg';
 import { connectionService } from '@/lib/services/connection-service';
 import { replaceQueryVariables } from '@/lib/sql-utils';
-import { SecurityContext } from '@/lib/security/rls-context';
+import { type SecurityContext } from '@/lib/security/rls-context';
 import { auditService } from '@/lib/services/audit-service';
 
 export interface AggregationRequest {

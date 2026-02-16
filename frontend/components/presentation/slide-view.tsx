@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slide } from '@/types/presentation';
+import { type Slide } from '@/types/presentation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface SlideProps {

@@ -2,13 +2,14 @@ import type {
     ActivityLog,
     ActivityFeedResponse,
 } from '@/lib/types/notifications';
+import { fetchWithAuth } from '@/lib/utils';
 
-const API_BASE = '/api/v1';
+const API_BASE = '/api/go/v1';
 
 export const activityApi = {
     // Get user activity feed (paginated)
     getUserActivity: async (limit = 20, offset = 0): Promise<ActivityFeedResponse> => {
-        const res = await fetch(`${API_BASE}/activity?limit=${limit}&offset=${offset}`);
+        const res = await fetchWithAuth(`${API_BASE}/activity?limit=${limit}&offset=${offset}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch user activity');
@@ -18,7 +19,7 @@ export const activityApi = {
 
     // Get workspace activity feed (paginated)
     getWorkspaceActivity: async (workspaceId: string, limit = 20, offset = 0): Promise<ActivityFeedResponse> => {
-        const res = await fetch(`${API_BASE}/activity/workspace/${workspaceId}?limit=${limit}&offset=${offset}`);
+        const res = await fetchWithAuth(`${API_BASE}/activity/workspace/${workspaceId}?limit=${limit}&offset=${offset}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch workspace activity');
@@ -28,7 +29,7 @@ export const activityApi = {
 
     // Get recent activity (admin only)
     getRecentActivity: async (limit = 50): Promise<ActivityLog[]> => {
-        const res = await fetch(`${API_BASE}/activity/recent?limit=${limit}`);
+        const res = await fetchWithAuth(`${API_BASE}/activity/recent?limit=${limit}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch recent activity');

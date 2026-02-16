@@ -170,11 +170,39 @@ func (s *CronService) Stop() {
 
 // resetBudgets calls the PostgreSQL function to reset budgets
 func (s *CronService) resetBudgets() error {
+	// Check if table exists
+	if !s.db.Migrator().HasTable("ai_budgets") {
+		LogWarn("cron_budget_reset", "ai_budgets table does not exist, skipping", nil)
+		return nil
+	}
+
+	// Check if function exists
+	var funcExists bool
+	s.db.Raw("SELECT EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'reset_budgets')").Scan(&funcExists)
+	if !funcExists {
+		LogWarn("cron_budget_reset", "reset_budgets function does not exist, skipping", nil)
+		return nil
+	}
+
 	return s.db.Exec("SELECT reset_budgets()").Error
 }
 
 // refreshMaterializedViews refreshes all materialized views
 func (s *CronService) refreshMaterializedViews() error {
+	// Check if table exists
+	if !s.db.Migrator().HasTable("ai_usage_stats") {
+		LogWarn("cron_view_refresh", "ai_usage_stats table does not exist, skipping", nil)
+		return nil
+	}
+
+	// Check if function exists
+	var funcExists bool
+	s.db.Raw("SELECT EXISTS (SELECT 1 FROM pg_proc WHERE proname = 'refresh_ai_usage_stats')").Scan(&funcExists)
+	if !funcExists {
+		LogWarn("cron_view_refresh", "refresh_ai_usage_stats function does not exist, skipping", nil)
+		return nil
+	}
+
 	return s.db.Exec("SELECT refresh_ai_usage_stats()").Error
 }
 
@@ -192,6 +220,12 @@ func (s *CronService) RunViewRefreshNow() error {
 
 // cleanupExpiredShares marks expired shares as expired in the database
 func (s *CronService) cleanupExpiredShares() (int64, error) {
+	// Check if table exists
+	if !s.db.Migrator().HasTable("shares") {
+		LogWarn("cron_shares_cleanup", "shares table does not exist, skipping", nil)
+		return 0, nil
+	}
+
 	result := s.db.Exec(`
 		UPDATE shares 
 		SET status = 'expired', updated_at = NOW() 
@@ -207,6 +241,12 @@ func (s *CronService) cleanupExpiredShares() (int64, error) {
 
 // cleanupExpiredEmbedTokens logs expired embed tokens (they remain in DB for audit)
 func (s *CronService) cleanupExpiredEmbedTokens() (int64, error) {
+	// Check if table exists
+	if !s.db.Migrator().HasTable("embed_tokens") {
+		LogWarn("cron_embed_tokens_cleanup", "embed_tokens table does not exist, skipping", nil)
+		return 0, nil
+	}
+
 	// Find expired tokens that haven't been logged yet
 	var count int64
 	err := s.db.Raw(`

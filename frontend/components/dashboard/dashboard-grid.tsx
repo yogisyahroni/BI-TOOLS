@@ -3,12 +3,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Responsive } from 'react-grid-layout';
 import { DashboardCard } from './dashboard-card';
-import { DashboardCard as DashboardCardType, VisualizationConfig } from '@/lib/types';
+import { type DashboardCard as DashboardCardType, VisualizationConfig } from '@/lib/types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 import { EditCardDialog } from './edit-card-dialog';
-import { FilterCriteria } from '@/lib/cross-filter-context';
+import { type FilterCriteria } from '@/lib/cross-filter-context';
 
 interface DashboardGridProps {
     cards: DashboardCardType[];
@@ -93,7 +93,7 @@ export function DashboardGrid({
 
     return (
         <div ref={containerRef} className={`w-full min-h-[500px] ${isMobile ? 'mobile-grid' : ''}`}>
-            {/* @ts-ignore - Responsive types are flaky with isDraggable in some versions */}
+            {/* @ts-expect-error - Responsive types are flaky with isDraggable in some versions */}
             <Responsive
                 className="layout"
                 layouts={layouts}
@@ -101,9 +101,9 @@ export function DashboardGrid({
                 cols={{ lg: 12, md: 10, sm: 6, xs: 1, xxs: 1 }}
                 rowHeight={30}
                 width={width}
-                // @ts-ignore
+                // @ts-expect-error
                 isDraggable={isEditing && !isMobile}
-                // @ts-ignore
+                // @ts-expect-error
                 isResizable={isEditing && !isMobile}
                 onLayoutChange={onLayoutChange}
             >
@@ -121,7 +121,7 @@ export function DashboardGrid({
                         <div key={card.id} className="relative group bg-card border rounded-lg shadow-sm overflow-hidden">
                             {/* Edit Overlay for Dragging */}
                             {isEditing && !isMobile && (
-                                <div className="card-drag-handle absolute inset-0 z-50 cursor-move bg-white/5 border-2 border-dashed border-primary hover:bg-primary/5 transition-colors rounded-lg flex items-center justify-center opacity-0 hover:opacity-100"></div>
+                                <div className="card-drag-handle absolute inset-0 z-50 cursor-move bg-white/5 border-2 border-dashed border-primary hover:bg-primary/5 transition-colors rounded-lg flex items-center justify-center opacity-0 hover:opacity-100" />
                             )}
 
                             <DashboardCard

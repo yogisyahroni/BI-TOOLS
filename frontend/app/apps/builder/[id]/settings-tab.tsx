@@ -2,6 +2,7 @@
 'use client';
 
 import { useState } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -38,7 +39,7 @@ export default function AppSettingsTab({ app, onUpdate }: AppSettingsTabProps) {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await fetch(`/api/apps/${app.id}`, {
+            const res = await fetchWithAuth(`/api/go/apps/${app.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
@@ -66,7 +67,7 @@ export default function AppSettingsTab({ app, onUpdate }: AppSettingsTabProps) {
     const handleDelete = async () => {
         if (!confirm('Are you sure you want to delete this app? This action cannot be undone.')) return;
         try {
-            const res = await fetch(`/api/apps/${app.id}`, { method: 'DELETE' });
+            const res = await fetchWithAuth(`/api/go/apps/${app.id}`, { method: 'DELETE' });
             if (!res.ok) throw new Error('Failed to delete app');
             router.push('/apps');
             toast({ title: 'Deleted', description: 'App deleted successfully' });

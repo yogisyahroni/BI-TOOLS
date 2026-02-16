@@ -14,8 +14,9 @@ import {
 } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 import { Loader2, Eye, Code } from 'lucide-react';
-import { RLSPolicy } from './rls-manager';
+import { type RLSPolicy } from './rls-manager';
 
 interface TestPolicyDialogProps {
     policy: RLSPolicy;
@@ -75,11 +76,10 @@ export function TestPolicyDialog({ policy, onClose }: TestPolicyDialogProps) {
         setResult(null);
 
         try {
-            const res = await fetch(`/api/rls/policies/${policy.id}/test`, {
+            const res = await fetchWithAuth(`/api/go/rls/policies/${policy.id}/test`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify({
                     userContext: {

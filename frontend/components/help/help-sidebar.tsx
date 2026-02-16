@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ExternalLink } from 'lucide-react';
-import { HelpTopic } from '@/lib/help/help-config';
+import { type HelpTopic } from '@/lib/help/help-config';
 
 interface HelpSidebarProps {
     isOpen: boolean;

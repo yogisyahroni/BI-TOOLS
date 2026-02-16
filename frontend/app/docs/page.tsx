@@ -33,7 +33,7 @@ export default function DocsPage() {
                     </div>
                     <h3 className="mb-2 text-xl font-bold">Guides</h3>
                     <p className="mb-4 text-muted-foreground">
-                        Detailed guides on how to use InsightEngine's features, including dashboards, reporting, and alerts.
+                        Detailed guides on how to use InsightEngine&apos;s features, including dashboards, reporting, and alerts.
                     </p>
                     <Link href="/docs/dashboards" className="text-primary hover:underline">
                         Explore Guides &rarr;

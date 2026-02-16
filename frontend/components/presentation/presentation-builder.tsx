@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { SlideDeck } from '@/types/presentation';
+import { type SlideDeck } from '@/types/presentation';
 import { presentationApi } from '@/lib/api/presentation';
 import { exportToPPT } from '@/lib/export-ppt';
 import { SlideView } from './slide-view';

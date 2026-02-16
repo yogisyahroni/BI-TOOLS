@@ -70,6 +70,7 @@ export default function AlertsPage() {
     };
 
     const handleDeleteAlert = async (alert: Alert) => {
+        // eslint-disable-next-line no-alert
         if (!confirm('Are you sure you want to delete this alert?')) return;
 
         try {
@@ -294,6 +295,7 @@ export default function AlertsPage() {
                         alerts={triggeredAlerts}
                         onAcknowledge={(id) => {
                             const alert = alerts.find((a) => a.id === id);
+                            // eslint-disable-next-line no-alert
                             if (alert) handleAcknowledgeAlert(alert);
                         }}
                         onAcknowledgeAll={handleAcknowledgeAll}

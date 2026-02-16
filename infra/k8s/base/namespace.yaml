@@ -1,0 +1,10 @@
+# ============================================================================
+# InsightEngine AI — Kubernetes Namespace
+# ============================================================================
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: insight-engine
+  labels:
+    app.kubernetes.io/part-of: insight-engine
+    app.kubernetes.io/managed-by: kustomize

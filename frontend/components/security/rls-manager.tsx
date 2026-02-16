@@ -6,6 +6,7 @@ import { Plus, Shield, Trash2, AlertTriangle, Edit, Eye, Loader2 } from 'lucide-
 import { PolicyEditor } from '@/components/security/policy-editor';
 import { TestPolicyDialog } from '@/components/security/test-policy-dialog';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import {
     Table,
@@ -43,12 +44,7 @@ export function RLSManager() {
     const fetchPolicies = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch('/api/rls/policies', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
-            });
+            const res = await fetchWithAuth('/api/go/rls/policies');
 
             if (res.ok) {
                 const data = await res.json();
@@ -73,11 +69,8 @@ export function RLSManager() {
 
         setDeletingId(id);
         try {
-            const res = await fetch(`/api/rls/policies/${id}`, {
+            const res = await fetchWithAuth(`/api/go/rls/policies/${id}`, {
                 method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
-                },
             });
 
             if (res.ok || res.status === 204) {

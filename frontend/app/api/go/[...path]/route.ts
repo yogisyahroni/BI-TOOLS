@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 const GO_BACKEND_URL = process.env.GO_BACKEND_URL || 'http://localhost:8080';
@@ -43,7 +43,7 @@ async function proxyToGo(
     method: string
 ) {
     const debugPrefix = `[DEBUG-FINAL] [${method} /${path.join('/')}]`;
-    // console.log(`${debugPrefix} Incoming request`); // Reduced log spam
+    // console.warn(`${debugPrefix} Incoming request`); // Reduced log spam
 
     try {
         if (!process.env.NEXTAUTH_SECRET) {
@@ -76,7 +76,7 @@ async function proxyToGo(
         const searchParams = request.nextUrl.searchParams.toString();
         const fullTargetUrl = `${GO_BACKEND_URL}/api/${targetPath}${searchParams ? `?${searchParams}` : ''}`;
 
-        // console.log(`${debugPrefix} Forwarding to: ${method} ${fullTargetUrl}`);
+        // console.warn(`${debugPrefix} Forwarding to: ${method} ${fullTargetUrl}`);
 
         // Prepare headers - forward authorization header to Go backend
         const headers: HeadersInit = {
@@ -106,7 +106,7 @@ async function proxyToGo(
         // Forward request to Go backend
         const response = await fetch(fullTargetUrl, options);
 
-        // console.log(`${debugPrefix} Backend response status: ${response.status}`);
+        // console.warn(`${debugPrefix} Backend response status: ${response.status}`);
 
         // Handle non-JSON responses from backend gracefully
         const contentType = response.headers.get('content-type');

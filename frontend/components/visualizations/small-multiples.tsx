@@ -3,7 +3,7 @@
 import React, { useMemo } from 'react';
 import { EChartsWrapper } from './echarts-wrapper';
 import { buildEChartsOptions } from '@/lib/visualizations/echarts-options';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 
 interface SmallMultiplesProps {
@@ -51,20 +51,20 @@ export function SmallMultiples({ data, config, isLoading }: SmallMultiplesProps)
                         type: 'bar', // Default to bar, or inherit?
                         // Force title to group name
                         title: group,
-                        seriesBreakout: undefined, // Don't break out again inside
+                        seriesBreakout: undefined, // Don&apos;t break out again inside
                         showLegend: false,
                         showGrid: false,
                     };
 
                     // If the user selected a type for the small multiples (e.g. they want a grid of line charts),
                     // we should probably support that. For now hardcode or infer? 
-                    // Let's assume the user wants the same type as the base config, but "small-multiples" IS the type.
+                    // Let&apos;s assume the user wants the same type as the base config, but "small-multiples" IS the type.
                     // valid sub-types: bar, line, area, pie.
                     // For now, default to 'bar' or 'line' based on X-axis?
-                    // Let's default to 'bar' but allow overriding if we add a 'subType' to config later.
+                    // Let&apos;s default to 'bar' but allow overriding if we add a 'subType' to config later.
                     // Logic: use 'bar' for now.
 
-                    // Actually, let's look at config. If we can store "subType", great. 
+                    // Actually, let&apos;s look at config. If we can store "subType", great. 
                     // If not, default to 'bar'.
                     const subType = 'bar';
 

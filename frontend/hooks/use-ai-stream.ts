@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { toast } from 'sonner';
 
 interface UseAIStreamOptions {
@@ -38,7 +39,7 @@ export function useAIStream(options: UseAIStreamOptions = {}) {
         abortControllerRef.current = new AbortController();
 
         try {
-            const response = await fetch('/api/go/ai/stream', {
+            const response = await fetchWithAuth('/api/go/ai/stream', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ prompt, context, providerId }),

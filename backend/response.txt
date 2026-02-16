@@ -1,0 +1,40 @@
+* Host localhost:8080 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying [::1]:8080...
+*   Trying 127.0.0.1:8080...
+* Established connection to localhost (127.0.0.1 port 8080) from 127.0.0.1 port 63703 
+* using HTTP/1.x
+> GET /pipelines?workspaceId=15a31e39-55e3-4269-b6e9-b813f2c03e75&limit=20&offset=0 HTTP/1.1
+
+> Host: localhost:8080
+
+> User-Agent: curl/8.16.0
+
+> Accept: */*
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 404 Not Found
+
+< Date: Mon, 16 Feb 2026 08:11:24 GMT
+
+< Content-Type: text/plain; charset=utf-8
+
+< Content-Length: 21
+
+< X-Request-Id: 069db602-5b64-4fab-a82c-2bc38bde1cf6
+
+< X-System-Status: healthy
+
+< 
+
+{ [21 bytes data]
+
+100    21  100    21    0     0    100      0 --:--:-- --:--:-- --:--:--   100
+* Connection #0 to host localhost:8080 left intact
+Cannot GET /pipelines

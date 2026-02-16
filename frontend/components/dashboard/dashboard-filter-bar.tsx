@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { DashboardFilter } from '@/lib/types';
+import { type DashboardFilter } from '@/lib/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -86,7 +86,7 @@ export function DashboardFilterBar({
                         <Popover>
                             <PopoverTrigger asChild>
                                 <Button
-                                    variant={"ghost"}
+                                    variant="ghost"
                                     className={cn(
                                         "h-7 w-[140px] justify-start text-left font-normal px-1",
                                         !filterValues[filter.key] && "text-muted-foreground"

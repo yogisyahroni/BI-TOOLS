@@ -2,6 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
@@ -45,7 +46,7 @@ export default function AppPagesTab({ app, onUpdate }: AppPagesTabProps) {
 
     const fetchPages = async () => {
         try {
-            const res = await fetch(`/api/apps/${app.id}/pages`);
+            const res = await fetchWithAuth(`/api/go/apps/${app.id}/pages`);
             if (!res.ok) throw new Error('Failed to fetch pages');
             const data = await res.json();
             setPages(data);
@@ -60,7 +61,7 @@ export default function AppPagesTab({ app, onUpdate }: AppPagesTabProps) {
     const fetchDashboards = async () => {
         if (!workspaceId) return;
         try {
-            const res = await fetch(`/api/dashboards?workspaceId=${workspaceId}`);
+            const res = await fetchWithAuth(`/api/go/dashboards?workspaceId=${workspaceId}`);
             if (!res.ok) throw new Error("Failed");
             const json = await res.json();
             setDashboards(json.data || []);
@@ -93,7 +94,7 @@ export default function AppPagesTab({ app, onUpdate }: AppPagesTabProps) {
 
         setCreating(true);
         try {
-            const res = await fetch(`/api/apps/${app.id}/pages`, {
+            const res = await fetchWithAuth(`/api/go/apps/${app.id}/pages`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newPage),
@@ -237,7 +238,7 @@ export default function AppPagesTab({ app, onUpdate }: AppPagesTabProps) {
                     <Table>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[50px]"></TableHead>
+                                <TableHead className="w-[50px]" />
                                 <TableHead>Title</TableHead>
                                 <TableHead>Type</TableHead>
                                 <TableHead>Content</TableHead>

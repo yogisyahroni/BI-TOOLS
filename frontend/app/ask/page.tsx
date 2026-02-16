@@ -10,9 +10,10 @@ import { ConnectionSelector } from '@/components/connection-selector';
 import { Button } from '@/components/ui/button';
 import { Menu, Terminal, Play, CheckCircle2, AlertCircle } from 'lucide-react';
 import { NLQueryInput } from '@/components/ai/nl-query-input';
-import { ConversationHistory, HistoryItem } from '@/components/ai/conversation-history';
+import { ConversationHistory, type HistoryItem } from '@/components/ai/conversation-history';
 import { ResultsTable } from '@/components/query-results/results-table';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 import { v4 as uuidv4 } from 'uuid';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -51,7 +52,7 @@ export default function AskPage() {
         setCurrentQuery(null); // Clear previous
 
         try {
-            const res = await fetch('/api/ai/generate-query', {
+            const res = await fetchWithAuth('/api/go/ai/generate-query', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -102,7 +103,7 @@ export default function AskPage() {
 
         setIsExecuting(true);
         try {
-            const res = await fetch('/api/queries/execute', {
+            const res = await fetchWithAuth('/api/go/queries/execute', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -272,7 +273,7 @@ export default function AskPage() {
                 aiPrompt={currentQuery?.prompt}
                 onSaveSuccess={(id) => {
                     // Optional: redirect to saved query page or just toast
-                    console.log('Saved query:', id);
+                    console.warn('Saved query:', id);
                 }}
             />
         </SidebarLayout>

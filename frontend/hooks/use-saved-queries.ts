@@ -2,11 +2,11 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { fetchWithAuth } from '@/lib/utils';
 import { type SavedQuery } from '@/lib/types';
 
 interface UseSavedQueriesOptions {
   collectionId?: string;
-  userId?: string;
   autoFetch?: boolean;
 }
 
@@ -30,9 +30,8 @@ export function useSavedQueries(options: UseSavedQueriesOptions = {}) {
     try {
       const params = new URLSearchParams();
       if (options.collectionId) params.append('collectionId', options.collectionId);
-      if (options.userId) params.append('userId', options.userId);
 
-      const response = await fetch(`/api/go/queries?${params.toString()}`);
+      const response = await fetchWithAuth(`/api/go/queries?${params.toString()}`);
 
       if (!response.ok) {
         throw new Error(`Failed to fetch queries: ${response.status}`);
@@ -51,12 +50,12 @@ export function useSavedQueries(options: UseSavedQueriesOptions = {}) {
     } finally {
       setIsLoading(false);
     }
-  }, [isAuthenticated, options.collectionId, options.userId]);
+  }, [isAuthenticated, options.collectionId]);
 
   const saveQuery = useCallback(
     async (query: Omit<SavedQuery, 'id' | 'createdAt' | 'updatedAt' | 'views' | 'pinned'>) => {
       try {
-        const response = await fetch('/api/go/queries', {
+        const response = await fetchWithAuth('/api/go/queries', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -86,7 +85,7 @@ export function useSavedQueries(options: UseSavedQueriesOptions = {}) {
 
   const deleteQuery = useCallback(async (queryId: string) => {
     try {
-      const response = await fetch(`/api/go/queries/${queryId}`, {
+      const response = await fetchWithAuth(`/api/go/queries/${queryId}`, {
         method: 'DELETE',
       });
 
@@ -115,7 +114,7 @@ export function useSavedQueries(options: UseSavedQueriesOptions = {}) {
       const query = queries.find((q) => q.id === queryId);
       if (!query) return;
 
-      const response = await fetch(`/api/go/queries/${queryId}`, {
+      const response = await fetchWithAuth(`/api/go/queries/${queryId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +140,7 @@ export function useSavedQueries(options: UseSavedQueriesOptions = {}) {
 
   const updateQuery = useCallback(async (id: string, updates: Partial<SavedQuery>) => {
     try {
-      const response = await fetch(`/api/go/queries/${id}`, {
+      const response = await fetchWithAuth(`/api/go/queries/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

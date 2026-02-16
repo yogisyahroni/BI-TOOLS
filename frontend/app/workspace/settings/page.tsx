@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { WorkspaceMembers } from '@/components/workspace/workspace-members';
 import {
     Card,
@@ -49,7 +50,7 @@ export default function WorkspaceSettingsPage() {
     const handleSave = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`/api/workspaces/${workspaceId}`, {
+            const response = await fetchWithAuth(`/api/workspaces/${workspaceId}`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, plan }),

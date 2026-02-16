@@ -18,20 +18,20 @@ type QueryAnalyzer struct {
 
 // QueryPlanAnalysis represents the complete analysis result
 type QueryPlanAnalysis struct {
-	Query              string               `json:"query"`
-	DatabaseType       string               `json:"databaseType"`
-	ExecutionPlan      interface{}          `json:"executionPlan"` // Raw plan (varies by DB)
-	PlanText           string               `json:"planText"`      // Text representation
-	PerformanceMetrics *PerformanceMetrics  `json:"performanceMetrics"`
-	Issues             []PlanIssue          `json:"issues"`
-	Recommendations    []PlanRecommendation `json:"recommendations"`
-	EstimatedCost      float64              `json:"estimatedCost"`
-	EstimatedRows      int64                `json:"estimatedRows"`
-	AnalyzedAt         time.Time            `json:"analyzedAt"`
+	Query              string                   `json:"query"`
+	DatabaseType       string                   `json:"databaseType"`
+	ExecutionPlan      interface{}              `json:"executionPlan"` // Raw plan (varies by DB)
+	PlanText           string                   `json:"planText"`      // Text representation
+	PerformanceMetrics *QueryPerformanceMetrics `json:"performanceMetrics"`
+	Issues             []PlanIssue              `json:"issues"`
+	Recommendations    []PlanRecommendation     `json:"recommendations"`
+	EstimatedCost      float64                  `json:"estimatedCost"`
+	EstimatedRows      int64                    `json:"estimatedRows"`
+	AnalyzedAt         time.Time                `json:"analyzedAt"`
 }
 
-// PerformanceMetrics contains query performance data
-type PerformanceMetrics struct {
+// QueryPerformanceMetrics contains query performance data
+type QueryPerformanceMetrics struct {
 	PlanningTime  float64 `json:"planningTime"`  // ms
 	ExecutionTime float64 `json:"executionTime"` // ms
 	TotalCost     float64 `json:"totalCost"`
@@ -154,13 +154,13 @@ func (qa *QueryAnalyzer) analyzePostgreSQL(ctx context.Context, db *sql.DB, quer
 	// Extract performance metrics
 	if planningTime, ok := planData["Planning Time"].(float64); ok {
 		if analysis.PerformanceMetrics == nil {
-			analysis.PerformanceMetrics = &PerformanceMetrics{}
+			analysis.PerformanceMetrics = &QueryPerformanceMetrics{}
 		}
 		analysis.PerformanceMetrics.PlanningTime = planningTime
 	}
 	if executionTime, ok := planData["Execution Time"].(float64); ok {
 		if analysis.PerformanceMetrics == nil {
-			analysis.PerformanceMetrics = &PerformanceMetrics{}
+			analysis.PerformanceMetrics = &QueryPerformanceMetrics{}
 		}
 		analysis.PerformanceMetrics.ExecutionTime = executionTime
 	}

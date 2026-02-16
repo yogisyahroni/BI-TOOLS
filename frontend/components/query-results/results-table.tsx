@@ -46,7 +46,7 @@ export function ResultsTable({
         return (
             <div className="flex items-center justify-center h-64 border rounded-lg bg-muted/10">
                 <div className="flex flex-col items-center gap-2">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
                     <p className="text-muted-foreground text-sm">Running query...</p>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
     Select,
@@ -12,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Search, Database } from 'lucide-react';
-import { TableSchema } from '@/lib/query-builder/types';
+import { type TableSchema } from '@/lib/query-builder/types';
 
 interface TablePickerProps {
     connectionId: string;
@@ -36,7 +37,7 @@ export function TablePicker({
     const fetchTables = async () => {
         try {
             setIsLoading(true);
-            const res = await fetch(`/api/connections/${connectionId}/schema`);
+            const res = await fetchWithAuth(`/api/go/connections/${connectionId}/schema`);
             if (res.ok) {
                 const data = await res.json();
                 setTables(data.tables || []);

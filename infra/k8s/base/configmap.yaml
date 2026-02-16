@@ -1,0 +1,26 @@
+# ============================================================================
+# InsightEngine — ConfigMaps
+# ============================================================================
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backend-config
+  namespace: insight-engine
+  labels:
+    app.kubernetes.io/name: backend
+    app.kubernetes.io/part-of: insight-engine
+data:
+  ENVIRONMENT: "production"
+  LOG_LEVEL: "info"
+  LOG_FORMAT: "json"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: frontend-config
+  namespace: insight-engine
+  labels:
+    app.kubernetes.io/name: frontend
+    app.kubernetes.io/part-of: insight-engine
+data:
+  NEXT_PUBLIC_API_URL: "/api"

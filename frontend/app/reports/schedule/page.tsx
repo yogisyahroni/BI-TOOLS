@@ -96,6 +96,7 @@ export default function ScheduledReportsPage() {
 
   // Handle delete
   const handleDelete = async (report: ScheduledReportResponse) => {
+    // eslint-disable-next-line no-alert
     if (!confirm('Are you sure you want to delete this scheduled report?')) return;
     try {
       await scheduledReportsApi.delete(report.id);

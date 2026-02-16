@@ -12,7 +12,7 @@ export class AgentService {
      * Iterates through agents, fetches data, asks AI, sends email.
      */
     async runDueAgents() {
-        console.log('[AgentService] 🌅 Waking up agents...');
+        console.warn('[AgentService] 🌅 Waking up agents...');
 
         // 1. Fetch Active Agents from DB
         const agents = await db.agent.findMany({
@@ -66,7 +66,7 @@ export class AgentService {
                 // 4. Dispatch (The "Mouth")
                 const insight = aiResponse.explanation || aiResponse.sql; // Fallback
 
-                console.log(`
+                console.warn(`
                 📧 [EMAIL SENT] to ${agent.emailTo}
                 SUBJECT: ${agent.name}
                 ----------------------------------------

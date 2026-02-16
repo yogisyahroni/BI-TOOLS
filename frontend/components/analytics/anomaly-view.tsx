@@ -1,8 +1,10 @@
 "use client"
 
+import { Loader2, AlertTriangle } from 'lucide-react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useState } from "react"
-import { AnomalyChart, AnomalyDataPoint } from "@/components/visualizations/anomaly-chart"
-import { AnomalyConfig, AnomalyConfigData } from "@/components/analytics/anomaly-config"
+import { AnomalyChart, type AnomalyDataPoint } from "@/components/visualizations/anomaly-chart"
+import { AnomalyConfig, type AnomalyConfigData } from "@/components/analytics/anomaly-config"
 import { useToast } from "@/components/ui/use-toast"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ReportGenerator } from "@/components/analytics/report-generator"
@@ -19,7 +21,7 @@ export function AnomalyView({ history }: AnomalyViewProps) {
     const handleDetectAnomalies = async (config: AnomalyConfigData) => {
         setLoading(true)
         try {
-            const response = await fetch("/api/analytics/anomalies", {
+            const res = await fetchWithAuth('/api/go/anomalies', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -31,12 +33,12 @@ export function AnomalyView({ history }: AnomalyViewProps) {
                 }),
             })
 
-            if (!response.ok) {
-                const errorData = await response.json()
+            if (!res.ok) {
+                const errorData = await res.json()
                 throw new Error(errorData.error || "Failed to detect anomalies")
             }
 
-            const result = await response.json()
+            const result = await res.json()
             // Backend returns { anomalies: [...], summary: ... }
             // anomalies structure: { timestamp, value, score, severity }
             setAnomalies(result.anomalies || [])

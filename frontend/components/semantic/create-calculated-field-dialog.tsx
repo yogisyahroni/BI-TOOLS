@@ -23,6 +23,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { validateExpression } from '@/lib/semantic/expression-validator';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface CalculatedField {
     id?: string;
@@ -110,7 +111,7 @@ export function CreateCalculatedFieldDialog({
 
         setGenerating(true);
         try {
-            const res = await fetch('/api/ai/generate-formula', {
+            const res = await fetchWithAuth('/api/go/ai/generate-formula', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

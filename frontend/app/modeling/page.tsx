@@ -17,11 +17,11 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { semanticApi } from '@/lib/api/semantic';
-import { SemanticModel } from '@/types/semantic';
+import { type SemanticModel } from '@/types/semantic';
 
 export default function ModelingPage() {
     // TODO: Get real workspaceId context if needed, but API usually infers from header/token
-    const { connections, isLoading: connectionsLoading } = useConnections({ userId: 'current_user' });
+    const { connections, isLoading: connectionsLoading } = useConnections();
     const [selectedConnId, setSelectedConnId] = useState<string>('');
     const [models, setModels] = useState<SemanticModel[]>([]);
     const [loadingModels, setLoadingModels] = useState(false);

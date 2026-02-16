@@ -49,7 +49,7 @@ func Connect() {
 	log.Printf("🔌 Active Database Name: %s", dbName)
 
 	// Startup Sanity Check
-	var test time.Time
+	var test *time.Time
 	if err := DB.Raw("SELECT email_verified_at FROM users LIMIT 1").Scan(&test).Error; err != nil {
 		log.Printf("❌ STARTUP ERROR: cannot select email_verified_at: %v", err)
 	} else {

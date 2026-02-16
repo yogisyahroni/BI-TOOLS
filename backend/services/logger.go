@@ -20,7 +20,7 @@ const (
 	LogLevelFatal LogLevel = "FATAL"
 )
 
-// LogEntry represents a single log entry
+// LogEntry represents a single structured log entry (TASK-180 enhanced)
 type LogEntry struct {
 	Timestamp   string                 `json:"timestamp"`
 	Level       LogLevel               `json:"level"`
@@ -29,6 +29,8 @@ type LogEntry struct {
 	Message     string                 `json:"message"`
 	UserID      string                 `json:"userID,omitempty"`
 	RequestID   string                 `json:"requestID,omitempty"`
+	TraceID     string                 `json:"traceID,omitempty"`
+	SpanID      string                 `json:"spanID,omitempty"`
 	Error       string                 `json:"error,omitempty"`
 	Metadata    map[string]interface{} `json:"metadata,omitempty"`
 	SourceFile  string                 `json:"sourceFile,omitempty"`
@@ -94,6 +96,14 @@ func (l *Logger) log(level LogLevel, operation, message string, metadata map[str
 		if requestID, ok := metadata["request_id"].(string); ok {
 			entry.RequestID = requestID
 			delete(metadata, "request_id")
+		}
+		if traceID, ok := metadata["trace_id"].(string); ok {
+			entry.TraceID = traceID
+			delete(metadata, "trace_id")
+		}
+		if spanID, ok := metadata["span_id"].(string); ok {
+			entry.SpanID = spanID
+			delete(metadata, "span_id")
 		}
 		if err, ok := metadata["error"].(error); ok {
 			entry.Error = err.Error()
@@ -173,7 +183,7 @@ type ContextLogger struct {
 	ctx    context.Context
 }
 
-// extractMetadata extracts common metadata from context
+// extractMetadata extracts common metadata from context (TASK-180: enhanced with trace correlation)
 func (cl *ContextLogger) extractMetadata(metadata map[string]interface{}) map[string]interface{} {
 	if metadata == nil {
 		metadata = make(map[string]interface{})
@@ -185,6 +195,13 @@ func (cl *ContextLogger) extractMetadata(metadata map[string]interface{}) map[st
 	}
 	if requestID, ok := cl.ctx.Value("requestID").(string); ok && requestID != "" {
 		metadata["request_id"] = requestID
+	}
+	// TASK-180: Trace-log correlation
+	if traceID, ok := cl.ctx.Value("traceID").(string); ok && traceID != "" {
+		metadata["trace_id"] = traceID
+	}
+	if spanID, ok := cl.ctx.Value("spanID").(string); ok && spanID != "" {
+		metadata["span_id"] = spanID
 	}
 
 	return metadata

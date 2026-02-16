@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { getHelpTopic, HelpTopic } from '@/lib/help/help-config';
+import { getHelpTopic, type HelpTopic } from '@/lib/help/help-config';
 
 interface HelpContextType {
     isOpen: boolean;

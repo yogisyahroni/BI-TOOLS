@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { GripVertical, Plus, X } from 'lucide-react';
-import { SortRule, SortDirection } from '@/lib/query-builder/types';
+import { type SortRule, type SortDirection } from '@/lib/query-builder/types';
 
 interface SortSelectorProps {
     availableColumns: string[];

@@ -1,4 +1,4 @@
-import { SlideDeck } from '@/types/presentation';
+import { type SlideDeck } from '@/types/presentation';
 
 export const exportToPPT = async (deck: SlideDeck) => {
     try {

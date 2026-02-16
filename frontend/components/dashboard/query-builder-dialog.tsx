@@ -12,7 +12,7 @@ import { DualEngineEditor } from '@/components/dual-engine-editor';
 import { ResultsTable } from '@/components/query-results/results-table';
 import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
-import { SavedQuery } from '@/lib/types';
+import { type SavedQuery } from '@/lib/types';
 import { toast } from 'sonner';
 
 interface QueryBuilderDialogProps {

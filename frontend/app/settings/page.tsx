@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { ArrowLeft, Database, Key, Brain, Check, X, Plus as PlusIcon, Trash2, Edit, Save, Loader2, RefreshCw, Bell } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -14,7 +15,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { useConnections, DatabaseConnection } from '@/hooks/use-connections';
+import { useConnections, type DatabaseConnection } from '@/hooks/use-connections';
 
 import { RLSManager } from '@/components/security/rls-manager';
 import { DeveloperSettings } from '@/components/settings/developer-settings';
@@ -39,7 +40,7 @@ export default function SettingsPage() {
 
   // -- Connections Logic --
   // Note: refreshConnections is an alias for fetchConnections exported from the hook
-  const { connections, refreshConnections, deleteConnection, testConnection, createConnection, isLoading: isConnecting } = useConnections({ userId: 'user-1' });
+  const { connections, refreshConnections, deleteConnection, testConnection, createConnection, isLoading: isConnecting } = useConnections();
   const [showAddDatabase, setShowAddDatabase] = useState(false);
   const [newDb, setNewDb] = useState<ConnectionFormData>({
     name: '',
@@ -73,6 +74,7 @@ export default function SettingsPage() {
   };
 
   const handleDeleteConnection = async (id: string) => {
+    // eslint-disable-next-line no-alert
     if (confirm('Are you sure you want to delete this connection?')) {
       const res = await deleteConnection(id);
       if (res.success) {
@@ -128,7 +130,7 @@ export default function SettingsPage() {
   const [aiLoading, setAiLoading] = useState(false);
 
   useEffect(() => {
-    fetch('/api/settings?key=ai_config')
+    fetchWithAuth('/api/settings?key=ai_config')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data) {
@@ -140,7 +142,7 @@ export default function SettingsPage() {
   const handleSaveAI = async () => {
     setAiLoading(true);
     try {
-      await fetch('/api/settings', {
+      await fetchWithAuth('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

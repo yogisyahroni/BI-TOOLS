@@ -15,7 +15,7 @@ const ssoProviders = [
         icon: Chrome,
         bgColor: 'hover:bg-blue-50 dark:hover:bg-blue-950/20',
         textColor: 'text-blue-600 dark:text-blue-400',
-        enabled: true, // Enabled for TASK-007-008
+        enabled: false, // Disabled - credentials not configured
     },
     {
         id: 'microsoft',
@@ -101,7 +101,7 @@ export function SSOProviders({ isLoading = false }: SSOProvidersProps) {
             })}
 
             <p className="text-xs text-center text-muted-foreground mt-3">
-                Google Workspace SSO available • Other providers coming soon
+                SSO integrations coming soon
             </p>
         </div>
     );

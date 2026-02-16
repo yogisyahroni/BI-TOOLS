@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { StatusBadge } from './status-badge';
-import { SavedQuery, BusinessMetric } from '@/lib/types';
+import { type SavedQuery, type BusinessMetric } from '@/lib/types';
 import { Database, Calculator, Calendar, Eye, User as UserIcon } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
 

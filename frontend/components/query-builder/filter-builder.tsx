@@ -18,10 +18,10 @@ import { Plus, X, FolderPlus, CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import {
-    FilterGroup,
-    FilterCondition,
-    ComparisonOperator,
-    LogicalOperator,
+    type FilterGroup,
+    type FilterCondition,
+    type ComparisonOperator,
+    type LogicalOperator,
 } from '@/lib/query-builder/types';
 
 interface FilterBuilderProps {

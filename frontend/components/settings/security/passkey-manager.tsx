@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { startRegistration } from '@simplewebauthn/browser';
 import { Loader2, Fingerprint, Trash2, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface Credential {
     id: string;
@@ -24,7 +25,7 @@ export function PasskeyManager() {
 
     const fetchCredentials = async () => {
         try {
-            const res = await fetch('/api/auth/webauthn/credentials');
+            const res = await fetchWithAuth('/api/auth/webauthn/credentials');
             if (res.ok) {
                 const data = await res.json();
                 setCredentials(data);
@@ -44,7 +45,7 @@ export function PasskeyManager() {
         setIsRegistering(true);
         try {
             // 1. Get options
-            const resp = await fetch('/api/auth/webauthn/register');
+            const resp = await fetchWithAuth('/api/auth/webauthn/register');
             if (!resp.ok) throw new Error('Failed to get registration options');
             const options = await resp.json();
 
@@ -52,7 +53,7 @@ export function PasskeyManager() {
             const attResp = await startRegistration(options);
 
             // 3. Verify
-            const verificationResp = await fetch('/api/auth/webauthn/register', {
+            const verificationResp = await fetchWithAuth('/api/auth/webauthn/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(attResp),
@@ -81,7 +82,7 @@ export function PasskeyManager() {
         if (!confirm('Are you sure you want to remove this passkey?')) return;
 
         try {
-            const res = await fetch('/api/auth/webauthn/credentials', {
+            const res = await fetchWithAuth('/api/auth/webauthn/credentials', {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ credentialID }),

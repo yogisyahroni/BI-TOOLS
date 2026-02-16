@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { Prisma, Dashboard } from '@prisma/client';
+import { type Prisma, type Dashboard } from '@prisma/client';
 
 export class DashboardRepository {
     async create(data: Prisma.DashboardUncheckedCreateInput): Promise<Dashboard> {
@@ -56,7 +56,7 @@ export class DashboardRepository {
             });
 
             // Re-create cards
-            // @ts-ignore - Prisma client not regenerated yet for new fields
+            // @ts-expect-error - Prisma client not regenerated yet for new fields
             await Promise.all(cards.map(card => {
                 return tx.dashboardCard.create({
                     data: {
@@ -71,7 +71,7 @@ export class DashboardRepository {
                 });
             }));
 
-            // @ts-ignore - Prisma client include types outdated
+            // @ts-expect-error - Prisma client include types outdated
             return tx.dashboard.findUniqueOrThrow({
                 where: { id: dashboardId },
                 include: { cards: { include: { query: true } } }

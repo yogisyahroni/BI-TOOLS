@@ -3,7 +3,7 @@
  * Manages connection instances, pooling, and lifecycle
  */
 
-import { BaseConnector, ConnectionConfig } from './base-connector';
+import { type BaseConnector, type ConnectionConfig } from './base-connector';
 import { ConnectorFactory } from './connector-factory';
 
 interface PooledConnection {

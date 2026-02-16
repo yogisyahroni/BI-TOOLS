@@ -3,6 +3,7 @@
 import { useEffect, useCallback, createContext, useContext, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface ThemeConfig {
     primaryColor: string;
@@ -62,9 +63,12 @@ export function WorkspaceThemeProvider({ children }: { children: React.ReactNode
     useEffect(() => {
         if (!workspaceId) return;
 
+        // TASK: Implement backend theme endpoint
+        // For now, use default theme to avoid 404s
+        /*
         async function fetchTheme() {
             try {
-                const res = await fetch(`/api/workspaces/${workspaceId}/theme`);
+                const res = await fetchWithAuth(`/api/go/workspaces/${workspaceId}/theme`);
                 if (res.ok) {
                     const data = await res.json();
                     setConfig(data);
@@ -77,7 +81,9 @@ export function WorkspaceThemeProvider({ children }: { children: React.ReactNode
             }
         }
 
-        fetchTheme();
+        fetchTheme(); 
+        */
+        setIsLoading(false);
     }, [workspaceId, applyTheme]);
 
     return (

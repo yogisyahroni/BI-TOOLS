@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Loader2, Wand2 } from 'lucide-react';
 import { AIModelSelector } from '@/components/ai-model-selector';
-import { AIModel } from '@/lib/ai/registry';
+import { type AIModel } from '@/lib/ai/registry';
 
 interface StoryAIDialogProps {
     open: boolean;

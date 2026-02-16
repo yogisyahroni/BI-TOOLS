@@ -10,7 +10,7 @@ interface EChartsWrapperProps {
     options: EChartsOption;
     isLoading?: boolean;
     className?: string;
-    onEvents?: Record<string, Function>;
+    onEvents?: Record<string, (...args: any[]) => any>;
 }
 
 export function EChartsWrapper({

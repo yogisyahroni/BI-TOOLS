@@ -199,3 +199,53 @@ func (h *SystemHealthHandler) ExportHealthReport(c *fiber.Ctx) error {
 
 	return c.JSON(summary)
 }
+
+// ReadinessProbe handles GET /health/ready for Kubernetes readiness checks.
+// Returns 200 if the application can serve traffic (database is reachable).
+// Returns 503 if any critical dependency is unavailable.
+func (h *SystemHealthHandler) ReadinessProbe(c *fiber.Ctx) error {
+	ctx := c.Context()
+
+	checks := make(map[string]string)
+	ready := true
+
+	// Check database health
+	dbHealth, err := h.healthService.GetDatabaseHealth(ctx)
+	if err != nil || (dbHealth != nil && dbHealth.Status == "critical") {
+		checks["database"] = "critical"
+		ready = false
+	} else if dbHealth != nil {
+		checks["database"] = dbHealth.Status
+	}
+
+	// Check cache health (non-critical: degraded cache doesn't block readiness)
+	cacheHealth, err := h.healthService.GetCacheStats(ctx)
+	if err != nil || (cacheHealth != nil && cacheHealth.Status == "critical") {
+		checks["cache"] = "degraded"
+	} else if cacheHealth != nil {
+		checks["cache"] = cacheHealth.Status
+	}
+
+	statusCode := fiber.StatusOK
+	status := "ready"
+	if !ready {
+		statusCode = fiber.StatusServiceUnavailable
+		status = "not_ready"
+	}
+
+	return c.Status(statusCode).JSON(fiber.Map{
+		"status":    status,
+		"checks":    checks,
+		"timestamp": time.Now().UTC().Format(time.RFC3339),
+	})
+}
+
+// LivenessProbe handles GET /health/live for Kubernetes liveness checks.
+// Returns 200 if the process is alive and the Go runtime is functioning.
+// This is intentionally lightweight — no DB or external calls.
+func (h *SystemHealthHandler) LivenessProbe(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{
+		"status":    "alive",
+		"timestamp": time.Now().UTC().Format(time.RFC3339),
+	})
+}

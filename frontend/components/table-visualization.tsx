@@ -37,7 +37,7 @@ export function TableVisualization({
     const processedData = useMemo(() => {
         if (!data || data.length === 0) return [];
 
-        let result = [...data];
+        const result = [...data];
 
         // Sort if column specified
         if (sortColumn && displayColumns.includes(sortColumn)) {

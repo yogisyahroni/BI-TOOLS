@@ -1,5 +1,5 @@
 import { apiGet, apiPost } from './config';
-import { DataClassification, ColumnMetadata, ColumnPermission } from '../../types/data-governance';
+import { type DataClassification, type ColumnMetadata, type ColumnPermission } from '../../types/data-governance';
 
 export const dataGovernanceApi = {
     getClassifications: () =>

@@ -52,6 +52,32 @@ func Migrate() {
 		log.Printf("⚠️ Webhook migration warning: %v", err)
 	}
 
+	// Migrate AI Usage and Budget models
+	if err := DB.AutoMigrate(
+		&models.AIUsageRequest{},
+		&models.AIBudget{},
+		&models.BudgetAlert{},
+		&models.RateLimitConfig{},
+		&models.RateLimitViolation{},
+	); err != nil {
+		log.Printf("⚠️ AI Usage migration warning: %v", err)
+	}
+
+	// Migrate Embed Tokens
+	if err := DB.AutoMigrate(&models.EmbedToken{}); err != nil {
+		log.Printf("⚠️ Embed Token migration warning: %v", err)
+	}
+
+	// Migrate Shares
+	if err := DB.AutoMigrate(&models.Share{}); err != nil {
+		log.Printf("⚠️ Share migration warning: %v", err)
+	}
+
+	// Migrate Collections
+	if err := DB.AutoMigrate(&models.Collection{}); err != nil {
+		log.Printf("⚠️ Collection migration warning: %v", err)
+	}
+
 	// Handle User migration with resilience
 	if err := DB.AutoMigrate(&models.User{}); err != nil {
 		log.Printf("⚠️ User migration warning (indexes might need manual fix): %v", err)

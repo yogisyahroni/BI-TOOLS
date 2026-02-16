@@ -3,6 +3,7 @@ package services
 import (
 	"container/list"
 	"context"
+	"encoding/json"
 	"fmt"
 	"insight-engine-backend/database"
 	"insight-engine-backend/models"
@@ -138,9 +139,9 @@ func (jq *JobQueue) processJob(job *Job) error {
 	}
 }
 
-// processPipeline executes a pipeline
+// processPipeline executes a pipeline using the real PipelineExecutor
 func (jq *JobQueue) processPipeline(pipelineID string) error {
-	// Find the execution record
+	// Find the PENDING execution record
 	var execution models.JobExecution
 	if err := database.DB.Where("pipeline_id = ? AND status = ?", pipelineID, "PENDING").
 		Order("started_at DESC").
@@ -152,34 +153,56 @@ func (jq *JobQueue) processPipeline(pipelineID string) error {
 	execution.Status = "PROCESSING"
 	database.DB.Save(&execution)
 
-	// NOTE: Actual pipeline execution logic is business-specific and depends on
-	// the pipeline configuration stored in the database. This would typically:
-	// 1. Load pipeline steps from database
-	// 2. Execute each step sequentially or in parallel
-	// 3. Handle step dependencies and conditional execution
-	// 4. Aggregate results and update execution metadata
-	//
-	// For now, this is a placeholder that simulates successful execution.
-	// Production implementation should integrate with PipelineExecutor service.
-	time.Sleep(2 * time.Second)
+	// Execute the pipeline through the real ETL engine
+	if GlobalPipelineExecutor == nil {
+		InitPipelineExecutor()
+	}
 
-	// Update execution record
+	result := GlobalPipelineExecutor.Execute(pipelineID, execution.ID)
+
+	// Serialize execution logs to JSON
+	var logsJSON *string
+	if len(result.Logs) > 0 {
+		if logsBytes, err := json.Marshal(result.Logs); err == nil {
+			s := string(logsBytes)
+			logsJSON = &s
+		}
+	}
+
+	// Update execution record with real results
 	now := time.Now()
-	execution.Status = "COMPLETED"
 	execution.CompletedAt = &now
-	durationMs := int(now.Sub(execution.StartedAt).Milliseconds())
-	execution.DurationMs = &durationMs
-	execution.RowsProcessed = 100 // Mock value
+	execution.DurationMs = &result.DurationMs
+	execution.RowsProcessed = result.RowsProcessed
+	execution.BytesProcessed = result.BytesProcessed
+	execution.QualityViolations = result.QualityViolations
+	execution.Progress = 100
+	execution.Logs = logsJSON
+
+	if result.Error != nil {
+		execution.Status = "FAILED"
+		errMsg := result.Error.Error()
+		execution.Error = &errMsg
+
+		// Update pipeline last run status as FAILED
+		database.DB.Exec("UPDATE \"Pipeline\" SET last_run_at = ?, last_status = ? WHERE id = ?",
+			now, "FAILED", pipelineID)
+	} else {
+		execution.Status = "COMPLETED"
+
+		// Update pipeline last run status as SUCCESS
+		database.DB.Exec("UPDATE \"Pipeline\" SET last_run_at = ?, last_status = ? WHERE id = ?",
+			now, "SUCCESS", pipelineID)
+	}
 
 	if err := database.DB.Save(&execution).Error; err != nil {
 		return fmt.Errorf("failed to update execution: %w", err)
 	}
 
-	// Update pipeline last run status
-	database.DB.Exec("UPDATE \"Pipeline\" SET last_run_at = ?, last_status = ? WHERE id = ?",
-		now, "SUCCESS", pipelineID)
+	LogInfo("pipeline_execution_complete", fmt.Sprintf("Pipeline %s execution %s: %s (%d rows, %dms)",
+		pipelineID, execution.ID, execution.Status, result.RowsProcessed, result.DurationMs), nil)
 
-	return nil
+	return result.Error
 }
 
 // processDataflow executes a dataflow

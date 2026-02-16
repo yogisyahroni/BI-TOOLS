@@ -32,8 +32,10 @@ type Dashboard struct {
 	UserIDSnake       string `gorm:"column:user_id;type:varchar(255)" json:"-"`
 
 	// Relationships (loaded on demand)
-	Cards    []DashboardCard    `gorm:"foreignKey:DashboardID" json:"cards,omitempty"`
-	Versions []DashboardVersion `gorm:"foreignKey:DashboardID" json:"versions,omitempty"`
+	Cards      []DashboardCard    `gorm:"foreignKey:DashboardID" json:"cards,omitempty"`
+	Versions   []DashboardVersion `gorm:"foreignKey:DashboardID" json:"versions,omitempty"`
+	Collection *Collection        `gorm:"foreignKey:CollectionID;references:ID" json:"collection,omitempty"`
+	User       *User              `gorm:"foreignKey:UserID;references:ID" json:"user,omitempty"`
 }
 
 // BeforeCreate hook to populate redundant snake_case fields

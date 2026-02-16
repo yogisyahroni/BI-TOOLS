@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useSearchParams } from 'next/navigation';
 import { SidebarLayout } from '@/components/sidebar-layout';
 import { useSidebar } from '@/contexts/sidebar-context';
@@ -12,11 +13,12 @@ import { VisualizationSidebar } from '@/components/visualization-sidebar';
 import { SchemaBrowser } from '@/components/schema-browser';
 import { ChartVisualization } from '@/components/chart-visualization';
 import { AIReasoning } from '@/components/ai-reasoning';
+import { AIChatAssistant } from '@/components/ai/ai-chat-assistant';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Database, Brain, Eye, Loader2 } from 'lucide-react';
 import { useQueryExecution } from '@/hooks/use-query-execution';
 import { useConnections } from '@/hooks/use-connections';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 
 export function HomePageContent() {
     const { toggle: toggleSidebar } = useSidebar();
@@ -63,7 +65,7 @@ export function HomePageContent() {
     // Fetch query details (including status) when ID is present
     useEffect(() => {
         if (queryId) {
-            fetch(`/api/queries/saved/${queryId}`)
+            fetchWithAuth(`/api/go/queries/saved/${queryId}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.success && data.data) {
@@ -85,16 +87,11 @@ export function HomePageContent() {
         sql: string;
         aiPrompt?: string;
     }) => {
-        // Note: We don't need to manually update queryData etc if we use the SAME hook instance
-        // but DualEngineEditor has its OWN hook instance. 
-        // We should probably lift the hook to Home and pass it down, or manually sync here.
-        // For now, let's sync to local state if needed, but easier is to just use these props.
         setActiveQuery({ sql: results.sql, aiPrompt: results.aiPrompt });
     };
 
-    // Connections hook (for mock user)
+    // Connections hook — user identity comes from JWT Bearer token
     const { activeConnection, connections, fetchSchema, schema } = useConnections({
-        userId: 'user_123', // Mock user ID
         autoFetch: true,
     });
 
@@ -170,7 +167,6 @@ export function HomePageContent() {
                             onSchemaClick={() => setShowSchemaBrowser(true)}
                             onResultsUpdate={(res) => {
                                 setActiveQuery({ sql: res.sql, aiPrompt: res.aiPrompt });
-                                // We'll pass these down to ResultsPanel
                             }}
                             connectionId={activeConnection?.id || 'db1'}
                         />
@@ -289,6 +285,15 @@ export function HomePageContent() {
                     </div>
                 )}
             </div>
+
+            {/* AI Chat Assistant - Floating */}
+            <AIChatAssistant
+                currentSQL={activeQuery.sql}
+                currentPrompt={activeQuery.aiPrompt}
+                onApplySQL={(sql) => {
+                    setActiveQuery(prev => ({ ...prev, sql }));
+                }}
+            />
         </SidebarLayout>
     );
 }

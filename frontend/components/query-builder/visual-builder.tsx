@@ -3,8 +3,8 @@
 import { useState, useCallback, useEffect } from 'react';
 import {
     DndContext,
-    DragEndEvent,
-    DragStartEvent,
+    type DragEndEvent,
+    type DragStartEvent,
     DragOverlay,
     useSensor,
     useSensors,
@@ -37,6 +37,7 @@ import {
     Loader2,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 // Types
 interface TableSchema {
@@ -126,7 +127,7 @@ export function VisualBuilder({
     const fetchJoinSuggestions = async () => {
         setLoadingSuggestions(true);
         try {
-            const response = await fetch('/api/visual-queries/join-suggestions', {
+            const response = await fetchWithAuth('/api/go/visual-queries/join-suggestions', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

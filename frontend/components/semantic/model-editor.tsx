@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Link2, Calculator, EyeOff, Trash2 } from 'lucide-react';
@@ -67,7 +68,7 @@ export function ModelEditor({ connectionId }: ModelEditorProps) {
 
     const loadSchema = async () => {
         try {
-            const res = await fetch(`/api/connections/${connectionId}/schema`);
+            const res = await fetchWithAuth(`/api/go/connections/${connectionId}/schema`);
             if (res.ok) {
                 const data = await res.json();
                 setSchema(data);
@@ -135,7 +136,7 @@ function RelationshipsPanel({ connectionId, tables }: { connectionId: string; ta
 
     const loadRelationships = async () => {
         try {
-            const res = await fetch(`/api/semantic/relationships?connectionId=${connectionId}`);
+            const res = await fetchWithAuth(`/api/go/semantic/relationships?connectionId=${connectionId}`);
             if (res.ok) {
                 const data = await res.json();
                 setRelationships(data);
@@ -148,7 +149,7 @@ function RelationshipsPanel({ connectionId, tables }: { connectionId: string; ta
     };
 
     const handleCreate = async (relationship: any) => {
-        const res = await fetch('/api/semantic/relationships', {
+        const res = await fetchWithAuth('/api/go/semantic/relationships', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...relationship, connectionId })
@@ -162,7 +163,7 @@ function RelationshipsPanel({ connectionId, tables }: { connectionId: string; ta
 
     const handleDelete = async (id: string) => {
         if (!confirm('Delete this relationship?')) return;
-        const res = await fetch(`/api/semantic/relationships/${id}`, { method: 'DELETE' });
+        const res = await fetchWithAuth(`/api/go/semantic/relationships/${id}`, { method: 'DELETE' });
         if (res.ok) {
             await loadRelationships();
             toast.success('Relationship deleted');
@@ -184,7 +185,7 @@ function RelationshipsPanel({ connectionId, tables }: { connectionId: string; ta
                     <CardContent className="p-6">
                         <p className="text-sm text-muted-foreground">
                             No relationships defined yet. Virtual relationships allow the AI to perform JOINs
-                            even when foreign keys don't exist in your database.
+                            even when foreign keys don&apos;t exist in your database.
                         </p>
                     </CardContent>
                 </Card>

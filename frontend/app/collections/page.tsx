@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useCollections } from '@/hooks/use-collections';
 import { CollectionSidebar } from '@/components/collection-sidebar';
 import { Button } from '@/components/ui/button';
@@ -46,17 +47,10 @@ export default function CollectionsPage() {
         if (!moveItem) return;
 
         const endpoint = moveItem.type === 'dashboard'
-            ? `/api/dashboards/${moveItem.id}`
-            : `/api/queries/saved/${moveItem.id}`;
+            ? `/api/go/dashboards/${moveItem.id}`
+            : `/api/go/queries/saved/${moveItem.id}`;
 
-        // If targetCollectionId is 'root', we set collectionId to null or empty string depending on backend
-        // Assuming backend handles empty string as root or null. 
-        // Actually schema says collectionId is String (required?). 
-        // If collectionId is required, we cannot move to root if root is not a collection.
-        // But dashboard.collectionId IS required in schema?
-        // Let's check schema.
-
-        await fetch(endpoint, {
+        await fetchWithAuth(endpoint, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ collectionId: targetCollectionId === 'root' ? null : targetCollectionId })

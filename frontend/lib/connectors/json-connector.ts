@@ -1,4 +1,4 @@
-import { BaseConnector, ConnectionConfig, SchemaInfo, QueryResult } from './base-connector';
+import { BaseConnector, ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
 import * as fs from 'fs';
 
 /**

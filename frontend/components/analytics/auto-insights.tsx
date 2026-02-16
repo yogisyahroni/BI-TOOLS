@@ -14,7 +14,7 @@ import {
     Lightbulb,
     CheckCircle2
 } from 'lucide-react';
-import { Insight } from '@/types/analytics';
+import { type Insight } from '@/types/analytics';
 import { cn } from '@/lib/utils';
 
 interface AutoInsightsProps {

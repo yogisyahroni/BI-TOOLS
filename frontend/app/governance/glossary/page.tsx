@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
-import { glossaryApi, BusinessTerm } from '@/services/glossary';
+import { glossaryApi, type BusinessTerm } from '@/services/glossary';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -54,6 +54,7 @@ export default function GlossaryPage() {
     };
 
     const handleDelete = async (id: string) => {
+        // eslint-disable-next-line no-alert
         if (!confirm('Are you sure you want to delete this term?')) return;
         try {
             await glossaryApi.deleteTerm(id);

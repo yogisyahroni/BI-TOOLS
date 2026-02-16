@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Command, CommandEmpty, CommandGroup, CommandItem, CommandList } from '@/components/ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
@@ -43,8 +44,8 @@ export function MentionPopover({
                 q: searchQuery,
                 limit: '10',
             });
-            
-            const response = await fetch(`/api/go/comments/mentions/search?${params}`);
+
+            const response = await fetchWithAuth(`/api/go/comments/mentions/search?${params}`);
             if (response.ok) {
                 const data = await response.json();
                 // Filter out current user and excluded users
@@ -67,8 +68,8 @@ export function MentionPopover({
             const params = new URLSearchParams({
                 limit: '5',
             });
-            
-            const response = await fetch(`/api/go/comments/mentions/recent?${params}`);
+
+            const response = await fetchWithAuth(`/api/go/comments/mentions/recent?${params}`);
             if (response.ok) {
                 const data = await response.json();
                 setRecentUsers(data as CommentUser[]);
@@ -111,9 +112,9 @@ export function MentionPopover({
     return (
         <Popover open={isOpen} onOpenChange={onOpenChange}>
             <PopoverTrigger asChild>{children}</PopoverTrigger>
-            <PopoverContent 
-                className="w-72 p-0" 
-                align="start" 
+            <PopoverContent
+                className="w-72 p-0"
+                align="start"
                 side="top"
                 sideOffset={5}
             >
@@ -244,7 +245,7 @@ export function useMentions() {
         setMentionStartIndex(lastAtIndex);
         setQuery(textAfterAt);
         setIsOpen(true);
-        
+
         return { shouldShowMentions: true, mentionQuery: textAfterAt };
     };
 

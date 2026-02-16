@@ -1,5 +1,5 @@
 import { fetchWithAuth } from '@/lib/utils';
-import { VisualQueryConfig } from '@/types/visual-query';
+import { type VisualQueryConfig } from '@/types/visual-query';
 
 export interface VisualQuery {
     id: string;

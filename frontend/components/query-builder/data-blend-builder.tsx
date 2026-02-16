@@ -3,17 +3,17 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import {
     ReactFlow,
-    Node,
-    Edge,
+    type Node,
+    type Edge,
     Controls,
     Background,
     MiniMap,
     useNodesState,
     useEdgesState,
     addEdge,
-    Connection,
+    type Connection,
     Panel,
-    NodeTypes,
+    type NodeTypes,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Button } from '@/components/ui/button';

@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect, useCallback } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useParams, useRouter } from 'next/navigation';
 import {
     LayoutGrid,
@@ -21,9 +22,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
 import { toast } from 'sonner';
-import { CanvasBoard, CanvasWidget } from '@/components/canvas/canvas-board';
+import { CanvasBoard, type CanvasWidget } from '@/components/canvas/canvas-board';
 import { PropertyPanel } from '@/components/canvas/properties/property-panel';
-import { useDebounce } from 'usehooks-ts';
+
 import Link from 'next/link';
 
 interface Canvas {
@@ -54,7 +55,7 @@ export default function CanvasEditorPage() {
 
     const fetchCanvas = async () => {
         try {
-            const res = await fetch(`/api/canvas/${canvasId}`);
+            const res = await fetchWithAuth(`/api/go/canvas/${canvasId}`);
             if (!res.ok) throw new Error('Failed to load canvas');
 
             const data = await res.json();
@@ -76,7 +77,7 @@ export default function CanvasEditorPage() {
         setCanvas({ ...canvas, ...updates });
 
         try {
-            await fetch(`/api/canvas/${canvasId}`, {
+            await fetchWithAuth(`/api/go/canvas/${canvasId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -116,7 +117,7 @@ export default function CanvasEditorPage() {
             setWidgets([...widgets, newWidget]);
             setSelectedWidgetId(tempId);
 
-            const res = await fetch(`/api/canvas/${canvasId}/widgets`, {
+            const res = await fetchWithAuth(`/api/go/canvas/${canvasId}/widgets`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -150,7 +151,7 @@ export default function CanvasEditorPage() {
         try {
             // We need to strip out fields that are local-only or strictly typed
             // but our API accepts partial updates.
-            await fetch(`/api/canvas/${canvasId}/widgets/${id}`, {
+            await fetchWithAuth(`/api/go/canvas/${canvasId}/widgets/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(updates)
@@ -169,7 +170,7 @@ export default function CanvasEditorPage() {
         setSelectedWidgetId(null);
 
         try {
-            await fetch(`/api/canvas/${canvasId}/widgets/${id}`, {
+            await fetchWithAuth(`/api/go/canvas/${canvasId}/widgets/${id}`, {
                 method: 'DELETE'
             });
         } catch (error) {

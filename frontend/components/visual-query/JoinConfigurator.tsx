@@ -12,7 +12,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent } from "@/components/ui/card";
-import { JoinType } from "@/types/visual-query";
+import { type JoinType } from "@/types/visual-query";
 import { Label } from "@/components/ui/label";
 
 export function JoinConfigurator() {

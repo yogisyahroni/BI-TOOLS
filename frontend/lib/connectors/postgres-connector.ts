@@ -1,4 +1,4 @@
-import { BaseConnector, ConnectionConfig, SchemaInfo, QueryResult, TableInfo, ColumnInfo } from './base-connector';
+import { BaseConnector, type ConnectionConfig, type SchemaInfo, type QueryResult, type TableInfo, type ColumnInfo } from './base-connector';
 import { Client } from 'pg';
 
 /**

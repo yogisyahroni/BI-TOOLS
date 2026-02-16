@@ -63,6 +63,7 @@ type ServiceContainer struct {
 	EmbedService             *services.EmbedService
 	CommentService           *services.CommentService
 	ScheduledReportService   *services.ScheduledReportService
+	SecurityLogService       *services.SecurityLogService
 }
 
 // HandlerContainer holds all initialized handlers
@@ -139,3 +140,4 @@ func NewApp() *App {
 		Handlers: hdlContainer,
 	}
 }
+

@@ -3,7 +3,7 @@
 
 import { useMemo } from 'react';
 import { EChartsWrapper } from '@/components/echarts-wrapper';
-import { ForecastResult } from '@/lib/services/forecasting-service';
+import { type ForecastResult } from '@/lib/services/forecasting-service';
 import { Card } from '@/components/ui/card';
 
 interface ForecastChartProps {

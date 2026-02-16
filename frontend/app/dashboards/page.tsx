@@ -6,7 +6,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { useDashboards } from '@/hooks/use-dashboards';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import {
   Dialog,
@@ -17,8 +17,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { LayoutDashboard, Plus, Search, Loader2, FileBarChart, Calendar, MoreVertical, Trash2, Copy } from 'lucide-react';
-import { SidebarLayout } from '@/components/sidebar-layout';
+import { LayoutDashboard, Plus, Search, Loader2, FileBarChart, Calendar, MoreVertical, Trash2, Copy, Sparkles } from 'lucide-react';
+import { PageLayout } from '@/components/page-layout';
+import { PageHeader, PageActions, PageContent } from '@/components/page-header';
 import { formatDistanceToNow } from 'date-fns';
 import {
   DropdownMenu,
@@ -56,7 +57,7 @@ export default function DashboardsPage() {
     const result = await createDashboard({
       name: newDashboardName,
       description: 'New dashboard created via Explorer',
-      collectionId: '', // Default collection? or handle backend default
+      collectionId: '',
     });
 
     setIsCreating(false);
@@ -71,8 +72,9 @@ export default function DashboardsPage() {
   };
 
   const handleDelete = async (id: string, e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent link navigation
+    e.preventDefault();
     e.stopPropagation();
+    // eslint-disable-next-line no-alert
     if (confirm('Are you sure you want to delete this dashboard?')) {
       const result = await deleteDashboard(id);
       if (result.success) {
@@ -95,26 +97,21 @@ export default function DashboardsPage() {
   };
 
   return (
-    <SidebarLayout>
-      <div className="container py-8 max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-8 gap-4">
-          <div>
-            <h1 className="text-3xl font-bold flex items-center gap-3">
-              <LayoutDashboard className="h-8 w-8 text-primary" />
-              Dashboards
-            </h1>
-            <p className="text-muted-foreground mt-2">
-              Manage and view your analytics dashboards
-            </p>
-          </div>
-
-          <div className="flex items-center gap-2 w-full md:w-auto">
-            <div className="relative flex-1 md:w-64">
+    <PageLayout>
+      <PageHeader
+        title="Dashboards"
+        description="Manage and view your analytics dashboards"
+        icon={LayoutDashboard}
+        badge="Beta"
+        badgeVariant="secondary"
+        actions={
+          <PageActions>
+            <div className="relative hidden sm:block">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
                 placeholder="Search dashboards..."
-                className="pl-8"
+                className="w-64 pl-8"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -124,7 +121,7 @@ export default function DashboardsPage() {
               <DialogTrigger asChild>
                 <Button className="gap-2">
                   <Plus className="h-4 w-4" />
-                  New Dashboard
+                  <span className="hidden sm:inline">New Dashboard</span>
                 </Button>
               </DialogTrigger>
               <DialogContent>
@@ -151,32 +148,54 @@ export default function DashboardsPage() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+          </PageActions>
+        }
+      />
+
+      <PageContent>
+        {/* Mobile Search */}
+        <div className="sm:hidden">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search dashboards..."
+              className="w-full pl-8"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
           </div>
         </div>
 
         {error && (
-          <div className="bg-destructive/10 text-destructive p-4 rounded-lg mb-6 flex items-center gap-2">
+          <div className="bg-destructive/10 text-destructive p-4 rounded-xl flex items-center gap-2">
             <span>Error: {error}</span>
             <Button variant="outline" size="sm" onClick={() => window.location.reload()} className="ml-auto">Retry</Button>
           </div>
         )}
 
         {isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <Card key={i} className="h-[200px] animate-pulse bg-muted/50" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {[1, 2, 3, 4].map((i) => (
+              <Card key={i} className="h-[220px] animate-pulse bg-muted/50" />
             ))}
           </div>
         ) : filteredDashboards.length === 0 ? (
-          <div className="text-center py-20 border-2 border-dashed rounded-lg bg-muted/10">
-            <FileBarChart className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium">No dashboards found</h3>
-            <p className="text-muted-foreground mb-6">
-              {searchQuery ? "Try adjusting your search query" : "Create your first dashboard to get started"}
+          <div className="flex flex-col items-center justify-center py-20 text-center border-2 border-dashed border-muted rounded-2xl bg-muted/5">
+            <div className="h-16 w-16 rounded-2xl bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center mb-6">
+              <FileBarChart className="h-8 w-8 text-primary" />
+            </div>
+            <h3 className="text-xl font-semibold mb-2">
+              {searchQuery ? "No dashboards found" : "Create your first dashboard"}
+            </h3>
+            <p className="text-muted-foreground mb-6 max-w-md">
+              {searchQuery 
+                ? "Try adjusting your search query" 
+                : "Dashboards help you visualize and share your data insights with your team"}
             </p>
             {!searchQuery && (
-              <Button onClick={() => setIsCreateOpen(true)}>
-                <Plus className="h-4 w-4 mr-2" />
+              <Button onClick={() => setIsCreateOpen(true)} size="lg" className="gap-2">
+                <Plus className="h-5 w-5" />
                 Create Dashboard
               </Button>
             )}
@@ -184,11 +203,11 @@ export default function DashboardsPage() {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredDashboards.map((dashboard) => (
-              <Link key={dashboard.id} href={`/dashboards/${dashboard.id}`} className="block group h-full">
-                <Card className="h-full hover:shadow-md transition-all duration-200 border-border/50 hover:border-primary/50 flex flex-col">
+              <Link key={dashboard.id} href={`/dashboards/${dashboard.id}`} className="block group">
+                <Card className="h-full card-hover border-border/50 overflow-hidden">
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
-                      <div className="space-y-1">
+                      <div className="space-y-1 flex-1 min-w-0">
                         <CardTitle className="truncate text-base flex items-center gap-2" title={dashboard.name}>
                           <span className="truncate">{dashboard.name}</span>
                           <VerificationBadge status={dashboard.certificationStatus || 'none'} />
@@ -199,7 +218,12 @@ export default function DashboardsPage() {
                       </div>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 -mt-1 -mr-2 opacity-0 group-hover:opacity-100 transition-opacity" onClick={(e) => e.preventDefault()}>
+                          <Button 
+                            variant="ghost" 
+                            size="icon" 
+                            className="h-8 w-8 -mt-1 -mr-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={(e) => e.preventDefault()}
+                          >
                             <MoreVertical className="h-4 w-4" />
                           </Button>
                         </DropdownMenuTrigger>
@@ -214,30 +238,30 @@ export default function DashboardsPage() {
                       </DropdownMenu>
                     </div>
                   </CardHeader>
-                  <CardContent className="flex-1 pb-3">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2">
-                      <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80">
+                  <CardContent className="pb-3">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium bg-secondary">
                         {dashboard.cards?.length || 0} Widgets
                       </span>
                       {dashboard.isPublic && (
-                        <span className="inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-semibold border-transparent bg-green-500/10 text-green-500">
+                        <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium bg-green-500/10 text-green-600 border-green-500/20">
                           Public
                         </span>
                       )}
                     </div>
                   </CardContent>
-                  <CardFooter className="pt-0 border-t bg-muted/5 mt-auto p-4">
-                    <div className="flex items-center text-xs text-muted-foreground w-full">
-                      <Calendar className="h-3 w-3 mr-1" />
+                  <div className="border-t bg-muted/30 px-6 py-4">
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Calendar className="h-3.5 w-3.5 mr-1.5" />
                       <span>Updated {formatDistanceToNow(new Date(dashboard.updatedAt), { addSuffix: true })}</span>
                     </div>
-                  </CardFooter>
+                  </div>
                 </Card>
               </Link>
             ))}
           </div>
         )}
-      </div>
-    </SidebarLayout>
+      </PageContent>
+    </PageLayout>
   );
 }

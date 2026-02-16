@@ -1,23 +1,23 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { 
-  Calculator, 
-  Sparkles, 
-  Network, 
-  TrendingUp, 
-  AlertTriangle, 
-  Brain,
-  BarChart3,
-  Activity,
-  Lightbulb,
-  ArrowUpRight,
-  ArrowDownRight,
-  Minus,
-  Database,
-  LineChart,
-  FileText,
-  AlertCircle
+import {
+    Calculator,
+    Sparkles,
+    Network,
+    TrendingUp,
+    AlertTriangle,
+    Brain,
+    BarChart3,
+    Activity,
+    Lightbulb,
+    ArrowUpRight,
+    ArrowDownRight,
+    Minus,
+    Database,
+    LineChart,
+    FileText,
+    AlertCircle
 } from "lucide-react"
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -31,107 +31,107 @@ import { AnomalyView } from "@/components/analytics/anomaly-view"
 import { AutoInsights } from "@/components/analytics/auto-insights"
 import { KeyDrivers } from "@/components/analytics/key-drivers"
 import { AnomalyDataPoint } from "@/components/visualizations/anomaly-chart"
-import { Insight, CorrelationResult } from "@/types/analytics"
-import { cn } from "@/lib/utils"
+import { type Insight, type CorrelationResult } from "@/types/analytics"
+import { cn, fetchWithAuth } from "@/lib/utils"
 import Link from "next/link"
 
 interface MetricCardProps {
-  title: string
-  value: string | number
-  change?: string
-  trend?: 'up' | 'down' | 'neutral'
-  icon: React.ReactNode
-  description?: string
-  isLoading?: boolean
+    title: string
+    value: string | number
+    change?: string
+    trend?: 'up' | 'down' | 'neutral'
+    icon: React.ReactNode
+    description?: string
+    isLoading?: boolean
 }
 
 function MetricCard({ title, value, change, trend, icon, description, isLoading }: MetricCardProps) {
-  if (isLoading) {
-    return (
-      <Card className="relative overflow-hidden">
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <Skeleton className="h-4 w-24" />
-          <Skeleton className="h-8 w-8 rounded-lg" />
-        </CardHeader>
-        <CardContent>
-          <Skeleton className="h-8 w-20 mb-2" />
-          <Skeleton className="h-4 w-32" />
-        </CardContent>
-      </Card>
-    )
-  }
+    if (isLoading) {
+        return (
+            <Card className="relative overflow-hidden">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-8 w-8 rounded-lg" />
+                </CardHeader>
+                <CardContent>
+                    <Skeleton className="h-8 w-20 mb-2" />
+                    <Skeleton className="h-4 w-32" />
+                </CardContent>
+            </Card>
+        )
+    }
 
-  return (
-    <Card className="relative overflow-hidden">
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
-          {title}
-        </CardTitle>
-        <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
-          {icon}
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="text-2xl font-bold">{value}</div>
-        {(change || description) && (
-          <div className="flex items-center gap-2 mt-1">
-            {change && trend && (
-              <Badge 
-                variant={trend === 'up' ? 'default' : trend === 'down' ? 'destructive' : 'secondary'}
-                className="text-xs"
-              >
-                {trend === 'up' && <ArrowUpRight className="h-3 w-3 mr-1" />}
-                {trend === 'down' && <ArrowDownRight className="h-3 w-3 mr-1" />}
-                {trend === 'neutral' && <Minus className="h-3 w-3 mr-1" />}
-                {change}
-              </Badge>
-            )}
-            {description && (
-              <span className="text-xs text-muted-foreground">{description}</span>
-            )}
-          </div>
-        )}
-      </CardContent>
-    </Card>
-  )
+    return (
+        <Card className="relative overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                    {title}
+                </CardTitle>
+                <div className="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                    {icon}
+                </div>
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{value}</div>
+                {(change || description) && (
+                    <div className="flex items-center gap-2 mt-1">
+                        {change && trend && (
+                            <Badge
+                                variant={trend === 'up' ? 'default' : trend === 'down' ? 'destructive' : 'secondary'}
+                                className="text-xs"
+                            >
+                                {trend === 'up' && <ArrowUpRight className="h-3 w-3 mr-1" />}
+                                {trend === 'down' && <ArrowDownRight className="h-3 w-3 mr-1" />}
+                                {trend === 'neutral' && <Minus className="h-3 w-3 mr-1" />}
+                                {change}
+                            </Badge>
+                        )}
+                        {description && (
+                            <span className="text-xs text-muted-foreground">{description}</span>
+                        )}
+                    </div>
+                )}
+            </CardContent>
+        </Card>
+    )
 }
 
 interface Query {
-  id: string
-  name: string
-  created_at: string
-  updated_at: string
+    id: string
+    name: string
+    created_at: string
+    updated_at: string
 }
 
 interface Connection {
-  id: string
-  name: string
-  type: string
-  created_at: string
+    id: string
+    name: string
+    type: string
+    created_at: string
 }
 
 export function AnalyticsView() {
     const { toast } = useToast()
     const [activeTab, setActiveTab] = useState("forecast")
-    
+
     // Real data states
     const [queries, setQueries] = useState<Query[]>([])
     const [connections, setConnections] = useState<Connection[]>([])
     const [isLoadingData, setIsLoadingData] = useState(true)
-    
+
     // Analytics results
     const [insights, setInsights] = useState<Insight[]>([])
     const [correlations, setCorrelations] = useState<CorrelationResult[]>([])
     const [isLoadingAnalytics, setIsLoadingAnalytics] = useState(false)
-    
+
     // Fetch real data from backend
     useEffect(() => {
         const fetchData = async () => {
             setIsLoadingData(true)
             try {
                 const [queriesRes, connectionsRes] = await Promise.all([
-                    fetch('/api/queries'),
-                    fetch('/api/connections')
+                    fetchWithAuth('/api/go/queries'),
+                    fetchWithAuth('/api/go/connections')
                 ])
 
                 if (queriesRes.ok) {
@@ -202,7 +202,7 @@ export function AnalyticsView() {
                 }
 
                 // Generate insights
-                const insightsRes = await fetch('/api/analytics/insights', {
+                const insightsRes = await fetchWithAuth('/api/go/analytics/insights', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -218,7 +218,7 @@ export function AnalyticsView() {
                 }
 
                 // Calculate correlations
-                const corrRes = await fetch('/api/analytics/correlations', {
+                const corrRes = await fetchWithAuth('/api/go/analytics/correlations', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -415,7 +415,7 @@ export function AnalyticsView() {
                                 </CardContent>
                             </Card>
                         </TabsContent>
-                        
+
                         <TabsContent value="anomaly" className="mt-0 space-y-4">
                             <Card>
                                 <CardHeader>
@@ -452,7 +452,7 @@ export function AnalyticsView() {
                                 </CardContent>
                             </Card>
                         </TabsContent>
-                        
+
                         <TabsContent value="correlations" className="mt-0 space-y-4">
                             <Card>
                                 <CardHeader className="pb-3">

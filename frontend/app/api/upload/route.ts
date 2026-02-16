@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { Client } from 'pg';
 import Papa from 'papaparse';
 import { connectionService } from '@/lib/services/connection-service';

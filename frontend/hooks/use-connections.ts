@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
+import { fetchWithAuth } from '@/lib/utils';
 import type { DatabaseConnection } from '@/lib/types';
 
 // Schema types for frontend
@@ -40,7 +41,6 @@ export interface TestConnectionResult {
 }
 
 interface UseConnectionsOptions {
-    userId?: string;
     autoFetch?: boolean;
 }
 
@@ -56,9 +56,8 @@ export function useConnections(options: UseConnectionsOptions = {}) {
     const [isFetchingSchema, setIsFetchingSchema] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    // Fetch all connections
+    // Fetch all connections (userId is extracted from JWT by the Go backend)
     const fetchConnections = useCallback(async () => {
-        // Skip fetch if not authenticated
         if (!isAuthenticated) {
             return;
         }
@@ -67,10 +66,7 @@ export function useConnections(options: UseConnectionsOptions = {}) {
         setError(null);
 
         try {
-            const params = new URLSearchParams();
-            if (options.userId) params.append('userId', options.userId);
-
-            const response = await fetch(`/api/go/connections?${params.toString()}`);
+            const response = await fetchWithAuth('/api/go/connections');
 
             if (!response.ok) {
                 if (response.status === 401) throw new Error('Unauthorized');
@@ -80,9 +76,8 @@ export function useConnections(options: UseConnectionsOptions = {}) {
             const result = await response.json();
 
             if (result.success) {
-                setConnections(result.data);
-                // Set first connection as active if none selected
-                if (result.data.length > 0 && !activeConnection) {
+                setConnections(result.data || []);
+                if ((result.data || []).length > 0 && !activeConnection) {
                     setActiveConnection(result.data[0]);
                 }
             } else {
@@ -94,12 +89,12 @@ export function useConnections(options: UseConnectionsOptions = {}) {
         } finally {
             setIsLoading(false);
         }
-    }, [isAuthenticated, options.userId, activeConnection]);
+    }, [isAuthenticated, activeConnection]);
 
     // Create new connection
     const createConnection = useCallback(async (data: Partial<DatabaseConnection>) => {
         try {
-            const response = await fetch('/api/go/connections', {
+            const response = await fetchWithAuth('/api/go/connections', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
@@ -125,7 +120,7 @@ export function useConnections(options: UseConnectionsOptions = {}) {
     // Update connection
     const updateConnection = useCallback(async (id: string, data: Partial<DatabaseConnection>) => {
         try {
-            const response = await fetch(`/api/go/connections/${id}`, {
+            const response = await fetchWithAuth(`/api/go/connections/${id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
@@ -153,7 +148,7 @@ export function useConnections(options: UseConnectionsOptions = {}) {
     // Delete connection
     const deleteConnection = useCallback(async (id: string) => {
         try {
-            const response = await fetch(`/api/go/connections/${id}`, {
+            const response = await fetchWithAuth(`/api/go/connections/${id}`, {
                 method: 'DELETE',
             });
 
@@ -182,7 +177,7 @@ export function useConnections(options: UseConnectionsOptions = {}) {
     const testConnection = useCallback(async (id: string): Promise<TestConnectionResult> => {
         setIsTestingConnection(true);
         try {
-            const response = await fetch(`/api/go/connections/${id}/test`, {
+            const response = await fetchWithAuth(`/api/go/connections/${id}/test`, {
                 method: 'POST',
             });
 
@@ -197,10 +192,10 @@ export function useConnections(options: UseConnectionsOptions = {}) {
     }, []);
 
     // Fetch schema for a connection
-    const fetchSchema = useCallback(async (id: string, useMock?: boolean) => {
+    const fetchSchema = useCallback(async (id: string, _useMock?: boolean) => {
         setIsFetchingSchema(true);
         try {
-            const response = await fetch(`/api/go/connections/${id}/schema`);
+            const response = await fetchWithAuth(`/api/go/connections/${id}/schema`);
             const result = await response.json();
 
             if (result.success) {
@@ -219,18 +214,17 @@ export function useConnections(options: UseConnectionsOptions = {}) {
     // Select active connection
     const selectConnection = useCallback((connection: DatabaseConnection | null) => {
         setActiveConnection(connection);
-        setSchema(null); // Reset schema when switching connections
+        setSchema(null);
     }, []);
 
     // Auto-fetch connections on mount (only when authenticated)
     useEffect(() => {
-        if (isAuthenticated && options.autoFetch !== false && options.userId) {
+        if (isAuthenticated && options.autoFetch !== false) {
             fetchConnections();
         }
-    }, [isAuthenticated, fetchConnections, options.autoFetch, options.userId]);
+    }, [isAuthenticated, options.autoFetch]);
 
     return {
-        // State
         connections,
         activeConnection,
         schema,
@@ -238,9 +232,7 @@ export function useConnections(options: UseConnectionsOptions = {}) {
         isTestingConnection,
         isFetchingSchema,
         error,
-
-        // Actions
-        refreshConnections: fetchConnections, // Alias for UI consistency
+        refreshConnections: fetchConnections,
         refetch: fetchConnections,
         createConnection,
         updateConnection,

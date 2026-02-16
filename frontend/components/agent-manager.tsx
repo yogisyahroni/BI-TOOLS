@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bot, Mail, Play, Loader2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface Agent {
     id: number;
@@ -27,10 +28,10 @@ export function AgentManager() {
         // But to be strict about "No Mock", we try to fetch or default to empty
         const fetchAgents = async () => {
             try {
-                // Assuming we might create this endpoint or it doesn't exist yet.
-                // If it doesn't exist, we'll just have empty list for now.
+                // Assuming we might create this endpoint or it doesn&apos;t exist yet.
+                // If it doesn&apos;t exist, we&apos;ll just have empty list for now.
                 // Or better, we can create the endpoint.
-                const res = await fetch('/api/agents');
+                const res = await fetchWithAuth('/api/go/agents');
                 if (res.ok) {
                     const data = await res.json();
                     if (data.success) setAgents(data.data);
@@ -48,10 +49,8 @@ export function AgentManager() {
         setIsRunning(true);
         try {
             // Call the secure scheduler endpoint manually
-            const res = await fetch('/api/scheduler/run-agents', {
-                headers: {
-                    'x-cron-secret': 'schedule_secret_123' // Hardcoded for Demo UI
-                }
+            const res = await fetchWithAuth('/api/go/scheduler/run-agents', {
+                method: 'POST',
             });
             const data = await res.json();
 

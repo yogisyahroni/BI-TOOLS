@@ -1,0 +1,6 @@
+# S3 backend configuration for staging
+bucket         = "insight-engine-terraform-state"
+key            = "staging/terraform.tfstate"
+region         = "ap-southeast-1"
+dynamodb_table = "terraform-locks"
+encrypt        = true

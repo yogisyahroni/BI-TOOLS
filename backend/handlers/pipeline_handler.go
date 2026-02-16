@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"insight-engine-backend/database"
 	"insight-engine-backend/models"
 	"insight-engine-backend/pkg/validator"
@@ -14,7 +15,15 @@ import (
 
 // GetPipelines returns all pipelines for a workspace (with optional pagination)
 func GetPipelines(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
+
 	workspaceID := c.Query("workspaceId")
 
 	if workspaceID == "" {
@@ -38,6 +47,7 @@ func GetPipelines(c *fiber.Ctx) error {
 	// Backward compatibility: If no pagination params, return old format
 	if limit == 0 {
 		if err := query.Find(&pipelines).Error; err != nil {
+			fmt.Printf("Error fetching pipelines (no-limit): %v\n", err)
 			return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 		}
 		return c.JSON(pipelines)
@@ -48,10 +58,12 @@ func GetPipelines(c *fiber.Ctx) error {
 	if err := database.DB.Model(&models.Pipeline{}).
 		Where("workspace_id = ?", workspaceID).
 		Count(&total).Error; err != nil {
+		fmt.Printf("Error counting pipelines: %v\n", err)
 		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 	}
 
 	if err := query.Limit(limit).Offset(offset).Find(&pipelines).Error; err != nil {
+		fmt.Printf("Error fetching paginated pipelines: %v\n", err)
 		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 	}
 
@@ -68,7 +80,14 @@ func GetPipelines(c *fiber.Ctx) error {
 
 // GetPipeline returns a single pipeline by ID
 func GetPipeline(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	pipelineID := c.Params("id")
 
 	var pipeline models.Pipeline
@@ -87,7 +106,14 @@ func GetPipeline(c *fiber.Ctx) error {
 
 // CreatePipeline creates a new pipeline
 func CreatePipeline(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 
 	var input struct {
 		Name                string                 `json:"name" validate:"required"`
@@ -95,12 +121,15 @@ func CreatePipeline(c *fiber.Ctx) error {
 		WorkspaceID         string                 `json:"workspaceId" validate:"required"`
 		SourceType          string                 `json:"sourceType" validate:"required"`
 		SourceConfig        map[string]interface{} `json:"sourceConfig" validate:"required"`
+		ConnectionID        *string                `json:"connectionId"`
+		SourceQuery         *string                `json:"sourceQuery"`
 		DestinationType     string                 `json:"destinationType" validate:"required"`
 		DestinationConfig   map[string]interface{} `json:"destinationConfig"`
-		Mode                string                 `json:"mode" validate:"required,oneof=batch stream"`
+		Mode                string                 `json:"mode" validate:"required,oneof=batch stream ETL ELT"`
 		TransformationSteps []interface{}          `json:"transformationSteps"`
 		QualityRules        []interface{}          `json:"qualityRules"`
 		ScheduleCron        *string                `json:"scheduleCron"`
+		RowLimit            int                    `json:"rowLimit"`
 	}
 
 	if err := c.BodyParser(&input); err != nil {
@@ -147,6 +176,11 @@ func CreatePipeline(c *fiber.Ctx) error {
 		transformationStepsStr = &str
 	}
 
+	rowLimit := input.RowLimit
+	if rowLimit <= 0 {
+		rowLimit = 100000
+	}
+
 	pipeline := models.Pipeline{
 		ID:                  uuid.New().String(),
 		Name:                input.Name,
@@ -154,11 +188,14 @@ func CreatePipeline(c *fiber.Ctx) error {
 		WorkspaceID:         input.WorkspaceID,
 		SourceType:          input.SourceType,
 		SourceConfig:        string(sourceConfigJSON),
+		ConnectionID:        input.ConnectionID,
+		SourceQuery:         input.SourceQuery,
 		DestinationType:     input.DestinationType,
 		DestinationConfig:   destinationConfigStr,
 		Mode:                input.Mode,
 		TransformationSteps: transformationStepsStr,
 		ScheduleCron:        input.ScheduleCron,
+		RowLimit:            rowLimit,
 		IsActive:            true,
 		CreatedAt:           time.Now(),
 		UpdatedAt:           time.Now(),
@@ -173,7 +210,14 @@ func CreatePipeline(c *fiber.Ctx) error {
 
 // UpdatePipeline updates an existing pipeline
 func UpdatePipeline(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	pipelineID := c.Params("id")
 
 	var pipeline models.Pipeline
@@ -261,7 +305,14 @@ func UpdatePipeline(c *fiber.Ctx) error {
 
 // DeletePipeline deletes a pipeline
 func DeletePipeline(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	pipelineID := c.Params("id")
 
 	var pipeline models.Pipeline
@@ -289,7 +340,14 @@ func DeletePipeline(c *fiber.Ctx) error {
 
 // RunPipeline executes a pipeline (creates a job execution record)
 func RunPipeline(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	pipelineID := c.Params("id")
 
 	var pipeline models.Pipeline
@@ -330,7 +388,14 @@ func RunPipeline(c *fiber.Ctx) error {
 
 // GetPipelineStats returns pipeline statistics for a workspace
 func GetPipelineStats(c *fiber.Ctx) error {
-	userID := c.Locals("userID").(string)
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
 	workspaceID := c.Query("workspaceId")
 
 	if workspaceID == "" {
@@ -354,7 +419,7 @@ func GetPipelineStats(c *fiber.Ctx) error {
 	oneDayAgo := time.Now().Add(-24 * time.Hour)
 
 	var recentExecutions []models.JobExecution
-	database.DB.Joins("JOIN \"Pipeline\" ON \"JobExecution\".pipeline_id = \"Pipeline\".id").
+	database.DB.Joins("JOIN \"Pipeline\" ON \"JobExecution\".\"pipelineId\" = \"Pipeline\".id").
 		Where("\"Pipeline\".workspace_id = ? AND \"JobExecution\".started_at >= ?", workspaceID, oneDayAgo).
 		Find(&recentExecutions)
 
@@ -387,7 +452,7 @@ func GetPipelineStats(c *fiber.Ctx) error {
 
 	database.DB.Table("\"JobExecution\"").
 		Select("\"JobExecution\".id, \"Pipeline\".name as pipeline_name, \"JobExecution\".started_at, \"JobExecution\".error").
-		Joins("JOIN \"Pipeline\" ON \"JobExecution\".pipeline_id = \"Pipeline\".id").
+		Joins("JOIN \"Pipeline\" ON \"JobExecution\".\"pipelineId\" = \"Pipeline\".id").
 		Where("\"Pipeline\".workspace_id = ? AND \"JobExecution\".status = ?", workspaceID, "FAILED").
 		Order("\"JobExecution\".started_at DESC").
 		Limit(5).
@@ -417,5 +482,64 @@ func GetPipelineStats(c *fiber.Ctx) error {
 		},
 		"pipelines":      allPipelines,
 		"recentFailures": recentFailures,
+	})
+}
+
+// GetPipelineExecutions returns execution history for a specific pipeline with per-pipeline success rate
+func GetPipelineExecutions(c *fiber.Ctx) error {
+	userIDVal := c.Locals("userID")
+	if userIDVal == nil {
+		return c.Status(401).JSON(fiber.Map{"error": "Unauthorized"})
+	}
+	userID, ok := userIDVal.(string)
+	if !ok {
+		return c.Status(401).JSON(fiber.Map{"error": "Invalid user session"})
+	}
+	pipelineID := c.Params("id")
+	limit := c.QueryInt("limit", 20)
+	offset := c.QueryInt("offset", 0)
+
+	// Load pipeline and verify workspace access
+	var pipeline models.Pipeline
+	if err := database.DB.First(&pipeline, "id = ?", pipelineID).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{"error": "Pipeline not found"})
+	}
+
+	var membership models.WorkspaceMember
+	if err := database.DB.Where("workspace_id = ? AND user_id = ?", pipeline.WorkspaceID, userID).First(&membership).Error; err != nil {
+		return c.Status(403).JSON(fiber.Map{"error": "Access denied"})
+	}
+
+	// Get total count
+	var total int64
+	database.DB.Model(&models.JobExecution{}).Where("\"pipelineId\" = ?", pipelineID).Count(&total)
+
+	// Get paginated executions
+	var executions []models.JobExecution
+	database.DB.Where("\"pipelineId\" = ?", pipelineID).
+		Order("started_at DESC").
+		Limit(limit).
+		Offset(offset).
+		Find(&executions)
+
+	// Calculate per-pipeline success rate (from ALL executions, not just this page)
+	var allCount int64
+	var successCount int64
+	database.DB.Model(&models.JobExecution{}).Where("\"pipelineId\" = ?", pipelineID).Count(&allCount)
+	database.DB.Model(&models.JobExecution{}).Where("\"pipelineId\" = ? AND status = ?", pipelineID, "COMPLETED").Count(&successCount)
+
+	successRate := 0.0
+	if allCount > 0 {
+		successRate = float64(successCount) / float64(allCount) * 100
+	}
+
+	return c.JSON(fiber.Map{
+		"executions":   executions,
+		"total":        total,
+		"limit":        limit,
+		"offset":       offset,
+		"successRate":  successRate,
+		"successCount": successCount,
+		"failedCount":  allCount - successCount,
 	})
 }

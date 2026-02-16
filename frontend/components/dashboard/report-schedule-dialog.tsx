@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from 'sonner';
 import { CalendarClock, Loader2 } from 'lucide-react';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface ReportScheduleDialogProps {
     open: boolean;
@@ -46,7 +47,7 @@ export function ReportScheduleDialog({
 
         setIsLoading(true);
         try {
-            const response = await fetch(`/api/dashboards/${dashboardId}/schedule`, {
+            const response = await fetchWithAuth(`/api/go/dashboards/${dashboardId}/schedule`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

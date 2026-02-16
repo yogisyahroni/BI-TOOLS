@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useMemo } from 'react';
-import { FilterCriteria, FilterOperator, useCrossFilter } from '@/lib/cross-filter-context';
+import { type FilterCriteria, type FilterOperator, useCrossFilter } from '@/lib/cross-filter-context';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { X, Filter } from 'lucide-react';

@@ -4,6 +4,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -61,7 +62,7 @@ export default function AppsPage() {
 
     const fetchApps = async () => {
         try {
-            const res = await fetch(`/api/apps?workspaceId=${workspaceId}`);
+            const res = await fetchWithAuth(`/api/go/apps?workspaceId=${workspaceId}`);
             if (!res.ok) throw new Error('Failed to fetch apps');
             const data = await res.json();
             setApps(data);
@@ -83,7 +84,7 @@ export default function AppsPage() {
         setCreating(true);
 
         try {
-            const res = await fetch('/api/apps', {
+            const res = await fetchWithAuth('/api/go/apps', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

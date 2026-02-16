@@ -1,0 +1,187 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.21"
+          cache: true
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          go mod download
+
+      - name: Run linters
+        run: |
+          cd backend
+          go vet ./...
+          # Install and run golangci-lint if available
+          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
+          ~/go/bin/golangci-lint run
+
+      - name: Run tests
+        run: |
+          cd backend
+          go test -v ./... -race -coverprofile=coverage.out -covermode=atomic
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./backend/coverage.out
+          flags: backend
+          name: backend-coverage
+
+  test-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Run linters
+        run: |
+          cd frontend
+          npm run lint
+
+      - name: Run tests with coverage
+        run: |
+          cd frontend
+          npx vitest run --coverage
+        env:
+          CI: true
+
+      - name: Upload frontend coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          directory: ./frontend/coverage
+          flags: frontend
+          name: frontend-coverage
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
+
+  security-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Security audit Go dependencies
+        run: |
+          cd backend
+          go list -json -m all | nancy sleuth
+
+      - name: Security audit Node.js dependencies
+        run: |
+          cd frontend
+          npm audit --audit-level high
+
+  docker-build:
+    runs-on: ubuntu-latest
+    needs: [test-backend, test-frontend]
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: insightengine/backend:${{ github.sha }},insightengine/backend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          push: true
+          tags: insightengine/frontend:${{ github.sha }},insightengine/frontend:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    needs: docker-build
+    if: github.ref == 'refs/heads/main'
+    environment: staging
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to staging
+        run: |
+          echo "Deploying to staging environment..."
+          # Add deployment commands here
+          # This could be kubectl apply, docker stack deploy, etc.
+          # For now, just echo the deployment
+          echo "Deployment to staging completed"
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    needs: deploy-staging
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    concurrency: production
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          # Add production deployment commands here
+          # This could be kubectl apply, docker stack deploy, etc.
+          # For now, just echo the deployment
+          echo "Production deployment completed"

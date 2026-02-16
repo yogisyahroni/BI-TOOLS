@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { User, FileText, Share2, Edit, Save, Trash2, Activity } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface ActivityItem {
   id: string;
@@ -33,7 +34,7 @@ export function ActivityFeed({ limit = 10, autoRefresh = true }: ActivityFeedPro
   useEffect(() => {
     const fetchActivities = async () => {
       try {
-        const res = await fetch('/api/activity');
+        const res = await fetchWithAuth('/api/go/activity');
         if (res.ok) {
           const data = await res.json();
           if (data.success) {

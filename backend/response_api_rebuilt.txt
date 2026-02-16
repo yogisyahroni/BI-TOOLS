@@ -1,0 +1,40 @@
+* Host localhost:8080 was resolved.
+* IPv6: ::1
+* IPv4: 127.0.0.1
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying [::1]:8080...
+*   Trying 127.0.0.1:8080...
+* Established connection to localhost (127.0.0.1 port 8080) from 127.0.0.1 port 58644 
+* using HTTP/1.x
+> GET /api/pipelines?workspaceId=15a31e39-55e3-4269-b6e9-b813f2c03e75&limit=20&offset=0 HTTP/1.1
+
+> Host: localhost:8080
+
+> User-Agent: curl/8.16.0
+
+> Accept: */*
+
+> 
+
+* Request completely sent off
+< HTTP/1.1 401 Unauthorized
+
+< Date: Mon, 16 Feb 2026 08:14:55 GMT
+
+< Content-Type: application/json
+
+< Content-Length: 62
+
+< X-Request-Id: 7337ad91-7c32-4a70-8a45-7656d9323945
+
+< X-System-Status: healthy
+
+< 
+
+{ [62 bytes data]
+
+100    62  100    62    0     0    279      0 --:--:-- --:--:-- --:--:--   280
+* Connection #0 to host localhost:8080 left intact
+{"message":"Unauthorized: No token provided","status":"error"}

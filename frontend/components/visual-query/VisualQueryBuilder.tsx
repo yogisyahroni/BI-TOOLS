@@ -19,7 +19,7 @@ export function VisualQueryBuilder({ connectionId }: VisualQueryBuilderProps) {
     const { config, removeTable, reset } = useQueryBuilderStore();
 
     // Reset store on mount if connection changes (optional, depends on UX)
-    // For now, let's keep it manual or reset on unmount
+    // For now, let&apos;s keep it manual or reset on unmount
     React.useEffect(() => {
         return () => reset(); // Cleanup on unmount
     }, [reset]);
@@ -101,7 +101,7 @@ export function VisualQueryBuilder({ connectionId }: VisualQueryBuilderProps) {
                                 toast.promise(visualQueryApi.generateSql(config), {
                                     loading: 'Generating SQL...',
                                     success: (data) => {
-                                        console.log("SQL Generated:", data);
+                                        console.warn("SQL Generated:", data);
                                         return `SQL Generated! Check console.`;
                                     },
                                     error: 'Failed to generate SQL'
@@ -112,7 +112,7 @@ export function VisualQueryBuilder({ connectionId }: VisualQueryBuilderProps) {
                         Generate SQL
                     </Button>
                     <Button onClick={() => {
-                        console.log("Preview Data for:", config);
+                        console.warn("Preview Data for:", config);
                     }}>
                         Preview Data
                     </Button>

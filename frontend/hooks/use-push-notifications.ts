@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 const VAPID_PUBLIC_KEY = process.env.NEXT_PUBLIC_VAPID_KEY;
 
@@ -74,7 +75,7 @@ export function usePushNotifications() {
             setSubscription(sub);
 
             // Send to backend
-            const response = await fetch('/api/notifications/subscribe', {
+            const response = await fetchWithAuth('/api/go/notifications/subscribe', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

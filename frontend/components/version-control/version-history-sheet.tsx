@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -26,7 +27,7 @@ export function VersionHistorySheet({ queryId, onRevert }: { queryId: string, on
         try {
             // Using the path we set up: /api/queries/saved/[id]/versions
             // Note: I moved it to the correct folder in step 4143
-            const res = await fetch(`/api/queries/saved/${queryId}/versions`);
+            const res = await fetchWithAuth(`/api/go/queries/saved/${queryId}/versions`);
             if (res.ok) {
                 const data = await res.json();
                 setVersions(data.versions);
@@ -44,7 +45,7 @@ export function VersionHistorySheet({ queryId, onRevert }: { queryId: string, on
         if (!confirm('Are you sure you want to revert to this version? Current changes will be overwritten.')) return;
 
         try {
-            const res = await fetch(`/api/queries/saved/${queryId}/versions`, {
+            const res = await fetchWithAuth(`/api/go/queries/saved/${queryId}/versions`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ versionId: version.id }) // calls the 'revert' logic

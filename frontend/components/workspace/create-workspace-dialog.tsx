@@ -13,6 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface CreateWorkspaceDialogProps {
     open: boolean;
@@ -52,7 +53,7 @@ export function CreateWorkspaceDialog({
 
         setLoading(true);
         try {
-            const response = await fetch('/api/workspaces', {
+            const response = await fetchWithAuth('/api/go/workspaces', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, slug }),

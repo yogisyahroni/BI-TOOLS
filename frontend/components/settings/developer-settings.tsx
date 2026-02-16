@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Plus, Copy, Trash2, CheckCircle, Terminal } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface ApiKey {
     id: string;
@@ -37,7 +38,7 @@ export function DeveloperSettings() {
     const fetchKeys = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch('/api/settings/keys');
+            const res = await fetchWithAuth('/api/settings/keys');
             const data = await res.json();
             if (data.success) {
                 setKeys(data.keys);
@@ -53,7 +54,7 @@ export function DeveloperSettings() {
         if (!createName) return;
         setIsCreating(true);
         try {
-            const res = await fetch('/api/settings/keys', {
+            const res = await fetchWithAuth('/api/settings/keys', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name: createName })
@@ -76,7 +77,7 @@ export function DeveloperSettings() {
     const handleDeleteKey = async (id: string) => {
         if (!confirm('Are you sure? This action cannot be undone.')) return;
         try {
-            const res = await fetch(`/api/settings/keys/${id}`, { method: 'DELETE' });
+            const res = await fetchWithAuth(`/api/settings/keys/${id}`, { method: 'DELETE' });
             if (res.ok) {
                 setKeys(keys.filter(k => k.id !== id));
                 toast.success('Key revoked');
@@ -135,7 +136,7 @@ export function DeveloperSettings() {
                                 <Alert className="bg-green-50 dark:bg-green-950 border-green-200 dark:border-green-800">
                                     <CheckCircle className="w-4 h-4 text-green-600 dark:text-green-400" />
                                     <AlertDescription className="text-green-800 dark:text-green-300">
-                                        Key created successfully! Copy it now, you won't see it again.
+                                        Key created successfully! Copy it now, you won&apos;t see it again.
                                     </AlertDescription>
                                 </Alert>
                                 <div className="space-y-2">

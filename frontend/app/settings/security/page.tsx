@@ -201,7 +201,7 @@ export default function SecuritySettingsPage() {
                                         <p className="text-xs text-muted-foreground">Jakarta, Indonesia • Current Session</p>
                                     </div>
                                 </div>
-                                <div className="h-2 w-2 rounded-full bg-green-500"></div>
+                                <div className="h-2 w-2 rounded-full bg-green-500" />
                             </div>
                         </div>
                     </CardContent>

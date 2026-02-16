@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useEffect, useState } from "react"
+import { fetchWithAuth } from '@/lib/utils'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { LineageGraph } from "@/components/lineage/lineage-graph"
 import { Loader2 } from "lucide-react"
@@ -17,7 +18,7 @@ export default function LineagePage() {
         const fetchData = async () => {
             try {
                 // Use the Next.js proxy to handle authentication automatically
-                const res = await fetch('/api/go/lineage')
+                const res = await fetchWithAuth('/api/go/lineage')
 
                 if (!res.ok) {
                     throw new Error(`Failed to fetch lineage data: ${res.statusText}`)

@@ -24,7 +24,7 @@ import { useDashboards } from '@/hooks/use-dashboards';
 import { useSavedQueries } from '@/hooks/use-saved-queries';
 import { LayoutGrid, Plus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 
 interface AddToDashboardDialogProps {
     isOpen: boolean;

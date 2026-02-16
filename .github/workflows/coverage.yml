@@ -1,0 +1,267 @@
+# ============================================================================
+# Test Coverage Reporting Workflow
+# ============================================================================
+# Generates coverage reports for both backend (Go) and frontend (Vitest),
+# uploads to Codecov, and enforces coverage gates on PRs.
+# ============================================================================
+
+name: Test Coverage
+
+on:
+    push:
+        branches: [main, develop]
+    pull_request:
+        branches: [main]
+
+permissions:
+    contents: read
+    pull-requests: write
+    checks: write
+
+env:
+    GO_VERSION: "1.21"
+    NODE_VERSION: "20"
+
+jobs:
+    # ===========================================================================
+    # Backend Coverage — Go
+    # ===========================================================================
+    backend-coverage:
+        name: Backend Coverage (Go)
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./backend
+
+        services:
+            postgres:
+                image: postgres:16-alpine
+                env:
+                    POSTGRES_PASSWORD: testpass
+                    POSTGRES_DB: insightengine_test
+                    POSTGRES_USER: testuser
+                options: >-
+                    --health-cmd pg_isready
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 5432:5432
+
+            redis:
+                image: redis:7-alpine
+                options: >-
+                    --health-cmd "redis-cli ping"
+                    --health-interval 10s
+                    --health-timeout 5s
+                    --health-retries 5
+                ports:
+                    - 6379:6379
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Go
+              uses: actions/setup-go@v5
+              with:
+                  go-version: ${{ env.GO_VERSION }}
+                  cache: true
+                  cache-dependency-path: backend/go.sum
+
+            - name: Install dependencies
+              run: go mod download
+
+            - name: Run tests with coverage
+              env:
+                  DATABASE_URL: "postgres://testuser:testpass@localhost:5432/insightengine_test?sslmode=disable"
+                  REDIS_URL: "redis://localhost:6379/0"
+                  JWT_SECRET: "test-jwt-secret-for-ci-only"
+                  ENVIRONMENT: "test"
+              run: |
+                  go test -v -race \
+                    -coverprofile=coverage.out \
+                    -covermode=atomic \
+                    -count=1 \
+                    ./...
+
+            - name: Generate coverage report
+              run: |
+                  go tool cover -func=coverage.out | tee coverage-summary.txt
+                  echo ""
+                  echo "============================================"
+                  echo "  BACKEND COVERAGE SUMMARY"
+                  echo "============================================"
+                  TOTAL=$(go tool cover -func=coverage.out | grep total | awk '{print $3}')
+                  echo "Total Coverage: $TOTAL"
+                  echo "coverage_total=$TOTAL" >> $GITHUB_ENV
+
+            - name: Generate HTML coverage report
+              run: go tool cover -html=coverage.out -o coverage.html
+
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v4
+              with:
+                  file: ./backend/coverage.out
+                  flags: backend
+                  name: backend-coverage
+                  fail_ci_if_error: false
+                  token: ${{ secrets.CODECOV_TOKEN }}
+
+            - name: Upload coverage artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: backend-coverage-report
+                  path: |
+                      backend/coverage.out
+                      backend/coverage.html
+                      backend/coverage-summary.txt
+                  retention-days: 14
+
+            - name: Coverage gate check
+              run: |
+                  TOTAL=$(go tool cover -func=coverage.out | grep total | awk '{print $3}' | sed 's/%//')
+                  THRESHOLD=50
+                  echo "Coverage: ${TOTAL}% (threshold: ${THRESHOLD}%)"
+                  if (( $(echo "$TOTAL < $THRESHOLD" | bc -l) )); then
+                    echo "::error::Backend coverage ${TOTAL}% is below the ${THRESHOLD}% threshold"
+                    exit 1
+                  fi
+                  echo "✅ Backend coverage ${TOTAL}% meets the ${THRESHOLD}% threshold"
+
+    # ===========================================================================
+    # Frontend Coverage — Vitest
+    # ===========================================================================
+    frontend-coverage:
+        name: Frontend Coverage (Vitest)
+        runs-on: ubuntu-latest
+        defaults:
+            run:
+                working-directory: ./frontend
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ env.NODE_VERSION }}
+                  cache: "npm"
+                  cache-dependency-path: frontend/package-lock.json
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Run tests with coverage
+              run: npx vitest run --coverage --reporter=verbose
+              env:
+                  CI: true
+
+            - name: Display coverage summary
+              run: |
+                  echo "============================================"
+                  echo "  FRONTEND COVERAGE SUMMARY"
+                  echo "============================================"
+                  cat coverage/coverage-summary.json | npx -y json -a \
+                    || echo "Coverage summary available in artifacts"
+
+            - name: Upload coverage to Codecov
+              uses: codecov/codecov-action@v4
+              with:
+                  directory: ./frontend/coverage
+                  flags: frontend
+                  name: frontend-coverage
+                  fail_ci_if_error: false
+                  token: ${{ secrets.CODECOV_TOKEN }}
+
+            - name: Upload coverage artifacts
+              uses: actions/upload-artifact@v4
+              with:
+                  name: frontend-coverage-report
+                  path: |
+                      frontend/coverage/
+                  retention-days: 14
+
+    # ===========================================================================
+    # Coverage Summary — PR Comment
+    # ===========================================================================
+    coverage-report:
+        name: Coverage Report
+        runs-on: ubuntu-latest
+        needs: [backend-coverage, frontend-coverage]
+        if: github.event_name == 'pull_request'
+
+        steps:
+            - name: Download backend coverage
+              uses: actions/download-artifact@v4
+              with:
+                  name: backend-coverage-report
+                  path: backend-coverage
+
+            - name: Download frontend coverage
+              uses: actions/download-artifact@v4
+              with:
+                  name: frontend-coverage-report
+                  path: frontend-coverage
+
+            - name: Generate PR comment
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+
+                      let backendSummary = 'N/A';
+                      try {
+                        const backendContent = fs.readFileSync('backend-coverage/coverage-summary.txt', 'utf8');
+                        const totalLine = backendContent.split('\n').find(l => l.includes('total:'));
+                        if (totalLine) {
+                          backendSummary = totalLine.split('\t').pop().trim();
+                        }
+                      } catch (e) {
+                        backendSummary = 'Error reading coverage';
+                      }
+
+                      const body = `## 📊 Test Coverage Report
+
+                      | Component | Coverage | Status |
+                      |-----------|----------|--------|
+                      | **Backend (Go)** | ${backendSummary} | ${parseFloat(backendSummary) >= 50 ? '✅' : '⚠️'} |
+                      | **Frontend (Vitest)** | See artifacts | 📎 |
+
+                      ### Thresholds
+                      - 🎯 **Target:** 70% (unit tests)
+                      - ⚠️ **Current Gate:** 50% (backend)
+                      - 📈 **Goal:** Increase incrementally to 70%
+
+                      > 💡 Download the coverage artifacts for detailed HTML reports.
+                      > Coverage is tracked via [Codecov](https://codecov.io).
+
+                      ---
+                      *Generated by CI — Test Coverage Workflow*`;
+
+                      const { data: comments } = await github.rest.issues.listComments({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.issue.number,
+                      });
+
+                      const existingComment = comments.find(c =>
+                        c.user.type === 'Bot' && c.body.includes('📊 Test Coverage Report')
+                      );
+
+                      if (existingComment) {
+                        await github.rest.issues.updateComment({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          comment_id: existingComment.id,
+                          body,
+                        });
+                      } else {
+                        await github.rest.issues.createComment({
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          issue_number: context.issue.number,
+                          body,
+                        });
+                      }

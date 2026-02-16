@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { Prisma, Connection } from '@prisma/client';
+import { type Prisma, type Connection } from '@prisma/client';
 
 export class ConnectionRepository {
     async create(data: Prisma.ConnectionCreateInput): Promise<Connection> {

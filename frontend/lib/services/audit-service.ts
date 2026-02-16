@@ -1,7 +1,7 @@
 
 import { Client } from 'pg';
 import { connectionService } from '@/lib/services/connection-service';
-import { SecurityContext } from '@/lib/security/rls-context';
+import { type SecurityContext } from '@/lib/security/rls-context';
 
 export interface AuditEvent {
     action: 'QUERY_EXECUTE' | 'AGGREGATION' | 'EXPORT' | 'LOGIN' | 'SCHEMA_CHANGE' | 'AGENT_RUN';
@@ -29,7 +29,7 @@ export class AuditService {
         };
 
         // 1. Structural Log to Stdout (picked up by CloudWatch/Datadog)
-        console.log(JSON.stringify({
+        console.warn(JSON.stringify({
             level: 'INFO',
             type: 'AUDIT_LOG',
             ...logEntry

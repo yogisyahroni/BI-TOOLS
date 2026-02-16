@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
       },
     ];
 
-    console.log('[v0] Schema fetched for connection:', connectionId, 'Tables:', mockSchema.length);
+    console.warn('[v0] Schema fetched for connection:', connectionId, 'Tables:', mockSchema.length);
 
     return NextResponse.json({
       success: true,

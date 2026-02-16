@@ -1,6 +1,6 @@
 'use client';
 
-import { CanvasWidget } from '../canvas-board';
+import { type CanvasWidget } from '../canvas-board';
 import { Calendar, Filter } from 'lucide-react';
 
 interface WidgetProps {

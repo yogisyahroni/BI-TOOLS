@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 // ... imports
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,7 +34,7 @@ export default function OnboardingPage() {
     aiKey: '',
   });
 
-  const { createConnection, testConnection, activeConnection, fetchSchema, schema, selectConnection } = useConnections({ userId: 'user_123' });
+  const { createConnection, testConnection, activeConnection, fetchSchema, schema, selectConnection } = useConnections();
 
   const [testingStatus, setTestingStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
   const [testMessage, setTestMessage] = useState('');
@@ -42,7 +43,7 @@ export default function OnboardingPage() {
 
   // Load existing settings on mount
   useEffect(() => {
-    fetch('/api/settings?key=ai_config')
+    fetchWithAuth('/api/settings?key=ai_config')
       .then(res => res.json())
       .then(data => {
         if (data.success && data.data) {
@@ -54,7 +55,7 @@ export default function OnboardingPage() {
   // Fetch schema when entering Step 3
   useEffect(() => {
     if (step === 3 && createdConnectionId && !schema) {
-      console.log('Fetching schema for connection:', createdConnectionId);
+      console.warn('Fetching schema for connection:', createdConnectionId);
       // Ensure we call fetch with the ID
       fetchSchema(createdConnectionId).then(res => {
         if (!res.success) {
@@ -130,7 +131,7 @@ export default function OnboardingPage() {
     setIsSaving(true);
     try {
       // Save Settings
-      await fetch('/api/settings', {
+      await fetchWithAuth('/api/settings', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

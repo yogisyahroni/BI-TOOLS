@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Play, Plus, Box, ArrowDown } from 'lucide-react';
@@ -13,21 +14,26 @@ import { useRouter } from 'next/navigation';
 export default function DataflowDetailPage({ params }: { params: Promise<{ id: string }> }) {
     const [dataflow, setDataflow] = useState<any>(null);
     const [isRunning, setIsRunning] = useState(false);
+    const [resolvedId, setResolvedId] = useState<string>('');
 
     // In real implementation, this would fetch from /api/dataflows/[id]
     // Since we didn't implement GET [id] yet, just stubbing or reusing list
     // Ideally update `api/dataflows` to handle [id] or query params, but standard is `api/dataflows/[id]`
 
     useEffect(() => {
+        const resolveParams = async () => {
+            const { id } = await params;
+            setResolvedId(id);
+        };
+        resolveParams();
         // Mock fetch for MVP speed
         toast.info("Detail implementation pending full API. Use List for now.");
-    }, []);
+    }, [params]);
 
     const handleRun = async () => {
         setIsRunning(true);
         try {
-            const { id } = await params;
-            const res = await fetch(`/api/dataflows/${id}/run`, { method: 'POST' });
+            const res = await fetchWithAuth(`/api/go/dataflows/${resolvedId}/run`, { method: 'POST' });
             if (res.ok) toast.success('Dataflow started');
             else toast.error('Failed to start');
         } catch (e) {
@@ -42,7 +48,7 @@ export default function DataflowDetailPage({ params }: { params: Promise<{ id: s
             <div className="flex items-center justify-between">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight">Pipeline Details</h1>
-                    <p className="text-muted-foreground">{id}</p>
+                    <p className="text-muted-foreground">{resolvedId}</p>
                 </div>
                 <div className="flex gap-2">
                     <Button variant="outline"><Plus className="mr-2 h-4 w-4" /> Add Step</Button>

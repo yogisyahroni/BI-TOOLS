@@ -4,13 +4,14 @@ import type {
     CreateSchedulerJobInput,
     UpdateSchedulerJobInput,
 } from '@/lib/types/notifications';
+import { fetchWithAuth } from '@/lib/utils';
 
-const API_BASE = '/api/v1';
+const API_BASE = '/api/go';
 
 export const schedulerApi = {
     // List all jobs
     listJobs: async (): Promise<SchedulerJob[]> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch jobs');
@@ -21,7 +22,7 @@ export const schedulerApi = {
 
     // Get job details
     getJob: async (id: string): Promise<SchedulerJob> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs/${id}`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs/${id}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch job');
@@ -31,7 +32,7 @@ export const schedulerApi = {
 
     // Create job (admin only)
     createJob: async (data: CreateSchedulerJobInput): Promise<SchedulerJob> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -45,7 +46,7 @@ export const schedulerApi = {
 
     // Update job (admin only)
     updateJob: async (id: string, data: UpdateSchedulerJobInput): Promise<SchedulerJob> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -59,7 +60,7 @@ export const schedulerApi = {
 
     // Delete job (admin only)
     deleteJob: async (id: string): Promise<{ message: string }> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs/${id}`, {
             method: 'DELETE',
         });
         if (!res.ok) {
@@ -71,7 +72,7 @@ export const schedulerApi = {
 
     // Pause job
     pauseJob: async (id: string): Promise<{ message: string }> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs/${id}/pause`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs/${id}/pause`, {
             method: 'POST',
         });
         if (!res.ok) {
@@ -83,7 +84,7 @@ export const schedulerApi = {
 
     // Resume job
     resumeJob: async (id: string): Promise<{ message: string }> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs/${id}/resume`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs/${id}/resume`, {
             method: 'POST',
         });
         if (!res.ok) {
@@ -95,7 +96,7 @@ export const schedulerApi = {
 
     // Trigger job manually
     triggerJob: async (id: string): Promise<{ message: string }> => {
-        const res = await fetch(`${API_BASE}/scheduler/jobs/${id}/trigger`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduler/jobs/${id}/trigger`, {
             method: 'POST',
         });
         if (!res.ok) {

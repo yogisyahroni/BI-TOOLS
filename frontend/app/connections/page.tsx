@@ -46,8 +46,6 @@ import { useSidebar } from '@/contexts/sidebar-context';
 
 export default function ConnectionsPage() {
     const { open: openSidebar } = useSidebar();
-    // TODO: Get real userId from Auth
-    const userId = 'user_123';
     const {
         connections,
         isLoading,
@@ -56,7 +54,7 @@ export default function ConnectionsPage() {
         refetch,
         testConnection,
         deleteConnection
-    } = useConnections({ userId });
+    } = useConnections();
 
     const [testResults, setTestResults] = useState<Record<string, { success: boolean; message: string }>>({});
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -287,7 +285,7 @@ export default function ConnectionsPage() {
                         <AlertDialogHeader>
                             <AlertDialogTitle>Delete Connection</AlertDialogTitle>
                             <AlertDialogDescription>
-                                Are you sure you want to delete "{connectionToDelete?.name}"? This action cannot be undone.
+                                Are you sure you want to delete &quot;{connectionToDelete?.name}&quot;? This action cannot be undone.
                                 All saved queries using this connection will be affected.
                             </AlertDialogDescription>
                         </AlertDialogHeader>

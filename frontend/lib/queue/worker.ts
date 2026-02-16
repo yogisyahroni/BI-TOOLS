@@ -1,5 +1,5 @@
 
-import { Worker, Job } from 'bullmq';
+import { Worker, type Job } from 'bullmq';
 import { redis } from '../db/redis';
 import { db } from '../db';
 
@@ -13,14 +13,14 @@ const connection = redis ? {
     port: 6379,
 };
 
-import { applyTransformations, TransformationStep } from '../etl/transformation-engine';
-import { validateData, QualityRule } from '../etl/quality-engine';
+import { applyTransformations, type TransformationStep } from '../etl/transformation-engine';
+import { validateData, type QualityRule } from '../etl/quality-engine';
 
 const shouldStart = !!(redis || process.env.REDIS_URL);
 
 export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: Job) => {
     const { pipelineId, executionId } = job.data;
-    console.log(`[Worker] Starting Job ${job.id} for Pipeline ${pipelineId}`);
+    console.warn(`[Worker] Starting Job ${job.id} for Pipeline ${pipelineId}`);
 
     const executionLogs: string[] = [`[START] Job ${job.id} started.`];
 
@@ -40,7 +40,7 @@ export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: J
         if (!pipeline) throw new Error(`Pipeline ${pipelineId} not found`);
 
         // 3. EXECUTE PIPELINE (ETL vs ELT)
-        console.log(`[Worker] Pipeline Mode: ${pipeline.mode}`);
+        console.warn(`[Worker] Pipeline Mode: ${pipeline.mode}`);
         executionLogs.push(`[INFO] Pipeline Mode: ${pipeline.mode}`);
 
         // --- 1. EXTRACTION (Simulated) ---
@@ -64,7 +64,7 @@ export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: J
 
         // --- 2. TRANSFORMATION (ETL Mode) ---
         if (pipeline.mode === 'ETL') {
-            console.log(`[Worker] ETL Mode: Transforming data in-memory...`);
+            console.warn(`[Worker] ETL Mode: Transforming data in-memory...`);
             executionLogs.push(`[TRANSFORM] Running transformation rules...`);
 
             const steps = (pipeline.transformationSteps as any) as TransformationStep[] || [];
@@ -92,7 +92,7 @@ export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: J
 
         // --- 2.5 QUALITY CHECK (New in Phase 21) ---
         if (pipeline.qualityRules && pipeline.qualityRules.length > 0) {
-            console.log(`[Worker] Running Quality Checks...`);
+            console.warn(`[Worker] Running Quality Checks...`);
             executionLogs.push(`[QUALITY] Validating against ${pipeline.qualityRules.length} rules...`);
 
             const { validData, errors } = validateData(dataBatch, pipeline.qualityRules as QualityRule[]);
@@ -132,7 +132,7 @@ export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: J
         executionLogs.push(`[LOAD] Loaded ${dataBatch.length} rows to RawData table.`);
 
         if (pipeline.mode === 'ELT') {
-            console.log(`[Worker] ELT Mode: Data loaded. Triggering SQL Transformations...`);
+            console.warn(`[Worker] ELT Mode: Data loaded. Triggering SQL Transformations...`);
             executionLogs.push(`[TRANSFORM] Triggering post-load SQL transformations...`);
 
             // ELT Logic Placeholder
@@ -164,7 +164,7 @@ export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: J
             data: { lastRunAt: new Date(), lastStatus: 'SUCCESS' }
         });
 
-        console.log(`[Worker] Job ${job.id} Completed`);
+        console.warn(`[Worker] Job ${job.id} Completed`);
     } catch (error: any) {
         console.error(`[Worker] Job ${job.id} Failed:`, error);
 
@@ -196,10 +196,10 @@ export const pipelineWorker = shouldStart ? new Worker('etl-jobs', async (job: J
 
 if (pipelineWorker) {
     pipelineWorker.on('completed', job => {
-        console.log(`[Worker] Job ${job.id} has completed!`);
+        console.warn(`[Worker] Job ${job.id} has completed!`);
     });
 
     pipelineWorker.on('failed', (job, err) => {
-        console.log(`[Worker] Job ${job?.id} has failed with ${err.message}`);
+        console.warn(`[Worker] Job ${job?.id} has failed with ${err.message}`);
     });
 }

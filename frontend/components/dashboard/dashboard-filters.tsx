@@ -158,6 +158,7 @@ export function DashboardFilters({
                 <PopoverContent className="w-80 p-3" align="start">
                     <div className="space-y-2">
                         <h4 className="font-medium text-xs leading-none">Filter with AI</h4>
+                        {/* eslint-disable-next-line react/no-unescaped-entities */}
                         <p className="text-[10px] text-muted-foreground">Describe what you want to filter (e.g. "Sales from last month")</p>
                         <div className="flex gap-2">
                             <Input

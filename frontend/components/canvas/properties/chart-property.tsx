@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { CanvasWidget } from '../canvas-board';
+import { type CanvasWidget } from '../canvas-board';
 import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface PropertyProps {
     widget: CanvasWidget;
@@ -29,7 +30,7 @@ export function ChartProperty({ widget, onUpdate }: PropertyProps) {
 
     const fetchQueries = async () => {
         try {
-            const res = await fetch('/api/queries/saved');
+            const res = await fetchWithAuth('/api/go/queries/saved');
             const json = await res.json();
 
             if (json.success) {

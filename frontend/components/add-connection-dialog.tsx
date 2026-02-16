@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useConnections } from '@/hooks/use-connections';
-import { CreateConnectionSchema, CreateConnectionInput } from '@/lib/schemas/connection';
+import { CreateConnectionSchema, type CreateConnectionInput } from '@/lib/schemas/connection';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -37,7 +37,7 @@ import { toast } from 'sonner';
 
 export function AddConnectionDialog() {
     const [open, setOpen] = useState(false);
-    const { createConnection } = useConnections({ userId: 'user_123' });
+    const { createConnection } = useConnections();
 
     const form = useForm<CreateConnectionInput>({
         resolver: zodResolver(CreateConnectionSchema),
@@ -79,7 +79,7 @@ export function AddConnectionDialog() {
                 <DialogHeader>
                     <DialogTitle>Add Database Connection</DialogTitle>
                     <DialogDescription>
-                        Enter the credentials for your database. We'll encrypt them securely.
+                        Enter the credentials for your database. We&apos;ll encrypt them securely.
                     </DialogDescription>
                 </DialogHeader>
                 <Form {...form}>

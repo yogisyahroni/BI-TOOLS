@@ -100,7 +100,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
             }
 
             // Create WebSocket instance
-            console.log('[useWebSocket] Connecting to:', wsUrl);
+            console.warn('[useWebSocket] Connecting to:', wsUrl);
             const ws = new WebSocket(wsUrl);
 
             ws.onopen = () => {
@@ -158,7 +158,7 @@ export function useWebSocket(options: UseWebSocketOptions = {}) {
                     // 1s, 2s, 4s, 8s, 16s...
                     const delay = Math.min(1000 * Math.pow(2, reconnectAttemptsRef.current), 30000);
 
-                    console.log(`WebSocket reconnecting in ${delay}ms (Attempt ${reconnectAttemptsRef.current}/5)`);
+                    console.warn(`WebSocket reconnecting in ${delay}ms (Attempt ${reconnectAttemptsRef.current}/5)`);
 
                     reconnectTimeoutRef.current = setTimeout(() => {
                         connect();

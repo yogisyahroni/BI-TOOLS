@@ -5,9 +5,9 @@ import ReactFlow, {
     useNodesState,
     useEdgesState,
     addEdge,
-    Connection,
-    Edge,
-    Node,
+    type Connection,
+    type Edge,
+    type Node,
     Controls,
     Background,
     MiniMap,
@@ -18,6 +18,7 @@ import 'reactflow/dist/style.css';
 import dagre from 'dagre';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import { fetchWithAuth } from '@/lib/utils';
 
 const nodeWidth = 172;
 const nodeHeight = 36;
@@ -73,7 +74,7 @@ export default function LineageGraph({ workspaceId }: LineageGraphProps) {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await fetch(`/api/workspaces/${workspaceId}/lineage`);
+                const res = await fetchWithAuth(`/api/go/workspaces/${workspaceId}/lineage`);
                 const data = await res.json();
 
                 if (data.nodes && data.edges) {

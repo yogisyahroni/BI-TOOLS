@@ -3,7 +3,7 @@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { CanvasWidget } from '../canvas-board';
+import { type CanvasWidget } from '../canvas-board';
 
 interface PropertyProps {
     widget: CanvasWidget;

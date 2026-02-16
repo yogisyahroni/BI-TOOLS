@@ -28,6 +28,7 @@ import { Badge } from '@/components/ui/badge';
 import { UserPlus, Trash2, Shield } from 'lucide-react';
 import { InviteMemberDialog } from './invite-member-dialog';
 import { useToast } from '@/hooks/use-toast';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface Member {
     id: string;
@@ -69,7 +70,7 @@ export function WorkspaceMembers({
 
     const fetchMembers = async () => {
         try {
-            const response = await fetch(`/api/workspaces/${workspaceId}/members`);
+            const response = await fetchWithAuth(`/api/go/workspaces/${workspaceId}/members`);
             if (response.ok) {
                 const data = await response.json();
                 setMembers(data);
@@ -83,8 +84,8 @@ export function WorkspaceMembers({
 
     const handleRoleChange = async (memberId: string, newRole: string) => {
         try {
-            const response = await fetch(
-                `/api/workspaces/${workspaceId}/members/${memberId}`,
+            const response = await fetchWithAuth(
+                `/api/go/workspaces/${workspaceId}/members/${memberId}`,
                 {
                     method: 'PATCH',
                     headers: { 'Content-Type': 'application/json' },
@@ -109,11 +110,12 @@ export function WorkspaceMembers({
     };
 
     const handleRemoveMember = async (memberId: string) => {
+        // eslint-disable-next-line no-alert
         if (!confirm('Are you sure you want to remove this member?')) return;
 
         try {
-            const response = await fetch(
-                `/api/workspaces/${workspaceId}/members/${memberId}`,
+            const response = await fetchWithAuth(
+                `/api/go/workspaces/${workspaceId}/members/${memberId}`,
                 { method: 'DELETE' }
             );
 

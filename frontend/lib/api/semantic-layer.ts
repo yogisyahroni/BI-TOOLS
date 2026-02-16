@@ -5,17 +5,17 @@ import type {
     SemanticQueryRequest,
     SemanticQueryResponse,
 } from '../types/semantic-layer';
+import { fetchWithAuth } from '@/lib/utils';
 
-const API_BASE = '/api/v1';
+const API_BASE = '/api/go';
 
 export const semanticLayerApi = {
     // Models
     listModels: async (): Promise<SemanticModel[]> => {
-        const res = await fetch(`${API_BASE}/semantic/models`, {
+        const res = await fetchWithAuth(`${API_BASE}/semantic/models`, {
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',
         });
 
         if (!res.ok) {
@@ -27,12 +27,11 @@ export const semanticLayerApi = {
     },
 
     createModel: async (data: CreateSemanticModelRequest): Promise<SemanticModel> => {
-        const res = await fetch(`${API_BASE}/semantic/models`, {
+        const res = await fetchWithAuth(`${API_BASE}/semantic/models`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',
             body: JSON.stringify(data),
         });
 
@@ -50,11 +49,10 @@ export const semanticLayerApi = {
             ? `${API_BASE}/semantic/metrics?modelId=${encodeURIComponent(modelId)}`
             : `${API_BASE}/semantic/metrics`;
 
-        const res = await fetch(url, {
+        const res = await fetchWithAuth(url, {
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',
         });
 
         if (!res.ok) {
@@ -67,12 +65,11 @@ export const semanticLayerApi = {
 
     // Query
     executeQuery: async (query: SemanticQueryRequest): Promise<SemanticQueryResponse> => {
-        const res = await fetch(`${API_BASE}/semantic/query`, {
+        const res = await fetchWithAuth(`${API_BASE}/semantic/query`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            credentials: 'include',
             body: JSON.stringify(query),
         });
 

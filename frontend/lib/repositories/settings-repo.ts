@@ -3,7 +3,7 @@ import { db } from '@/lib/db';
 export const settingsRepo = {
     async get(key: string): Promise<any> {
         try {
-            // @ts-ignore: SystemSetting might not be in generated client yet due to file lock
+            // @ts-expect-error: SystemSetting might not be in generated client yet due to file lock
             const setting = await db.systemSetting.findUnique({
                 where: { key },
             });
@@ -17,7 +17,7 @@ export const settingsRepo = {
     async set(key: string, value: any): Promise<void> {
         try {
             const stringValue = JSON.stringify(value);
-            // @ts-ignore
+            // @ts-expect-error
             await db.systemSetting.upsert({
                 where: { key },
                 update: { value: stringValue },

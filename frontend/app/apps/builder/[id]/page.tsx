@@ -4,6 +4,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -50,7 +51,7 @@ export default function AppBuilderPage() {
 
     const fetchApp = async () => {
         try {
-            const res = await fetch(`/api/apps/${id}`);
+            const res = await fetchWithAuth(`/api/go/apps/${id}`);
             if (!res.ok) throw new Error('Failed to fetch app');
             const data = await res.json();
             setApp(data);

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
 const API_BASE_URL = process.env.GO_BACKEND_URL || 'http://127.0.0.1:8080';

@@ -2,7 +2,7 @@
 
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { CanvasWidget } from '../canvas-board';
+import { type CanvasWidget } from '../canvas-board';
 import { TextProperty } from './text-property';
 import { ImageProperty } from './image-property';
 import { ChartProperty } from './chart-property';

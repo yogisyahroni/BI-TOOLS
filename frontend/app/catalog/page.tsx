@@ -12,7 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, Loader2, Filter } from 'lucide-react';
-import { SavedQuery, BusinessMetric } from '@/lib/types';
+import { type SavedQuery, type BusinessMetric } from '@/lib/types';
 
 export default function DataCatalogPage() {
     const { toggle: toggleSidebar } = useSidebar(); // Assuming context provides toggle

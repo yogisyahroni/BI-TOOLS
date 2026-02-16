@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { toast } from 'sonner';
 import { CollectionsSidebar } from '@/components/collections-sidebar';
 import { SavedQueriesList } from '@/components/saved-queries-list';
@@ -16,13 +17,13 @@ import { useSidebar } from '@/contexts/sidebar-context';
 import { ResultsTable } from '@/components/query-results/results-table';
 import { ChartVisualization } from '@/components/chart-visualization';
 import { VisualizationSidebar } from '@/components/visualization-sidebar';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from '@/components/ui/resizable';
+} from '@/components/resizable-client';
 
 export default function ExplorerPage() {
   const { open: openSidebar } = useSidebar();
@@ -99,7 +100,7 @@ export default function ExplorerPage() {
         const valueCol = vizConfig.yAxis?.[0];
         if (dateCol && valueCol) {
           try {
-            const res = await fetch('/api/engine/forecast', {
+            const res = await fetchWithAuth('/api/engine/forecast', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -125,7 +126,7 @@ export default function ExplorerPage() {
         const valueCol = vizConfig.yAxis?.[0];
         if (valueCol) {
           try {
-            const res = await fetch('/api/engine/anomaly', {
+            const res = await fetchWithAuth('/api/engine/anomaly', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -158,7 +159,7 @@ export default function ExplorerPage() {
         try {
           const features = vizConfig.clustering.features.length ? vizConfig.clustering.features : vizConfig.yAxis;
           if (features?.length) {
-            const res = await fetch('/api/engine/clustering', {
+            const res = await fetchWithAuth('/api/engine/clustering', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -257,7 +258,7 @@ export default function ExplorerPage() {
                       <div className="h-full overflow-y-auto p-4">
                         <DualEngineEditor
                           connectionId={activeConnectionId}
-                          onSchemaClick={() => console.log('Show Schema')}
+                          onSchemaClick={() => console.warn('Show Schema')}
                           onResultsUpdate={handleResultsUpdate}
                         />
                       </div>
@@ -376,7 +377,7 @@ export default function ExplorerPage() {
                   <SavedQueriesList
                     collectionId={selectedCollectionId}
                     onQuerySelect={(queryId: string) => {
-                      console.log('[v0] Query selected:', queryId);
+                      console.warn('[v0] Query selected:', queryId);
                       // TODO: Load into editor with saved query data
                       setIsEditorOpen(true);
                       // In real impl, we'd fetch the query details here

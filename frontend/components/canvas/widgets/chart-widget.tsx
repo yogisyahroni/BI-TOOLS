@@ -1,6 +1,6 @@
 'use client';
 
-import { CanvasWidget } from '../canvas-board';
+import { type CanvasWidget } from '../canvas-board';
 import { BarChart3 } from 'lucide-react';
 
 interface WidgetProps {
@@ -28,10 +28,10 @@ export function ChartWidget({ widget, readOnly }: WidgetProps) {
                 <p className="font-semibold text-sm">Chart Rendering Placeholder</p>
                 <p className="text-xs text-muted-foreground">ID: {chartId}</p>
                 <div className="mt-4 flex gap-2 items-end justify-center h-24">
-                    <div className="w-4 bg-primary/20 h-10 rounded-t"></div>
-                    <div className="w-4 bg-primary/40 h-16 rounded-t"></div>
-                    <div className="w-4 bg-primary/60 h-20 rounded-t"></div>
-                    <div className="w-4 bg-primary/80 h-14 rounded-t"></div>
+                    <div className="w-4 bg-primary/20 h-10 rounded-t" />
+                    <div className="w-4 bg-primary/40 h-16 rounded-t" />
+                    <div className="w-4 bg-primary/60 h-20 rounded-t" />
+                    <div className="w-4 bg-primary/80 h-14 rounded-t" />
                 </div>
             </div>
         </div>

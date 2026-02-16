@@ -22,7 +22,7 @@ export async function GET() {
         }
 
         if (!user) {
-            console.log('[DevAuth] User not found, seeding user_123...');
+            console.warn('[DevAuth] User not found, seeding user_123...');
             // Auto-seed for dev convenience
             user = await db.user.create({
                 data: {

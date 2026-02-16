@@ -66,7 +66,7 @@ const nextConfig = {
   webpack: (config) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      'pptxgenjs': 'pptxgenjs/dist/pptxgen.min.js',
+      // pptxgenjs alias removed due to package exports conflict
     };
     config.resolve.fallback = {
       ...config.resolve.fallback,
@@ -79,6 +79,14 @@ const nextConfig = {
       zlib: false,
       path: false,
       child_process: false,
+      'node:https': false,
+      'node:http': false,
+      'node:fs': false,
+      'node:path': false,
+      'node:url': false,
+      'node:zlib': false,
+      'node:stream': false,
+      'node:util': false,
     };
     return config;
   },
@@ -90,15 +98,88 @@ const nextConfig = {
     unoptimized: true,
   },
   async rewrites() {
+    const backendUrl = process.env.GO_BACKEND_URL || 'http://localhost:8080';
     return [
+      // GO Backend APIs
       {
         source: '/api/go/:path*',
-        destination: `${process.env.GO_BACKEND_URL || 'http://localhost:8080'}/api/:path*`,
+        destination: `${backendUrl}/api/:path*`,
       },
-      // Additional rewrite for WebSocket connections if needed
+      // V1 APIs (scheduler, etc)
+      {
+        source: '/api/v1/:path*',
+        destination: `${backendUrl}/api/:path*`,
+      },
+      // WebSocket
       {
         source: '/api/v1/ws',
-        destination: `${process.env.GO_BACKEND_URL || 'http://localhost:8080'}/api/v1/ws`,
+        destination: `${backendUrl}/api/v1/ws`,
+      },
+      // IMPORTANT: Do NOT proxy /api/auth/* to backend - these must be handled by NextAuth
+      // Only proxy non-auth API routes to Go backend
+      {
+        source: '/api/connections/:path*',
+        destination: `${backendUrl}/api/connections/:path*`,
+      },
+      {
+        source: '/api/dashboards/:path*',
+        destination: `${backendUrl}/api/dashboards/:path*`,
+      },
+      {
+        source: '/api/queries/:path*',
+        destination: `${backendUrl}/api/queries/:path*`,
+      },
+      {
+        source: '/api/notifications/:path*',
+        destination: `${backendUrl}/api/notifications/:path*`,
+      },
+      {
+        source: '/api/workspaces/:path*',
+        destination: `${backendUrl}/api/workspaces/:path*`,
+      },
+      {
+        source: '/api/governance/:path*',
+        destination: `${backendUrl}/api/governance/:path*`,
+      },
+      {
+        source: '/api/pipelines/:path*',
+        destination: `${backendUrl}/api/pipelines/:path*`,
+      },
+      {
+        source: '/api/scheduler/:path*',
+        destination: `${backendUrl}/api/scheduler/:path*`,
+      },
+      {
+        source: '/api/export/:path*',
+        destination: `${backendUrl}/api/export/:path*`,
+      },
+      {
+        source: '/api/rls/:path*',
+        destination: `${backendUrl}/api/rls/:path*`,
+      },
+      {
+        source: '/api/semantic/:path*',
+        destination: `${backendUrl}/api/semantic/:path*`,
+      },
+      {
+        source: '/api/widgets/:path*',
+        destination: `${backendUrl}/api/widgets/:path*`,
+      },
+      {
+        source: '/api/comments/:path*',
+        destination: `${backendUrl}/api/comments/:path*`,
+      },
+      {
+        source: '/api/audit/:path*',
+        destination: `${backendUrl}/api/audit/:path*`,
+      },
+      {
+        source: '/api/users/:path*',
+        destination: `${backendUrl}/api/users/:path*`,
+      },
+      {
+        source: '/api/upload/:path*',
+        destination: `${backendUrl}/api/upload/:path*`,
       },
     ]
   },

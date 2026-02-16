@@ -1,5 +1,5 @@
 import Groq from 'groq-sdk';
-import { IAIProvider, AIRequest, AIResponse } from './base-provider';
+import { type IAIProvider, type AIRequest, type AIResponse } from './base-provider';
 
 export class GroqProvider implements IAIProvider {
     private client: Groq;

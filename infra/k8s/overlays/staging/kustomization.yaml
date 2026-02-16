@@ -1,0 +1,112 @@
+# ============================================================================
+# Kustomize Overlay — Staging
+# ============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: insight-engine
+
+commonLabels:
+  environment: staging
+
+resources:
+  - ../../base
+
+images:
+  - name: insight-engine-backend
+    newName: ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/insight-engine-backend
+    newTag: staging
+  - name: insight-engine-frontend
+    newName: ACCOUNT_ID.dkr.ecr.ap-southeast-1.amazonaws.com/insight-engine-frontend
+    newTag: staging
+
+patches:
+  # Backend — Minimal resources for staging
+  - target:
+      kind: Deployment
+      name: backend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 100m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 128Mi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 500m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 512Mi
+
+  # Frontend — Minimal resources for staging
+  - target:
+      kind: Deployment
+      name: frontend
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 1
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: 50m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: 64Mi
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: 250m
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: 256Mi
+
+  # Backend HPA — lower for staging
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: backend-hpa
+    patch: |
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+      - op: replace
+        path: /spec/maxReplicas
+        value: 3
+
+  # Frontend HPA — lower for staging
+  - target:
+      kind: HorizontalPodAutoscaler
+      name: frontend-hpa
+    patch: |
+      - op: replace
+        path: /spec/minReplicas
+        value: 1
+      - op: replace
+        path: /spec/maxReplicas
+        value: 2
+
+  # ConfigMap — staging values
+  - target:
+      kind: ConfigMap
+      name: backend-config
+    patch: |
+      - op: replace
+        path: /data/ENVIRONMENT
+        value: staging
+      - op: replace
+        path: /data/LOG_LEVEL
+        value: debug
+
+  # Ingress — staging host
+  - target:
+      kind: Ingress
+      name: insight-engine-ingress
+    patch: |
+      - op: replace
+        path: /spec/tls/0/hosts/0
+        value: staging.insightengine.io
+      - op: replace
+        path: /spec/rules/0/host
+        value: staging.insightengine.io

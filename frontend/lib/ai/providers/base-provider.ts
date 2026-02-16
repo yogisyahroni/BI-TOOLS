@@ -1,4 +1,4 @@
-import { AIModel, AIProvider } from "../registry";
+import { type AIModel, AIProvider } from "../registry";
 
 export interface AIRequest {
     prompt: string;

@@ -1,22 +1,28 @@
 'use client';
 
 import React from 'react';
-import { MainSidebar } from './main-sidebar';
-import { useSidebar } from '@/contexts/sidebar-context';
+import { PageLayout } from './page-layout';
+import { EditorLayout } from './editor-layout';
+import { usePathname } from 'next/navigation';
 
 interface SidebarLayoutProps {
     children: React.ReactNode;
 }
 
-export function SidebarLayout({ children }: SidebarLayoutProps) {
-    const { isOpen, close } = useSidebar();
+// Pages that need full editor layout (no TopBar)
+const EDITOR_PAGES = ['/query', '/query-builder'];
 
-    return (
-        <div className="flex h-screen bg-background overflow-hidden w-full">
-            <MainSidebar isOpen={isOpen} onClose={close} />
-            <main className="flex-1 flex flex-col overflow-hidden relative">
-                {children}
-            </main>
-        </div>
-    );
+export function SidebarLayout({ children }: SidebarLayoutProps) {
+    const pathname = usePathname();
+    
+    // Check if current page is an editor page
+    const isEditorPage = EDITOR_PAGES.some(page => pathname.startsWith(page));
+    
+    if (isEditorPage) {
+        // Use EditorLayout untuk query editor (tanpa TopBar)
+        return <EditorLayout>{children}</EditorLayout>;
+    }
+    
+    // Use PageLayout untuk pages lainnya (dengan TopBar)
+    return <PageLayout>{children}</PageLayout>;
 }

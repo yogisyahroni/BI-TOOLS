@@ -1,0 +1,91 @@
+{
+    "extends": [
+        "next/core-web-vitals",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "@typescript-eslint/no-unused-vars": [
+            "warn",
+            {
+                "argsIgnorePattern": "^_",
+                "varsIgnorePattern": "^_",
+                "caughtErrorsIgnorePattern": "^_"
+            }
+        ],
+        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/consistent-type-imports": [
+            "warn",
+            {
+                "prefer": "type-imports",
+                "fixStyle": "inline-type-imports"
+            }
+        ],
+        "@typescript-eslint/ban-ts-comment": [
+            "warn",
+            {
+                "ts-expect-error": "allow-with-description",
+                "ts-ignore": true,
+                "ts-nocheck": true,
+                "ts-check": false
+            }
+        ],
+        "@typescript-eslint/prefer-as-const": "warn",
+        "react/self-closing-comp": [
+            "warn",
+            {
+                "component": true,
+                "html": true
+            }
+        ],
+        "react/jsx-curly-brace-presence": [
+            "warn",
+            {
+                "props": "never",
+                "children": "never"
+            }
+        ],
+        "react/no-unescaped-entities": "warn",
+        "no-duplicate-imports": "off",
+        "@typescript-eslint/no-duplicate-imports": "off",
+        "no-console": [
+            "warn",
+            {
+                "allow": [
+                    "warn",
+                    "error"
+                ]
+            }
+        ],
+        "no-debugger": "error",
+        "no-alert": "warn",
+        "prefer-const": "warn",
+        "no-var": "error",
+        "eqeqeq": [
+            "warn",
+            "always",
+            {
+                "null": "ignore"
+            }
+        ],
+        "no-nested-ternary": "warn",
+        "curly": [
+            "warn",
+            "multi-line"
+        ]
+    },
+    "ignorePatterns": [
+        ".next/",
+        "node_modules/",
+        "out/",
+        "public/",
+        "coverage/",
+        "playwright-report/",
+        "*.config.js",
+        "*.config.mjs",
+        "*.config.ts"
+    ]
+}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { type QueryResult } from '@/lib/types';
 
 interface ExecuteOptions {
@@ -57,7 +58,7 @@ export function useQueryExecution() {
     }));
 
     try {
-      const response = await fetch('/api/go/queries/execute', {
+      const response = await fetchWithAuth('/api/go/queries/execute', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

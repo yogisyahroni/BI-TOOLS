@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { Prisma, Collection } from '@prisma/client';
+import { type Prisma, type Collection } from '@prisma/client';
 
 export class CollectionRepository {
     async create(data: Prisma.CollectionUncheckedCreateInput): Promise<Collection> {

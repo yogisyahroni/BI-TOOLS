@@ -24,9 +24,9 @@ import {
 } from 'lucide-react';
 import { FilterBuilder } from './filter-builder';
 import {
-    ColumnSelection,
-    AggregationFunction,
-    FilterGroup,
+    type ColumnSelection,
+    type AggregationFunction,
+    type FilterGroup,
 } from '@/lib/query-builder/types';
 
 interface AggregationBuilderProps {

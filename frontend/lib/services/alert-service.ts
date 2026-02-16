@@ -25,7 +25,7 @@ export class AlertService {
      * Typically called by Cron Job / API Scheduler.
      */
     async checkAllAlerts() {
-        console.log('[AlertService] Starting check job...');
+        console.warn('[AlertService] Starting check job...');
 
         // 1. Fetch Active Alerts (Mocked for now as we might not have DB table setup in this env)
         // In production: SELECT * FROM alerts WHERE active = TRUE
@@ -100,7 +100,7 @@ export class AlertService {
         const row = result.data[0];
         const value = Object.values(row)[0] as number; // Simplest way if only 1 metric
 
-        console.log(`[AlertService] Checking ${alert.name}: ${value} ${alert.operator} ${alert.threshold}`);
+        console.warn(`[AlertService] Checking ${alert.name}: ${value} ${alert.operator} ${alert.threshold}`);
 
         switch (alert.operator) {
             case '>': return Number(value) > alert.threshold;
@@ -113,7 +113,7 @@ export class AlertService {
 
     private async sendNotification(alert: AlertRule) {
         // Mock Email Send
-        console.log(`📧 [EMAIL SENT] To: ${alert.emailTo} | Subject: ALERT ${alert.name} Triggered!`);
+        console.warn(`📧 [EMAIL SENT] To: ${alert.emailTo} | Subject: ALERT ${alert.name} Triggered!`);
 
         // Audit Logic
         auditService.log({ tenantId: 'system', userId: 'alert-bot', role: 'admin' }, {

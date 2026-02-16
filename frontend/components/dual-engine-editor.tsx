@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useRef, useEffect, KeyboardEvent } from 'react';
+import { useState, useCallback, useRef, useEffect, type KeyboardEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
@@ -50,7 +50,7 @@ import { MonacoSqlEditor } from '@/components/query-editor/monaco-sql-editor';
 import { HistoryDialog } from '@/components/query-history/history-dialog';
 
 import { AIModelSelector } from '@/components/ai-model-selector';
-import { DEFAULT_AI_MODEL, AIModel } from '@/lib/ai/registry';
+import { DEFAULT_AI_MODEL, type AIModel } from '@/lib/ai/registry';
 
 interface DualEngineEditorProps {
   onSchemaClick: () => void;

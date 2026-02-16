@@ -1,6 +1,6 @@
 'use client';
 
-import { CanvasWidget } from '../canvas-board';
+import { type CanvasWidget } from '../canvas-board';
 import { ImageIcon } from 'lucide-react';
 import Image from 'next/image';
 

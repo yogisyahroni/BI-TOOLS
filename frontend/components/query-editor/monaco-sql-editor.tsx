@@ -1,10 +1,10 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Editor, { useMonaco, OnMount } from '@monaco-editor/react';
+import Editor, { useMonaco, type OnMount } from '@monaco-editor/react';
 import { useTheme } from 'next-themes';
 import { registerSQLLanguage, defineSQLTheme } from '../sql-editor/monaco-config';
-import { createSQLCompletionProvider, TableSchema } from '../sql-editor/autocomplete';
+import { createSQLCompletionProvider, type TableSchema } from '../sql-editor/autocomplete';
 import { formatSQL } from '@/lib/sql-formatter';
 import { toast } from 'sonner';
 

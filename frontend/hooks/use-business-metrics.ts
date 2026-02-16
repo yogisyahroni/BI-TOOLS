@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect } from 'react';
 import { type BusinessMetric } from '@/lib/types';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface UseBusinessMetricsOptions {
     status?: string;
@@ -21,7 +22,7 @@ export function useBusinessMetrics(options: UseBusinessMetricsOptions = {}) {
             const params = new URLSearchParams();
             if (options.status) params.append('status', options.status);
 
-            const response = await fetch(`/api/metrics?${params.toString()}`);
+            const response = await fetchWithAuth(`/api/go/metrics?${params.toString()}`);
 
             if (!response.ok) {
                 throw new Error(`Failed to fetch metrics: ${response.status}`);
@@ -44,7 +45,7 @@ export function useBusinessMetrics(options: UseBusinessMetricsOptions = {}) {
 
     const saveMetric = useCallback(async (metric: Omit<BusinessMetric, 'id' | 'createdAt' | 'updatedAt'>) => {
         try {
-            const response = await fetch('/api/metrics', {
+            const response = await fetchWithAuth('/api/go/metrics', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(metric),

@@ -9,7 +9,7 @@ import { VisualQueryBuilder } from "@/components/visual-query/VisualQueryBuilder
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { connectionsApi } from "@/lib/api/connections";
-import { Connection } from "@/types";
+import { type Connection } from "@/types";
 import { Loader2, Database } from "lucide-react";
 import { toast } from "sonner";
 

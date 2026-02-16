@@ -1,6 +1,6 @@
 import { fetchWithAuth } from '@/lib/utils';
-import { Connection } from '@/types/index';
-import { SchemaTable } from '@/types/visual-query';
+import { type Connection } from '@/types/index';
+import { type SchemaTable } from '@/types/visual-query';
 
 
 export type ConnectionSchema = SchemaTable[];

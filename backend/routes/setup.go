@@ -301,6 +301,7 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 	// AI Usage
 	api.Post("/ai/generate", m.AuthMiddleware, h.AIHandler.Generate)
 	api.Post("/ai/presentation", m.AuthMiddleware, h.AIHandler.GeneratePresentation)
+	api.Post("/ai/presentation/export", m.AuthMiddleware, h.AIHandler.ExportPresentation)
 	api.Post("/ai/stream", m.AuthMiddleware, h.AIHandler.StreamGenerate)
 	api.Get("/ai/usage", m.AuthMiddleware, h.AIUsageHandler.GetUsageStats)
 	api.Get("/ai/requests", m.AuthMiddleware, h.AIHandler.GetRequests)
@@ -329,4 +330,16 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 	if h.ScheduledReportHandler != nil {
 		h.ScheduledReportHandler.RegisterRoutes(api)
 	}
+
+	// --- Data Pipeline Routes ---
+	// --- Data Pipeline Routes ---
+	api.Get("/pipelines", m.AuthMiddleware, handlers.GetPipelines)
+	api.Post("/pipelines", m.AuthMiddleware, handlers.CreatePipeline)
+	api.Get("/pipelines/stats", m.AuthMiddleware, handlers.GetPipelineStats)
+	api.Get("/pipelines/:id", m.AuthMiddleware, handlers.GetPipeline)
+	api.Put("/pipelines/:id", m.AuthMiddleware, handlers.UpdatePipeline)
+	api.Delete("/pipelines/:id", m.AuthMiddleware, handlers.DeletePipeline)
+	api.Post("/pipelines/:id/run", m.AuthMiddleware, handlers.RunPipeline)
+	api.Get("/pipelines/:id/executions", m.AuthMiddleware, handlers.GetPipelineExecutions)
+	api.Get("/pipelines/:id/stream", handlers.StreamPipelineStatus) // SSE - no auth middleware (uses query token)
 }

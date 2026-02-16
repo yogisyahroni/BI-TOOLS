@@ -1,4 +1,4 @@
-import { SchemaInfo, ColumnInfo } from "@/lib/services/connection-service";
+import { type SchemaInfo, ColumnInfo } from "@/lib/services/connection-service";
 
 export interface IDatabaseConnector {
     name: string;

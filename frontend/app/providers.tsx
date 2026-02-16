@@ -26,7 +26,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
     );
 
     return (
-        <SessionProvider>
+        <SessionProvider 
+            basePath="/api/auth"
+            refetchInterval={0}  // Disable auto-refetching to prevent session endpoint calls
+            refetchOnWindowFocus={false}  // Disable refetch on window focus to prevent session calls
+        >
             <QueryClientProvider client={queryClient}>
                 <HelpProvider>
                     {children}

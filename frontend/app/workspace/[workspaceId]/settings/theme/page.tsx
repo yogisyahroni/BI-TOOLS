@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -45,7 +46,7 @@ export default function ThemeSettingsPage() {
     });
 
     useEffect(() => {
-        fetch(`/api/workspaces/${workspaceId}/theme`)
+        fetchWithAuth(`/api/workspaces/${workspaceId}/theme`)
             .then(res => res.json())
             .then(data => {
                 setConfig({
@@ -63,7 +64,7 @@ export default function ThemeSettingsPage() {
     const handleSave = async () => {
         setSaving(true);
         try {
-            const res = await fetch(`/api/workspaces/${workspaceId}/theme`, {
+            const res = await fetchWithAuth(`/api/workspaces/${workspaceId}/theme`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(config)

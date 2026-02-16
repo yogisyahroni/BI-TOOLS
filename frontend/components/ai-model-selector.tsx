@@ -17,7 +17,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
-import { AI_REGISTRY, AIModel } from "@/lib/ai/registry"
+import { AI_REGISTRY, type AIModel } from "@/lib/ai/registry"
 
 interface AIModelSelectorProps {
     selectedModel: AIModel;

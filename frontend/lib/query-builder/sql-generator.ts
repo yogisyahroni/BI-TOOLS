@@ -1,11 +1,11 @@
 import {
-    QueryBuilderState,
-    ColumnSelection,
-    FilterGroup,
-    FilterCondition,
+    type QueryBuilderState,
+    type ColumnSelection,
+    type FilterGroup,
+    type FilterCondition,
     isFilterGroup,
     isFilterCondition,
-    SortRule,
+    type SortRule,
 } from './types';
 
 /**

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { ArrowRight, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 export default function NewStoryPage() {
     const router = useRouter();
@@ -26,7 +27,7 @@ export default function NewStoryPage() {
     const fetchDashboards = async (dbId: string) => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/dashboards?database_id=${dbId}`);
+            const res = await fetchWithAuth(`/api/go/dashboards?database_id=${dbId}`);
             if (!res.ok) throw new Error('Failed to fetch dashboards');
             const data = await res.json();
             setDashboards(data);

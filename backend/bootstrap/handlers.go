@@ -66,7 +66,7 @@ func InitHandlers(svc *ServiceContainer) *HandlerContainer {
 	queryVersionHandler := handlers.NewQueryVersionHandler(database.DB, svc.NotificationService)
 	glossaryHandler := handlers.NewGlossaryHandler(svc.GlossaryService)
 	nlHandler := handlers.NewNLHandler(svc.NLService)
-	webhookHandler := handlers.NewWebhookHandler(svc.WebhookService)
+	webhookHandler := handlers.NewWebhookHandler(database.DB)
 
 	reportingHandler := handlers.NewReportingHandler(svc.ReportingService)
 	forecastingHandler := handlers.NewForecastingHandler(svc.ForecastingService)

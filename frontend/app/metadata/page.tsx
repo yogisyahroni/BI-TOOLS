@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useMemo } from 'react';
 import { ArrowLeft, Plus, Edit2, Trash2, Sparkles, Database } from 'lucide-react';
-// @ts-ignore
+// @ts-expect-error
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -19,10 +19,10 @@ import { connectionsApi } from '@/lib/api/connections';
 import { dataGovernanceApi } from '@/lib/api/data-governance';
 import { toast } from 'sonner';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Connection } from '@/types/index';
+import { type Connection } from '@/types/index';
 // ConnectionSchema is SchemaTable[]
-import { ConnectionSchema } from '@/lib/api/connections';
-import { ColumnMetadata } from '@/types/data-governance';
+import { type ConnectionSchema } from '@/lib/api/connections';
+import { type ColumnMetadata } from '@/types/data-governance';
 
 // UI-specific type combining schema and metadata
 interface TableEntry {

@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react'
 import { format } from 'date-fns'
+import { fetchWithAuth } from '@/lib/utils'
 
 interface AuditLog {
     id: number
@@ -47,7 +48,6 @@ export default function AuditLogsPage() {
     const fetchLogs = async () => {
         setLoading(true)
         try {
-            // Build query params
             const params = new URLSearchParams()
             if (filters.username) params.append('username', filters.username)
             if (filters.action) params.append('action', filters.action)
@@ -57,12 +57,7 @@ export default function AuditLogsPage() {
             params.append('limit', filters.limit.toString())
             params.append('offset', filters.offset.toString())
 
-            const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:8080/api/admin/audit-logs?${params}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            const response = await fetchWithAuth(`/api/go/admin/audit-logs?${params}`)
 
             if (!response.ok) throw new Error('Failed to fetch audit logs')
 
@@ -86,16 +81,10 @@ export default function AuditLogsPage() {
             if (filters.start_date) params.append('start_date', new Date(filters.start_date).toISOString())
             if (filters.end_date) params.append('end_date', new Date(filters.end_date).toISOString())
 
-            const token = localStorage.getItem('token')
-            const response = await fetch(`http://localhost:8080/api/admin/audit-logs/export?${params}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            const response = await fetchWithAuth(`/api/go/admin/audit-logs/export?${params}`)
 
             if (!response.ok) throw new Error('Failed to export audit logs')
 
-            // Download CSV
             const blob = await response.blob()
             const url = window.URL.createObjectURL(blob)
             const a = document.createElement('a')
@@ -300,7 +289,7 @@ export default function AuditLogsPage() {
                 <div className="bg-white rounded-lg shadow-sm overflow-hidden">
                     {loading ? (
                         <div className="flex items-center justify-center h-64">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
                         </div>
                     ) : (
                         <div className="overflow-x-auto">

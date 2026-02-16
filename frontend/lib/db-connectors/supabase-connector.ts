@@ -1,4 +1,4 @@
-import { PostgresConnector, PostgresConfig } from "./postgres-connector";
+import { PostgresConnector, type PostgresConfig } from "./postgres-connector";
 
 export interface SupabaseConfig extends PostgresConfig {
     projectUrl: string;

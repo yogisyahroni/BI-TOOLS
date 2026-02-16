@@ -16,7 +16,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Loader2, Save, X, Tag } from 'lucide-react';
 import { toast } from 'sonner';
-import { VisualQueryConfig } from '@/lib/query-builder/types';
+import { type VisualQueryConfig } from '@/lib/query-builder/types';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface SaveQueryDialogProps {
     open: boolean;
@@ -76,12 +77,12 @@ export function SaveQueryDialog({
 
         try {
             const endpoint = isUpdate
-                ? `/api/visual-queries/${existingQueryId}`
-                : '/api/visual-queries';
+                ? `/api/go/visual-queries/${existingQueryId}`
+                : '/api/go/visual-queries';
 
             const method = isUpdate ? 'PUT' : 'POST';
 
-            const response = await fetch(endpoint, {
+            const response = await fetchWithAuth(endpoint, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { db as prisma } from '@/lib/db';
 
 export async function DELETE(

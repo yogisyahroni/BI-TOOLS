@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
+import { cn, fetchWithAuth } from '@/lib/utils';
 import { Loader2, Menu, Layout, Link as LinkIcon, FileText } from 'lucide-react';
 import { AppDashboardView } from '@/components/apps/app-dashboard-view';
 
@@ -43,7 +43,7 @@ export default function PublicAppPage() {
 
     const fetchApp = async () => {
         try {
-            const res = await fetch(`/api/apps/public/${slug}`);
+            const res = await fetchWithAuth(`/api/go/apps/public/${slug}`);
             if (!res.ok) {
                 if (res.status === 401) {
                     // Redirect to login or show login message

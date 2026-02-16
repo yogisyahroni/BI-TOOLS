@@ -2,7 +2,7 @@
 
 import { useWorkspace } from '@/contexts/workspace-context';
 import { type Permission } from '@/lib/rbac/permissions';
-import { ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 interface RoleGuardProps {
     permission: Permission;

@@ -32,6 +32,10 @@ func AuthMiddleware(c *fiber.Ctx) error {
 
 	claims := jwt.MapClaims{}
 	parsedToken, err := jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
+		// Validate signing method for security
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
 		return []byte(secret), nil
 	})
 
@@ -41,6 +45,10 @@ func AuthMiddleware(c *fiber.Ctx) error {
 		if embedSecret != "" && embedSecret != secret {
 			claims = jwt.MapClaims{} // Reset claims
 			parsedToken, err = jwt.ParseWithClaims(tokenString, claims, func(t *jwt.Token) (interface{}, error) {
+				// Validate signing method for security
+				if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+					return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+				}
 				return []byte(embedSecret), nil
 			})
 			if err == nil && parsedToken.Valid {
@@ -66,6 +74,17 @@ func AuthMiddleware(c *fiber.Ctx) error {
 			"message": "Unauthorized: Invalid token",
 			"error":   err.Error(),
 		})
+	}
+
+	// Additional security checks
+	if exp, ok := claims["exp"].(float64); ok {
+		if int64(exp) < time.Now().Unix() {
+			services.LogWarn("auth_expired_token", "Expired token attempted", nil)
+			return c.Status(401).JSON(fiber.Map{
+				"status":  "error",
+				"message": "Unauthorized: Token expired",
+			})
+		}
 	}
 
 	// services.LogDebug("auth_success", "Token validated successfully", map[string]interface{}{"user_id": claims["sub"], "is_embed": isEmbed})

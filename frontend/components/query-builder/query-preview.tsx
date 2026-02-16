@@ -6,9 +6,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Play, Save, Copy, CheckCircle2, AlertCircle, Loader2, Sparkles } from 'lucide-react';
 import { SQLGenerator } from '@/lib/query-builder/sql-generator';
-import { QueryBuilderState } from '@/lib/query-builder/types';
-import { QueryResult } from '@/types/visual-query';
+import { type QueryBuilderState } from '@/lib/query-builder/types';
+import { type QueryResult } from '@/types/visual-query';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 import {
     Dialog,
     DialogContent,
@@ -63,7 +64,7 @@ export function QueryPreview({ state, onSave, databaseType }: QueryPreviewProps)
             setIsExecuting(true);
             setError(null);
 
-            const res = await fetch('/api/queries/execute', {
+            const res = await fetchWithAuth('/api/go/queries/execute', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

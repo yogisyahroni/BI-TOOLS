@@ -1,4 +1,4 @@
-import { BaseConnector, ConnectionConfig, SchemaInfo, QueryResult } from './base-connector';
+import { BaseConnector, ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
 import * as fs from 'fs';
 
 /**
@@ -24,7 +24,7 @@ export class ParquetConnector extends BaseConnector {
             }
 
             // Import parquetjs library (lazy load)
-            // @ts-ignore
+            // @ts-expect-error
             const parquetjs = await import('parquetjs');
 
             // Open parquet file

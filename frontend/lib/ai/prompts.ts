@@ -1,5 +1,5 @@
 
-import { SchemaInfo } from '@/lib/connectors/base-connector';
+import { type SchemaInfo } from '@/lib/connectors/base-connector';
 
 export type PromptTemplateType = 'generate-sql' | 'explain-sql' | 'suggest-questions';
 

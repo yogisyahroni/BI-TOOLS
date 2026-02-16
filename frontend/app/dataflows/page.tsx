@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Play, Database, ArrowRight } from 'lucide-react';
@@ -34,7 +35,7 @@ export default function DataflowsPage() {
     const [description, setDescription] = useState('');
 
     useEffect(() => {
-        fetch('/api/dataflows')
+        fetchWithAuth('/api/go/dataflows')
             .then(res => res.json())
             .then(data => {
                 if (data.success) setDataflows(data.dataflows);
@@ -45,7 +46,7 @@ export default function DataflowsPage() {
     const handleCreate = async () => {
         if (!name) return;
         try {
-            const res = await fetch('/api/dataflows', {
+            const res = await fetchWithAuth('/api/go/dataflows', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, description, steps: [] })

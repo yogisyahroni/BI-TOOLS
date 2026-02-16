@@ -1,5 +1,5 @@
-import { IDatabaseConnector, BaseConnector } from "./base-connector";
-import { SchemaInfo } from "@/lib/services/connection-service";
+import { type IDatabaseConnector, BaseConnector } from "./base-connector";
+import { type SchemaInfo } from "@/lib/services/connection-service";
 import { Client } from 'pg';
 
 export interface PostgresConfig {

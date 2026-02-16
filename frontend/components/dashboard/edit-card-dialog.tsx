@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
-import { DashboardCard, VisualizationConfig } from '@/lib/types';
+import { type DashboardCard, type VisualizationConfig } from '@/lib/types';
 import { useSavedQueries } from '@/hooks/use-saved-queries';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
@@ -38,7 +39,7 @@ export function EditCardDialog({ open, onOpenChange, card, onSave }: EditCardDia
     const [dashboards, setDashboards] = useState<{ id: string, name: string }[]>([]);
     useEffect(() => {
         if (open && clickAction === 'drill') {
-            fetch('/api/go/dashboards').then(res => res.json()).then(data => {
+            fetchWithAuth('/api/go/dashboards').then(res => res.json()).then(data => {
                 if (data.success) setDashboards(data.data);
             });
         }

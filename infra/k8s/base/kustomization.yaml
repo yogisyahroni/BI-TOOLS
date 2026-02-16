@@ -1,0 +1,19 @@
+# ============================================================================
+# Kustomize Base — InsightEngine AI
+# ============================================================================
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: insight-engine
+
+commonLabels:
+  app.kubernetes.io/part-of: insight-engine
+  app.kubernetes.io/managed-by: kustomize
+
+resources:
+  - namespace.yaml
+  - configmap.yaml
+  - backend.yaml
+  - frontend.yaml
+  - ingress.yaml
+  - network-policy.yaml

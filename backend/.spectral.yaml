@@ -1,0 +1,96 @@
+extends: "spectral:oas"
+
+rules:
+  # ============================================================
+  # NAMING CONVENTIONS
+  # ============================================================
+  operation-operationId:
+    severity: warn
+    description: Every operation should have an operationId
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: operationId
+      function: truthy
+
+  path-kebab-case:
+    severity: error
+    description: Paths must use kebab-case
+    given: "$.paths"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^(/[a-z0-9\\-{}]+)+$"
+
+  # ============================================================
+  # RESPONSE STANDARDS
+  # ============================================================
+  error-response-schema:
+    severity: warn
+    description: Error responses (4xx, 5xx) should use ErrorResponse schema
+    given: "$.paths[*][*].responses[?(@property >= 400 && @property < 600)]"
+    then:
+      field: content
+      function: truthy
+
+  response-must-have-description:
+    severity: error
+    description: Every response must have a description
+    given: "$.paths[*][*].responses[*]"
+    then:
+      field: description
+      function: truthy
+
+  # ============================================================
+  # SECURITY
+  # ============================================================
+  security-must-be-defined:
+    severity: error
+    description: Global security must be defined
+    given: "$"
+    then:
+      field: security
+      function: truthy
+
+  # ============================================================
+  # DOCUMENTATION QUALITY
+  # ============================================================
+  operation-summary:
+    severity: warn
+    description: Every operation should have a summary
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: summary
+      function: truthy
+
+  operation-tags:
+    severity: warn
+    description: Every operation should have at least one tag
+    given: "$.paths[*][get,post,put,patch,delete]"
+    then:
+      field: tags
+      function: truthy
+
+  no-inline-object-schemas:
+    severity: info
+    description: Prefer $ref schemas over inline definitions for reusability
+    message: "Consider extracting this inline schema into components/schemas"
+
+  # ============================================================
+  # PAGINATION
+  # ============================================================
+  pagination-parameters:
+    severity: info
+    description: List endpoints should support pagination
+    message: "GET endpoints returning arrays should support page/limit parameters"
+
+  # ============================================================
+  # API VERSIONING
+  # ============================================================
+  info-version-semver:
+    severity: warn
+    description: API version should follow semver
+    given: "$.info.version"
+    then:
+      function: pattern
+      functionOptions:
+        match: "^[0-9]+\\.[0-9]+\\.[0-9]+$"

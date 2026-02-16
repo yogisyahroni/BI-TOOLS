@@ -61,9 +61,7 @@ export interface CreateSemanticModelRequest {
     metrics: CreateMetricRequest[];
 }
 
-export interface UpdateSemanticModelRequest extends CreateSemanticModelRequest {
-    // Same structure as create for full update
-}
+export type UpdateSemanticModelRequest = CreateSemanticModelRequest;
 
 export interface SemanticQueryRequest {
     modelId: string;

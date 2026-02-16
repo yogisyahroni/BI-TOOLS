@@ -1,0 +1,93 @@
+# ============================================================================
+# Codecov Configuration
+# ============================================================================
+# https://docs.codecov.com/docs/codecovyml-reference
+# ============================================================================
+
+codecov:
+  require_ci_to_pass: false
+  notify:
+    wait_for_ci: true
+
+coverage:
+  precision: 2
+  round: down
+  range: "40...80"
+
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 2%
+        if_ci_failed: error
+
+      backend:
+        target: 50%
+        threshold: 5%
+        flags:
+          - backend
+        paths:
+          - "backend/"
+
+      frontend:
+        target: 40%
+        threshold: 5%
+        flags:
+          - frontend
+        paths:
+          - "frontend/"
+
+    patch:
+      default:
+        target: 60%
+        threshold: 5%
+        if_ci_failed: error
+
+  # Don't require coverage for these files
+  ignore:
+    - "**/*_test.go"
+    - "**/*.test.ts"
+    - "**/*.test.tsx"
+    - "**/*.spec.ts"
+    - "**/*.d.ts"
+    - "**/node_modules/**"
+    - "**/vendor/**"
+    - "**/.next/**"
+    - "**/coverage/**"
+    - "backend/main.go"
+    - "frontend/next.config.ts"
+    - "frontend/vitest.config.ts"
+    - "frontend/vitest.setup.ts"
+    - "infra/**"
+    - "docs/**"
+
+flags:
+  backend:
+    paths:
+      - backend/
+    carryforward: true
+
+  frontend:
+    paths:
+      - frontend/
+    carryforward: true
+
+comment:
+  layout: "reach,diff,flags,files"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+  show_carryforward_flags: true
+
+  after_n_builds: 2
+
+parsers:
+  go:
+    partials_as_hits: true
+  v8:
+    branch_detection:
+      conditional:
+        - no_cond
+      loop:
+        - no_loop

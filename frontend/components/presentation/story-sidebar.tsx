@@ -1,4 +1,4 @@
-import { Slide } from '@/types/presentation';
+import { type Slide } from '@/types/presentation';
 import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Plus, Trash2 } from 'lucide-react';

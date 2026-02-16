@@ -293,7 +293,7 @@ export function AIChat() {
                                                         const match = /language-(\w+)/.exec(className || '')
                                                         return match ? (
                                                             <SyntaxHighlighter
-                                                                // @ts-ignore
+                                                                // @ts-expect-error
                                                                 style={vscDarkPlus}
                                                                 language={match[1]}
                                                                 PreTag="div"

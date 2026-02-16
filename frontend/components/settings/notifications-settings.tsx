@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { usePushNotifications } from '@/hooks/use-push-notifications';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 export function NotificationsSettings() {
     const { isSupported, subscription, isLoading, subscribeToPush, unsubscribeFromPush } = usePushNotifications();
@@ -34,7 +35,7 @@ export function NotificationsSettings() {
                 url: '/settings',
             };
 
-            const res = await fetch('/api/notifications/send', {
+            const res = await fetchWithAuth('/api/notifications/send', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),
@@ -90,7 +91,7 @@ export function NotificationsSettings() {
                                 Send Test Notification
                             </Button>
                             <p className="text-xs text-muted-foreground">
-                                Note: If you don't see it, check your system's Focus Assist or Do Not Disturb settings.
+                                Note: If you don&apos;t see it, check your system&apos;s Focus Assist or Do Not Disturb settings.
                             </p>
                         </div>
                     </div>

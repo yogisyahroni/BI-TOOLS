@@ -23,8 +23,9 @@ import {
     Loader2,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 import { format } from 'date-fns';
-import { SavedVisualQuery } from '@/lib/query-builder/types';
+import { type SavedVisualQuery } from '@/lib/query-builder/types';
 
 interface LoadQueryDialogProps {
     open: boolean;
@@ -74,8 +75,8 @@ export function LoadQueryDialog({
         setError(null);
 
         try {
-            const response = await fetch(
-                `/api/visual-queries?workspace_id=${workspaceId}`
+            const response = await fetchWithAuth(
+                `/api/go/visual-queries?workspace_id=${workspaceId}`
             );
 
             if (!response.ok) {
@@ -176,8 +177,8 @@ export function LoadQueryDialog({
                                 <div
                                     key={query.id}
                                     className={`p-4 border rounded-md cursor-pointer transition-colors ${selectedQuery?.id === query.id
-                                            ? 'border-primary bg-primary/5'
-                                            : 'hover:bg-muted/50'
+                                        ? 'border-primary bg-primary/5'
+                                        : 'hover:bg-muted/50'
                                         }`}
                                     onClick={() => handleQueryClick(query)}
                                 >

@@ -50,6 +50,7 @@ function GeoJSONUploader({
             if (file.name.endsWith('.geojson') || file.type === 'application/geo+json' || file.type === 'application/json') {
                 onUpload(file)
             } else {
+                // eslint-disable-next-line no-alert
                 alert('Please upload a valid GeoJSON file (.geojson or .json)')
             }
         }
@@ -122,6 +123,7 @@ export function MapConfig({
     // Handle GeoJSON upload
     const handleGeoJSONUpload = async (file: File) => {
         if (!onUploadGeoJSON) {
+            // eslint-disable-next-line no-alert
             alert('GeoJSON upload is not configured')
             return
         }

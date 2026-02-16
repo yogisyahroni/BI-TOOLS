@@ -1,10 +1,12 @@
-import { NextAuthOptions } from 'next-auth';
+import { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
     providers: [
-        // Google OAuth2 Provider (TASK-007)
+        // Google OAuth2 Provider (TASK-007) - DISABLED until credentials are configured
+        // Uncomment and configure when you have valid Google OAuth credentials
+        /*
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID || '',
             clientSecret: process.env.GOOGLE_CLIENT_SECRET || '',
@@ -24,6 +26,7 @@ export const authOptions: NextAuthOptions = {
                 };
             },
         }),
+        */
         // Credentials Provider (Password-based login)
         CredentialsProvider({
             name: 'Credentials',
@@ -33,7 +36,7 @@ export const authOptions: NextAuthOptions = {
                 webauthn_token: { label: 'WebAuthn Token', type: 'text' },
             },
             async authorize(credentials) {
-                console.log('[AUTH] Authorize called for:', credentials?.email);
+                console.warn('[AUTH] Authorize called for:', credentials?.email);
 
                 // 1. WebAuthn Flow
                 if (credentials?.webauthn_token) {
@@ -90,7 +93,7 @@ export const authOptions: NextAuthOptions = {
                     }
 
                     if (data.user) {
-                        console.log('[AUTH] Login successful for:', data.user.email);
+                        console.warn('[AUTH] Login successful for:', data.user.email);
                         return {
                             id: String(data.user.id),
                             email: data.user.email,
@@ -110,8 +113,9 @@ export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt',
         maxAge: 30 * 24 * 60 * 60, // 30 days
+        updateAge: 24 * 60 * 60,   // Refresh session every 24 hours
     },
-    // Use default NextAuth JWT encoding (compatible with middleware)
+
     pages: {
         signIn: '/auth/signin',
         signOut: '/auth/signout',
@@ -119,30 +123,25 @@ export const authOptions: NextAuthOptions = {
     },
     callbacks: {
         async redirect({ url, baseUrl }) {
-            // 1. Handle relative URLs (starts with /) - append to baseUrl
             if (url.startsWith('/')) {
                 return `${baseUrl}${url}`;
             }
-            // 2. Handle absolute URLs starting with baseUrl
             if (url.startsWith(baseUrl)) {
                 return url;
             }
-            // 3. Handle external URLs - only allow if same origin
             try {
                 if (new URL(url).origin === baseUrl) {
                     return url;
                 }
-            } catch (error) {
-                // Invalid URL (e.g. malformed), fallback to default
+            } catch {
+                // Invalid URL, fallback to default
             }
-            // Default to dashboards
             return `${baseUrl}/dashboards`;
         },
         async jwt({ token, user, account }) {
             if (user) {
                 token.id = user.id;
             }
-            // Store the raw JWT token for API calls
             if (account?.access_token) {
                 token.accessToken = account.access_token;
             }
@@ -150,42 +149,15 @@ export const authOptions: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (session.user) {
-                session.user.id = token.id as string;
+                (session.user as any).id = token.id as string;
             }
-            // Include accessToken in session for API route usage
             if (token.accessToken) {
-                session.accessToken = token.accessToken;
+                (session as any).accessToken = token.accessToken;
             }
             return session;
         },
     },
 
-    // CRITICAL for Go Backend Compatibility: Use HS256 Signing (JWS) instead of Encryption (JWE)
-    jwt: {
-        async encode({ secret, token }) {
-            try {
-                const jwt = await import('jsonwebtoken');
-                if (!token) {
-                    console.error('[AUTH] Warning: Token is undefined in encode');
-                    return ''; // Return empty string instead of crashing? Or throw handled error?
-                }
-                return jwt.sign(token, secret, { algorithm: 'HS256' });
-            } catch (error) {
-                console.error('[AUTH] Token encode failed:', error);
-                throw error;
-            }
-        },
-        async decode({ secret, token }) {
-            const jwt = await import('jsonwebtoken');
-            try {
-                if (!token) return null;
-                return jwt.verify(token, secret, { algorithms: ['HS256'] }) as any;
-            } catch (error) {
-                console.error('[AUTH] Token decode failed (likely JWE mismatch or invalid):', error);
-                return null;
-            }
-        },
-    },
     secret: process.env.NEXTAUTH_SECRET,
+    debug: false,
 };
-

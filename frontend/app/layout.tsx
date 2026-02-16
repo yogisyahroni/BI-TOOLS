@@ -13,8 +13,8 @@ import 'leaflet/dist/leaflet.css'
 import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
-const _geist = Geist({ subsets: ["latin"] });
-const _geistMono = Geist_Mono({ subsets: ["latin"] });
+const geist = Geist({ subsets: ["latin"] });
+const geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
   themeColor: "#0f172a",
@@ -49,9 +49,7 @@ export const metadata: Metadata = {
 
 import { ThemeProvider } from "@/components/theme-provider"
 import { WebSocketProvider } from "@/components/providers/websocket-provider"
-
 import { ServiceWorkerReset } from "@/components/ServiceWorkerReset"
-import { MainBreadcrumbs } from "@/components/main-breadcrumbs"
 
 export default function RootLayout({
   children,
@@ -60,7 +58,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`font-sans antialiased bg-background text-foreground transition-colors duration-300`}>
+      <body className={`${geist.className} font-sans antialiased bg-background text-foreground transition-colors duration-300`}>
         <ServiceWorkerReset />
         <Providers>
           <ThemeProvider
@@ -75,7 +73,6 @@ export default function RootLayout({
                   <WorkspaceProvider>
                     <SidebarProvider>
                       <WebSocketProvider>
-                        <MainBreadcrumbs />
                         {children}
                       </WebSocketProvider>
                     </SidebarProvider>
@@ -85,6 +82,8 @@ export default function RootLayout({
             </StoryProvider>
           </ThemeProvider>
         </Providers>
+        {/* Only enable Analytics on Vercel deployments */}
+        {process.env.VERCEL && <Analytics />}
       </body>
     </html>
   )

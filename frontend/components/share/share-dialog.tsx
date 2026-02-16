@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Link2, Copy, Check, Lock } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface ShareDialogProps {
     resourceId: string;
@@ -24,7 +25,7 @@ export function ShareDialog({ resourceId, resourceType, trigger }: ShareDialogPr
     const handleGenerate = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch('/api/share/generate', {
+            const res = await fetchWithAuth('/api/share/generate', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ resourceId, resourceType, password: password || undefined })

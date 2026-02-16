@@ -364,3 +364,25 @@ export function usePipelines(options: UsePipelinesOptions = {}) {
         isRunning: runMutation.isPending,
     };
 }
+
+interface UsePipelineExecutionsOptions {
+    limit?: number;
+    offset?: number;
+    refetchInterval?: number | false;
+}
+
+export function usePipelineExecutions(
+    pipelineId: string,
+    options: UsePipelineExecutionsOptions = {}
+) {
+    const { status } = useSession();
+    const isAuthenticated = status === 'authenticated';
+    const { limit = 50, offset = 0, refetchInterval = 10000 } = options;
+
+    return useQuery({
+        queryKey: ['pipeline-executions', pipelineId, limit, offset],
+        queryFn: () => pipelineApi.executions(pipelineId, { limit, offset }),
+        enabled: isAuthenticated && !!pipelineId,
+        refetchInterval, // Poll by default to catch updates, can be disabled
+    });
+}

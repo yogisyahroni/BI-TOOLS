@@ -2,9 +2,9 @@
 
 import { useState } from 'react'
 import { format } from 'date-fns'
-import { 
-  X, 
-  ChevronLeft, 
+import {
+  X,
+  ChevronLeft,
   ChevronRight,
   Plus,
   Minus,
@@ -14,7 +14,8 @@ import {
   Type,
   Grid3X3,
   Code,
-  Tag
+  Tag,
+  GitCompare
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -22,9 +23,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
-import { cn } from '@/lib/utils'
-import type { 
-  DashboardVersionDiff, 
+import { Utils } from '@/lib/utils'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import type {
+  DashboardVersionDiff,
   QueryVersionDiff,
   DashboardVersion,
   QueryVersion,
@@ -361,7 +363,7 @@ export function VersionDiff({ diff, version1, version2, onClose }: VersionDiffPr
 
         <TabsContent value="metadata" className="space-y-4 mt-4">
           {diff.aiPromptChanged && renderChangeIndicator(true, diff.aiPromptFrom, diff.aiPromptTo, 'AI Prompt')}
-          
+
           {diff.visualizationChanged && (
             <div className="p-3 rounded-lg bg-yellow-50 border border-yellow-200">
               <div className="flex items-center gap-2">
@@ -390,7 +392,7 @@ export function VersionDiff({ diff, version1, version2, onClose }: VersionDiffPr
                   </div>
                 </div>
               )}
-              
+
               {diff.tagsRemoved.length > 0 && (
                 <div>
                   <h4 className="text-sm font-medium flex items-center gap-2 mb-2">
@@ -459,7 +461,7 @@ export function VersionDiff({ diff, version1, version2, onClose }: VersionDiffPr
 
         {/* Diff content */}
         <div className="flex-1 overflow-hidden">
-          {isDashboardDiff 
+          {isDashboardDiff
             ? renderDashboardDiff(diff as DashboardVersionDiff)
             : renderQueryDiff(diff as QueryVersionDiff)
           }

@@ -5,10 +5,62 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// Enhanced fetch function that includes authentication
+// ---- Backend Token Cache ----
+// Caches the HS256 JWT that the Go backend can verify.
+// The token is fetched from /api/auth/token (which decodes NextAuth JWE
+// and re-signs as HS256). Cached for 50 minutes (token expires in 1h).
+let cachedBackendToken: string | null = null;
+let tokenFetchedAt: number = 0;
+let tokenFetchPromise: Promise<string | null> | null = null;
+const TOKEN_CACHE_DURATION_MS = 50 * 60 * 1000; // 50 minutes
+
+async function getBackendToken(): Promise<string | null> {
+  const now = Date.now();
+
+  // Return cached token if still valid
+  if (cachedBackendToken && (now - tokenFetchedAt) < TOKEN_CACHE_DURATION_MS) {
+    return cachedBackendToken;
+  }
+
+  // Deduplicate concurrent requests — only one fetch at a time
+  if (tokenFetchPromise) {
+    return tokenFetchPromise;
+  }
+
+  tokenFetchPromise = (async () => {
+    try {
+      const res = await fetch('/api/auth/token');
+      if (!res.ok) {
+        cachedBackendToken = null;
+        return null;
+      }
+      const data = await res.json();
+      if (data.token) {
+        cachedBackendToken = data.token;
+        tokenFetchedAt = Date.now();
+        return data.token;
+      }
+      return null;
+    } catch {
+      cachedBackendToken = null;
+      return null;
+    } finally {
+      tokenFetchPromise = null;
+    }
+  })();
+
+  return tokenFetchPromise;
+}
+
+/** Clear the cached backend token (call on logout) */
+export function clearBackendTokenCache() {
+  cachedBackendToken = null;
+  tokenFetchedAt = 0;
+  tokenFetchPromise = null;
+}
+
+// Enhanced fetch function that includes authentication via Bearer token
 export async function fetchWithAuth(url: string, options: RequestInit = {}) {
-  // Use the URL as-is since Next.js rewrites handle the forwarding to backend
-  // The url should be something like '/api/go/...' which gets rewritten to backend
   let origin = 'http://localhost:3000';
   if (typeof window !== 'undefined') {
     origin = window.location.origin;
@@ -18,25 +70,48 @@ export async function fetchWithAuth(url: string, options: RequestInit = {}) {
 
   const fullUrl = url.startsWith('http') ? url : `${origin}${url}`;
 
-  const headers = {
+  // Fetch HS256 token for Go backend authentication
+  const backendToken = await getBackendToken();
+
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options.headers,
+    ...(options.headers as Record<string, string>),
   };
 
-  // Make the request with credentials included to send NextAuth session cookies
+  // Attach Bearer token if available
+  if (backendToken) {
+    headers['Authorization'] = `Bearer ${backendToken}`;
+  }
+
   const response = await fetch(fullUrl, {
     ...options,
     headers,
-    credentials: 'include', // This sends NextAuth session cookies with the request
+    credentials: 'include',
   });
 
-  // Hanya tangani 401 jika ini bukan permintaan otentikasi
+  // On 401, invalidate cached token and retry ONCE
   if (response.status === 401 && !url.includes('/api/auth/')) {
-    // Jangan redirect otomatis karena bisa menyebabkan infinite loop
-    // Biarkan komponen yang menangani error ini sesuai kebutuhan
+    // Clear stale token
+    clearBackendTokenCache();
+
+    // Retry with fresh token
+    const freshToken = await getBackendToken();
+    if (freshToken) {
+      headers['Authorization'] = `Bearer ${freshToken}`;
+      const retryResponse = await fetch(fullUrl, {
+        ...options,
+        headers,
+        credentials: 'include',
+      });
+
+      if (retryResponse.status === 401) {
+        console.warn(`Unauthorized access to ${url}. Status: ${retryResponse.status}`);
+      }
+
+      return retryResponse;
+    }
+
     console.warn(`Unauthorized access to ${url}. Status: ${response.status}`);
-    // Log tambahan untuk debugging
-    // console.log('Session cookies available:', document.cookie.includes('next-auth'));
   }
 
   return response;

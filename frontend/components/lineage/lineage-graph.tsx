@@ -11,9 +11,9 @@ import ReactFlow, {
     Background,
     Controls,
     MiniMap,
-    Node,
-    Edge,
-    Connection,
+    type Node,
+    type Edge,
+    type Connection,
     MarkerType
 } from 'reactflow';
 import dagre from 'dagre';
@@ -147,10 +147,10 @@ const LineageGraphRaw: React.FC<LineageGraphProps> = ({ data }) => {
                 <Controls />
                 <Background gap={12} size={1} />
                 <Panel position="top-left" className="bg-white p-2 rounded shadow-md border flex gap-2">
-                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-emerald-500"></div><span className="text-xs">Source</span></div>
-                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-blue-500"></div><span className="text-xs">Table</span></div>
-                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-purple-500"></div><span className="text-xs">Query</span></div>
-                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-amber-500"></div><span className="text-xs">Dashboard</span></div>
+                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-emerald-500" /><span className="text-xs">Source</span></div>
+                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-blue-500" /><span className="text-xs">Table</span></div>
+                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-purple-500" /><span className="text-xs">Query</span></div>
+                    <div className="flex items-center gap-1"><div className="w-3 h-3 rounded-full bg-amber-500" /><span className="text-xs">Dashboard</span></div>
                 </Panel>
             </ReactFlow>
         </div>

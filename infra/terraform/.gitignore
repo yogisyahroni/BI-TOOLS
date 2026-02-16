@@ -1,0 +1,27 @@
+# Terraform state and local files
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Sensitive variable overrides
+*.auto.tfvars
+secret.tfvars
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Override files (local dev only)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI configuration
+.terraformrc
+terraform.rc
+
+# OS files
+.DS_Store
+Thumbs.db

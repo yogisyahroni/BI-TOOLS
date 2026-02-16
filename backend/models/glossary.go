@@ -22,7 +22,7 @@ type BusinessTerm struct {
 	DeletedAt   gorm.DeletedAt `gorm:"index" json:"-"`
 
 	// Relationships
-	RelatedColumns []TermColumnMapping `json:"related_columns,omitempty"`
+	RelatedColumns []TermColumnMapping `gorm:"foreignKey:TermID;references:ID" json:"related_columns,omitempty"`
 }
 
 // TermColumnMapping links a business term to a physical column or semantic metric

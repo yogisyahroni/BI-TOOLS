@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Building2, Check, Plus } from 'lucide-react';
 import { CreateWorkspaceDialog } from './create-workspace-dialog';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface Workspace {
     id: string;
@@ -43,7 +44,7 @@ export function WorkspaceSwitcher({
 
     const fetchWorkspaces = async () => {
         try {
-            const response = await fetch('/api/workspaces');
+            const response = await fetchWithAuth('/api/go/workspaces');
             if (response.ok) {
                 const data = await response.json();
                 setWorkspaces(data);

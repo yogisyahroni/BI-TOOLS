@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic';
 
 
-import { NextRequest, NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { db as prisma } from '@/lib/db';
 import { getServerSession } from 'next-auth'; // Assuming auth setup
 import { authOptions } from '@/lib/auth/auth-options'; // Adjust import based on project structure

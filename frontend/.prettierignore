@@ -1,0 +1,8 @@
+.next
+node_modules
+out
+coverage
+public
+*.tsbuildinfo
+pnpm-lock.yaml
+package-lock.json

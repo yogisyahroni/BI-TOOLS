@@ -27,7 +27,7 @@ const getRedisClient = () => {
         });
 
         client.on('connect', () => {
-            console.log('Redis connected successfully');
+            console.warn('Redis connected successfully');
         });
 
         return client;

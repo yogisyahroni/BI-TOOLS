@@ -98,8 +98,8 @@ export function calculateHoltWinters(options: ForecastOptions): ForecastResult {
     const beta = 0.4;
     const gamma = 0.6;
 
-    let level = series[0];
-    let trend = series[1] - series[0];
+    const level = series[0];
+    const trend = series[1] - series[0];
 
     // Initial seasonal indices
     const seasonal: number[] = [];
@@ -119,7 +119,7 @@ export function calculateHoltWinters(options: ForecastOptions): ForecastResult {
     // Let's implement standard iterative HW
     let L = level;
     let T = trend;
-    let S = [...seasonal];
+    const S = [...seasonal];
 
     for (let i = 0; i < series.length; i++) {
         const val = series[i];

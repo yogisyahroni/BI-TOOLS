@@ -78,7 +78,7 @@ export function ClassificationTag({
     }
 
     if (isLoading) {
-        return <div className="h-5 w-16 animate-pulse rounded bg-muted"></div>
+        return <div className="h-5 w-16 animate-pulse rounded bg-muted" />
     }
 
     const badgeContent = (

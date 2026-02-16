@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { AIRequest, AIResponse, IAIProvider } from "./base-provider";
+import { type AIRequest, type AIResponse, type IAIProvider } from "./base-provider";
 
 export class OpenAIProvider implements IAIProvider {
     private client: OpenAI;

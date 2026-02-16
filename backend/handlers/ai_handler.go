@@ -18,6 +18,7 @@ type AIHandler struct {
 	aiReasoningService    *services.AIReasoningService
 	aiOptimizerService    *services.AIOptimizerService
 	storyGeneratorService *services.StoryGeneratorService
+	pptxGenerator         *services.PPTXGenerator
 }
 
 // NewAIHandler creates a new AI handler
@@ -27,7 +28,46 @@ func NewAIHandler(aiService *services.AIService, aiReasoningService *services.AI
 		aiReasoningService:    aiReasoningService,
 		aiOptimizerService:    aiOptimizerService,
 		storyGeneratorService: storyGeneratorService,
+		pptxGenerator:         services.NewPPTXGenerator(),
 	}
+}
+
+// ExportPresentation accepts a SlideDeck JSON payload and returns a .pptx binary download
+func (h *AIHandler) ExportPresentation(c *fiber.Ctx) error {
+	var deck models.SlideDeck
+	if err := c.BodyParser(&deck); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid request body. Expected a valid SlideDeck JSON."})
+	}
+
+	if deck.Title == "" {
+		return c.Status(400).JSON(fiber.Map{"error": "Slide deck title is required"})
+	}
+
+	if len(deck.Slides) == 0 {
+		return c.Status(400).JSON(fiber.Map{"error": "Slide deck must contain at least one slide"})
+	}
+
+	pptxBytes, err := h.pptxGenerator.GeneratePPTX(&deck)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": fmt.Sprintf("Failed to generate PPTX: %s", err.Error())})
+	}
+
+	// Sanitize filename: allow only alphanumeric, space, dash, underscore
+	safeName := ""
+	for _, r := range deck.Title {
+		if (r >= 'a' && r <= 'z') || (r >= 'A' && r <= 'Z') || (r >= '0' && r <= '9') || r == ' ' || r == '-' || r == '_' {
+			safeName += string(r)
+		}
+	}
+	if safeName == "" {
+		safeName = "presentation"
+	}
+
+	c.Set("Content-Type", "application/vnd.openxmlformats-officedocument.presentationml.presentation")
+	c.Set("Content-Disposition", fmt.Sprintf(`attachment; filename="%s.pptx"`, safeName))
+	c.Set("Content-Length", fmt.Sprintf("%d", len(pptxBytes)))
+
+	return c.Send(pptxBytes)
 }
 
 // Generate generates content using AI

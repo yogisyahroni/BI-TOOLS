@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { X, Plus, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface SaveQueryDialogProps {
     open: boolean;
@@ -65,7 +66,7 @@ export function SaveQueryDialog({
                 collectionId: '', // Will default to 'Default' in API
             };
 
-            const res = await fetch('/api/queries/saved', {
+            const res = await fetchWithAuth('/api/go/queries/saved', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload),

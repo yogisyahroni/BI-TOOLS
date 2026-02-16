@@ -1,5 +1,5 @@
 import { connectionRepo } from '@/lib/repositories/connection-repo';
-import { CreateConnectionInput } from '@/lib/schemas/connection';
+import { type CreateConnectionInput } from '@/lib/schemas/connection';
 import { PostgresConnector } from '../db-connectors/postgres-connector';
 import { encrypt, decrypt } from '../security/encryption';
 

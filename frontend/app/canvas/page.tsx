@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Plus, Search, Grid3x3, LayoutGrid, Calendar } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -60,7 +61,7 @@ export default function CanvasPage() {
     useEffect(() => {
         if (workspaceId) {
             setLoading(true);
-            fetch(`/api/canvas?workspaceId=${workspaceId}`)
+            fetchWithAuth(`/api/go/canvas?workspaceId=${workspaceId}`)
                 .then(async res => {
                     if (!res.ok) throw new Error('Failed to load canvases');
                     const data = await res.json();
@@ -85,7 +86,7 @@ export default function CanvasPage() {
 
         setCreating(true);
         try {
-            const res = await fetch('/api/canvas', {
+            const res = await fetchWithAuth('/api/go/canvas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -175,11 +176,11 @@ export default function CanvasPage() {
                             {[1, 2, 3, 4, 5, 6].map((i) => (
                                 <Card key={i} className="animate-pulse">
                                     <CardHeader>
-                                        <div className="h-6 bg-muted rounded w-3/4"></div>
-                                        <div className="h-4 bg-muted rounded w-1/2 mt-2"></div>
+                                        <div className="h-6 bg-muted rounded w-3/4" />
+                                        <div className="h-4 bg-muted rounded w-1/2 mt-2" />
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="h-32 bg-muted rounded"></div>
+                                        <div className="h-32 bg-muted rounded" />
                                     </CardContent>
                                 </Card>
                             ))}
@@ -298,8 +299,8 @@ export default function CanvasPage() {
                             <div className="grid grid-cols-2 gap-3">
                                 <button
                                     className={`p-4 border-2 rounded-lg transition-colors ${layout === 'free'
-                                            ? 'border-primary bg-primary/5'
-                                            : 'border-border hover:border-primary/50'
+                                        ? 'border-primary bg-primary/5'
+                                        : 'border-border hover:border-primary/50'
                                         }`}
                                     onClick={() => setLayout('free')}
                                 >
@@ -312,8 +313,8 @@ export default function CanvasPage() {
 
                                 <button
                                     className={`p-4 border-2 rounded-lg transition-colors ${layout === 'grid'
-                                            ? 'border-primary bg-primary/5'
-                                            : 'border-border hover:border-primary/50'
+                                        ? 'border-primary bg-primary/5'
+                                        : 'border-border hover:border-primary/50'
                                         }`}
                                     onClick={() => setLayout('grid')}
                                 >

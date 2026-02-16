@@ -7,7 +7,7 @@ import { Loader2, Sparkles, AlertTriangle } from 'lucide-react';
 import { aiApi } from '@/lib/api/ai';
 import { toast } from 'sonner';
 import { QueryOptimizerSuggestions } from './suggestions';
-import { AIOptimizationResponse } from '@/lib/types/ai';
+import { type AIOptimizationResponse } from '@/lib/types/ai';
 
 interface OptimizerPanelProps {
     query: string;
@@ -51,7 +51,7 @@ export function OptimizerPanel({ query, databaseType, schemaContext, onApplySugg
                         severity: s.confidence > 0.8 ? 'High' : s.confidence > 0.5 ? 'Medium' : 'Low',
                         title: s.title,
                         description: s.description,
-                        original: 'See query', // Placeholder as backend didn't return exact snippet
+                        original: 'See query', // Placeholder as backend didn&apos;t return exact snippet
                         optimized: s.sqlAction || 'See description',
                         impact: s.estimatedImpact,
                         example: s.rationale
@@ -60,7 +60,7 @@ export function OptimizerPanel({ query, databaseType, schemaContext, onApplySugg
                     complexityLevel: 'Moderate', // Placeholder
                     estimatedImprovement: 'Variable'
                 },
-                planAnalysis: null, // We don't have execution plan analysis from this specific API yet
+                planAnalysis: null, // We don&apos;t have execution plan analysis from this specific API yet
                 explainAvailable: false
             };
 
@@ -123,6 +123,7 @@ export function OptimizerPanel({ query, databaseType, schemaContext, onApplySugg
             {!mappedAnalysis && !isOptimizing && (
                 <div className="text-center py-10 text-muted-foreground bg-muted/20 rounded-lg border border-dashed">
                     <Sparkles className="w-10 h-10 mx-auto mb-3 opacity-20" />
+                    {/* eslint-disable-next-line react/no-unescaped-entities */}
                     <p>Click "Optimize Query" to get AI-powered suggestions.</p>
                 </div>
             )}

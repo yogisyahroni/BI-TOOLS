@@ -3788,7 +3788,7 @@
   - **Dependencies:** None
   - **GEMINI.md Reference:** Part 12.3 - End-to-End Testing (10%)
 
-- [ ] **TASK-171:** Test Coverage Reporting & Gates
+- [x] **TASK-171:** Test Coverage Reporting & Gates
   - **Files:** `.github/workflows/coverage.yml`, `codecov.yml`
   - **Acceptance:** Coverage reports on every PR, block if <70%
   - **Implementation:**
@@ -3981,7 +3981,7 @@
 **Status:** ❌ MISSING - No IaC exists  
 **GEMINI.md Requirement:** "Never configure cloud resources manually via Console"
 
-- [ ] **TASK-182:** Terraform Configuration (AWS/GCP)
+- [x] **TASK-182:** Terraform Configuration (AWS/GCP)
   - **Directory:** `infrastructure/terraform/`
   - **Acceptance:** Complete infrastructure in code
   - **Resources:**
@@ -4003,7 +4003,7 @@
   - **Dependencies:** None
   - **GEMINI.md Reference:** Part 13.1 - Infrastructure as Code
 
-- [ ] **TASK-183:** Kubernetes Manifests / Helm Charts
+- [x] **TASK-183:** Kubernetes Manifests / Helm Charts
   - **Directory:** `infrastructure/k8s/`, `infrastructure/helm/`
   - **Acceptance:** K8s deployment manifests with Helm
   - **Components:**
@@ -4330,26 +4330,31 @@
 **Based on code analysis, the following tasks CLAIM to be done but REQUIRE verification:**
 
 #### Authentication & Security (HIGH RISK)
+
 - **TASK-003:** Email Verification - Verify emails actually send and tokens work
 - **TASK-007/008:** Google OAuth - Test full flow with real Google account
 - **TASK-012:** Encryption - Verify credentials actually encrypted in DB, not plaintext
 - **TASK-014:** Audit Logging - Check if audit_logs table populating correctly
 
 #### Database Connectors (MEDIUM RISK)
+
 - **TASK-017 to 031:** All connectors - Need actual database instances to test
 - **TASK-024:** MongoDB Translator - Verify document flattening works end-to-end
 
 #### Visualizations (LOW RISK)
+
 - **TASK-036 to 039:** Maps - Need GeoJSON data and real map testing
 - **TASK-040 to 045:** Charts - Verify with real data binding
 
 #### Enterprise Features (HIGH RISK)
+
 - **TASK-088 to 091:** Sharing - Test permission enforcement actually works
 - **TASK-092 to 094:** Comments - Verify real-time notifications work
 - **TASK-098 to 100:** Scheduled Reports - Verify emails actually send on schedule
 - **TASK-101 to 103:** Alerts - Test alert triggers and notifications end-to-end
 
 #### AI/ML Features (MEDIUM RISK)
+
 - **TASK-117:** Streaming AI - Verify SSE streaming works in production
 - **TASK-120 to 122:** NL Features - Test with real OpenAI/Gemini API
 
@@ -4435,6 +4440,7 @@
 **BEFORE deploying to production, ALL of these must be true:**
 
 ### Functionality
+
 - [ ] User can register, verify email, login end-to-end
 - [ ] At least 3 database connectors tested and working
 - [ ] Dashboard creation, saving, sharing works
@@ -4444,6 +4450,7 @@
 - [ ] Scheduled reports send emails
 
 ### Security
+
 - [ ] All API endpoints protected with auth middleware
 - [ ] Rate limiting active and tested
 - [ ] Credentials encrypted in database (verified)
@@ -4451,6 +4458,7 @@
 - [ ] No secrets in code (use environment variables)
 
 ### Reliability
+
 - [ ] Database migrations run successfully
 - [ ] Health check endpoint responds correctly
 - [ ] Graceful degradation tested (Redis down, DB slow)
@@ -4458,12 +4466,14 @@
 - [ ] Circuit breaker tested
 
 ### Performance
+
 - [ ] Page load time < 3 seconds
 - [ ] Query execution timeout configured
 - [ ] Connection pooling working
 - [ ] Query queue management active
 
 ### Documentation
+
 - [ ] API documentation complete
 - [ ] User guide available
 - [ ] Disaster recovery procedures documented

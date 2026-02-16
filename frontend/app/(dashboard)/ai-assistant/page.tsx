@@ -145,11 +145,11 @@ export default function AIAssistantPage() {
                         <QueryBuilder
                             className="h-full"
                             onExecuteQuery={(sql) => {
-                                console.log('Execute query:', sql);
+                                console.warn('Execute query:', sql);
                                 // TODO: Redirect to query execution page
                             }}
                             onSaveQuery={(sql, prompt) => {
-                                console.log('Save query:', { sql, prompt });
+                                console.warn('Save query:', { sql, prompt });
                                 // TODO: Save to collection
                             }}
                         />
@@ -159,7 +159,7 @@ export default function AIAssistantPage() {
                         <FormulaEditor
                             className="h-full"
                             onSaveFormula={(formula, name, description) => {
-                                console.log('Save formula:', { formula, name, description });
+                                console.warn('Save formula:', { formula, name, description });
                                 // TODO: Save to virtual metrics
                             }}
                         />

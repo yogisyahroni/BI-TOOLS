@@ -1,262 +1,300 @@
 package handlers
 
 import (
+	"context"
 	"fmt"
-	"insight-engine-backend/pkg/validator"
-	"strconv"
-
 	"insight-engine-backend/models"
 	"insight-engine-backend/services"
+	"net/url"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
+	"gorm.io/gorm"
 )
 
+// WebhookHandler handles CRUD for external webhook configurations (Slack/Teams)
 type WebhookHandler struct {
-	webhookService *services.WebhookService
+	db *gorm.DB
 }
 
-func NewWebhookHandler(webhookService *services.WebhookService) *WebhookHandler {
-	return &WebhookHandler{webhookService: webhookService}
+// NewWebhookHandler creates a new WebhookHandler
+func NewWebhookHandler(db *gorm.DB) *WebhookHandler {
+	return &WebhookHandler{db: db}
 }
 
-// CreateWebhook creates a new webhook
+// CreateWebhook registers a new Slack/Teams webhook
 func (h *WebhookHandler) CreateWebhook(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
+	userID := c.Locals("userID").(string)
+	parsedUserID, err := uuid.Parse(userID)
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid user ID"})
 	}
 
-	var req struct {
-		Name        string   `json:"name" validate:"required"`
-		URL         string   `json:"url" validate:"required,url"`
-		Events      []string `json:"events" validate:"required,min=1"`
-		Description string   `json:"description"`
-		IsActive    bool     `json:"isActive"`
+	var input struct {
+		Name        string `json:"name" validate:"required"`
+		ChannelType string `json:"channelType" validate:"required"`
+		WebhookURL  string `json:"webhookUrl" validate:"required"`
+		Description string `json:"description"`
 	}
 
-	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
+	if err := c.BodyParser(&input); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid request body"})
 	}
 
-	if err := validator.GetValidator().ValidateStruct(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
+	// Validate channel type
+	if input.ChannelType != "slack" && input.ChannelType != "teams" {
+		return c.Status(400).JSON(fiber.Map{"error": "channelType must be 'slack' or 'teams'"})
 	}
 
-	// Map to model
-	webhookReq := models.WebhookRequest{
-		Name:        req.Name,
-		URL:         req.URL,
-		Events:      req.Events,
-		Description: req.Description,
-		IsActive:    req.IsActive,
+	// Validate webhook URL format
+	parsedURL, err := url.ParseRequestURI(input.WebhookURL)
+	if err != nil || (parsedURL.Scheme != "https") {
+		return c.Status(400).JSON(fiber.Map{"error": "webhookUrl must be a valid HTTPS URL"})
 	}
 
-	webhook, err := h.webhookService.CreateWebhook(webhookReq, userID)
-	if err != nil {
-		fmt.Printf("DEBUG: CreateWebhook Service Error: %v\n", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to create webhook"})
+	// Validate Slack webhook URL pattern
+	if input.ChannelType == "slack" {
+		if parsedURL.Host != "hooks.slack.com" && parsedURL.Host != "hooks.slack-gov.com" {
+			return c.Status(400).JSON(fiber.Map{
+				"error":   "Invalid Slack webhook URL",
+				"details": "Slack webhook URLs must start with https://hooks.slack.com/",
+			})
+		}
 	}
 
-	return c.Status(fiber.StatusCreated).JSON(webhook)
+	webhook := models.WebhookConfig{
+		UserID:      parsedUserID,
+		Name:        input.Name,
+		ChannelType: models.WebhookChannelType(input.ChannelType),
+		WebhookURL:  input.WebhookURL,
+		Description: input.Description,
+		IsActive:    true,
+	}
+
+	if err := h.db.Create(&webhook).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to create webhook configuration"})
+	}
+
+	// Mask the webhook URL in response for security
+	webhook.WebhookURL = maskWebhookURL(webhook.WebhookURL)
+
+	return c.Status(201).JSON(webhook)
 }
 
-// GetWebhooks returns all webhooks for the current user
-func (h *WebhookHandler) GetWebhooks(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+// ListWebhooks returns all webhook configurations for the current user
+func (h *WebhookHandler) ListWebhooks(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+
+	var webhooks []models.WebhookConfig
+	if err := h.db.Where("user_id = ?", userID).
+		Order("created_at DESC").
+		Find(&webhooks).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to list webhook configurations"})
 	}
 
-	webhooks, err := h.webhookService.GetWebhooks(userID)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to fetch webhooks"})
+	// Mask URLs in response
+	for i := range webhooks {
+		webhooks[i].WebhookURL = maskWebhookURL(webhooks[i].WebhookURL)
 	}
 
-	return c.JSON(webhooks)
+	return c.JSON(fiber.Map{
+		"data":  webhooks,
+		"total": len(webhooks),
+	})
 }
 
-// GetWebhook returns a single webhook
-func (h *WebhookHandler) GetWebhook(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
-	}
-
-	id, err := uuid.Parse(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid webhook ID"})
-	}
-
-	webhook, err := h.webhookService.GetWebhook(id, userID)
-	if err != nil {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Webhook not found"})
-	}
-
-	return c.JSON(webhook)
-}
-
-// UpdateWebhook updates a webhook
-func (h *WebhookHandler) UpdateWebhook(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
-	}
-
-	id, err := uuid.Parse(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid webhook ID"})
-	}
-
-	var req struct {
-		Name        string   `json:"name"`
-		URL         string   `json:"url" validate:"omitempty,url"`
-		Events      []string `json:"events" validate:"omitempty,min=1"`
-		Description string   `json:"description"`
-		IsActive    bool     `json:"isActive"`
-	}
-
-	if err := c.BodyParser(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid request body"})
-	}
-
-	if err := validator.GetValidator().ValidateStruct(&req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": err.Error()})
-	}
-
-	// Map to model
-	webhookReq := models.WebhookRequest{
-		Name:        req.Name,
-		URL:         req.URL,
-		Events:      req.Events,
-		Description: req.Description,
-		IsActive:    req.IsActive,
-	}
-
-	webhook, err := h.webhookService.UpdateWebhook(id, webhookReq, userID)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to update webhook"})
-	}
-
-	return c.JSON(webhook)
-}
-
-// DeleteWebhook deletes a webhook
+// DeleteWebhook removes a webhook configuration
 func (h *WebhookHandler) DeleteWebhook(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+	userID := c.Locals("userID").(string)
+	webhookID := c.Params("id")
+
+	result := h.db.Where("id = ? AND user_id = ?", webhookID, userID).
+		Delete(&models.WebhookConfig{})
+
+	if result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to delete webhook"})
 	}
 
-	id, err := uuid.Parse(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid webhook ID"})
+	if result.RowsAffected == 0 {
+		return c.Status(404).JSON(fiber.Map{"error": "Webhook not found or access denied"})
 	}
 
-	if err := h.webhookService.DeleteWebhook(id, userID); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to delete webhook"})
-	}
-
-	return c.SendStatus(fiber.StatusNoContent)
+	return c.JSON(fiber.Map{"message": "Webhook deleted successfully"})
 }
 
-// GetWebhookLogs returns logs for a webhook
-func (h *WebhookHandler) GetWebhookLogs(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
-	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+// ToggleWebhook enables or disables a webhook
+func (h *WebhookHandler) ToggleWebhook(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	webhookID := c.Params("id")
+
+	var input struct {
+		IsActive bool `json:"isActive"`
+	}
+	if err := c.BodyParser(&input); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid request body"})
 	}
 
-	id, err := uuid.Parse(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid webhook ID"})
+	result := h.db.Model(&models.WebhookConfig{}).
+		Where("id = ? AND user_id = ?", webhookID, userID).
+		Update("is_active", input.IsActive)
+
+	if result.Error != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to update webhook"})
 	}
 
-	limit := 50
-	if l := c.Query("limit"); l != "" {
-		if parsed, err := strconv.Atoi(l); err == nil && parsed > 0 {
-			limit = parsed
-		}
+	if result.RowsAffected == 0 {
+		return c.Status(404).JSON(fiber.Map{"error": "Webhook not found or access denied"})
 	}
 
-	logs, err := h.webhookService.GetWebhookLogs(id, userID, limit)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to fetch logs"})
+	status := "disabled"
+	if input.IsActive {
+		status = "enabled"
 	}
 
-	return c.JSON(logs)
+	return c.JSON(fiber.Map{"message": fmt.Sprintf("Webhook %s", status)})
 }
 
-// TestWebhook triggers a test event for a webhook
+// TestWebhook sends a test message to the configured webhook
 func (h *WebhookHandler) TestWebhook(c *fiber.Ctx) error {
-	userID, err := getUserIDFromContext(c)
+	userID := c.Locals("userID").(string)
+	webhookID := c.Params("id")
+
+	var webhook models.WebhookConfig
+	if err := h.db.Where("id = ? AND user_id = ?", webhookID, userID).
+		First(&webhook).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{"error": "Webhook not found or access denied"})
+	}
+
+	if !webhook.IsActive {
+		return c.Status(400).JSON(fiber.Map{"error": "Webhook is disabled. Enable it before testing."})
+	}
+
+	notifier, err := services.CreateNotifierForType(string(webhook.ChannelType), webhook.WebhookURL)
 	if err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
+		return c.Status(500).JSON(fiber.Map{"error": err.Error()})
 	}
 
-	id, err := uuid.Parse(c.Params("id"))
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid webhook ID"})
+	testFields := map[string]string{
+		"Webhook Name": webhook.Name,
+		"Channel Type": string(webhook.ChannelType),
+		"Status":       "Active",
 	}
 
-	var req struct {
-		Event   string                 `json:"event"`
-		Payload map[string]interface{} `json:"payload"`
-	}
-	if err := c.BodyParser(&req); err != nil {
-		// Use default test payload if none provided
-		req.Event = "test.event"
-		req.Payload = map[string]interface{}{"message": "This is a test event"}
-	}
-
-	// Use the explicit test method
-	if err := h.webhookService.SendTestWebhook(id, userID, req.Event, req.Payload); err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to send test webhook: " + err.Error()})
+	if err := notifier.SendMessage(
+		context.Background(),
+		"🔔 InsightEngine Test Notification",
+		"This is a test message from InsightEngine AI. If you see this, your webhook integration is working correctly!",
+		testFields,
+	); err != nil {
+		return c.Status(502).JSON(fiber.Map{
+			"error":   "Test message delivery failed",
+			"details": err.Error(),
+		})
 	}
 
-	// Since we haven't updated service yet, let's do that next.
-	// For now return success that test initiated
-
-	// We will implement SendTestEvent in service in next step
-	return c.JSON(fiber.Map{"message": "Test event dispatched"})
+	return c.JSON(fiber.Map{"message": "Test message sent successfully"})
 }
 
-// Helper to get user ID from context (duplicated from other handlers, common util needed)
-func getUserIDFromContext(c *fiber.Ctx) (uuid.UUID, error) {
-	// Assuming AuthMiddleware sets "userID" or "userId" in Locals
-	userIDInterface := c.Locals("userID")
-	if userIDInterface == nil {
-		userIDInterface = c.Locals("userId")
-	}
-	if userIDInterface == nil {
-		userIDInterface = c.Locals("user_id") // Fail-safe
+// GetWebhooks is an alias for ListWebhooks — satisfies the TASK-134 route registration
+func (h *WebhookHandler) GetWebhooks(c *fiber.Ctx) error {
+	return h.ListWebhooks(c)
+}
+
+// GetWebhook retrieves a single webhook configuration by ID
+func (h *WebhookHandler) GetWebhook(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	webhookID := c.Params("id")
+
+	var webhook models.WebhookConfig
+	if err := h.db.Where("id = ? AND user_id = ?", webhookID, userID).
+		First(&webhook).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{"error": "Webhook not found or access denied"})
 	}
 
-	if userIDInterface == nil {
-		// Fallback to "user" object if "user_id" not directly set
-		fmt.Println("DEBUG: getUserIDFromContext: userID is nil in Locals. Checking 'user' object.")
-		userInterface := c.Locals("user")
-		if userInterface != nil {
-			if user, ok := userInterface.(*models.User); ok {
-				return uuid.Parse(user.ID) // Parse string ID to UUID
-			}
-			// Map?
-			if userMap, ok := userInterface.(map[string]interface{}); ok {
-				if idStr, ok := userMap["id"].(string); ok {
-					return uuid.Parse(idStr)
-				}
-			}
+	webhook.WebhookURL = maskWebhookURL(webhook.WebhookURL)
+	return c.JSON(webhook)
+}
+
+// UpdateWebhook updates webhook configuration fields
+func (h *WebhookHandler) UpdateWebhook(c *fiber.Ctx) error {
+	userID := c.Locals("userID").(string)
+	webhookID := c.Params("id")
+
+	var webhook models.WebhookConfig
+	if err := h.db.Where("id = ? AND user_id = ?", webhookID, userID).
+		First(&webhook).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{"error": "Webhook not found or access denied"})
+	}
+
+	var input struct {
+		Name        *string `json:"name"`
+		ChannelType *string `json:"channelType"`
+		WebhookURL  *string `json:"webhookUrl"`
+		Description *string `json:"description"`
+		IsActive    *bool   `json:"isActive"`
+	}
+	if err := c.BodyParser(&input); err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid request body"})
+	}
+
+	updates := map[string]interface{}{}
+	if input.Name != nil {
+		updates["name"] = *input.Name
+	}
+	if input.ChannelType != nil {
+		if *input.ChannelType != "slack" && *input.ChannelType != "teams" {
+			return c.Status(400).JSON(fiber.Map{"error": "channelType must be 'slack' or 'teams'"})
 		}
-		return uuid.Nil, fmt.Errorf("user not found in context")
+		updates["channel_type"] = *input.ChannelType
+	}
+	if input.WebhookURL != nil {
+		parsedURL, err := url.ParseRequestURI(*input.WebhookURL)
+		if err != nil || parsedURL.Scheme != "https" {
+			return c.Status(400).JSON(fiber.Map{"error": "webhookUrl must be a valid HTTPS URL"})
+		}
+		updates["webhook_url"] = *input.WebhookURL
+	}
+	if input.Description != nil {
+		updates["description"] = *input.Description
+	}
+	if input.IsActive != nil {
+		updates["is_active"] = *input.IsActive
 	}
 
-	fmt.Printf("DEBUG: getUserIDFromContext: Found userIDInterface: %v, Type: %T\n", userIDInterface, userIDInterface)
+	if len(updates) == 0 {
+		return c.Status(400).JSON(fiber.Map{"error": "No fields to update"})
+	}
 
-	if id, ok := userIDInterface.(string); ok {
-		return uuid.Parse(id)
+	if err := h.db.Model(&webhook).Updates(updates).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{"error": "Failed to update webhook"})
 	}
-	if id, ok := userIDInterface.(uuid.UUID); ok {
-		return id, nil
+
+	webhook.WebhookURL = maskWebhookURL(webhook.WebhookURL)
+	return c.JSON(webhook)
+}
+
+// GetWebhookLogs retrieves delivery logs for a webhook (placeholder — expand with actual log table)
+func (h *WebhookHandler) GetWebhookLogs(c *fiber.Ctx) error {
+	return c.JSON(fiber.Map{
+		"data":  []interface{}{},
+		"total": 0,
+	})
+}
+
+// GetActiveWebhooks retrieves all active webhooks for a user (used internally by notification service)
+func GetActiveWebhooks(db *gorm.DB, userID uuid.UUID) ([]models.WebhookConfig, error) {
+	var webhooks []models.WebhookConfig
+	if err := db.Where("user_id = ? AND is_active = ?", userID, true).
+		Find(&webhooks).Error; err != nil {
+		return nil, fmt.Errorf("failed to get active webhooks: %w", err)
 	}
-	return uuid.Nil, fmt.Errorf("invalid user ID type: %T", userIDInterface)
+	return webhooks, nil
+}
+
+// maskWebhookURL masks the webhook URL for security — shows only last 8 chars
+func maskWebhookURL(rawURL string) string {
+	if len(rawURL) <= 20 {
+		return "****"
+	}
+	return rawURL[:20] + "****" + rawURL[len(rawURL)-8:]
 }

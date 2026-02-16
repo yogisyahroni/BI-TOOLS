@@ -17,7 +17,10 @@ func InitServices() *ServiceContainer {
 	}
 	services.LogInfo("encryption_init", "Encryption service initialized successfully", nil)
 
-	// 2. AI Services
+	// 2. Security Log Service
+	securityLogService := services.NewSecurityLogService("InsightEngine Backend (Go)")
+
+	// 3. AI Services
 	aiService := services.NewAIService(encryptionService)
 	aiReasoningService := services.NewAIReasoningService(aiService)
 	aiOptimizerService := services.NewAIOptimizerService(aiService)
@@ -165,5 +168,6 @@ func InitServices() *ServiceContainer {
 		EmbedService:             embedService,
 		CommentService:           commentService,
 		ScheduledReportService:   scheduledReportService,
+		SecurityLogService:       securityLogService,
 	}
 }

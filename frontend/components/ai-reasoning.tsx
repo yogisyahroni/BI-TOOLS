@@ -102,18 +102,22 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
             <p>Mapped terms to database columns:</p>
             <div className="space-y-1 ml-2">
               <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <code className="bg-primary/10 text-primary px-1 rounded">"top customers"</code>
                 <span>→</span>
                 <code className="bg-muted px-1 rounded">customers.id</code>
               </div>
               <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <code className="bg-primary/10 text-primary px-1 rounded">"total sales"</code>
                 <span>→</span>
                 <code className="bg-muted px-1 rounded">SUM(orders.amount)</code>
               </div>
               <div className="flex items-center gap-2">
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <code className="bg-primary/10 text-primary px-1 rounded">"last month"</code>
                 <span>→</span>
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <code className="bg-muted px-1 rounded">DATE_TRUNC('month', orders.created_at)</code>
               </div>
             </div>

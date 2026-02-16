@@ -14,6 +14,7 @@ import type {
     ScheduledReportRunFilter,
     TimezoneOption,
 } from '@/types/scheduled-reports';
+import { fetchWithAuth } from '@/lib/utils';
 
 const API_BASE = '/api/go';
 
@@ -21,7 +22,7 @@ export const scheduledReportsApi = {
     // List all scheduled reports
     list: async (filter?: ScheduledReportFilter): Promise<ScheduledReportListResponse> => {
         const params = new URLSearchParams();
-        
+
         if (filter?.resourceType) {
             params.set('resourceType', filter.resourceType);
         }
@@ -47,7 +48,7 @@ export const scheduledReportsApi = {
             params.set('orderBy', filter.orderBy);
         }
 
-        const res = await fetch(`${API_BASE}/scheduled-reports?${params.toString()}`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports?${params.toString()}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch scheduled reports');
@@ -57,7 +58,7 @@ export const scheduledReportsApi = {
 
     // Get a single scheduled report
     get: async (id: string): Promise<ScheduledReportResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch scheduled report');
@@ -67,7 +68,7 @@ export const scheduledReportsApi = {
 
     // Create a new scheduled report
     create: async (data: CreateScheduledReportRequest): Promise<ScheduledReportResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -81,7 +82,7 @@ export const scheduledReportsApi = {
 
     // Update a scheduled report
     update: async (id: string, data: UpdateScheduledReportRequest): Promise<ScheduledReportResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -95,7 +96,7 @@ export const scheduledReportsApi = {
 
     // Delete a scheduled report
     delete: async (id: string): Promise<void> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}`, {
             method: 'DELETE',
         });
         if (!res.ok) {
@@ -106,7 +107,7 @@ export const scheduledReportsApi = {
 
     // Toggle active status
     toggleActive: async (id: string): Promise<ToggleReportResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}/toggle`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}/toggle`, {
             method: 'POST',
         });
         if (!res.ok) {
@@ -118,7 +119,7 @@ export const scheduledReportsApi = {
 
     // Trigger a report manually
     trigger: async (id: string, data?: TriggerReportRequest): Promise<TriggerReportResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}/trigger`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}/trigger`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data || {}),
@@ -133,7 +134,7 @@ export const scheduledReportsApi = {
     // Get report run history
     getHistory: async (id: string, filter?: ScheduledReportRunFilter): Promise<ScheduledReportRunListResponse> => {
         const params = new URLSearchParams();
-        
+
         if (filter?.status) {
             params.set('status', filter.status);
         }
@@ -153,7 +154,7 @@ export const scheduledReportsApi = {
             params.set('orderBy', filter.orderBy);
         }
 
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}/history?${params.toString()}`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}/history?${params.toString()}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch report history');
@@ -163,7 +164,7 @@ export const scheduledReportsApi = {
 
     // Preview a report
     preview: async (data: ReportPreviewRequest): Promise<ReportPreviewResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/preview`, {
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/preview`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -177,7 +178,7 @@ export const scheduledReportsApi = {
 
     // Preview from existing report
     previewFromReport: async (id: string): Promise<ReportPreviewResponse> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/${id}/preview`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/${id}/preview`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to generate preview');
@@ -187,7 +188,7 @@ export const scheduledReportsApi = {
 
     // Get download URL for a run
     getDownloadUrl: async (runId: string): Promise<{ downloadUrl: string }> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/runs/${runId}/download`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/runs/${runId}/download`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to get download URL');
@@ -197,7 +198,7 @@ export const scheduledReportsApi = {
 
     // Get available timezones
     getTimezones: async (): Promise<{ timezones: TimezoneOption[] }> => {
-        const res = await fetch(`${API_BASE}/scheduled-reports/timezones`);
+        const res = await fetchWithAuth(`${API_BASE}/scheduled-reports/timezones`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch timezones');

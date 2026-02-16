@@ -55,6 +55,7 @@ export function ProviderList({ onEdit }: ProviderListProps) {
     };
 
     const handleDelete = (provider: AIProvider) => {
+        // eslint-disable-next-line no-alert
         if (window.confirm(`Delete provider "${provider.name}"?`)) {
             deleteProvider(provider.id);
         }

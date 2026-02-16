@@ -20,6 +20,7 @@ import {
     SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface InviteMemberDialogProps {
     open: boolean;
@@ -55,7 +56,7 @@ export function InviteMemberDialog({
             // For now, we'll just use a mock userId
             const userId = 'temp-user-id'; // TODO: Implement user search
 
-            const response = await fetch(`/api/workspaces/${workspaceId}/members`, {
+            const response = await fetchWithAuth(`/api/go/workspaces/${workspaceId}/members`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userId, role }),

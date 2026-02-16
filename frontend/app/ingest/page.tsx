@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { SidebarLayout } from '@/components/sidebar-layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -33,7 +34,7 @@ export default function IngestPage() {
         formData.append('file', selectedFile);
 
         try {
-            const res = await fetch('/api/ingest/preview', {
+            const res = await fetchWithAuth('/api/ingest/preview', {
                 method: 'POST',
                 body: formData,
             });
@@ -62,7 +63,7 @@ export default function IngestPage() {
         try {
             const timer = setInterval(() => setProgress(prev => Math.min(prev + 10, 90)), 500);
 
-            const response = await fetch('/api/ingest', {
+            const response = await fetchWithAuth('/api/ingest', {
                 method: 'POST',
                 body: formData,
             });
@@ -256,8 +257,8 @@ function StepIndicator({ active, done, label }: { active: boolean, done: boolean
     return (
         <div className="flex items-center gap-2">
             <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${done ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' :
-                    active ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110' :
-                        'bg-muted-foreground/20 text-muted-foreground'
+                active ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110' :
+                    'bg-muted-foreground/20 text-muted-foreground'
                 }`}>
                 {done ? <CheckCircle2 className="w-3 h-3" /> : active ? <div className="w-1.5 h-1.5 rounded-full bg-white" /> : null}
             </div>

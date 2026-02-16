@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { hasPermission, type Permission, type Role } from '@/lib/rbac/permissions';
+import { workspaceApi } from '@/lib/api/workspaces';
 
 export interface Workspace {
     id: string;
@@ -24,18 +25,47 @@ export function WorkspaceProvider({ children }: { children: ReactNode }) {
     const [workspace, setWorkspaceState] = useState<Workspace | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    // Load from localStorage on mount
+    // Load from localStorage or API on mount
     useEffect(() => {
-        try {
-            const saved = localStorage.getItem('activeWorkspace');
-            if (saved) {
-                setWorkspaceState(JSON.parse(saved));
+        const initializeWorkspace = async () => {
+            try {
+                // 1. Try local storage
+                const saved = localStorage.getItem('activeWorkspace');
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    setWorkspaceState(parsed);
+                    return;
+                }
+
+                // 2. If not found, fetch from API
+                const workspaces = await workspaceApi.list();
+
+                if (workspaces && workspaces.length > 0) {
+                    const defaultWorkspace = workspaces[0];
+                    setWorkspaceState(defaultWorkspace);
+                    localStorage.setItem('activeWorkspace', JSON.stringify(defaultWorkspace));
+                } else {
+                    // 3. If no workspaces exist, create a default one
+                    console.log('[WorkspaceProvider] No workspaces found, creating default...');
+                    try {
+                        const newWorkspace = await workspaceApi.create({
+                            name: 'My Workspace',
+                            description: 'Default workspace'
+                        });
+                        setWorkspaceState(newWorkspace);
+                        localStorage.setItem('activeWorkspace', JSON.stringify(newWorkspace));
+                    } catch (createError) {
+                        console.error('[WorkspaceProvider] Failed to create default workspace:', createError);
+                    }
+                }
+            } catch (error) {
+                console.error('[WorkspaceProvider] Failed to initialize workspace:', error);
+            } finally {
+                setIsLoading(false);
             }
-        } catch (error) {
-            // Silently handle localStorage errors
-        } finally {
-            setIsLoading(false);
-        }
+        };
+
+        initializeWorkspace();
     }, []);
 
     // Persist to localStorage when workspace changes

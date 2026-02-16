@@ -44,7 +44,7 @@ import {
 } from '@/components/ui/popover';
 import { Calendar as CalendarIcon, Download } from 'lucide-react';
 import { format, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
-import { DateRange } from 'react-day-picker';
+import { type DateRange } from 'react-day-picker';
 
 interface RequestHistoryTableProps {
     className?: string;
@@ -272,7 +272,7 @@ export function RequestHistoryTable({ className }: RequestHistoryTableProps) {
                                     <TableHead className="w-[80px] text-right">Tokens</TableHead>
                                     <TableHead className="w-[80px] text-right">Cost</TableHead>
                                     <TableHead className="w-[120px]">Date</TableHead>
-                                    <TableHead className="w-[60px]"></TableHead>
+                                    <TableHead className="w-[60px]" />
                                 </TableRow>
                             </TableHeader>
                             <TableBody>

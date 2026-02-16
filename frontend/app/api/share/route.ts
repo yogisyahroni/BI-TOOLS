@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         expiresAt: expiresIn ? new Date(Date.now() + expiresIn * 24 * 60 * 60 * 1000) : undefined,
       };
 
-      console.log('[v0] Query shared:', {
+      console.warn('[v0] Query shared:', {
         queryId,
         sharedWith,
         permission,
@@ -76,7 +76,7 @@ export async function POST(request: NextRequest) {
         expiresAt: expiresIn ? new Date(Date.now() + expiresIn * 24 * 60 * 60 * 1000) : undefined,
       };
 
-      console.log('[v0] Dashboard shared:', {
+      console.warn('[v0] Dashboard shared:', {
         dashboardId,
         sharedWith,
         permission,
@@ -117,7 +117,7 @@ export async function GET(request: NextRequest) {
     // TODO: Fetch shares from database
     const mockShares: (SharedQuery | SharedDashboard)[] = [];
 
-    console.log('[v0] Fetched shares for:', {
+    console.warn('[v0] Fetched shares for:', {
       resourceType,
       resourceId,
     });
@@ -149,7 +149,7 @@ export async function DELETE(request: NextRequest) {
     }
 
     // TODO: Delete share from database
-    console.log('[v0] Share deleted:', shareId);
+    console.warn('[v0] Share deleted:', shareId);
 
     return NextResponse.json({
       success: true,

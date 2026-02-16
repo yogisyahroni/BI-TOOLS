@@ -1,16 +1,17 @@
 import {
-    SemanticModel,
-    CreateSemanticModelRequest,
-    UpdateSemanticModelRequest,
-    SemanticMetric,
-    SemanticQueryRequest,
-    SemanticQueryResponse
+    type SemanticModel,
+    type CreateSemanticModelRequest,
+    type UpdateSemanticModelRequest,
+    type SemanticMetric,
+    type SemanticQueryRequest,
+    type SemanticQueryResponse
 } from '@/types/semantic';
+import { fetchWithAuth } from '@/lib/utils';
 
-const BASE_URL = '/api/v1/semantic';
+const BASE_URL = '/api/go/semantic';
 
 async function fetchAPI<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
-    const res = await fetch(`${BASE_URL}${endpoint}`, {
+    const res = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
         ...options,
         headers: {
             'Content-Type': 'application/json',

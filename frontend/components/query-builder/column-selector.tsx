@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import {
     DndContext,
     closestCenter,
@@ -8,7 +9,7 @@ import {
     PointerSensor,
     useSensor,
     useSensors,
-    DragEndEvent,
+    type DragEndEvent,
 } from '@dnd-kit/core';
 import {
     arrayMove,
@@ -18,7 +19,7 @@ import {
     useSortable,
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { ColumnSelection, AggregationFunction, ColumnSchema } from '@/lib/query-builder/types';
+import { type ColumnSelection, type AggregationFunction, type ColumnSchema } from '@/lib/query-builder/types';
 import { GripVertical, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -167,7 +168,7 @@ export function ColumnSelector({
 
         try {
             setIsLoading(true);
-            const res = await fetch(`/api/connections/${connectionId}/schema`);
+            const res = await fetchWithAuth(`/api/go/connections/${connectionId}/schema`);
             if (res.ok) {
                 const data = await res.json();
                 const table = data.tables?.find((t: any) => t.name === tableName);

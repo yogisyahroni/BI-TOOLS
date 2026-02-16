@@ -486,7 +486,7 @@ function BudgetForm({ formData, setFormData, isEdit }: BudgetFormProps) {
                     }
                 />
                 <p className="text-xs text-muted-foreground">
-                    You'll receive an alert when usage reaches this percentage
+                    You&apos;ll receive an alert when usage reaches this percentage
                 </p>
             </div>
         </div>

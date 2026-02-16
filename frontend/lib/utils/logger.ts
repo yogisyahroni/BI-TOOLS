@@ -19,10 +19,10 @@ export class ProductionLogger {
         };
 
         if (process.env.NODE_ENV === 'production') {
-            console.log(JSON.stringify(logEntry));
+            console.warn(JSON.stringify(logEntry));
         } else {
             // Readable format for dev
-            console.log(`[${level}] ${message}`, meta);
+            console.warn(`[${level}] ${message}`, meta);
         }
     }
 

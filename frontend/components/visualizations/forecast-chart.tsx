@@ -5,7 +5,7 @@ import { Area, CartesianGrid, ComposedChart, Line, XAxis, YAxis } from "recharts
 import { format } from "date-fns"
 
 import {
-    ChartConfig,
+    type ChartConfig,
     ChartContainer,
     ChartLegend,
     ChartLegendContent,

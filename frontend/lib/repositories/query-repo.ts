@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { Prisma, SavedQuery } from '@prisma/client';
+import { type Prisma, type SavedQuery } from '@prisma/client';
 
 export class QueryRepository {
     async create(data: Prisma.SavedQueryUncheckedCreateInput): Promise<SavedQuery> {

@@ -1,5 +1,5 @@
 
-import { Worker, Job } from 'bullmq';
+import { Worker, type Job } from 'bullmq';
 import { redis } from '../db/redis';
 import { db } from '../db';
 import puppeteer from 'puppeteer';
@@ -7,16 +7,16 @@ import { nanoid } from 'nanoid';
 
 // Mock Email Service
 async function sendEmail(to: string, subject: string, attachmentPath: string) {
-    console.log(`[Email Mock] Sending to ${to}`);
-    console.log(`[Email Mock] Subject: ${subject}`);
-    console.log(`[Email Mock] Attachment: ${attachmentPath}`);
+    console.warn(`[Email Mock] Sending to ${to}`);
+    console.warn(`[Email Mock] Subject: ${subject}`);
+    console.warn(`[Email Mock] Attachment: ${attachmentPath}`);
     // In real app, use Resend or Nodemailer
 }
 
 const shouldStart = !!(redis || process.env.REDIS_URL);
 
 export const reportingWorker = shouldStart ? new Worker('reporting-jobs', async (job: Job) => {
-    console.log(`[ReportingWorker] Checking for due reports...`);
+    console.warn(`[ReportingWorker] Checking for due reports...`);
 
     // 1. Find Due Schedules
     const now = new Date();
@@ -28,11 +28,11 @@ export const reportingWorker = shouldStart ? new Worker('reporting-jobs', async 
         include: { dashboard: true }
     });
 
-    console.log(`[ReportingWorker] Found ${schedules.length} due reports.`);
+    console.warn(`[ReportingWorker] Found ${schedules.length} due reports.`);
 
     for (const schedule of schedules) {
         try {
-            console.log(`[ReportingWorker] Processing schedule ${schedule.id} for Dashboard ${schedule.dashboard.name}`);
+            console.warn(`[ReportingWorker] Processing schedule ${schedule.id} for Dashboard ${schedule.dashboard.name}`);
 
             // 2. Generate Share Token (Temporary)
             const token = nanoid(10);

@@ -2,7 +2,7 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { DrillPath, DrillLevel, canDrillUp, canDrillDown, getBreadcrumbTrail } from '@/lib/drill-config';
+import { type DrillPath, DrillLevel, canDrillUp, canDrillDown, getBreadcrumbTrail } from '@/lib/drill-config';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {

@@ -18,7 +18,7 @@ const ChartVisualization = dynamic(() => import('@/components/chart-visualizatio
     ssr: false,
     loading: () => <div className="h-full w-full flex items-center justify-center bg-muted/20 animate-pulse rounded-lg"><span className="text-muted-foreground text-xs">Loading Visualization...</span></div>
 });
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 import { AiTextWidget } from "./ai-text-widget";
 import { ExportService } from '@/lib/services/export-service';
 import { StatusBadge } from '@/components/catalog/status-badge';
@@ -26,7 +26,7 @@ import { StatusBadge } from '@/components/catalog/status-badge';
 import { toast } from 'sonner';
 import { AIExplainDialog } from './ai-explain-dialog';
 
-import { FilterCriteria } from '@/lib/cross-filter-context';
+import { type FilterCriteria } from '@/lib/cross-filter-context';
 import { useSession } from 'next-auth/react';
 import { useComments } from '@/hooks/use-comments';
 

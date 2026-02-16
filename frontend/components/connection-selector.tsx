@@ -10,7 +10,7 @@ interface ConnectionSelectorProps {
 }
 
 export function ConnectionSelector({ value, onValueChange }: ConnectionSelectorProps) {
-    const { connections, isLoading } = useConnections({ userId: 'user_123' }); // TODO: real auth
+    const { connections, isLoading } = useConnections();
 
     return (
         <div className="flex items-center gap-2">

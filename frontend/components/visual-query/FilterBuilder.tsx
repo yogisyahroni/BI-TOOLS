@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { FilterOperator, LogicOperator } from "@/types/visual-query";
+import { type FilterOperator, type LogicOperator } from "@/types/visual-query";
 
 export function FilterBuilder() {
     const { config, tableSchemas, addFilter, removeFilter, updateFilter } = useQueryBuilderStore();

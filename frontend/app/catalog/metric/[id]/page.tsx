@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { useParams, useRouter } from 'next/navigation';
 import { SidebarLayout } from '@/components/sidebar-layout';
 import { useSidebar } from '@/contexts/sidebar-context';
@@ -11,7 +12,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { StatusBadge } from '@/components/catalog/status-badge';
 import { ArrowLeft, Calculator, GitBranch, ShieldCheck } from 'lucide-react';
-import { BusinessMetric } from '@/lib/types';
+import { type BusinessMetric } from '@/lib/types';
 import { Skeleton } from '@/components/ui/skeleton';
 
 export default function MetricDetailPage() {
@@ -28,7 +29,7 @@ export default function MetricDetailPage() {
                 // We might need a specific GET /api/metrics/[id] endpoint
                 // For now, let's filter from the list or assume we create the endpoint
                 // Let's create the specific endpoint for cleaner code
-                const res = await fetch(`/api/metrics/${id}`);
+                const res = await fetchWithAuth(`/api/metrics/${id}`);
                 if (res.ok) {
                     const data = await res.json();
                     setMetric(data.data);

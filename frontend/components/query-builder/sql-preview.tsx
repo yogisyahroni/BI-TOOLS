@@ -7,7 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Copy, CheckCheck, AlertCircle, Code2, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
-import { VisualQueryConfig } from '@/lib/query-builder/types';
+import { type VisualQueryConfig } from '@/lib/query-builder/types';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface SQLPreviewProps {
     config: VisualQueryConfig;
@@ -36,7 +37,7 @@ export function SQLPreview({ config, connectionId }: SQLPreviewProps) {
         setError(null);
 
         try {
-            const response = await fetch('/api/visual-queries/generate-sql', {
+            const response = await fetchWithAuth('/api/go/visual-queries/generate-sql', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -83,19 +84,19 @@ export function SQLPreview({ config, connectionId }: SQLPreviewProps) {
 
         if (complexity === 0) return null;
         if (complexity <= 2)
-            return (
+            {return (
                 <Badge variant="outline" className="gap-1">
                     <Sparkles className="h-3 w-3" />
                     Simple
                 </Badge>
-            );
+            );}
         if (complexity <= 4)
-            return (
+            {return (
                 <Badge variant="secondary" className="gap-1">
                     <Sparkles className="h-3 w-3" />
                     Moderate
                 </Badge>
-            );
+            );}
         return (
             <Badge variant="default" className="gap-1">
                 <Sparkles className="h-3 w-3" />

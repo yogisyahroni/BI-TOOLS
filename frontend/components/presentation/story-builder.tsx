@@ -5,14 +5,14 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useStoryGeneration } from '@/hooks/use-story-generation';
 import { useDashboard } from '@/hooks/use-dashboard';
 import { DashboardCard } from '@/components/dashboard/dashboard-card';
-import { DEFAULT_AI_MODEL, AIModel } from '@/lib/ai/registry';
+import { DEFAULT_AI_MODEL, type AIModel } from '@/lib/ai/registry';
 
 // Atomic Components
 import { StorySidebar } from '@/components/presentation/story-sidebar';
 import { StoryToolbar } from '@/components/presentation/story-toolbar';
 import { StoryCanvas } from '@/components/presentation/story-canvas';
 import { StoryAIDialog } from '@/components/presentation/story-ai-dialog';
-import { Slide } from '@/types/presentation';
+import { type Slide } from '@/types/presentation';
 
 interface StoryBuilderProps {
     dashboardId?: string;
@@ -67,11 +67,11 @@ export function StoryBuilder({ dashboardId, initialSlides }: StoryBuilderProps) 
         if (!currentSlide?.chart_id || !dashboard) return null;
 
         const card = dashboard.cards?.find(c => c.id === currentSlide.chart_id);
-        if (!card) return (
+        if (!card) {return (
             <div className="flex flex-col items-center justify-center h-full text-muted-foreground bg-muted/10 rounded-lg border border-dashed">
                 <p>Chart not found ({currentSlide.chart_id})</p>
             </div>
-        );
+        );}
 
         return (
             <div className="h-full w-full pointer-events-none transform scale-95 origin-top-left">

@@ -25,14 +25,15 @@ import { FilterBuilder } from './filter-builder';
 import { AggregationBuilder } from './aggregation-builder';
 import { SQLPreview } from './sql-preview';
 import {
-    VisualQueryConfig,
-    TableSelection,
-    JoinConfig,
-    ColumnSelection,
-    FilterGroup,
-    SortRule,
+    type VisualQueryConfig,
+    type TableSelection,
+    type JoinConfig,
+    type ColumnSelection,
+    type FilterGroup,
+    type SortRule,
     createInitialVisualQueryConfig,
 } from '@/lib/query-builder/types';
+import { fetchWithAuth } from '@/lib/utils';
 
 interface VisualQueryWorkspaceProps {
     connectionId: string;
@@ -137,7 +138,7 @@ export function VisualQueryWorkspace({
         setExecutionResult(null);
 
         try {
-            const response = await fetch('/api/visual-queries/preview', {
+            const response = await fetchWithAuth('/api/go/visual-queries/preview', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

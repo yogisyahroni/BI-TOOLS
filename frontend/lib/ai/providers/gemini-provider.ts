@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { AIRequest, AIResponse, IAIProvider } from "./base-provider";
+import { type AIRequest, type AIResponse, type IAIProvider } from "./base-provider";
 
 export class GeminiProvider implements IAIProvider {
     private genAI: GoogleGenerativeAI;

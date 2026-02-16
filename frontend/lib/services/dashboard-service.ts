@@ -1,4 +1,4 @@
-import { Dashboard, DashboardCard, VisualizationConfig } from '@/lib/types';
+import { type Dashboard, type DashboardCard, VisualizationConfig } from '@/lib/types';
 import { fetchWithAuth } from '@/lib/utils';
 
 export interface CreateDashboardInput {

@@ -1,11 +1,12 @@
 import type { Workspace, WorkspaceMember } from '@/lib/types/batch3';
+import { fetchWithAuth } from '@/lib/utils';
 
 const API_BASE = '/api/go';
 
 export const workspaceApi = {
     // GET /api/go/workspaces
     list: async (): Promise<Workspace[]> => {
-        const res = await fetch(`${API_BASE}/workspaces`);
+        const res = await fetchWithAuth(`${API_BASE}/workspaces`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch workspaces');
@@ -15,7 +16,7 @@ export const workspaceApi = {
 
     // POST /api/go/workspaces
     create: async (data: { name: string; description?: string }): Promise<Workspace> => {
-        const res = await fetch(`${API_BASE}/workspaces`, {
+        const res = await fetchWithAuth(`${API_BASE}/workspaces`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -29,7 +30,7 @@ export const workspaceApi = {
 
     // GET /api/go/workspaces/:id
     get: async (id: string): Promise<Workspace> => {
-        const res = await fetch(`${API_BASE}/workspaces/${id}`);
+        const res = await fetchWithAuth(`${API_BASE}/workspaces/${id}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch workspace');
@@ -39,7 +40,7 @@ export const workspaceApi = {
 
     // PUT /api/go/workspaces/:id
     update: async (id: string, data: Partial<Workspace>): Promise<Workspace> => {
-        const res = await fetch(`${API_BASE}/workspaces/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/workspaces/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -53,7 +54,7 @@ export const workspaceApi = {
 
     // DELETE /api/go/workspaces/:id
     delete: async (id: string): Promise<void> => {
-        const res = await fetch(`${API_BASE}/workspaces/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/workspaces/${id}`, {
             method: 'DELETE',
         });
         if (!res.ok) {
@@ -67,7 +68,7 @@ export const workspaceMemberApi = {
     // GET /api/go/workspace-members?workspaceId=xxx
     list: async (workspaceId: string): Promise<WorkspaceMember[]> => {
         const params = new URLSearchParams({ workspaceId });
-        const res = await fetch(`${API_BASE}/workspace-members?${params.toString()}`);
+        const res = await fetchWithAuth(`${API_BASE}/workspace-members?${params.toString()}`);
         if (!res.ok) {
             const error = await res.json();
             throw new Error(error.error || 'Failed to fetch members');
@@ -77,7 +78,7 @@ export const workspaceMemberApi = {
 
     // POST /api/go/workspace-members
     invite: async (data: { workspaceId: string; userId: string; role: string }): Promise<WorkspaceMember> => {
-        const res = await fetch(`${API_BASE}/workspace-members`, {
+        const res = await fetchWithAuth(`${API_BASE}/workspace-members`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data),
@@ -91,7 +92,7 @@ export const workspaceMemberApi = {
 
     // PUT /api/go/workspace-members/:id
     updateRole: async (id: string, role: string): Promise<WorkspaceMember> => {
-        const res = await fetch(`${API_BASE}/workspace-members/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/workspace-members/${id}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ role }),
@@ -105,7 +106,7 @@ export const workspaceMemberApi = {
 
     // DELETE /api/go/workspace-members/:id
     remove: async (id: string): Promise<void> => {
-        const res = await fetch(`${API_BASE}/workspace-members/${id}`, {
+        const res = await fetchWithAuth(`${API_BASE}/workspace-members/${id}`, {
             method: 'DELETE',
         });
         if (!res.ok) {

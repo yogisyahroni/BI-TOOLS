@@ -60,7 +60,7 @@ function SignInContent() {
             return () => clearTimeout(timer);
         }
         if (successRedirect && redirectCountdown === 0) {
-            console.log('[SignIn] Redirecting to:', callbackUrl);
+            console.warn('[SignIn] Redirecting to:', callbackUrl);
             // Use window.location.href for a hard navigation to ensure 
             // cookies are properly sent to the server for the protected page request.
             window.location.href = callbackUrl;

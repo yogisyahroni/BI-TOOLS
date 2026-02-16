@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { fetchWithAuth } from '@/lib/utils';
 import { Dashboard, DashboardCard, VisualizationConfig, DashboardFilter } from '@/lib/types';
 import { useQueryExecution } from '@/hooks/use-query-execution';
 
@@ -23,7 +24,7 @@ export function useDashboard(dashboardId: string) {
     const fetchDashboard = useCallback(async () => {
         setIsLoading(true);
         try {
-            const res = await fetch(`/api/go/dashboards/${dashboardId}`);
+            const res = await fetchWithAuth(`/api/go/dashboards/${dashboardId}`);
             if (!res.ok) throw new Error('Failed to fetch dashboard');
             const data = await res.json();
 
@@ -109,7 +110,7 @@ export function useDashboard(dashboardId: string) {
 
     const saveDashboard = useCallback(async () => {
         try {
-            const res = await fetch(`/api/go/dashboards/${dashboardId}`, {
+            const res = await fetchWithAuth(`/api/go/dashboards/${dashboardId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -141,7 +142,7 @@ export function useDashboard(dashboardId: string) {
 
     const togglePublic = useCallback(async (isPublic: boolean) => {
         try {
-            const res = await fetch(`/api/go/dashboards/${dashboardId}`, {
+            const res = await fetchWithAuth(`/api/go/dashboards/${dashboardId}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ isPublic })
@@ -160,7 +161,7 @@ export function useDashboard(dashboardId: string) {
 
     const certifyDashboard = useCallback(async (status: 'verified' | 'deprecated' | 'none') => {
         try {
-            const res = await fetch(`/api/go/dashboards/${dashboardId}/certify`, {
+            const res = await fetchWithAuth(`/api/go/dashboards/${dashboardId}/certify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status })

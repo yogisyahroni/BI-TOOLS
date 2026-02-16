@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AddToDashboardDialog } from '@/components/dashboard/add-to-dashboard-dialog';
-import { VisualizationConfig } from '@/lib/types';
+import { type VisualizationConfig } from '@/lib/types';
 import dynamic from 'next/dynamic';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { ConnectFeedDialog } from '@/components/query-results/connect-feed-dialog';
