@@ -3,10 +3,6 @@
 > next lint
 
 
-./app/metadata/components/classification-tags.tsx
-24:15  Error: 'DataClassification' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-24:35  Error: 'ColumnMetadata' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
 ./app/modeling/page.tsx
 150:30  Warning: Do not nest ternary expressions.  no-nested-ternary
 
@@ -31,14 +27,8 @@
 105:23  Warning: Unexpected confirm.  no-alert
 197:16  Warning: Do not nest ternary expressions.  no-nested-ternary
 
-./app/share/[token]/page.tsx
-10:10  Error: 'toast' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
 ./app/stories/[id]/edit/page.tsx
 82:7  Warning: Unexpected alert.  no-alert
-
-./app/workspace/settings/page.tsx
-52:18  Error: 'error' is defined but never used. Allowed unused caught errors must match /^_/u.  @typescript-eslint/no-unused-vars
 
 ./components/activity-feed.tsx
 58:25  Warning: Do not nest ternary expressions.  no-nested-ternary
@@ -379,25 +369,13 @@
 ./lib/db-connectors/postgres-connector.ts
 16:14  Warning: Expected a `const` assertion instead of a literal type annotation.  @typescript-eslint/prefer-as-const
 
-./lib/etl/quality-engine.ts
-49:15  Error: 'rowFailed' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-
-./lib/etl/transformation-engine.ts
-107:47  Warning: Expected '===' and instead saw '=='.  eqeqeq
-108:48  Warning: Expected '!==' and instead saw '!='.  eqeqeq
-
 ./lib/repositories/settings-repo.ts
 24:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
 
 ./lib/services/alert-service.ts
-2:10  Error: 'Client' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-3:10  Error: 'connectionService' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
-93:31  Warning: Do not nest ternary expressions.  no-nested-ternary
+95:7  Warning: Do not nest ternary expressions.  no-nested-ternary
 
 ./lib/services/insights-service.ts
 27:20  Warning: Do not nest ternary expressions.  no-nested-ternary
-
-./lib/tracing.ts
-50:5  Error: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
 
 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

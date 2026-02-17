@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { usePathname, _useParams } from 'next/navigation';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { useState } from "react";
+import { signOut } from "next-auth/react";
+import Link from "next/link";
+import { usePathname, useParams } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   ChevronDown,
   Plus,
@@ -15,15 +15,15 @@ import {
   FolderOpen,
   Settings,
   LogOut,
-  _Zap,
+  Zap,
   Search,
-  _Home,
+  Home,
   BookOpen,
   Database,
   PieChart,
   Upload,
   Bell,
-  _Activity,
+  Activity,
   Clock,
   Boxes,
   AlertTriangle,
@@ -32,11 +32,11 @@ import {
   LineChart,
   ChevronLeft,
   ChevronRight,
-} from 'lucide-react';
-import { useDatabase } from '@/contexts/database-context';
-import { useNotifications } from '@/hooks/use-notifications';
-import { useWorkspace } from '@/contexts/workspace-context';
-import { Workflow } from 'lucide-react';
+} from "lucide-react";
+import { useDatabase } from "@/contexts/database-context";
+import { useNotifications } from "@/hooks/use-notifications";
+import { useWorkspace } from "@/contexts/workspace-context";
+import { Workflow } from "lucide-react";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -52,51 +52,56 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
   const { databases, selectedDatabase, setSelectedDatabase } = useDatabase();
   const { workspace } = useWorkspace();
   const { unreadCount } = useNotifications();
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(['Analytics', 'Data', 'Workspace']);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>([
+    "Analytics",
+    "Data",
+    "Workspace",
+  ]);
   const [showDatabases, setShowDatabases] = useState(true);
-
-  // DEBUG: Check if workspace is loaded
-  console.log('[MainSidebar] Workspace:', workspace);
 
   const navGroups = [
     {
-      label: 'Analytics',
+      label: "Analytics",
       items: [
-        { icon: LayoutDashboard, label: 'Dashboards', href: '/dashboards' },
-        { icon: LineChart, label: 'Query Editor', href: '/query-builder' },
-        { icon: PieChart, label: 'Analytics', href: '/analytics' },
-        { icon: AlertTriangle, label: 'Alerts', href: '/alerts' },
+        { icon: LayoutDashboard, label: "Dashboards", href: "/dashboards" },
+        { icon: LineChart, label: "Query Editor", href: "/query-builder" },
+        { icon: PieChart, label: "Analytics", href: "/analytics" },
+        { icon: AlertTriangle, label: "Alerts", href: "/alerts" },
       ],
     },
     {
-      label: 'Data',
+      label: "Data",
       items: [
-        { icon: Database, label: 'Connections', href: '/connections' },
-        { icon: Workflow, label: 'Pipelines', href: workspace ? `/workspace/${workspace.id}/pipelines` : '#' },
-        { icon: Upload, label: 'Upload Data', href: '/ingest' },
-        { icon: Search, label: 'Explorer', href: '/explorer' },
-        { icon: Boxes, label: 'Lineage', href: '/lineage' },
+        { icon: Database, label: "Connections", href: "/connections" },
+        {
+          icon: Workflow,
+          label: "Pipelines",
+          href: workspace ? `/workspace/${workspace.id}/pipelines` : "#",
+        },
+        { icon: Upload, label: "Upload Data", href: "/ingest" },
+        { icon: Search, label: "Explorer", href: "/explorer" },
+        { icon: Boxes, label: "Lineage", href: "/lineage" },
       ],
     },
     {
-      label: 'Workspace',
+      label: "Workspace",
       items: [
-        { icon: BookOpen, label: 'Modeling', href: '/modeling' },
-        { icon: FolderOpen, label: 'Collections', href: '/saved-queries' },
-        { icon: BarChart3, label: 'Story Builder', href: '/stories' },
-        { icon: Clock, label: 'Scheduler', href: '/admin/scheduler' },
+        { icon: BookOpen, label: "Modeling", href: "/modeling" },
+        { icon: FolderOpen, label: "Collections", href: "/saved-queries" },
+        { icon: BarChart3, label: "Story Builder", href: "/stories" },
+        { icon: Clock, label: "Scheduler", href: "/admin/scheduler" },
       ],
     },
   ];
 
   const isActive = (path: string) => {
-    if (path === '/') return pathname === '/';
+    if (path === "/") return pathname === "/";
     return pathname.startsWith(path);
   };
 
   const toggleGroup = (label: string) => {
     setExpandedGroups((prev) =>
-      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label]
+      prev.includes(label) ? prev.filter((l) => l !== label) : [...prev, label],
     );
   };
 
@@ -113,9 +118,9 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed lg:sticky top-0 left-0 z-50 h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ease-in-out',
-          isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0',
-          isCollapsed ? 'w-16' : 'w-64'
+          "fixed lg:sticky top-0 left-0 z-50 h-screen bg-sidebar border-r border-sidebar-border flex flex-col transition-all duration-300 ease-in-out",
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+          isCollapsed ? "w-16" : "w-64",
         )}
       >
         {/* Logo Section */}
@@ -159,8 +164,8 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                   <span>{group.label}</span>
                   <ChevronDown
                     className={cn(
-                      'h-3.5 w-3.5 transition-transform duration-200',
-                      expandedGroups.includes(group.label) ? '' : '-rotate-90'
+                      "h-3.5 w-3.5 transition-transform duration-200",
+                      expandedGroups.includes(group.label) ? "" : "-rotate-90",
                     )}
                   />
                 </button>
@@ -174,8 +179,8 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
 
               <div
                 className={cn(
-                  'space-y-0.5',
-                  !isCollapsed && !expandedGroups.includes(group.label) && 'hidden'
+                  "space-y-0.5",
+                  !isCollapsed && !expandedGroups.includes(group.label) && "hidden",
                 )}
               >
                 {group.items.map((item) => {
@@ -191,10 +196,10 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                               variant="ghost"
                               size="icon"
                               className={cn(
-                                'w-full h-10 rounded-lg transition-all duration-200',
+                                "w-full h-10 rounded-lg transition-all duration-200",
                                 active
-                                  ? 'bg-primary text-primary-foreground shadow-md'
-                                  : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
+                                  ? "bg-primary text-primary-foreground shadow-md"
+                                  : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                               )}
                             >
                               <Icon className="h-5 w-5" />
@@ -213,10 +218,10 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                       <Button
                         variant="ghost"
                         className={cn(
-                          'w-full justify-start gap-3 h-10 px-4 rounded-lg transition-all duration-200',
+                          "w-full justify-start gap-3 h-10 px-4 rounded-lg transition-all duration-200",
                           active
-                            ? 'bg-primary text-primary-foreground shadow-md shadow-primary/20 font-medium'
-                            : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
+                            ? "bg-primary text-primary-foreground shadow-md shadow-primary/20 font-medium"
+                            : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                         )}
                       >
                         <Icon className="h-4.5 w-4.5" />
@@ -230,7 +235,7 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
           ))}
 
           {/* Notifications */}
-          <div className={cn('mt-2', isCollapsed && 'px-2')}>
+          <div className={cn("mt-2", isCollapsed && "px-2")}>
             {!isCollapsed && (
               <div className="px-4 py-2 text-xs font-semibold text-sidebar-foreground/60 uppercase tracking-wider">
                 Activity
@@ -246,10 +251,10 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                       variant="ghost"
                       size="icon"
                       className={cn(
-                        'w-full h-10 rounded-lg relative',
-                        isActive('/notifications')
-                          ? 'bg-primary text-primary-foreground'
-                          : 'text-sidebar-foreground/70 hover:bg-sidebar-accent'
+                        "w-full h-10 rounded-lg relative",
+                        isActive("/notifications")
+                          ? "bg-primary text-primary-foreground"
+                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent",
                       )}
                     >
                       <Bell className="h-5 w-5" />
@@ -271,17 +276,17 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                 <Button
                   variant="ghost"
                   className={cn(
-                    'w-full justify-start gap-3 h-10 px-4 rounded-lg',
-                    isActive('/notifications')
-                      ? 'bg-primary text-primary-foreground'
-                      : 'text-sidebar-foreground/70 hover:bg-sidebar-accent'
+                    "w-full justify-start gap-3 h-10 px-4 rounded-lg",
+                    isActive("/notifications")
+                      ? "bg-primary text-primary-foreground"
+                      : "text-sidebar-foreground/70 hover:bg-sidebar-accent",
                   )}
                 >
                   <Bell className="h-4.5 w-4.5" />
                   <span className="flex-1 text-left">Notifications</span>
                   {unreadCount > 0 && (
                     <Badge variant="destructive" className="h-5 min-w-[20px] px-1.5 text-xs">
-                      {unreadCount > 99 ? '99+' : unreadCount}
+                      {unreadCount > 99 ? "99+" : unreadCount}
                     </Badge>
                   )}
                 </Button>
@@ -300,8 +305,8 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
               <span>Databases</span>
               <ChevronDown
                 className={cn(
-                  'h-3.5 w-3.5 transition-transform duration-200',
-                  showDatabases ? '' : '-rotate-90'
+                  "h-3.5 w-3.5 transition-transform duration-200",
+                  showDatabases ? "" : "-rotate-90",
                 )}
               />
             </button>
@@ -315,16 +320,16 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                       key={db.id}
                       onClick={() => setSelectedDatabase(db)}
                       className={cn(
-                        'w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all',
+                        "w-full flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-all",
                         isSelected
-                          ? 'bg-primary text-primary-foreground font-medium'
-                          : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground'
+                          ? "bg-primary text-primary-foreground font-medium"
+                          : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground",
                       )}
                     >
                       <span
                         className={cn(
-                          'w-2 h-2 rounded-full',
-                          db.status === 'connected' ? 'bg-green-400' : 'bg-red-400'
+                          "w-2 h-2 rounded-full",
+                          db.status === "connected" ? "bg-green-400" : "bg-red-400",
                         )}
                       />
                       <span className="truncate">{db.name}</span>
@@ -385,7 +390,7 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                 variant="ghost"
                 size="sm"
                 className="w-full justify-start gap-2 text-sidebar-foreground/70 hover:text-destructive transition-colors"
-                onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+                onClick={() => signOut({ callbackUrl: "/auth/signin" })}
               >
                 <LogOut className="h-4 w-4" />
                 Logout
@@ -409,7 +414,7 @@ export function MainSidebar({ isOpen, onClose, isCollapsed, onToggleCollapse }: 
                     variant="ghost"
                     size="icon"
                     className="w-full h-9 text-sidebar-foreground/70 hover:text-destructive"
-                    onClick={() => signOut({ callbackUrl: '/auth/signin' })}
+                    onClick={() => signOut({ callbackUrl: "/auth/signin" })}
                   >
                     <LogOut className="h-4 w-4" />
                   </Button>

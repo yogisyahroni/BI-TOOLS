@@ -19,7 +19,7 @@ import (
 	"gorm.io/gorm"
 )
 
-const baseURL = "http://localhost:8081/api"
+const webhookApiUrl = "http://localhost:8081/api"
 
 type Webhook struct {
 	ID          string   `json:"id"`
@@ -99,7 +99,7 @@ func login(t *testing.T) string {
 		"password": password,
 		"username": username,
 	})
-	resp, err := http.Post(baseURL+"/auth/register", "application/json", bytes.NewBuffer(registerBody))
+	resp, err := http.Post(webhookApiUrl+"/auth/register", "application/json", bytes.NewBuffer(registerBody))
 	if err != nil {
 		t.Fatalf("Registration request failed: %v", err)
 	}
@@ -130,7 +130,7 @@ func login(t *testing.T) string {
 		"email":    email,
 		"password": password,
 	})
-	resp, err = http.Post(baseURL+"/auth/login", "application/json", bytes.NewBuffer(loginBody))
+	resp, err = http.Post(webhookApiUrl+"/auth/login", "application/json", bytes.NewBuffer(loginBody))
 
 	if err != nil || resp.StatusCode != 200 {
 		body, _ := io.ReadAll(resp.Body)
@@ -150,7 +150,7 @@ func login(t *testing.T) string {
 
 func createWebhook(t *testing.T, token string, w Webhook) string {
 	body, _ := json.Marshal(w)
-	req, _ := http.NewRequest("POST", baseURL+"/webhooks", bytes.NewBuffer(body))
+	req, _ := http.NewRequest("POST", webhookApiUrl+"/webhooks", bytes.NewBuffer(body))
 	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Content-Type", "application/json")
 
@@ -173,7 +173,7 @@ func createWebhook(t *testing.T, token string, w Webhook) string {
 }
 
 func triggerTestEvent(t *testing.T, token, id string) {
-	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/webhooks/%s/test", baseURL, id), nil)
+	req, _ := http.NewRequest("POST", fmt.Sprintf("%s/webhooks/%s/test", webhookApiUrl, id), nil)
 	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := http.DefaultClient.Do(req)
@@ -184,7 +184,7 @@ func triggerTestEvent(t *testing.T, token, id string) {
 }
 
 func deleteWebhook(t *testing.T, token, id string) {
-	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/webhooks/%s", baseURL, id), nil)
+	req, _ := http.NewRequest("DELETE", fmt.Sprintf("%s/webhooks/%s", webhookApiUrl, id), nil)
 	req.Header.Set("Authorization", "Bearer "+token)
 
 	resp, err := http.DefaultClient.Do(req)

@@ -1,0 +1,12 @@
+{
+    "backend/**/*.go": [
+        "cd backend && gofmt -w",
+        "cd backend && go vet ./..."
+    ],
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+        "cd frontend && npx next lint --file"
+    ],
+    "frontend/**/*.{json,css,md}": [
+        "cd frontend && prettier --write"
+    ]
+}

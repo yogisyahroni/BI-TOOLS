@@ -1,0 +1,13 @@
+
+> my-v0-project@0.1.0 lint
+> next lint components/visualization-sidebar.tsx
+
+E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\node_modules\next\dist\lib\find-pages-dir.js:42
+        throw new Error("> Couldn't find any `pages` or `app` directory. Please create one under the project root");
+              ^
+
+Error: > Couldn't find any `pages` or `app` directory. Please create one under the project root
+    at findPagesDir (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\node_modules\next\dist\lib\find-pages-dir.js:42:15)
+    at Module.nextLint (E:\antigraviti google\inside engine\insight-engine-ai-ui\frontend\node_modules\next\dist\cli\next-lint.js:76:65)
+
+Node.js v22.16.0
