@@ -5,13 +5,13 @@ import {
     Dialog,
     DialogContent,
     DialogDescription,
-    DialogFooter,
+    _DialogFooter,
     DialogHeader,
     DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Search, Plus, LayoutGrid, FileText } from 'lucide-react';
+import { Search, Plus, _LayoutGrid, _FileText } from 'lucide-react';
 import { useSavedQueries } from '@/hooks/use-saved-queries';
 import {
     Select,

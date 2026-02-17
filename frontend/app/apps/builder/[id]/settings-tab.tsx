@@ -31,6 +31,8 @@ export default function AppSettingsTab({ app, onUpdate }: AppSettingsTabProps) {
         isPublished: app.isPublished,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChange = (field: string, value: any) => {
         setFormData((prev) => ({ ...prev, [field]: value }));
     };
@@ -65,6 +67,7 @@ export default function AppSettingsTab({ app, onUpdate }: AppSettingsTabProps) {
     };
 
     const handleDelete = async () => {
+        // eslint-disable-next-line no-alert
         if (!confirm('Are you sure you want to delete this app? This action cannot be undone.')) return;
         try {
             const res = await fetchWithAuth(`/api/go/apps/${app.id}`, { method: 'DELETE' });

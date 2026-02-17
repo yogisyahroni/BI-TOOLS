@@ -23,6 +23,8 @@ export function SQLPreview({ config, connectionId }: SQLPreviewProps) {
 
     useEffect(() => {
         generateSQL();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [config, connectionId]);
 
     const generateSQL = async () => {
@@ -68,7 +70,7 @@ export function SQLPreview({ config, connectionId }: SQLPreviewProps) {
             setCopied(true);
             toast.success('SQL copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
+        } catch (_err) {
             toast.error('Failed to copy SQL');
         }
     };

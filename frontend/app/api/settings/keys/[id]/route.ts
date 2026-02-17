@@ -21,8 +21,7 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
         await db.apiKey.delete({ where: { id } });
 
         return NextResponse.json({ success: true });
-    } catch (error) {
-        return NextResponse.json({ error: 'Failed to revoke API key' }, { status: 500 });
+    } catch (_error) {
+        return NextResponse.json({ error: 'Failed to delete API key' }, { status: 500 });
     }
 }
-

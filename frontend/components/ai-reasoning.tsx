@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ChevronDown, ChevronUp, Copy, AlertTriangle, Check } from 'lucide-react';
+import { ChevronDown, ChevronUp, Copy, _AlertTriangle, Check } from 'lucide-react';
 import { useState } from 'react';
 
 interface AIReasoningProps {

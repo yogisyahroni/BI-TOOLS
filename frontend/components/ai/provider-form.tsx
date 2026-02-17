@@ -89,6 +89,8 @@ export function ProviderForm({ open, onOpenChange, provider }: ProviderFormProps
 
         if (isEditing && provider) {
             // Only include API key if it was changed
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const updateData: any = {
                 name,
                 model,

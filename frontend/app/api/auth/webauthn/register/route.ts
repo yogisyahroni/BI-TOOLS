@@ -8,12 +8,13 @@ import {
     generateRegistrationOptions,
     verifyRegistrationResponse,
 } from '@simplewebauthn/server';
+import type { AuthenticatorTransport } from '@simplewebauthn/types';
 
 // Domain (RP ID)
 const rpID = process.env.NEXT_PUBLIC_RP_ID || 'localhost';
 const origin = process.env.NEXT_PUBLIC_ORIGIN || 'http://localhost:3000';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) {
         return new NextResponse('Unauthorized', { status: 401 });
@@ -37,7 +38,7 @@ export async function GET(req: NextRequest) {
             // Don't re-register existing authenticators
             excludeCredentials: user.authenticators.map((authenticator) => ({
                 id: authenticator.credentialID,
-                transports: authenticator.transports ? (authenticator.transports.split(',') as any[]) : undefined,
+                transports: authenticator.transports ? (authenticator.transports.split(',') as AuthenticatorTransport[]) : undefined,
             })),
             authenticatorSelection: {
                 residentKey: 'preferred',
@@ -45,14 +46,6 @@ export async function GET(req: NextRequest) {
                 authenticatorAttachment: 'platform', // Prefer built-in (TouchID/FaceID)
             },
         });
-
-        // Store current challenge in DB or Session (Mocking session storage with DB for now, or just return it and rely on client to sign it? 
-        // Best practice is server-side session. We'll rely on the client passing it back signed, verification checks if it matches expected challenge.
-        // SimpleWebAuthn doesn't force storage, but verification needs the original challenge.
-        // We can temporarily store it in a cookie or Redis. 
-        // For MVP, we'll return it and expect the client to send it back intact (not secure against replay if not validated).
-        // A better approach: Store in a temporary 'Challenge' table or user record.
-        // Let's use a signed HttpOnly cookie for the challenge.
 
         const response = NextResponse.json(options);
         response.cookies.set('webauthn_challenge', options.challenge, {
@@ -92,12 +85,7 @@ export async function POST(req: NextRequest) {
         });
 
         if (verification.verified && verification.registrationInfo) {
-            const regInfo = verification.registrationInfo as any;
-            const credentialID = regInfo.credentialID || regInfo.credID;
-            const credentialPublicKey = regInfo.credentialPublicKey || regInfo.publicKey;
-            const counter = regInfo.counter || regInfo.signCount;
-            const credentialDeviceType = regInfo.credentialDeviceType || regInfo.deviceType;
-            const credentialBackedUp = regInfo.credentialBackedUp || regInfo.backedUp;
+            const { credentialID, credentialPublicKey, counter, credentialDeviceType, credentialBackedUp } = verification.registrationInfo;
 
             await db.authenticator.create({
                 data: {

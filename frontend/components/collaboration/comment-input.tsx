@@ -21,7 +21,7 @@ export function CommentInput({
     entityId,
     parentId = null,
     placeholder = 'Add a comment...',
-    currentUserId,
+    _currentUserId,
     onCancel,
     submitLabel = 'Comment',
 }: CommentInputProps) {

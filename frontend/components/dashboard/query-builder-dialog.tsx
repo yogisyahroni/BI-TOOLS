@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/dialog';
 import { DualEngineEditor } from '@/components/dual-engine-editor';
 import { ResultsTable } from '@/components/query-results/results-table';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { _Button } from '@/components/ui/button';
+import { _X } from 'lucide-react';
 import { type SavedQuery } from '@/lib/types';
 import { toast } from 'sonner';
 
@@ -30,6 +30,8 @@ export function QueryBuilderDialog({
 }: QueryBuilderDialogProps) {
 
     const [queryResults, setQueryResults] = useState<{
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: any[];
         columns: string[];
         rowCount: number;
@@ -49,7 +51,9 @@ export function QueryBuilderDialog({
         onOpenChange(false);
     };
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleResultsUpdate = (results: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: any[];
         columns: string[];
         rowCount: number;

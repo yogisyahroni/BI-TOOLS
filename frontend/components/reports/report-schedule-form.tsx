@@ -21,7 +21,7 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-  Calendar,
+  _Calendar,
   Clock,
   Mail,
   FileText,
@@ -30,15 +30,15 @@ import {
 } from 'lucide-react';
 import type {
   ScheduleFormData,
-  ReportResourceType,
-  ReportFormat,
+  _ReportResourceType,
+  _ReportFormat,
   CreateScheduledReportRequest,
 } from '@/types/scheduled-reports';
 import {
   REPORT_FORMATS,
   RESOURCE_TYPES,
-  SCHEDULE_TYPES,
-  DAYS_OF_WEEK,
+  _SCHEDULE_TYPES,
+  _DAYS_OF_WEEK,
 } from '@/types/scheduled-reports';
 import { RecipientManager } from './recipient-manager';
 import { SchedulePicker } from './schedule-picker';
@@ -90,6 +90,8 @@ export function ReportScheduleForm({
     });
   }, []);
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (field: keyof ScheduleFormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };

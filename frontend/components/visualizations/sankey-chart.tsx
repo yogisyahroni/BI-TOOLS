@@ -61,6 +61,8 @@ export function SankeyChart({
             tooltip: {
                 trigger: 'item',
                 triggerOn: 'mousemove',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter: function (params: any) {
                     if (params.dataType === 'node') {
                         return `${params.name}<br/>Value: ${params.value || 'N/A'}`
@@ -110,7 +112,9 @@ export function SankeyChart({
     }, [data, title, nodeWidth, nodeGap, layoutIterations, orient, validation.isValid])
 
     // Event handlers
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleEvents = useMemo(() => ({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         click: (params: any) => {
             if (params.dataType === 'node' && onNodeClick) {
                 const node = data.nodes.find(n => n.name === params.name)

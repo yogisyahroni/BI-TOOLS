@@ -63,7 +63,7 @@ export function AddConnectionDialog() {
             } else {
                 toast.error(result.error || 'Failed to create connection');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('An unexpected error occurred');
         }
     }

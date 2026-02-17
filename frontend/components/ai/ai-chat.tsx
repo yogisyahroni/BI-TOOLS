@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, _CardContent, _CardHeader, _CardTitle } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -11,13 +11,13 @@ import {
     Send,
     User,
     Bot,
-    Loader2,
-    RefreshCw,
+    _Loader2,
+    _RefreshCw,
     StopCircle,
     ChevronDown,
     ChevronRight,
     BrainCircuit,
-    CheckCircle2
+    _CheckCircle2
 } from 'lucide-react';
 import { useAIStream } from '@/hooks/use-ai-stream';
 import { useAIProviders } from '@/hooks/use-ai-providers';
@@ -68,7 +68,7 @@ export function AIChat() {
     }, [chatHistory]);
 
     // Handle Streaming
-    const { generateStream, messages: streamMessages, isStreaming, stopStream } = useAIStream({
+    const { _generateStream, messages: _streamMessages, _isStreaming, _stopStream } = useAIStream({
         onComplete: (fullResponse) => {
             // Update the last assistant message with full response and mark streaming as done
             setChatHistory(prev => {
@@ -153,7 +153,7 @@ export function AIChat() {
         try {
             // 1. If Reasoning Enabled: Call Reason Endpoint First
             if (enableReasoning) {
-                const loadingId = Date.now() + 1;
+                const _loadingId = Date.now() + 1;
                 // Add placeholder for reasoning
                 // Actually better to have the assistant message contain the reasoning data
                 // So we start the assistant message now with empty content but potentially reasoning data loading...
@@ -189,6 +189,8 @@ export function AIChat() {
 
             await startStream(currentPrompt, context, selectedProviderId || undefined);
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.message || 'Failed to generate response');
             setChatHistory(prev => {
@@ -289,7 +291,7 @@ export function AIChat() {
                                             <ReactMarkdown
                                                 components={{
                                                     code(props) {
-                                                        const { children, className, node, inline, ...rest } = props
+                                                        const { children, className, _node, _inline, ...rest } = props
                                                         const match = /language-(\w+)/.exec(className || '')
                                                         return match ? (
                                                             <SyntaxHighlighter

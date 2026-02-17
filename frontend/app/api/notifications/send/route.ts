@@ -9,9 +9,6 @@ import { webpush } from '@/lib/notifications/web-push';
 export async function POST(req: NextRequest) {
     const session = await getServerSession(authOptions);
     if (!session) {
-        // In a real app, you might allow Service-to-Service auth here too via API Key
-        // For now, we restrict to logged-in users (e.g., testing from UI) 
-        // OR checks for admin role if internal.
         return new NextResponse('Unauthorized', { status: 401 });
     }
 
@@ -42,37 +39,59 @@ export async function POST(req: NextRequest) {
         const results = await Promise.allSettled(
             subscriptions.map(async (sub) => {
                 try {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    if (!sub.keys || !(sub.keys as any).p256dh || !(sub.keys as any).auth) {
+                        return { success: false, endpoint: sub.endpoint, error: 'Missing subscription keys' };
+                    }
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const p256dh = (sub.keys as any).p256dh;
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    const auth = (sub.keys as any).auth;
                     await webpush.sendNotification(
                         {
                             endpoint: sub.endpoint,
-                            keys: sub.keys as any, // Cast Json to expected type
+                            keys: { p256dh, auth },
                         },
                         payload
                     );
                     return { success: true, endpoint: sub.endpoint };
-                } catch (error: any) {
-                    if (error.statusCode === 410 || error.statusCode === 404) {
+                } catch (error: unknown) {
+                    if (
+                        typeof error === 'object' &&
+                        error !== null &&
+                        'statusCode' in error &&
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        ((error as any).statusCode === 410 || (error as any).statusCode === 404)
+                    ) {
                         // Subscription expired/gone, delete it
                         await db.pushSubscription.delete({
                             where: { id: sub.id },
                         });
                         return { success: false, endpoint: sub.endpoint, error: 'Expired' };
                     }
-                    throw error;
+                    return {
+                        success: false,
+                        endpoint: sub.endpoint,
+                        error: 'Failed to send',
+                        details: error instanceof Error ? error.message : String(error)
+                    };
                 }
             })
         );
 
-        const successCount = results.filter((r) => r.status === 'fulfilled' && r.value.success).length;
-        const failureCount = results.length - successCount;
+        const successCount = results.filter((r) => r.status === 'fulfilled').length;
+        const failureCount = results.filter((r) => r.status === 'rejected').length;
 
         return NextResponse.json({
             success: true,
             sent: successCount,
             failed: failureCount,
+            results
         });
-    } catch (error) {
-        console.error('Failed to send notification', error);
-        return new NextResponse('Internal Server Error', { status: 500 });
+
+    } catch (error: unknown) {
+        console.error('Failed to send notification:', error);
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Failed to send notification' }, { status: 500 });
     }
 }

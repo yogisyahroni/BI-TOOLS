@@ -40,7 +40,7 @@ export function ChatMessage({
             setCopied(true);
             toast.success('Message copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to copy message');
         }
     };
@@ -119,12 +119,16 @@ export function ChatMessage({
                             <div className="prose prose-sm dark:prose-invert max-w-none">
                                 <ReactMarkdown
                                     components={{
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         code({ className, children, ...props }: any) {
                                             const match = /language-(\w+)/.exec(className || '');
                                             const isInline = !match;
 
                                             return !isInline ? (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                 <SyntaxHighlighter
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                                     style={oneDark as any}
                                                     language={match[1]}
                                                     PreTag="div"

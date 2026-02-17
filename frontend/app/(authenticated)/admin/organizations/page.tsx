@@ -2,11 +2,10 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
     Table,
@@ -35,6 +34,7 @@ import {
     Plus,
     Settings,
     Trash2,
+    MoreVertical
 } from 'lucide-react';
 import {
     DropdownMenu,
@@ -42,7 +42,12 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { MoreVertical } from 'lucide-react';
+
+interface OrganizationStats {
+    totalOrganizations: number;
+    activeOrganizations: number;
+    totalMembers: number;
+}
 
 export default function OrganizationManagementPage() {
     const { toast } = useToast();
@@ -51,7 +56,7 @@ export default function OrganizationManagementPage() {
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
     const [search, setSearch] = useState('');
-    const [stats, setStats] = useState<any>(null);
+    const [stats, setStats] = useState<OrganizationStats | null>(null);
 
     // Dialogs
     const [createDialog, setCreateDialog] = useState(false);
@@ -66,12 +71,7 @@ export default function OrganizationManagementPage() {
         ownerId: '',
     });
 
-    useEffect(() => {
-        loadOrganizations();
-        loadStats();
-    }, [page, search]);
-
-    const loadOrganizations = async () => {
+    const loadOrganizations = useCallback(async () => {
         try {
             setLoading(true);
             const data = await organizationApi.list({
@@ -81,25 +81,31 @@ export default function OrganizationManagementPage() {
             });
             setOrganizations(data.data);
             setTotal(data.pagination.total);
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to load organizations';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to load organizations',
+                description: errorMessage,
                 variant: 'destructive',
             });
         } finally {
             setLoading(false);
         }
-    };
+    }, [page, search, toast]);
 
-    const loadStats = async () => {
+    const loadStats = useCallback(async () => {
         try {
             const data = await organizationApi.getStats();
             setStats(data);
         } catch (error) {
             console.error('Failed to load stats:', error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        loadOrganizations();
+        loadStats();
+    }, [loadOrganizations, loadStats]);
 
     const handleCreate = async () => {
         try {
@@ -112,10 +118,11 @@ export default function OrganizationManagementPage() {
             setFormData({ name: '', description: '', ownerId: '' });
             loadOrganizations();
             loadStats();
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to create organization';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to create organization',
+                description: errorMessage,
                 variant: 'destructive',
             });
         }
@@ -133,10 +140,11 @@ export default function OrganizationManagementPage() {
             setDeleteDialog({ open: false, org: null });
             loadOrganizations();
             loadStats();
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to delete organization';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to delete organization',
+                description: errorMessage,
                 variant: 'destructive',
             });
         }
@@ -145,6 +153,94 @@ export default function OrganizationManagementPage() {
     const formatQuotaPercentage = (current: number, max: number) => {
         if (max === 0) return 0;
         return Math.round((current / max) * 100);
+    };
+
+    const renderTableBody = () => {
+        if (loading) {
+            return Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                    <TableCell><Skeleton className="h-4 w-[200px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[120px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[40px]" /></TableCell>
+                </TableRow>
+            ));
+        }
+
+        if (organizations.length === 0) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                        No organizations found
+                    </TableCell>
+                </TableRow>
+            );
+        }
+
+        return organizations.map((org) => (
+            <TableRow key={org.id}>
+                <TableCell>
+                    <div>
+                        <p className="font-medium">{org.name}</p>
+                        {org.description && (
+                            <p className="text-sm text-muted-foreground">{org.description}</p>
+                        )}
+                    </div>
+                </TableCell>
+                <TableCell>
+                    <div className="flex items-center gap-1">
+                        <Users className="h-4 w-4 text-muted-foreground" />
+                        <span>{org.memberCount}</span>
+                    </div>
+                </TableCell>
+                <TableCell>
+                    <div className="space-y-1">
+                        <div className="text-sm">
+                            <span className="text-muted-foreground">Users: </span>
+                            <span className="font-medium">
+                                {org.usage.users}/{org.quota.maxUsers}
+                            </span>
+                        </div>
+                        <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+                            <div
+                                className="h-full bg-primary transition-all"
+                                style={{ width: `${formatQuotaPercentage(org.usage.users, org.quota.maxUsers)}%` }}
+                            />
+                        </div>
+                    </div>
+                </TableCell>
+                <TableCell className="text-sm text-muted-foreground">
+                    {new Date(org.createdAt).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-right">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem>
+                                <Settings className="h-4 w-4 mr-2" />
+                                Settings
+                            </DropdownMenuItem>
+                            <DropdownMenuItem>
+                                <Users className="h-4 w-4 mr-2" />
+                                Manage Members
+                            </DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => setDeleteDialog({ open: true, org })}
+                                className="text-destructive"
+                            >
+                                <Trash2 className="h-4 w-4 mr-2" />
+                                Delete
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </TableCell>
+            </TableRow>
+        ));
     };
 
     return (
@@ -242,87 +338,7 @@ export default function OrganizationManagementPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {loading ? (
-                                Array.from({ length: 5 }).map((_, i) => (
-                                    <TableRow key={i}>
-                                        <TableCell><Skeleton className="h-4 w-[200px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[120px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[40px]" /></TableCell>
-                                    </TableRow>
-                                ))
-                            ) : organizations.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={5} className="text-center text-muted-foreground">
-                                        No organizations found
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                organizations.map((org) => (
-                                    <TableRow key={org.id}>
-                                        <TableCell>
-                                            <div>
-                                                <p className="font-medium">{org.name}</p>
-                                                {org.description && (
-                                                    <p className="text-sm text-muted-foreground">{org.description}</p>
-                                                )}
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="flex items-center gap-1">
-                                                <Users className="h-4 w-4 text-muted-foreground" />
-                                                <span>{org.memberCount}</span>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>
-                                            <div className="space-y-1">
-                                                <div className="text-sm">
-                                                    <span className="text-muted-foreground">Users: </span>
-                                                    <span className="font-medium">
-                                                        {org.usage.users}/{org.quota.maxUsers}
-                                                    </span>
-                                                </div>
-                                                <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
-                                                    <div
-                                                        className="h-full bg-primary transition-all"
-                                                        style={{ width: `${formatQuotaPercentage(org.usage.users, org.quota.maxUsers)}%` }}
-                                                    />
-                                                </div>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="text-sm text-muted-foreground">
-                                            {new Date(org.createdAt).toLocaleDateString()}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="sm">
-                                                        <MoreVertical className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem>
-                                                        <Settings className="h-4 w-4 mr-2" />
-                                                        Settings
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem>
-                                                        <Users className="h-4 w-4 mr-2" />
-                                                        Manage Members
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => setDeleteDialog({ open: true, org })}
-                                                        className="text-destructive"
-                                                    >
-                                                        <Trash2 className="h-4 w-4 mr-2" />
-                                                        Delete
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            )}
+                            {renderTableBody()}
                         </TableBody>
                     </Table>
 

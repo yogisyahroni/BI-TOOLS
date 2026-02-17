@@ -61,7 +61,7 @@ export function ReportScheduleDialog({
 
             toast.success('Report schedule saved');
             onOpenChange(false);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to schedule report');
         } finally {
             setIsLoading(false);

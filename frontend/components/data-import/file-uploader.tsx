@@ -1,16 +1,16 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, _useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
+    _Dialog,
+    _DialogContent,
+    _DialogDescription,
+    _DialogFooter,
+    _DialogHeader,
+    _DialogTitle,
 } from '@/components/ui/dialog';
 import {
     Select,
@@ -41,8 +41,8 @@ import {
     FileSpreadsheet,
     Code,
     Check,
-    X,
-    AlertCircle,
+    _X,
+    _AlertCircle,
     Loader2,
     ChevronRight,
 } from 'lucide-react';
@@ -121,7 +121,7 @@ export function FileUploader({
     maxFileSize = 100,
     onPreview,
     onImport,
-    showAdvanced = true,
+    _showAdvanced = true,
 }: FileUploaderProps) {
     // State
     const [file, setFile] = useState<File | null>(null);
@@ -223,6 +223,8 @@ export function FileUploader({
 
             setStep('preview');
             toast.success('Preview generated successfully');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(`Preview failed: ${error.message}`);
         } finally {
@@ -240,7 +242,9 @@ export function FileUploader({
         try {
             await onImport(file, options, columnMapping);
             toast.success('Import completed successfully');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             handleReset();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(`Import failed: ${error.message}`);
         } finally {

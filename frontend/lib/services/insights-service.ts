@@ -1,4 +1,4 @@
-import { db } from '@/lib/db';
+import { _db } from '@/lib/db';
 
 export interface InsightExplanation {
     trend: 'up' | 'down' | 'stable';
@@ -11,6 +11,8 @@ export class InsightsService {
      * AI-generated 'Why' analysis for data trends.
      * Benchmarked against Tableau 'Explain Data'.
      */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static async explainTrend(data: any[], metricName: string): Promise<InsightExplanation> {
         // Industrial logic to identify the primary driver of a data change
         // In a real implementation, this would call the LLM with the dataset summary

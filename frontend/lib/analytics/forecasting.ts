@@ -1,4 +1,6 @@
 export interface DataPoint {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: any;
 }
 
@@ -109,7 +111,7 @@ export function calculateHoltWinters(options: ForecastOptions): ForecastResult {
     for (let i = 0; i < seasonLength; i++) seasonal.push(series[i] - seasonalAvg);
 
     // Smoothing
-    const result: number[] = [...series]; // Keep history? or just end state?
+    const _result: number[] = [...series]; // Keep history? or just end state?
     // We need end state to forecast
 
     // Re-calculating full series to get end parameters

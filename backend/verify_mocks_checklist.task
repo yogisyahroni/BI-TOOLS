@@ -1,0 +1,8 @@
+[ ] Kill existing backend process (Port 8080)
+[ ] Start new backend process
+[ ] Verify Auth (Login)
+[ ] Create Mock Connection (TestDB-FuncVerify)
+[ ] Verify Connection Test (Mocked)
+[ ] Verify Schema Discovery (Mocked)
+[ ] Verify Query Execution (Mocked)
+[ ] Cleanup (Delete Connection)

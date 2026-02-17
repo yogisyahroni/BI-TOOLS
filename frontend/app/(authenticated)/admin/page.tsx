@@ -11,13 +11,30 @@ import { organizationApi, userAdminApi, systemAdminApi } from '@/lib/api/admin';
 import { Building2, Users, Activity, TrendingUp, ArrowRight, AlertCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
+interface DashboardData {
+    orgStats: {
+        totalOrganizations: number;
+        activeOrganizations: number;
+        totalMembers: number;
+    } | null;
+    userStats: {
+        totalUsers: number;
+        activeUsers: number;
+        inactiveUsers: number;
+        pendingUsers: number;
+        verifiedUsers: number;
+        newThisMonth: number;
+    } | null;
+    systemHealth: {
+        status: 'healthy' | 'degraded' | 'unhealthy';
+        version: string;
+        components: Record<string, unknown>;
+    } | null;
+}
+
 export default function AdminDashboardPage() {
     const [loading, setLoading] = useState(true);
-    const [data, setData] = useState<{
-        orgStats: any;
-        userStats: any;
-        systemHealth: any;
-    } | null>(null);
+    const [data, setData] = useState<DashboardData | null>(null);
 
     useEffect(() => {
         loadDashboardData();
@@ -37,6 +54,17 @@ export default function AdminDashboardPage() {
             console.error('Failed to load dashboard data:', error);
         } finally {
             setLoading(false);
+        }
+    };
+
+    const getSystemStatusVariant = (status: string) => {
+        switch (status) {
+            case 'healthy':
+                return 'default';
+            case 'degraded':
+                return 'warning';
+            default:
+                return 'destructive';
         }
     };
 
@@ -164,13 +192,7 @@ export default function AdminDashboardPage() {
                         {data?.systemHealth ? (
                             <>
                                 <Badge
-                                    variant={
-                                        data.systemHealth.status === 'healthy'
-                                            ? 'default'
-                                            : data.systemHealth.status === 'degraded'
-                                                ? 'warning'
-                                                : 'destructive'
-                                    }
+                                    variant={getSystemStatusVariant(data.systemHealth.status)}
                                     className="text-sm"
                                 >
                                     {data.systemHealth.status.toUpperCase()}
@@ -261,11 +283,7 @@ export default function AdminDashboardPage() {
                                     <div className="flex items-center justify-between">
                                         <span className="text-sm text-muted-foreground">Status:</span>
                                         <Badge
-                                            variant={
-                                                data.systemHealth.status === 'healthy'
-                                                    ? 'default'
-                                                    : 'destructive'
-                                            }
+                                            variant={getSystemStatusVariant(data.systemHealth.status)}
                                         >
                                             {data.systemHealth.status}
                                         </Badge>

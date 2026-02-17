@@ -30,6 +30,8 @@ export interface FilterCriteria {
     /** Filter operator */
     operator: FilterOperator;
     /** Filter value(s) */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
     /** Display label for the filter */
     label?: string;
@@ -418,7 +420,9 @@ export function useCrossFilter(): CrossFilterContextValue {
 
 /**
  * Helper hook to apply filters to data
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
  */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function useFilteredData<T extends Record<string, any>>(
     data: T[] | undefined,
     chartId: string,

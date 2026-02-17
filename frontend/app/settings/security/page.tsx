@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
+import { _Separator } from '@/components/ui/separator';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { authApi } from '@/lib/api/auth';
@@ -64,6 +64,8 @@ export default function SecuritySettingsPage() {
                 newPassword: '',
                 confirmPassword: '',
             });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             if (err instanceof z.ZodError) {
                 const fieldErrors: Record<string, string> = {};

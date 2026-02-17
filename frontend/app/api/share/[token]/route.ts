@@ -52,8 +52,7 @@ export async function GET(req: NextRequest, { params }: { params: Promise<{ toke
             data
         });
 
-    } catch (error) {
-        return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    } catch (_error) {
+        return NextResponse.json({ error: 'Failed to validate share token' }, { status: 500 });
     }
 }
-

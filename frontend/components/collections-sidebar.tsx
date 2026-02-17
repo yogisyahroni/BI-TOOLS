@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useCollections } from '@/hooks/use-collections';
+import { _useCollections } from '@/hooks/use-collections';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -10,13 +10,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Plus, MoreHorizontal, Folder, FolderOpen, Trash2 } from 'lucide-react';
+import { Plus, MoreHorizontal, _Folder, _FolderOpen, Trash2 } from 'lucide-react';
 
 interface CollectionsSidebarProps {
   onSelectCollection?: (collectionId: string) => void;
   selectedCollectionId?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   collections?: any[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isLoading?: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createCollection?: (data: any) => Promise<void>;
   deleteCollection?: (id: string) => Promise<void>;
 }

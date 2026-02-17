@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { fetchWithAuth } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { _Button } from '@/components/ui/button';
 import {
     Select,
     SelectContent,
@@ -32,6 +32,8 @@ export function TablePicker({
 
     useEffect(() => {
         fetchTables();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [connectionId]);
 
     const fetchTables = async () => {

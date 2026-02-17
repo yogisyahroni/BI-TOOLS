@@ -17,7 +17,7 @@ import {
     ArrowRight,
 } from 'lucide-react';
 import { useAnalyzeQuery } from '@/hooks/use-analyze-query';
-import type { QueryAnalysisResult, OptimizationSuggestion } from '@/lib/types/semantic';
+import type { _QueryAnalysisResult, OptimizationSuggestion } from '@/lib/types/semantic';
 import { toast } from 'sonner';
 
 interface QueryOptimizationPanelProps {

@@ -57,7 +57,7 @@ export function ShareDialog({
                     ? 'Anyone with the link can now view this dashboard.'
                     : 'Only you can view this dashboard.',
             });
-        } catch (error) {
+        } catch (_error) {
             toast({
                 title: 'Error',
                 description: 'Failed to update visibility settings.',

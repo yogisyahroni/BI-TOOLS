@@ -58,6 +58,8 @@ interface PlanRecommendation {
 interface QueryPlanAnalysis {
     query: string
     databaseType: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     executionPlan: any
     planText: string
     performanceMetrics?: PerformanceMetrics

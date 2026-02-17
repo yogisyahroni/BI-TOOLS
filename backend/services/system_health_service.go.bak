@@ -8,22 +8,22 @@ import (
 	"time"
 
 	"insight-engine-backend/models"
+	"insight-engine-backend/services"
 
-	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
 // SystemHealthService handles system health monitoring
 type SystemHealthService struct {
-	db          *gorm.DB
-	redisClient *redis.Client
+	db         *gorm.DB
+	redisCache *RedisCache
 }
 
 // NewSystemHealthService creates a new system health service
-func NewSystemHealthService(db *gorm.DB, redisClient *redis.Client) *SystemHealthService {
+func NewSystemHealthService(db *gorm.DB, redisCache *RedisCache) *SystemHealthService {
 	return &SystemHealthService{
-		db:          db,
-		redisClient: redisClient,
+		db:         db,
+		redisCache: redisCache,
 	}
 }
 
@@ -158,42 +158,35 @@ func (s *SystemHealthService) GetQueryPerformance(ctx context.Context) (*QueryPe
 func (s *SystemHealthService) GetCacheStats(ctx context.Context) (*CacheHealth, error) {
 	health := &CacheHealth{}
 
-	if s.redisClient == nil {
+	if s.redisCache == nil {
 		health.Status = "unconfigured"
 		return health, nil
 	}
 
-	// Check Redis connection
-	start := time.Now()
-	if err := s.redisClient.Ping(ctx).Err(); err != nil {
+	// use RedisCache's Ping
+	if err := s.redisCache.Ping(ctx); err != nil {
 		health.Status = "critical"
 		return health, fmt.Errorf("redis ping failed: %w", err)
 	}
 
-	// Get latency
-	latency := time.Since(start).Milliseconds()
-
-	// Get database size (key count)
-	dbSize, err := s.redisClient.DBSize(ctx).Result()
+	// use RedisCache's GetStats
+	stats, err := s.redisCache.GetStats(ctx)
 	if err != nil {
+		// If GetStats fails but Ping succeeded, it might be partial failure or just stats failure
+		// But GetStats also handles connection failure.
+		// If we are here, we might just log and return degraded or continue.
+		services.LogWarn("cache_stats_error", "Failed to get detailed cache stats", map[string]interface{}{"error": err})
 		health.Status = "degraded"
-		health.KeysCount = int(dbSize)
-	} else {
-		health.KeysCount = int(dbSize)
 	}
 
-	// Get memory info (simplified)
-	_, _ = s.redisClient.Info(ctx, "memory").Result()
-	health.MemoryUsage = 0
+	if stats != nil {
+		health.KeysCount = int(stats.TotalKeys)
+		health.MemoryUsage = stats.MemoryUsage
+		health.HitRate = stats.HitRate / 100.0 // RedisCache returns percentage (0-100), we might want 0-1
+	}
 
-	// Calculate hit rate from stats if available
-	_, _ = s.redisClient.Info(ctx, "stats").Result()
-	health.HitRate = 0.95 // Default assumption
-
-	// Determine status
-	if latency > 100 {
-		health.Status = "warning"
-	} else {
+	// Determine status logic (simplified, real logic depends on thresholds)
+	if health.Status == "" {
 		health.Status = "healthy"
 	}
 

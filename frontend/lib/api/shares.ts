@@ -10,7 +10,7 @@ import { apiGet, apiPost, apiPut, apiDelete } from './config'
 import type {
     // Share types
     Share,
-    ShareWithDetails,
+    _ShareWithDetails,
     CreateShareRequest,
     UpdateShareRequest,
     AcceptShareRequest,

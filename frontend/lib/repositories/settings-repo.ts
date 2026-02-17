@@ -1,6 +1,8 @@
 import { db } from '@/lib/db';
 
 export const settingsRepo = {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async get(key: string): Promise<any> {
         try {
             // @ts-expect-error: SystemSetting might not be in generated client yet due to file lock
@@ -13,7 +15,9 @@ export const settingsRepo = {
             return null;
         }
     },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async set(key: string, value: any): Promise<void> {
         try {
             const stringValue = JSON.stringify(value);

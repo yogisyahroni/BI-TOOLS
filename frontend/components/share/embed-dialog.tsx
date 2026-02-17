@@ -14,7 +14,7 @@ import {
   Plus,
   Eye,
   Lock,
-  RefreshCw,
+  _RefreshCw,
 } from 'lucide-react'
 import { format } from 'date-fns'
 
@@ -79,6 +79,8 @@ export function EmbedDialog({
     if (open) {
       loadTokens()
     }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   const loadTokens = async () => {

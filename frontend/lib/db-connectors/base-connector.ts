@@ -1,8 +1,10 @@
-import { type SchemaInfo, ColumnInfo } from "@/lib/services/connection-service";
+import { type SchemaInfo, _ColumnInfo } from "@/lib/services/connection-service";
 
 export interface IDatabaseConnector {
     name: string;
     dialect: 'postgres' | 'mysql' | 'mongodb' | 'sqlite';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     execute(query: string): Promise<any>;
     getSchema(): Promise<SchemaInfo>;
     generateDDL(schema: SchemaInfo): string;

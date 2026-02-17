@@ -445,12 +445,18 @@ func (g *PPTXGenerator) writeContentSlide(zw *zip.Writer, slideNum int, slide *m
 	switch slide.Layout {
 	case "chart_focus":
 		bodyXML = g.buildChartPlaceholder(bodyX, bodyY, bodyW, bodyH, slide.ChartID)
+	case "data_table":
+		bodyXML = g.buildDataTable(bodyX, bodyY, bodyW, bodyH, slide.Headers, slide.Rows)
 	case "bullet_points", "title_and_body", "two_columns":
 		bodyXML = g.buildBulletPoints(bodyX, bodyY, bodyW, bodyH, slide.BulletPoints)
 	case "title_only", "blank":
 		bodyXML = ""
 	default:
-		bodyXML = g.buildBulletPoints(bodyX, bodyY, bodyW, bodyH, slide.BulletPoints)
+		if len(slide.Headers) > 0 && len(slide.Rows) > 0 {
+			bodyXML = g.buildDataTable(bodyX, bodyY, bodyW, bodyH, slide.Headers, slide.Rows)
+		} else {
+			bodyXML = g.buildBulletPoints(bodyX, bodyY, bodyW, bodyH, slide.BulletPoints)
+		}
 	}
 
 	var notesXML string
@@ -567,6 +573,112 @@ func (g *PPTXGenerator) buildChartPlaceholder(x, y, w, h int64, chartID string) 
           </a:p>
         </p:txBody>
       </p:sp>`, x, y, w, h, escaped)
+}
+
+// buildDataTable renders tabular data as an OOXML graphicFrame table.
+// headers: column names. rows: data rows. x,y,w,h: position/size in EMU.
+func (g *PPTXGenerator) buildDataTable(x, y, w, h int64, headers []string, rows [][]string) string {
+	if len(headers) == 0 {
+		return ""
+	}
+
+	colCount := len(headers)
+	rowCount := 1 + len(rows) // header + data rows
+	if rowCount > 21 {
+		rowCount = 21 // cap at 20 data rows per slide
+		rows = rows[:20]
+	}
+
+	colW := w / int64(colCount)
+	rowH := h / int64(rowCount)
+	if rowH < inchToEMU(0.3) {
+		rowH = inchToEMU(0.3)
+	}
+
+	var sb strings.Builder
+	sb.WriteString(fmt.Sprintf(`
+      <p:graphicFrame>
+        <p:nvGraphicFramePr>
+          <p:cNvPr id="10" name="DataTable"/>
+          <p:cNvGraphicFramePr><a:graphicFrameLocks noGrp="1"/></p:cNvGraphicFramePr>
+          <p:nvPr/>
+        </p:nvGraphicFramePr>
+        <p:xfrm><a:off x="%d" y="%d"/><a:ext cx="%d" cy="%d"/></p:xfrm>
+        <a:graphic>
+          <a:graphicData uri="http://schemas.openxmlformats.org/drawingml/2006/table">
+            <a:tbl>
+              <a:tblPr firstRow="1" bandRow="1">
+                <a:tblStyle val="{5C22544A-7EE6-4342-B048-85BDC9FD1C3A}"/>
+              </a:tblPr>
+              <a:tblGrid>`, x, y, w, h))
+
+	for i := 0; i < colCount; i++ {
+		sb.WriteString(fmt.Sprintf(`<a:gridCol w="%d"/>`, colW))
+		_ = i
+	}
+	sb.WriteString(`</a:tblGrid>`)
+
+	// Header row
+	sb.WriteString(fmt.Sprintf(`<a:tr h="%d">`, rowH))
+	for _, hdr := range headers {
+		escaped := xmlEscape(hdr)
+		sb.WriteString(fmt.Sprintf(`
+                <a:tc>
+                  <a:txBody>
+                    <a:bodyPr/>
+                    <a:p>
+                      <a:r>
+                        <a:rPr lang="en-US" sz="1200" b="1" dirty="0"><a:solidFill><a:srgbClr val="FFFFFF"/></a:solidFill><a:latin typeface="Inter"/></a:rPr>
+                        <a:t>%s</a:t>
+                      </a:r>
+                    </a:p>
+                  </a:txBody>
+                  <a:tcPr>
+                    <a:solidFill><a:srgbClr val="6366F1"/></a:solidFill>
+                  </a:tcPr>
+                </a:tc>`, escaped))
+	}
+	sb.WriteString(`</a:tr>`)
+
+	// Data rows
+	for ri, row := range rows {
+		sb.WriteString(fmt.Sprintf(`<a:tr h="%d">`, rowH))
+		fillColor := "FFFFFF"
+		if ri%2 == 1 {
+			fillColor = "F5F5FF"
+		}
+		for ci := 0; ci < colCount; ci++ {
+			cellVal := ""
+			if ci < len(row) {
+				cellVal = row[ci]
+			}
+			escaped := xmlEscape(cellVal)
+			sb.WriteString(fmt.Sprintf(`
+                <a:tc>
+                  <a:txBody>
+                    <a:bodyPr/>
+                    <a:p>
+                      <a:r>
+                        <a:rPr lang="en-US" sz="1100" dirty="0"><a:solidFill><a:srgbClr val="333333"/></a:solidFill><a:latin typeface="Inter"/></a:rPr>
+                        <a:t>%s</a:t>
+                      </a:r>
+                    </a:p>
+                  </a:txBody>
+                  <a:tcPr>
+                    <a:solidFill><a:srgbClr val="%s"/></a:solidFill>
+                  </a:tcPr>
+                </a:tc>`, escaped, fillColor))
+		}
+		sb.WriteString(`</a:tr>`)
+	}
+
+	sb.WriteString(`
+            </a:tbl>
+          </a:graphicData>
+        </a:graphic>
+      </p:graphicFrame>`)
+
+	return sb.String()
 }
 
 func (g *PPTXGenerator) buildSpeakerNotes(notes string) string {

@@ -48,6 +48,8 @@ export interface AIUsageRequest {
     durationMs?: number;
     status: 'success' | 'error' | 'rate_limited' | 'budget_exceeded';
     errorMessage?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metadata?: Record<string, any>;
     createdAt: string;
 }

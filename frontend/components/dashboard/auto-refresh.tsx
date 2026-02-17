@@ -26,7 +26,7 @@ import {
     Clock,
     CheckCircle2,
     XCircle,
-    Loader2,
+    _Loader2,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -506,7 +506,7 @@ function RefreshSettingsPopover({
  */
 export function useAutoRefresh(
     onRefresh: () => Promise<void> | void,
-    options?: {
+    _options?: {
         defaultInterval?: number;
         defaultEnabled?: boolean;
     }

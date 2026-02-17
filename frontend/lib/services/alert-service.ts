@@ -90,12 +90,12 @@ export class AlertService {
         // AggregationService returns keys like "sum_amount"
         const key = `${alert.metricType}_${alert.metricColumn}`;
         // Handle "count_*" special case
-        const effectiveKey = key === 'count_*' ? 'count_*' : key.toUpperCase() === key ? key : key.toLowerCase(); // Check casing? Aggregation usually returns keys as asked or lowercase.
+        const _effectiveKey = key === 'count_*' ? 'count_*' : key.toUpperCase() === key ? key : key.toLowerCase(); // Check casing? Aggregation usually returns keys as asked or lowercase.
 
         // Let's look at AggregationService logic: 
         // It selects: `COUNT(*) as "${label}"` or `${TYPE}("${col}") as "${label}"`
         // If no label provided, it uses `${type}_${column}`.
-        const expectedLabel = `${alert.metricType}_${alert.metricColumn}`;
+        const _expectedLabel = `${alert.metricType}_${alert.metricColumn}`;
 
         const row = result.data[0];
         const value = Object.values(row)[0] as number; // Simplest way if only 1 metric
@@ -105,8 +105,8 @@ export class AlertService {
         switch (alert.operator) {
             case '>': return Number(value) > alert.threshold;
             case '<': return Number(value) < alert.threshold;
-            case '=': return Number(value) == alert.threshold;
-            case '!=': return Number(value) != alert.threshold;
+            case '=': return Number(value) === alert.threshold;
+            case '!=': return Number(value) !== alert.threshold;
             default: return false;
         }
     }

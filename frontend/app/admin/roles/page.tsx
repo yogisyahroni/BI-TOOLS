@@ -410,7 +410,13 @@ function RoleEditorDialog({ mode, role, permissions, onClose, onSave }: RoleEdit
     }
 
     const isReadOnly = mode === 'view' || (role?.is_system_role && mode === 'edit')
-    const title = mode === 'create' ? 'Create New Role' : mode === 'edit' ? 'Edit Role' : 'View Role'
+
+    let title = 'View Role';
+    if (mode === 'create') {
+        title = 'Create New Role';
+    } else if (mode === 'edit') {
+        title = 'Edit Role';
+    }
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -729,7 +735,7 @@ function UserRoleDialog({ role, onClose }: UserRoleDialogProps) {
                                     onClick={handleAssignRole}
                                     className="w-full px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
                                 >
-                                    Assign "{role.name}" to this user
+                                    Assign &quot;{role.name}&quot; to this user
                                 </button>
                             )}
                             {hasRole && (

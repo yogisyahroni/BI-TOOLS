@@ -10,9 +10,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { type DashboardCard, type VisualizationConfig } from '@/lib/types';
-import { useSavedQueries } from '@/hooks/use-saved-queries';
+import { _useSavedQueries } from '@/hooks/use-saved-queries';
 import { Card, CardContent } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { _Separator } from '@/components/ui/separator';
 
 interface EditCardDialogProps {
     open: boolean;
@@ -26,6 +26,8 @@ export function EditCardDialog({ open, onOpenChange, card, onSave }: EditCardDia
     const [description, setDescription] = useState(card.description || '');
 
     // Interaction Config
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [clickAction, setClickAction] = useState<any>(card.visualizationConfig?.clickAction || 'filter');
     const [drillType, setDrillType] = useState<string>(card.visualizationConfig?.drillConfig?.type || 'dashboard');
     const [targetDashboardId, setTargetDashboardId] = useState(card.visualizationConfig?.drillConfig?.dashboardId || '');
@@ -33,7 +35,7 @@ export function EditCardDialog({ open, onOpenChange, card, onSave }: EditCardDia
     const [openInNewTab, setOpenInNewTab] = useState(card.visualizationConfig?.drillConfig?.openInNewTab || false);
 
     // Tooltip State
-    const [tooltipTemplate, setTooltipTemplate] = useState(card.visualizationConfig?.tooltipTemplate || '');
+    const [tooltipTemplate, _setTooltipTemplate] = useState(card.visualizationConfig?.tooltipTemplate || '');
 
     // Fetch dashboards for dropdown
     const [dashboards, setDashboards] = useState<{ id: string, name: string }[]>([]);

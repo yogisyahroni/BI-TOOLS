@@ -55,7 +55,7 @@ const MOCK_TERMS: GlossaryTerm[] = [
 
 export default function GlossaryPage() {
     const [searchTerm, setSearchTerm] = useState("");
-    const [terms, setTerms] = useState<GlossaryTerm[]>(MOCK_TERMS);
+    const [terms, _setTerms] = useState<GlossaryTerm[]>(MOCK_TERMS);
 
     const filteredTerms = terms.filter((t) =>
         t.term.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -141,7 +141,11 @@ export default function GlossaryPage() {
                                     <TableCell className="max-w-md truncate" title={term.definition}>{term.definition}</TableCell>
                                     <TableCell>{term.owner}</TableCell>
                                     <TableCell>
-                                        <Badge variant={term.status === "Approved" ? "default" : term.status === "Draft" ? "secondary" : "destructive"}>
+                                        <Badge variant={(() => {
+                                            if (term.status === "Approved") return "default";
+                                            if (term.status === "Draft") return "secondary";
+                                            return "destructive";
+                                        })()}>
                                             {term.status}
                                         </Badge>
                                     </TableCell>

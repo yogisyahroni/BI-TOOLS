@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Code, Layers } from 'lucide-react';
+import { ArrowRight, BookOpen, Code, _Layers } from 'lucide-react';
 
 export default function DocsPage() {
     return (

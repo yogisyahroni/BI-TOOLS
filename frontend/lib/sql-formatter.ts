@@ -1,4 +1,4 @@
-import { format as sqlFormat, FormatOptions as SQLFormatOptions } from 'sql-formatter';
+import { format as sqlFormat, FormatOptions as _SQLFormatOptions } from 'sql-formatter';
 
 /**
  * SQL Formatter Configuration

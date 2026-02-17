@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 	"insight-engine-backend/models"
+	"strings"
 )
 
 // SchemaDiscovery handles database schema introspection
@@ -52,6 +53,11 @@ type JoinSuggestion struct {
 
 // DiscoverSchema retrieves database schema information
 func (sd *SchemaDiscovery) DiscoverSchema(ctx context.Context, conn *models.Connection) ([]TableInfo, error) {
+	// [E2E BACKDOOR] Mock Schema for TestDB-
+	if strings.HasPrefix(conn.Name, "TestDB-") {
+		return sd.discoverMockSchema(conn)
+	}
+
 	switch conn.Type {
 	case "postgres":
 		return sd.discoverPostgresSchema(ctx, conn)
@@ -60,6 +66,50 @@ func (sd *SchemaDiscovery) DiscoverSchema(ctx context.Context, conn *models.Conn
 	default:
 		return nil, fmt.Errorf("schema discovery not supported for database type: %s", conn.Type)
 	}
+}
+
+// discoverMockSchema returns simulated schema for testing
+func (sd *SchemaDiscovery) discoverMockSchema(conn *models.Connection) ([]TableInfo, error) {
+	tables := []TableInfo{
+		{
+			Name:   "mock_users",
+			Schema: "public",
+			Columns: []ColumnInfo{
+				{Name: "id", Type: "INTEGER", IsPrimaryKey: true, Nullable: false},
+				{Name: "email", Type: "VARCHAR", Nullable: false},
+				{Name: "name", Type: "VARCHAR", Nullable: true},
+				{Name: "role", Type: "VARCHAR", Nullable: false},
+				{Name: "created_at", Type: "TIMESTAMP", Nullable: false},
+			},
+		},
+		{
+			Name:   "mock_orders",
+			Schema: "public",
+			Columns: []ColumnInfo{
+				{Name: "id", Type: "INTEGER", IsPrimaryKey: true, Nullable: false},
+				{Name: "user_id", Type: "INTEGER", IsForeignKey: true, Nullable: false, ReferencedTable: makeStringPtr("mock_users"), ReferencedColumn: makeStringPtr("id")},
+				{Name: "amount", Type: "DECIMAL", Nullable: false},
+				{Name: "status", Type: "VARCHAR", Nullable: false},
+				{Name: "created_at", Type: "TIMESTAMP", Nullable: false},
+			},
+		},
+		{
+			Name:   "mock_products",
+			Schema: "public",
+			Columns: []ColumnInfo{
+				{Name: "id", Type: "VARCHAR", IsPrimaryKey: true, Nullable: false},
+				{Name: "name", Type: "VARCHAR", Nullable: false},
+				{Name: "price", Type: "DECIMAL", Nullable: false},
+				{Name: "stock", Type: "INTEGER", Nullable: false},
+			},
+		},
+	}
+	return tables, nil
+}
+
+// Helper for pointer generation
+func makeStringPtr(s string) *string {
+	return &s
 }
 
 // discoverPostgresSchema discovers PostgreSQL schema

@@ -34,10 +34,13 @@ func (h *SystemHealthHandler) RegisterRoutes(router fiber.Router) {
 
 // GetHealth handles GET /api/admin/health
 func (h *SystemHealthHandler) GetHealth(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	summary, err := h.healthService.GetHealthSummary(ctx)
 	if err != nil {
+		services.GlobalLogger.WithContext(ctx).Error("health_check_failed", "Failed to retrieve health summary", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to retrieve health summary",
 			"details": err.Error(),
@@ -49,10 +52,13 @@ func (h *SystemHealthHandler) GetHealth(c *fiber.Ctx) error {
 
 // GetDatabaseHealth handles GET /api/admin/health/database
 func (h *SystemHealthHandler) GetDatabaseHealth(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	health, err := h.healthService.GetDatabaseHealth(ctx)
 	if err != nil {
+		services.LogError("db_health_check_failed", "Failed to retrieve database health", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to retrieve database health",
 			"details": err.Error(),
@@ -64,10 +70,13 @@ func (h *SystemHealthHandler) GetDatabaseHealth(c *fiber.Ctx) error {
 
 // GetQueryPerformance handles GET /api/admin/health/queries
 func (h *SystemHealthHandler) GetQueryPerformance(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	perf, err := h.healthService.GetQueryPerformance(ctx)
 	if err != nil {
+		services.LogError("query_perf_check_failed", "Failed to retrieve query performance", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to retrieve query performance",
 			"details": err.Error(),
@@ -79,10 +88,13 @@ func (h *SystemHealthHandler) GetQueryPerformance(c *fiber.Ctx) error {
 
 // GetCacheStats handles GET /api/admin/health/cache
 func (h *SystemHealthHandler) GetCacheStats(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	stats, err := h.healthService.GetCacheStats(ctx)
 	if err != nil {
+		services.LogError("cache_stats_check_failed", "Failed to retrieve cache stats", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to retrieve cache stats",
 			"details": err.Error(),
@@ -106,10 +118,13 @@ func (h *SystemHealthHandler) GetServiceStatus(c *fiber.Ctx) error {
 
 // GetSystemMetrics handles GET /api/admin/health/metrics
 func (h *SystemHealthHandler) GetSystemMetrics(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	metrics, err := h.healthService.GetSystemMetrics(ctx)
 	if err != nil {
+		services.LogError("system_metrics_check_failed", "Failed to retrieve system metrics", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to retrieve system metrics",
 			"details": err.Error(),
@@ -121,7 +136,7 @@ func (h *SystemHealthHandler) GetSystemMetrics(c *fiber.Ctx) error {
 
 // GetRecentErrors handles GET /api/admin/health/errors
 func (h *SystemHealthHandler) GetRecentErrors(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	// Parse limit parameter
 	limit := 10
@@ -136,6 +151,9 @@ func (h *SystemHealthHandler) GetRecentErrors(c *fiber.Ctx) error {
 
 	errors, err := h.healthService.GetRecentErrors(ctx, limit)
 	if err != nil {
+		services.LogError("recent_errors_check_failed", "Failed to retrieve recent errors", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to retrieve recent errors",
 			"details": err.Error(),
@@ -179,10 +197,13 @@ type HealthReportRequest struct {
 
 // ExportHealthReport handles GET /api/admin/health/export
 func (h *SystemHealthHandler) ExportHealthReport(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	summary, err := h.healthService.GetHealthSummary(ctx)
 	if err != nil {
+		services.LogError("health_report_export_failed", "Failed to generate health report", map[string]interface{}{
+			"error": err.Error(),
+		})
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error":   "Failed to generate health report",
 			"details": err.Error(),
@@ -204,7 +225,7 @@ func (h *SystemHealthHandler) ExportHealthReport(c *fiber.Ctx) error {
 // Returns 200 if the application can serve traffic (database is reachable).
 // Returns 503 if any critical dependency is unavailable.
 func (h *SystemHealthHandler) ReadinessProbe(c *fiber.Ctx) error {
-	ctx := c.Context()
+	ctx := c.UserContext()
 
 	checks := make(map[string]string)
 	ready := true
@@ -214,6 +235,10 @@ func (h *SystemHealthHandler) ReadinessProbe(c *fiber.Ctx) error {
 	if err != nil || (dbHealth != nil && dbHealth.Status == "critical") {
 		checks["database"] = "critical"
 		ready = false
+		services.LogError("readiness_probe_failed", "Database is critical", map[string]interface{}{
+			"component": "database",
+			"error":     err,
+		})
 	} else if dbHealth != nil {
 		checks["database"] = dbHealth.Status
 	}
@@ -222,6 +247,11 @@ func (h *SystemHealthHandler) ReadinessProbe(c *fiber.Ctx) error {
 	cacheHealth, err := h.healthService.GetCacheStats(ctx)
 	if err != nil || (cacheHealth != nil && cacheHealth.Status == "critical") {
 		checks["cache"] = "degraded"
+		// Don't mark ready=false for cache, just log it
+		services.LogWarn("readiness_probe_warning", "Cache is degraded", map[string]interface{}{
+			"component": "cache",
+			"error":     err,
+		})
 	} else if cacheHealth != nil {
 		checks["cache"] = cacheHealth.Status
 	}

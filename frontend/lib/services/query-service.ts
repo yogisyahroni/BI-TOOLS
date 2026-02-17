@@ -5,6 +5,8 @@ import { auditService } from '@/lib/services/audit-service';
 
 export interface ExecuteQueryResult {
     success: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: any[];
     rowCount?: number;
     columns?: string[];

@@ -32,6 +32,8 @@ export function MonacoSqlEditor({
 }: MonacoSqlEditorProps) {
     const { theme } = useTheme();
     const monaco = useMonaco();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const editorRef = useRef<any>(null);
 
     // Register enhanced SQL language when monaco loads

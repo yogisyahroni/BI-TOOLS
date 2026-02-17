@@ -36,7 +36,7 @@ export function AgentManager() {
                     const data = await res.json();
                     if (data.success) setAgents(data.data);
                 }
-            } catch (e) {
+            } catch (_e) {
                 // Silently fail to empty
             } finally {
                 setIsLoading(false);

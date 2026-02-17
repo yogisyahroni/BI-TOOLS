@@ -16,6 +16,8 @@ export const widgetApi = {
     },
 
     // POST /api/go/widgets
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     create: async (data: { canvasId: string; type: string; config?: Record<string, any>; position?: Record<string, any> }): Promise<Widget> => {
         const res = await fetchWithAuth(`${API_BASE}/widgets`, {
             method: 'POST',

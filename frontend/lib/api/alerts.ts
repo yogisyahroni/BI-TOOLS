@@ -1,7 +1,7 @@
 import type {
     Alert,
     AlertListResponse,
-    AlertHistory,
+    _AlertHistory,
     AlertHistoryListResponse,
     AlertStats,
     TriggeredAlert,

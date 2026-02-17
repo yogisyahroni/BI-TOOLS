@@ -22,94 +22,64 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Separator } from '@/components/ui/separator';
-import { Building2, Save } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Save } from 'lucide-react';
+import { toast } from 'sonner';
+import { useWorkspace } from '@/hooks/use-workspace';
 
-export default function WorkspaceSettingsPage() {
-    // This is a demo page - in production, get workspaceId from route params
-    const workspaceId = 'demo-workspace-id';
-    const [workspace, setWorkspace] = useState<any>(null);
+export default function WorkspaceSettings() {
+    const { workspaceId } = useWorkspace();
     const [name, setName] = useState('');
-    const [plan, setPlan] = useState<'FREE' | 'PRO' | 'ENTERPRISE'>('FREE');
+    const [plan, setPlan] = useState('FREE');
     const [loading, setLoading] = useState(false);
-    const { toast } = useToast();
 
     useEffect(() => {
-        // Fetch workspace details
-        // In production: fetch(`/api/workspaces/${workspaceId}`)
-        setWorkspace({
-            id: workspaceId,
-            name: 'Demo Workspace',
-            plan: 'FREE',
-            ownerId: 'user-1',
-        });
-        setName('Demo Workspace');
+        if (workspaceId) {
+            // Mock fetch or initial state since API might not exist yet for GET /workspaces/:id
+            // For now we just set defaults or leave empty to be filled
+            setName('Default Workspace');
+        }
     }, [workspaceId]);
 
     const handleSave = async () => {
+        if (!workspaceId) return;
         setLoading(true);
         try {
-            const response = await fetchWithAuth(`/api/workspaces/${workspaceId}`, {
+            await fetchWithAuth(`/api/workspaces/${workspaceId}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, plan }),
             });
-
-            if (!response.ok) throw new Error('Failed to update workspace');
-
-            toast({
-                title: 'Success',
-                description: 'Workspace settings saved',
-            });
-        } catch (error: any) {
-            toast({
-                title: 'Error',
-                description: error.message,
-                variant: 'destructive',
-            });
+            toast.success('Workspace updated');
+        } catch (error) {
+            toast.error('Failed to update workspace');
         } finally {
             setLoading(false);
         }
     };
 
+    if (!workspaceId) return null;
+
     return (
-        <div className="container mx-auto py-8 space-y-8">
-            <div className="flex items-center gap-3">
-                <Building2 className="h-8 w-8" />
-                <div>
-                    <h1 className="text-3xl font-bold">Workspace Settings</h1>
-                    <p className="text-muted-foreground">
-                        Manage your workspace configuration and team members
-                    </p>
-                </div>
-            </div>
-
-            <Separator />
-
-            {/* General Settings */}
+        <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle>General</CardTitle>
+                    <CardTitle>Workspace Settings</CardTitle>
                     <CardDescription>
-                        Update workspace name and subscription plan
+                        Manage your workspace preferences and subscription plan.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="workspace-name">Workspace Name</Label>
+                        <Label>Workspace Name</Label>
                         <Input
-                            id="workspace-name"
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="My Workspace"
                         />
                     </div>
-
                     <div className="space-y-2">
-                        <Label htmlFor="workspace-plan">Subscription Plan</Label>
-                        <Select value={plan} onValueChange={(v: any) => setPlan(v)}>
-                            <SelectTrigger id="workspace-plan">
+                        <Label>Subscription Plan</Label>
+                        <Select value={plan} onValueChange={setPlan}>
+                            <SelectTrigger>
                                 <SelectValue />
                             </SelectTrigger>
                             <SelectContent>
@@ -148,7 +118,6 @@ export default function WorkspaceSettingsPage() {
                 </CardContent>
             </Card>
 
-            {/* Members Management */}
             <WorkspaceMembers
                 workspaceId={workspaceId}
                 isOwner={true}

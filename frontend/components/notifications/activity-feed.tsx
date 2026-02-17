@@ -13,7 +13,7 @@ import {
     Database,
     FileText,
     Settings,
-    AlertCircle,
+    _AlertCircle,
     CheckCircle,
     XCircle,
     Clock,
@@ -141,7 +141,7 @@ export function ActivityFeed({ className, workspaceId, limit = 50 }: ActivityFee
                                     <div className="absolute left-5 top-0 bottom-0 w-px bg-border" />
 
                                     <div className="space-y-6">
-                                        {activities.map((activity, index) => (
+                                        {activities.map((activity, _index) => (
                                             <div key={activity.id} className="relative flex gap-4">
                                                 {/* Timeline dot */}
                                                 <div className="relative flex-shrink-0">

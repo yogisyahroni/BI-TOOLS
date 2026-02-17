@@ -8,12 +8,14 @@ import {
     DialogTitle,
 } from '@/components/ui/dialog';
 import { ResultsTable } from '@/components/query-results/results-table';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { _ScrollArea } from '@/components/ui/scroll-area';
 
 interface DrillThroughModalProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
     title: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[];
     isLoading?: boolean;
 }

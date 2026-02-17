@@ -21,7 +21,7 @@ func setupTestCache(t *testing.T) *QueryCache {
 // TestBuildSQL_SimpleSelect tests basic SELECT with single table
 func TestBuildSQL_SimpleSelect(t *testing.T) {
 	// Mock dependencies
-	queryExecutor := NewQueryExecutor(&resilience.MockCircuitBreaker{NameVal: "test"})
+	queryExecutor := NewQueryExecutor(&resilience.MockCircuitBreaker{NameVal: "test"}, nil, nil)
 	schemaDiscovery := NewSchemaDiscovery(queryExecutor)
 	queryValidator := NewQueryValidator([]string{})
 	queryBuilder := NewQueryBuilder(queryValidator, schemaDiscovery, nil, nil, nil, nil)

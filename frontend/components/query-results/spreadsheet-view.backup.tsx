@@ -6,11 +6,15 @@ import { HotTable } from '@handsontable/react';
 import 'handsontable';
 
 interface SpreadsheetViewProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[];
     columns: string[];
 }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function SpreadsheetView({ data, columns }: SpreadsheetViewProps) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const hotRef = useRef<any>(null);
 
     // Memoize data to prevent unnecessary re-renders

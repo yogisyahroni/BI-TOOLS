@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { Plus, Search, Filter, LayoutGrid, List, GitBranch } from 'lucide-react';
+import { Plus, Search, _Filter, LayoutGrid, List, GitBranch } from 'lucide-react';
 import { usePipelines } from '@/hooks/use-pipelines';
 import { pipelineApi } from '@/lib/api/pipelines';
 import type { Pipeline, PipelineStats } from '@/lib/types/batch2';

@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2, AlertTriangle } from 'lucide-react';
+import { _Loader2, _AlertTriangle } from 'lucide-react';
 import { fetchWithAuth } from '@/lib/utils';
 import { useState } from "react"
 import { AnomalyChart, type AnomalyDataPoint } from "@/components/visualizations/anomaly-chart"
@@ -47,6 +47,8 @@ export function AnomalyView({ history }: AnomalyViewProps) {
                 title: "Analysis Complete",
                 description: `Detected ${result.anomalies?.length || 0} anomalies using ${config.method}.`,
             })
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error(error)
             toast({

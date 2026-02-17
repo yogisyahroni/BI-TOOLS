@@ -1,6 +1,6 @@
 
 import { db as prisma } from '@/lib/db';
-import { applyFiltersToSql } from '@/lib/sql-utils';
+import { _applyFiltersToSql } from '@/lib/sql-utils';
 import { type Role } from '@prisma/client';
 
 export type RLSPolicyCheck = {

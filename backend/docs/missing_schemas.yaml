@@ -1,0 +1,163 @@
+Pipeline:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    name:
+      type: string
+    description:
+      type: string
+    workspaceId:
+      type: string
+      format: uuid
+    sourceType:
+      type: string
+    destinationType:
+      type: string
+    mode:
+      type: string
+      enum: [batch, stream, ETL, ELT]
+    isActive:
+      type: boolean
+    scheduleCron:
+      type: string
+    createdAt:
+      type: string
+      format: date-time
+    updatedAt:
+      type: string
+      format: date-time
+
+CreatePipelineRequest:
+  type: object
+  required:
+    - name
+    - workspaceId
+    - sourceType
+    - destinationType
+    - mode
+  properties:
+    name:
+      type: string
+    workspaceId:
+      type: string
+      format: uuid
+    sourceType:
+      type: string
+    sourceConfig:
+      type: object
+    destinationType:
+      type: string
+    destinationConfig:
+      type: object
+    mode:
+      type: string
+    transformationSteps:
+      type: array
+      items:
+        type: object
+
+UpdatePipelineRequest:
+  type: object
+  properties:
+    name:
+      type: string
+    description:
+      type: string
+    isActive:
+      type: boolean
+    scheduleCron:
+      type: string
+
+JobExecution:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    pipelineId:
+      type: string
+      format: uuid
+    status:
+      type: string
+      enum: [PENDING, RUNNING, COMPLETED, FAILED]
+    rowsProcessed:
+      type: integer
+    startedAt:
+      type: string
+      format: date-time
+    completedAt:
+      type: string
+      format: date-time
+    error:
+      type: string
+
+ScheduledReport:
+  type: object
+  properties:
+    id:
+      type: string
+      format: uuid
+    name:
+      type: string
+    resourceType:
+      type: string
+      enum: [dashboard, query]
+    resourceId:
+      type: string
+      format: uuid
+    scheduleType:
+      type: string
+      enum: [daily, weekly, monthly, cron]
+    format:
+      type: string
+      enum: [pdf, csv, excel]
+    isActive:
+      type: boolean
+    recipients:
+      type: array
+      items:
+        type: string
+        format: email
+
+CreateScheduledReportRequest:
+  type: object
+  required:
+    - name
+    - resourceType
+    - resourceId
+    - scheduleType
+    - format
+    - recipients
+  properties:
+    name:
+      type: string
+    resourceType:
+      type: string
+    resourceId:
+      type: string
+    scheduleType:
+      type: string
+    scheduleConfig:
+      type: object
+    format:
+      type: string
+    recipients:
+      type: array
+      items:
+        type: string
+
+UpdateScheduledReportRequest:
+  type: object
+  properties:
+    name:
+      type: string
+    isActive:
+      type: boolean
+    scheduleType:
+      type: string
+    recipients:
+      type: array
+      items:
+        type: string

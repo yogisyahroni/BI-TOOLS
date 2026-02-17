@@ -1,6 +1,6 @@
 "use client"
 
-import { Loader2 } from 'lucide-react';
+import { _Loader2 } from 'lucide-react';
 import { fetchWithAuth } from '@/lib/utils';
 import { useState } from "react"
 import { ForecastChart, type DataPoint } from "@/components/visualizations/forecast-chart"

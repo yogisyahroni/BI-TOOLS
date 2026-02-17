@@ -72,35 +72,43 @@ function NewVisualQueryPageContent() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    {loading ? (
-                        <div className="flex justify-center p-8">
-                            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                        </div>
-                    ) : connections.length === 0 ? (
-                        <div className="text-center py-8 text-muted-foreground">
-                            No connections found. Please create a connection first.
-                        </div>
-                    ) : (
-                        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                            {connections.map((conn) => (
-                                <Card
-                                    key={conn.id}
-                                    className="cursor-pointer hover:bg-slate-50 transition-colors border-2 hover:border-primary/50"
-                                    onClick={() => handleSelectConnection(conn.id)}
-                                >
-                                    <CardHeader className="flex flex-row items-center gap-4 space-y-0">
-                                        <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                                            <Database className="h-5 w-5 text-primary" />
-                                        </div>
-                                        <div>
-                                            <CardTitle className="text-base">{conn.name}</CardTitle>
-                                            <CardDescription className="capitalize">{conn.type}</CardDescription>
-                                        </div>
-                                    </CardHeader>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
+                    {(() => {
+                        if (loading) {
+                            return (
+                                <div className="flex justify-center p-8">
+                                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                                </div>
+                            );
+                        }
+                        if (connections.length === 0) {
+                            return (
+                                <div className="text-center py-8 text-muted-foreground">
+                                    No connections found. Please create a connection first.
+                                </div>
+                            );
+                        }
+                        return (
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+                                {connections.map((conn) => (
+                                    <Card
+                                        key={conn.id}
+                                        className="cursor-pointer hover:bg-slate-50 transition-colors border-2 hover:border-primary/50"
+                                        onClick={() => handleSelectConnection(conn.id)}
+                                    >
+                                        <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+                                            <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                                                <Database className="h-5 w-5 text-primary" />
+                                            </div>
+                                            <div>
+                                                <CardTitle className="text-base">{conn.name}</CardTitle>
+                                                <CardDescription className="capitalize">{conn.type}</CardDescription>
+                                            </div>
+                                        </CardHeader>
+                                    </Card>
+                                ))}
+                            </div>
+                        );
+                    })()}
                 </CardContent>
             </Card>
         </div>

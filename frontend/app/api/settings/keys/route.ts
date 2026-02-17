@@ -6,7 +6,7 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
 import { generateApiKey } from '@/lib/auth/api-auth-middleware';
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -22,11 +22,11 @@ export async function GET(req: NextRequest) {
                 lastUsedAt: true,
                 expiresAt: true,
                 scopes: true,
-            }
+            },
         });
 
         return NextResponse.json({ success: true, keys });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Failed to fetch API keys' }, { status: 500 });
     }
 }
@@ -69,7 +69,7 @@ export async function POST(req: NextRequest) {
             }
         });
 
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Failed to create API key' }, { status: 500 });
     }
 }

@@ -28,6 +28,8 @@ interface UserContext {
     email: string;
     roles: string[];
     teamIds: string[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     attributes: Record<string, any>;
 }
 
@@ -100,7 +102,9 @@ export function TestPolicyDialog({ policy, onClose }: TestPolicyDialogProps) {
 
             const data = await res.json();
             setResult(data);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             toast.success('Policy test completed');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             toast.error(err.message || 'Error testing policy');
             console.error(err);

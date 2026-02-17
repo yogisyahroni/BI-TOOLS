@@ -89,6 +89,8 @@ export function SaveQueryDialog({
             setDescription('');
             setTags([]);
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('Failed to save query:', error);
             toast.error(error.message);

@@ -11,8 +11,12 @@ import { toast } from 'sonner';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 
 interface ActionWidgetProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     widget: any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     readOnly?: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUpdate: (updates: any) => void;
 }
 

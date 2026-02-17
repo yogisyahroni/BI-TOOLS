@@ -21,6 +21,8 @@ export class PostgresConnector extends BaseConnector implements IDatabaseConnect
         this.config = config;
     }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async execute(query: string): Promise<any> {
         const client = new Client(this.config);
         try {

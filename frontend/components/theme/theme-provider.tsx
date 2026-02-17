@@ -3,7 +3,7 @@
 import { useEffect, useCallback, createContext, useContext, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { fetchWithAuth } from '@/lib/utils';
+import { _fetchWithAuth } from '@/lib/utils';
 
 interface ThemeConfig {
     primaryColor: string;
@@ -38,8 +38,8 @@ export function useWorkspaceTheme() {
 export function WorkspaceThemeProvider({ children }: { children: React.ReactNode }) {
     const params = useParams();
     const workspaceId = params?.workspaceId as string;
-    const { setTheme } = useTheme();
-    const [config, setConfig] = useState<ThemeConfig>(DEFAULT_THEME);
+    const { _setTheme } = useTheme();
+    const [config, _setConfig] = useState<ThemeConfig>(DEFAULT_THEME);
     const [isLoading, setIsLoading] = useState(true);
 
     const applyTheme = useCallback((newConfig: ThemeConfig) => {

@@ -160,6 +160,8 @@ export function ColumnSelector({
         if (tableName) {
             fetchColumns();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [tableName, connectionId]);
 
     const fetchColumns = async () => {
@@ -170,7 +172,9 @@ export function ColumnSelector({
             setIsLoading(true);
             const res = await fetchWithAuth(`/api/go/connections/${connectionId}/schema`);
             if (res.ok) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const data = await res.json();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const table = data.tables?.find((t: any) => t.name === tableName);
                 setAvailableColumns(table?.columns || []);
             }

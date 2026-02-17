@@ -40,6 +40,8 @@ export function WorkspaceSwitcher({
 
     useEffect(() => {
         fetchWorkspaces();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const fetchWorkspaces = async () => {

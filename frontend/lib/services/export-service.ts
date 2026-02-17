@@ -47,7 +47,7 @@ export const ExportService = {
 
             // A4 dimensions in mm
             const pdfWidth = 210;
-            const pdfHeight = 297;
+            const _pdfHeight = 297;
 
             const imgProps = canvas.width / canvas.height;
             const printWidth = pdfWidth - 20; // 10mm margin each side
@@ -84,6 +84,8 @@ export const ExportService = {
      * @param data Array of objects.
      * @param fileName File name.
      */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     exportDataToCSV(data: any[], fileName: string) {
         if (!data || !data.length) return;
 

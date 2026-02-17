@@ -21,6 +21,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 interface ResultsTableProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[];
     columns: string[];
     isLoading: boolean;

@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import { useState, useCallback } from 'react';
-import { LayoutDashboard, Save, Edit2, Share2, Plus, ArrowLeft, Loader2, MoreVertical, ShieldCheck, Presentation } from 'lucide-react';
+import { LayoutDashboard, Save, Edit2, Share2, Plus, ArrowLeft, Loader2, _MoreVertical, ShieldCheck, Presentation } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { SidebarLayout } from '@/components/sidebar-layout';
@@ -42,7 +42,7 @@ export default function DashboardDetailPage({ params }: { params: { id: string }
         try {
             await saveDashboard();
             toast.success('Dashboard saved successfully');
-        } catch (err) {
+        } catch (_err) {
             toast.error('Failed to save dashboard');
         } finally {
             setIsSaving(false);

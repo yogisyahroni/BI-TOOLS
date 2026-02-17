@@ -1,14 +1,13 @@
 export const dynamic = 'force-dynamic';
 
-
 import { type NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
 import { db } from '@/lib/db';
 
 export async function DELETE(
-    req: NextRequest,
-    { params }: { params: Promise<{ id: string }> }
+    request: NextRequest,
+    props: { params: Promise<{ id: string }> }
 ) {
     try {
         const session = await getServerSession(authOptions);
@@ -16,9 +15,9 @@ export async function DELETE(
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
         }
 
-        const { id } = await params;
+        const params = await props.params;
+        const { id } = params;
 
-        // Verify ownership
         // We check if the feed exists and if the current user created it OR has admin rights
         const feed = await db.queryFeed.findUnique({
             where: { id }
@@ -38,7 +37,10 @@ export async function DELETE(
         });
 
         return NextResponse.json({ success: true });
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 500 });
+    } catch (error: unknown) {
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Internal Server Error' },
+            { status: 500 }
+        );
     }
 }

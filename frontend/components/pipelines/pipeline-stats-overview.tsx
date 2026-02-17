@@ -5,9 +5,9 @@ import type { PipelineStats } from '@/lib/types/batch2';
 import {
     GitBranch,
     Play,
-    TrendingUp,
+    _TrendingUp,
     AlertTriangle,
-    Database,
+    _Database,
     CheckCircle2,
 } from 'lucide-react';
 

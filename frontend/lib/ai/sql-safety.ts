@@ -19,7 +19,7 @@ export function validateGeneratedSql(sql: string): ValidationResult {
         return { valid: false, error: 'Empty SQL generated' };
     }
 
-    const upperSql = sql.toUpperCase();
+    const _upperSql = sql.toUpperCase();
 
     // 1. Check for forbidden keywords
     // We look for whole words to avoid false positives (e.g. "update_date" column)

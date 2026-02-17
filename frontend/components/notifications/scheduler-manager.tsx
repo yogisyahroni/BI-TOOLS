@@ -44,7 +44,7 @@ import {
     AlertCircle,
     CheckCircle,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { _cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
 import type { SchedulerJob, CreateSchedulerJobRequest } from '@/lib/types/notifications';
 import { toast } from 'sonner';
@@ -93,7 +93,7 @@ export function SchedulerManager({ className }: SchedulerManagerProps) {
             setCreateDialogOpen(false);
             resetForm();
             toast.success('Job created successfully');
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to create job');
         }
     };
@@ -115,7 +115,7 @@ export function SchedulerManager({ className }: SchedulerManagerProps) {
         try {
             await deleteJob(id);
             toast.success('Job deleted successfully');
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to delete job');
         }
     };
@@ -129,7 +129,7 @@ export function SchedulerManager({ className }: SchedulerManagerProps) {
                 await resumeJob(job.id);
                 toast.success('Job resumed');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error(`Failed to ${job.enabled ? 'pause' : 'resume'} job`);
         }
     };
@@ -138,7 +138,7 @@ export function SchedulerManager({ className }: SchedulerManagerProps) {
         try {
             await triggerJob(id);
             toast.success('Job triggered successfully');
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to trigger job');
         }
     };

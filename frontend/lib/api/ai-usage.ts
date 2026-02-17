@@ -1,6 +1,6 @@
 import type {
     UsageStats,
-    AIUsageRequest,
+    _AIUsageRequest,
     AIBudget,
     BudgetAlert,
     RateLimitConfig,

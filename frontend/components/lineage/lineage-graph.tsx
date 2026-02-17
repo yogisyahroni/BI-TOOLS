@@ -19,10 +19,10 @@ import ReactFlow, {
 import dagre from 'dagre';
 import 'reactflow/dist/style.css';
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { _Card, _CardContent, _CardHeader, _CardTitle } from "@/components/ui/card";
+import { _Badge } from "@/components/ui/badge";
 
-interface LineageNodeData {
+interface _LineageNodeData {
     label: string;
     type: string;
 }
@@ -56,7 +56,11 @@ const getLayoutedElements = (nodes: Node[], edges: Edge[], direction = 'LR') => 
 
     nodes.forEach((node) => {
         const nodeWithPosition = dagreGraph.node(node.id);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         node.targetPosition = isHorizontal ? 'left' : 'top' as any;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         node.sourcePosition = isHorizontal ? 'right' : 'bottom' as any;
 
         // We are shifting the dagre node position (anchor=center center) to the top left

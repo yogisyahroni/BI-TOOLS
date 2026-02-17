@@ -39,6 +39,8 @@ export function VersionHistorySheet({ queryId, onRevert }: { queryId: string, on
 
     useEffect(() => {
         if (isOpen) fetchVersions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, queryId]);
 
     const handleRevert = async (version: QueryVersion) => {
@@ -58,7 +60,7 @@ export function VersionHistorySheet({ queryId, onRevert }: { queryId: string, on
             } else {
                 toast.error('Failed to revert');
             }
-        } catch (e) {
+        } catch (_e) {
             toast.error('Network error');
         }
     };

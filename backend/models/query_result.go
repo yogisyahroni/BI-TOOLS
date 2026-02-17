@@ -6,12 +6,14 @@ import (
 
 // QueryResult represents the result of a query execution
 type QueryResult struct {
-	Columns       []string        `json:"columns"`
-	Rows          [][]interface{} `json:"rows"`
-	RowCount      int             `json:"rowCount"`
-	ExecutionTime int64           `json:"executionTime"` // milliseconds
-	Error         *string         `json:"error,omitempty"`
-	NextCursor    *string         `json:"nextCursor,omitempty"` // For keyset pagination
+	Columns       []string             `json:"columns"`
+	Rows          [][]interface{}      `json:"rows"`
+	RowCount      int                  `json:"rowCount"`
+	ExecutionTime int64                `json:"executionTime"` // milliseconds
+	Error         *string              `json:"error,omitempty"`
+	NextCursor    *string              `json:"nextCursor,omitempty"` // For keyset pagination
+	Analysis      *QueryAnalysisResult `json:"analysis,omitempty"`   // Optimization suggestions
+	Cached        bool                 `json:"cached"`               // GAP-008: Cache status
 }
 
 // QueryExecutionRequest represents a request to execute a query

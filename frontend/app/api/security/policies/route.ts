@@ -1,17 +1,10 @@
 export const dynamic = 'force-dynamic';
 
-
 import { type NextRequest, NextResponse } from 'next/server';
 import { db as prisma } from '@/lib/db';
-import { getServerSession } from 'next-auth'; // Assuming auth setup
-import { authOptions } from '@/lib/auth/auth-options'; // Adjust import based on project structure
 
 export async function POST(req: NextRequest) {
     try {
-        // Mock session for now if auth not fully integrated in this file context
-        // const session = await getServerSession(authOptions);
-        // if (!session) return new NextResponse('Unauthorized', { status: 401 });
-
         const body = await req.json();
         const { name, workspaceId, connectionId, tableName, condition, role, userId } = body;
 

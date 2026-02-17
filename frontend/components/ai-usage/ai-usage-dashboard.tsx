@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { useUsageStats, useRequestHistory } from '@/hooks/use-ai-usage';
-import { BarChart3, TrendingUp, DollarSign, Zap, Activity, AlertCircle } from 'lucide-react';
+import { _BarChart3, TrendingUp, DollarSign, Zap, Activity, AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface AIUsageDashboardProps {
@@ -15,7 +15,7 @@ interface AIUsageDashboardProps {
 
 export function AIUsageDashboard({ period = 'monthly', className }: AIUsageDashboardProps) {
     const { data: stats, isLoading: statsLoading } = useUsageStats({ period });
-    const { data: history, isLoading: historyLoading } = useRequestHistory({ limit: 10 });
+    const { data: history, isLoading: _historyLoading } = useRequestHistory({ limit: 10 });
 
     if (statsLoading) {
         return (

@@ -6,6 +6,8 @@ import { type CanvasWidget } from '../canvas-board';
 interface WidgetProps {
     widget: CanvasWidget;
     readOnly?: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUpdate?: (updates: any) => void;
 }
 

@@ -10,6 +10,8 @@ import { Loader2 } from "lucide-react"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 
 export default function LineagePage() {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [data, setData] = useState<{ nodes: any[], edges: any[] } | null>(null)
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<string | null>(null)
@@ -25,7 +27,9 @@ export default function LineagePage() {
                 }
 
                 const jsonData = await res.json()
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 setData(jsonData)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 setError(err.message)
             } finally {

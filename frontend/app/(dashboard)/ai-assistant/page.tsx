@@ -3,7 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import * as React from 'react';
-import { Card } from '@/components/ui/card';
+// Card import removed
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     Select,
@@ -79,7 +79,7 @@ export default function AIAssistantPage() {
                                 <SelectValue placeholder="Select provider" />
                             </SelectTrigger>
                             <SelectContent>
-                                {providers?.map((provider: any) => (
+                                {providers?.map((provider) => (
                                     <SelectItem key={provider.id} value={provider.id} className="text-xs">
                                         {provider.name}
                                     </SelectItem>

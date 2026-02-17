@@ -26,9 +26,13 @@ export function AppDashboardView({ dashboardId }: AppDashboardViewProps) {
     // Fetch data for cards with filters
     const { results: queriesData } = useDashboardData(dashboard, { globalFilters: filterValues });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const handleChartClick = (params: any, cardId: string) => {
         if (!dashboard) return;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const card = dashboard.cards.find((c: any) => c.id === cardId);
         if (!card) return;
 

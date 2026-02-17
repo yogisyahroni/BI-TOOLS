@@ -7,11 +7,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+    _Select,
+    _SelectContent,
+    _SelectItem,
+    _SelectTrigger,
+    _SelectValue,
 } from '@/components/ui/select';
 import {
     Sparkles,
@@ -96,7 +96,7 @@ export function FormulaEditorAI({
             setCopied(true);
             toast.success('Formula copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to copy formula');
         }
     };

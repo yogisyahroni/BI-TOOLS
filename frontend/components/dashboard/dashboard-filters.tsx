@@ -12,31 +12,35 @@ import {
     Sparkles
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { _Badge } from '@/components/ui/badge';
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuTrigger,
-    DropdownMenuSeparator,
+    _DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { cn } from '@/lib/utils';
+import { _cn } from '@/lib/utils';
 import { format } from 'date-fns';
 
 export interface DashboardFilter {
     id: string;
     name: string;
     type: 'select' | 'date-range' | 'text';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
 }
 
 interface DashboardFiltersProps {
     filters: DashboardFilter[];
     onAddFilter: (type: DashboardFilter['type']) => void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onRemoveFilter: (id: string) => void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onUpdateFilter: (id: string, value: any) => void;
     onAIFilter?: (text: string) => void;
 }

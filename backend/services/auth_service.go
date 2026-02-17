@@ -7,6 +7,8 @@ import (
 
 	"insight-engine-backend/models"
 
+	"net/mail"
+
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -38,6 +40,17 @@ type RegisterResponse struct {
 // Business Rule: Email and username must be unique, password is hashed with bcrypt
 // Security: Never returns password in user object, generates verification token
 func (s *AuthService) Register(email, username, password, fullName string) (*RegisterResponse, error) {
+	// Input validation - Security: Enforce required fields
+	if email == "" {
+		return nil, fmt.Errorf("empty email")
+	}
+	if _, err := mail.ParseAddress(email); err != nil {
+		return nil, fmt.Errorf("invalid email format")
+	}
+	if username == "" {
+		return nil, fmt.Errorf("empty username")
+	}
+
 	// Check email uniqueness - Security: Prevent duplicate accounts
 	var existingUser models.User
 	if err := s.db.Where("email = ?", email).First(&existingUser).Error; err == nil {

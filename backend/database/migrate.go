@@ -40,6 +40,10 @@ func Migrate() {
 		// Business Glossary
 		&models.BusinessTerm{},
 		&models.TermColumnMapping{},
+		// Export Jobs
+		&models.ExportJob{},
+		// Stories & Presentations
+		&models.Story{}, // TASK-161
 	); err != nil {
 		log.Printf("⚠️ Core models migration warning: %v", err)
 	}

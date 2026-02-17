@@ -89,6 +89,20 @@ services:
       - insight-network
     restart: unless-stopped
 
+  # Jaeger for Distributed Tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: insight-engine-jaeger
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+    ports:
+      - "16686:16686" # UI
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+    networks:
+      - insight-network
+    restart: unless-stopped
+
 networks:
   insight-network:
     driver: bridge

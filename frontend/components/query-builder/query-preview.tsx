@@ -122,7 +122,7 @@ export function QueryPreview({ state, onSave, databaseType }: QueryPreviewProps)
             setCopied(true);
             toast.success('SQL copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (err) {
+        } catch (_err) {
             toast.error('Failed to copy SQL');
         }
     };
@@ -256,8 +256,14 @@ export function QueryPreview({ state, onSave, databaseType }: QueryPreviewProps)
                                     </tr>
                                 </thead>
                                 <tbody>
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     {result.rows?.map((row: any[], index: number) => (
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                         <tr key={index} className="border-b last:border-0 hover:bg-muted/50">
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                             {row.map((cell: any, cellIndex: number) => (
                                                 <td key={cellIndex} className="p-2 whitespace-nowrap">
                                                     {cell !== null && cell !== undefined

@@ -8,7 +8,7 @@ import { redis } from '../db/redis';
 // For simplicity in serverless/Next.js, we often create a new connection or use the shared one config.
 // Here we use the shared connection config.
 
-const connection = redis ? {
+const _connection = redis ? {
     host: redis.options.host,
     port: redis.options.port,
     password: redis.options.password,

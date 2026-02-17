@@ -1,10 +1,9 @@
 package bootstrap
 
 import (
-	"insight-engine-backend/controllers"
-	"insight-engine-backend/handlers"
 	"insight-engine-backend/routes"
 	"insight-engine-backend/services"
+	"insight-engine-backend/services/formula_engine"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -13,7 +12,7 @@ import (
 type App struct {
 	FiberApp   *fiber.App
 	Services   *ServiceContainer
-	Handlers   *HandlerContainer
+	Handlers   *routes.HandlerContainer // Use routes.HandlerContainer
 	Middleware *routes.MiddlewareContainer
 }
 
@@ -24,6 +23,7 @@ type ServiceContainer struct {
 	AIReasoningService       *services.AIReasoningService
 	AIOptimizerService       *services.AIOptimizerService
 	StoryGeneratorService    *services.StoryGeneratorService
+	PPTXGenerator            *services.PPTXGenerator // TASK-161
 	SemanticLayerService     *services.SemanticLayerService
 	ModelingService          *services.ModelingService
 	RateLimiterService       *services.RateLimiter
@@ -64,54 +64,9 @@ type ServiceContainer struct {
 	CommentService           *services.CommentService
 	ScheduledReportService   *services.ScheduledReportService
 	SecurityLogService       *services.SecurityLogService
-}
-
-// HandlerContainer holds all initialized handlers
-type HandlerContainer struct {
-	AIHandler                *handlers.AIHandler
-	AuthHandler              *handlers.AuthHandler
-	OAuthHandler             *handlers.OAuthHandler
-	PermissionHandler        *handlers.PermissionHandler
-	QueryHandler             *handlers.QueryHandler
-	VisualQueryHandler       *handlers.VisualQueryHandler
-	ConnectionHandler        *handlers.ConnectionHandler
-	QueryAnalyzerHandler     *handlers.QueryAnalyzerHandler
-	MaterializedViewHandler  *handlers.MaterializedViewHandler
-	EngineHandler            *handlers.EngineHandler
-	GeoJSONHandler           *handlers.GeoJSONHandler
-	DataGovernanceHandler    *handlers.DataGovernanceHandler
-	SemanticLayerHandler     *handlers.SemanticLayerHandler
-	ModelingHandler          *handlers.ModelingHandler
-	DashboardHandler         *handlers.DashboardHandler
-	DashboardCardHandler     *handlers.DashboardCardHandler
-	NotificationHandler      *handlers.NotificationHandler
-	ActivityHandler          *handlers.ActivityHandler
-	SchedulerHandler         *handlers.SchedulerHandler
-	WebSocketHandler         *handlers.WebSocketHandler
-	CommentHandler           *handlers.CommentHandler
-	ShareHandler             *handlers.ShareHandler
-	EmbedHandler             *handlers.EmbedHandler
-	AuditHandler             *handlers.AuditHandler
-	FrontendLogHandler       *handlers.FrontendLogHandler
-	RateLimitHandler         *handlers.RateLimitHandler
-	AIUsageHandler           *handlers.AIUsageHandler
-	AlertHandler             *handlers.AlertHandler
-	AlertNotificationHandler *handlers.AlertNotificationHandler
-	AnalyticsHandler         *handlers.AnalyticsHandler
-	AdminOrgHandler          *handlers.AdminOrganizationHandler
-	AdminUserHandler         *handlers.AdminUserHandler
-	AdminSystemHandler       *handlers.AdminSystemHandler
-	ScheduledReportHandler   *handlers.ScheduledReportHandler
-	VersionHandler           *handlers.VersionHandler
-	QueryVersionHandler      *handlers.QueryVersionHandler
-	GlossaryHandler          *handlers.GlossaryHandler
-	NLHandler                *handlers.NLHandler
-	WebhookHandler           *handlers.WebhookHandler
-	ReportingHandler         *handlers.ReportingHandler
-	ForecastingHandler       *handlers.ForecastingHandler
-	AnomalyHandler           *handlers.AnomalyHandler
-	LineageController        *controllers.LineageController
-	CollectionHandler        *handlers.CollectionHandler
+	SystemHealthService      *services.SystemHealthService
+	FormulaEngine            *formula_engine.FormulaEngine
+	RedisCache               *services.RedisCache
 }
 
 // NewApp initializes the entire application
@@ -140,4 +95,3 @@ func NewApp() *App {
 		Handlers: hdlContainer,
 	}
 }
-

@@ -1,7 +1,7 @@
 import type {
     ScheduledReportResponse,
     ScheduledReportListResponse,
-    ScheduledReportRun,
+    _ScheduledReportRun,
     ScheduledReportRunListResponse,
     CreateScheduledReportRequest,
     UpdateScheduledReportRequest,

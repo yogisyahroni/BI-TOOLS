@@ -1,13 +1,15 @@
 "use client"
 
 import { useState } from "react"
-import { Download, FileSpreadsheet } from "lucide-react"
+import { _Download, FileSpreadsheet } from "lucide-react"
 import * as XLSX from 'xlsx'
 
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/use-toast"
 
 interface ReportGeneratorProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[]
     headers?: string[]
     title?: string
@@ -18,7 +20,7 @@ interface ReportGeneratorProps {
 export function ReportGenerator({
     data,
     headers,
-    title = "Dashboard Export",
+    _title = "Dashboard Export",
     filename = "report",
     className
 }: ReportGeneratorProps) {

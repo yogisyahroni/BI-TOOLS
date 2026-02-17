@@ -66,6 +66,8 @@ export function PasskeyManager() {
                 const errData = await verificationResp.text();
                 toast.error('Registration failed: ' + errData);
             }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error(error);
             if (error.name === 'InvalidStateError') {
@@ -94,7 +96,7 @@ export function PasskeyManager() {
             } else {
                 toast.error('Failed to remove passkey');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Error deleting passkey');
         }
     };

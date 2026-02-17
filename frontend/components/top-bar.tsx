@@ -37,7 +37,7 @@ interface TopBarProps {
 }
 
 export function TopBar({ className }: TopBarProps) {
-  const { toggle, isOpen } = useSidebar();
+  const { toggle, _isOpen } = useSidebar();
   const pathname = usePathname();
   const { unreadCount } = useNotifications();
   const [searchQuery, setSearchQuery] = useState('');

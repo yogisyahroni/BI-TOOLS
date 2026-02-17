@@ -79,6 +79,8 @@ export default function LineageGraph({ workspaceId }: LineageGraphProps) {
 
                 if (data.nodes && data.edges) {
                     // Style nodes based on type
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     const styledNodes = data.nodes.map((node: any) => ({
                         ...node,
                         style: {
@@ -94,7 +96,9 @@ export default function LineageGraph({ workspaceId }: LineageGraphProps) {
                     }));
 
                     const { nodes: layoutedNodes, edges: layoutedEdges } = getLayoutedElements(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         styledNodes,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         data.edges.map((edge: any) => ({
                             ...edge,
                             markerEnd: { type: MarkerType.ArrowClosed }

@@ -1,4 +1,4 @@
-import { BaseConnector, ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
+import { BaseConnector, _ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
 
 /**
  * MySQL Connector Implementation
@@ -15,7 +15,7 @@ export class MySQLConnector extends BaseConnector {
         throw new Error('MySQL connector not yet implemented');
     }
 
-    async executeQuery(sql: string): Promise<QueryResult> {
+    async executeQuery(_sql: string): Promise<QueryResult> {
         throw new Error('MySQL connector not yet implemented');
     }
 

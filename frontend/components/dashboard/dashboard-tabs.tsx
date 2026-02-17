@@ -11,7 +11,7 @@ import {
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
+    _DialogTrigger,
 } from '@/components/ui/dialog';
 import {
     DropdownMenu,
@@ -193,7 +193,7 @@ export function DashboardTabs({
     }, []);
 
     // Get active tab
-    const activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
+    const _activeTab = tabs.find((t) => t.id === activeTabId) || tabs[0];
 
     return (
         <div className={cn('w-full', className)}>

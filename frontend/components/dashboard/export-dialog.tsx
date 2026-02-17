@@ -12,7 +12,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { _Textarea } from '@/components/ui/textarea';
 import {
     Select,
     SelectContent,
@@ -23,19 +23,19 @@ import {
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
+import { _Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
     FileDown,
     FileText,
     Presentation,
-    Settings2,
+    _Settings2,
     CheckCircle2,
     AlertCircle,
     Loader2,
     Download,
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { _cn } from '@/lib/utils';
 import { toast } from 'sonner';
 
 /**
@@ -196,7 +196,7 @@ const DEFAULT_EXPORT_OPTIONS: ExportOptions = {
 export function ExportDialog({
     open,
     onOpenChange,
-    dashboardId,
+    _dashboardId,
     dashboardName = 'Dashboard',
     availableCardIds = [],
     currentTabId,
@@ -244,6 +244,8 @@ export function ExportDialog({
             toast.error(message);
             setIsExporting(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [options, onExport, onCheckStatus]);
 
     /**
@@ -267,7 +269,7 @@ export function ExportDialog({
                         setIsExporting(false);
                         toast.error(`Export failed: ${job.error}`);
                     }
-                } catch (error) {
+                } catch (_error) {
                     clearInterval(pollInterval);
                     setIsExporting(false);
                     toast.error('Failed to check export status');
@@ -382,7 +384,7 @@ export function ExportDialog({
 function ExportConfiguration({
     options,
     onUpdateOption,
-    availableCardIds,
+    _availableCardIds,
     currentTabId,
 }: {
     options: ExportOptions;

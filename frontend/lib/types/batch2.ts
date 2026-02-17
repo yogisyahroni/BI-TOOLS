@@ -178,6 +178,8 @@ export interface DataflowRun {
 export interface IngestionRequest {
     workspaceId: string;
     sourceType: 'CSV' | 'JSON' | 'API' | 'DATABASE';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceConfig: Record<string, any>;
     targetTable: string;
     mode: 'OVERWRITE' | 'APPEND';
@@ -185,14 +187,18 @@ export interface IngestionRequest {
 
 export interface IngestionPreviewRequest {
     workspaceId: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceType: 'CSV' | 'JSON' | 'API' | 'DATABASE';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceConfig: Record<string, any>;
     limit?: number;
 }
 
 export interface IngestionPreview {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceType: string;
     columns: string[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rows: Record<string, any>[];
     totalRows: number;
     previewLimit: number;
@@ -214,29 +220,39 @@ export interface IngestionResult {
 
 export interface CreatePipelineRequest {
     name: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     description?: string;
     workspaceId: string;
     sourceType: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceConfig: Record<string, any>;
     connectionId?: string;
     sourceQuery?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     destinationType: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     destinationConfig?: Record<string, any>;
     mode: string;
     transformationSteps?: TransformStep[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     qualityRules?: any[];
     scheduleCron?: string;
     rowLimit?: number;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 }
 
 export interface UpdatePipelineRequest {
     name?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     description?: string;
     sourceType?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sourceConfig?: Record<string, any>;
     connectionId?: string;
     sourceQuery?: string;
     destinationType?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     destinationConfig?: Record<string, any>;
     mode?: string;
     transformationSteps?: TransformStep[];

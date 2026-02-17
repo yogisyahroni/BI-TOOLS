@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import { useState, useEffect } from 'react';
 import { fetchWithAuth } from '@/lib/utils';
-import { toast } from 'sonner';
+// toast removed
 import { CollectionsSidebar } from '@/components/collections-sidebar';
 import { SavedQueriesList } from '@/components/saved-queries-list';
 import { DualEngineEditor } from '@/components/dual-engine-editor';
@@ -18,12 +18,23 @@ import { ResultsTable } from '@/components/query-results/results-table';
 import { ChartVisualization } from '@/components/chart-visualization';
 import { VisualizationSidebar } from '@/components/visualization-sidebar';
 import { type VisualizationConfig } from '@/lib/types';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'; // TabsContent removed
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
 } from '@/components/resizable-client';
+
+interface Anomaly {
+  index: number;
+  label: string;
+  score: number;
+}
+
+interface Cluster {
+  dataIndex: number;
+  clusterId: number;
+}
 
 export default function ExplorerPage() {
   const { open: openSidebar } = useSidebar();
@@ -37,7 +48,7 @@ export default function ExplorerPage() {
 
   // State for Query Results
   const [queryResults, setQueryResults] = useState<{
-    data: any[];
+    data: Record<string, unknown>[];
     columns: string[];
     rowCount: number;
     executionTime: number;
@@ -59,7 +70,7 @@ export default function ExplorerPage() {
   });
 
   const handleResultsUpdate = (results: {
-    data: any[];
+    data: Record<string, unknown>[];
     columns: string[];
     rowCount: number;
     executionTime: number;
@@ -72,9 +83,9 @@ export default function ExplorerPage() {
     setActiveResultTab('table');
   };
 
-  const handleChartClick = (params: any) => {
+  const handleChartClick = (params: { type?: string; payload?: unknown }) => {
     if (params?.type === 'ANNOTATION_ADD') {
-      const newAnnotation = params.payload;
+      const newAnnotation = params.payload as Record<string, unknown>; // Type assertion based on expected payload
       setVizConfig(prev => ({
         ...prev,
         annotations: [...(prev.annotations || []), newAnnotation]
@@ -83,7 +94,7 @@ export default function ExplorerPage() {
   };
 
   // Forecast Request Logic
-  const [augmentedData, setAugmentedData] = useState<any[]>([]);
+  const [augmentedData, setAugmentedData] = useState<Record<string, unknown>[]>([]);
 
   useEffect(() => {
     // Start with raw data
@@ -139,7 +150,7 @@ export default function ExplorerPage() {
             if (res.ok) {
               const json = await res.json();
               // Mark anomalies
-              json.anomalies.forEach((ann: any) => {
+              json.anomalies.forEach((ann: Anomaly) => {
                 if (currentData[ann.index]) {
                   currentData[ann.index] = {
                     ...currentData[ann.index],
@@ -170,7 +181,7 @@ export default function ExplorerPage() {
             });
             if (res.ok) {
               const json = await res.json();
-              json.clusters.forEach((c: any) => {
+              json.clusters.forEach((c: Cluster) => {
                 if (currentData[c.dataIndex]) {
                   currentData[c.dataIndex] = {
                     ...currentData[c.dataIndex],

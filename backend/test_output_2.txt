@@ -1,0 +1,130 @@
+=== RUN   TestEvaluator_Evaluate
+=== RUN   TestEvaluator_Evaluate/Add
+=== RUN   TestEvaluator_Evaluate/Subtract
+=== RUN   TestEvaluator_Evaluate/Multiply
+=== RUN   TestEvaluator_Evaluate/Divide
+=== RUN   TestEvaluator_Evaluate/Power
+=== RUN   TestEvaluator_Evaluate/Precedence
+=== RUN   TestEvaluator_Evaluate/Parens
+=== RUN   TestEvaluator_Evaluate/Eq_Number
+=== RUN   TestEvaluator_Evaluate/Neq_Number
+=== RUN   TestEvaluator_Evaluate/Gt
+=== RUN   TestEvaluator_Evaluate/Lt
+=== RUN   TestEvaluator_Evaluate/Gte
+=== RUN   TestEvaluator_Evaluate/Lte
+=== RUN   TestEvaluator_Evaluate/Eq_String
+=== RUN   TestEvaluator_Evaluate/String_Concat
+=== RUN   TestEvaluator_Evaluate/Cell_Ref
+=== RUN   TestEvaluator_Evaluate/Field_Ref
+=== RUN   TestEvaluator_Evaluate/Missing_Ref
+=== RUN   TestEvaluator_Evaluate/SUM
+=== RUN   TestEvaluator_Evaluate/SUM_Ref
+=== RUN   TestEvaluator_Evaluate/AVG
+=== RUN   TestEvaluator_Evaluate/MIN
+=== RUN   TestEvaluator_Evaluate/MAX
+=== RUN   TestEvaluator_Evaluate/IF_True
+=== RUN   TestEvaluator_Evaluate/IF_False
+=== RUN   TestEvaluator_Evaluate/Nested_Func
+=== RUN   TestEvaluator_Evaluate/Div_By_Zero
+=== RUN   TestEvaluator_Evaluate/Unknown_Func
+--- PASS: TestEvaluator_Evaluate (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Add (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Subtract (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Multiply (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Divide (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Power (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Precedence (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Parens (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Eq_Number (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Neq_Number (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Gt (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Lt (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Gte (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Lte (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Eq_String (0.00s)
+    --- PASS: TestEvaluator_Evaluate/String_Concat (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Cell_Ref (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Field_Ref (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Missing_Ref (0.00s)
+    --- PASS: TestEvaluator_Evaluate/SUM (0.00s)
+    --- PASS: TestEvaluator_Evaluate/SUM_Ref (0.00s)
+    --- PASS: TestEvaluator_Evaluate/AVG (0.00s)
+    --- PASS: TestEvaluator_Evaluate/MIN (0.00s)
+    --- PASS: TestEvaluator_Evaluate/MAX (0.00s)
+    --- PASS: TestEvaluator_Evaluate/IF_True (0.00s)
+    --- PASS: TestEvaluator_Evaluate/IF_False (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Nested_Func (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Div_By_Zero (0.00s)
+    --- PASS: TestEvaluator_Evaluate/Unknown_Func (0.00s)
+=== RUN   TestLexer_Tokenize
+=== RUN   TestLexer_Tokenize/Simple_Arithmetic
+=== RUN   TestLexer_Tokenize/Function_Call
+=== RUN   TestLexer_Tokenize/Cell_Range
+=== RUN   TestLexer_Tokenize/String_and_Bool
+=== RUN   TestLexer_Tokenize/Complex_Expression
+=== RUN   TestLexer_Tokenize/Comparison_Operators
+--- PASS: TestLexer_Tokenize (0.00s)
+    --- PASS: TestLexer_Tokenize/Simple_Arithmetic (0.00s)
+    --- PASS: TestLexer_Tokenize/Function_Call (0.00s)
+    --- PASS: TestLexer_Tokenize/Cell_Range (0.00s)
+    --- PASS: TestLexer_Tokenize/String_and_Bool (0.00s)
+    --- PASS: TestLexer_Tokenize/Complex_Expression (0.00s)
+    --- PASS: TestLexer_Tokenize/Comparison_Operators (0.00s)
+=== RUN   TestLexer_Error
+--- PASS: TestLexer_Error (0.00s)
+=== RUN   TestParser_Parse
+=== RUN   TestParser_Parse/Simple_Addition
+=== RUN   TestParser_Parse/Precedence_Multiplication
+=== RUN   TestParser_Parse/Precedence_Parentheses
+=== RUN   TestParser_Parse/Function_Call
+=== RUN   TestParser_Parse/Nested_Function_Call
+=== RUN   TestParser_Parse/String_Concatenation
+=== RUN   TestParser_Parse/Comparison
+=== RUN   TestParser_Parse/Unary_Operator
+--- PASS: TestParser_Parse (0.00s)
+    --- PASS: TestParser_Parse/Simple_Addition (0.00s)
+    --- PASS: TestParser_Parse/Precedence_Multiplication (0.00s)
+    --- PASS: TestParser_Parse/Precedence_Parentheses (0.00s)
+    --- PASS: TestParser_Parse/Function_Call (0.00s)
+    --- PASS: TestParser_Parse/Nested_Function_Call (0.00s)
+    --- PASS: TestParser_Parse/String_Concatenation (0.00s)
+    --- PASS: TestParser_Parse/Comparison (0.00s)
+    --- PASS: TestParser_Parse/Unary_Operator (0.00s)
+=== RUN   TestParser_Error
+=== RUN   TestParser_Error/Missing_Closing_Paren
+=== RUN   TestParser_Error/Unexpected_Token
+=== RUN   TestParser_Error/Invalid_Function_Args
+--- PASS: TestParser_Error (0.00s)
+    --- PASS: TestParser_Error/Missing_Closing_Paren (0.00s)
+    --- PASS: TestParser_Error/Unexpected_Token (0.00s)
+    --- PASS: TestParser_Error/Invalid_Function_Args (0.00s)
+=== RUN   TestEvaluate_VLookup
+=== RUN   TestEvaluate_VLookup/VLOOKUP(1,_Data,_2,_FALSE)
+=== RUN   TestEvaluate_VLookup/VLOOKUP(2,_Data,_3,_0)
+=== RUN   TestEvaluate_VLookup/VLOOKUP(3,_Data,_2,_FALSE)
+=== RUN   TestEvaluate_VLookup/VLOOKUP(99,_Data,_2,_FALSE)
+=== RUN   TestEvaluate_VLookup/VLOOKUP(1,_Data,_1,_FALSE)
+=== RUN   TestEvaluate_VLookup/VLOOKUP(2,_Data,_4,_FALSE)
+--- PASS: TestEvaluate_VLookup (0.00s)
+    --- PASS: TestEvaluate_VLookup/VLOOKUP(1,_Data,_2,_FALSE) (0.00s)
+    --- PASS: TestEvaluate_VLookup/VLOOKUP(2,_Data,_3,_0) (0.00s)
+    --- PASS: TestEvaluate_VLookup/VLOOKUP(3,_Data,_2,_FALSE) (0.00s)
+    --- PASS: TestEvaluate_VLookup/VLOOKUP(99,_Data,_2,_FALSE) (0.00s)
+    --- PASS: TestEvaluate_VLookup/VLOOKUP(1,_Data,_1,_FALSE) (0.00s)
+    --- PASS: TestEvaluate_VLookup/VLOOKUP(2,_Data,_4,_FALSE) (0.00s)
+=== RUN   TestEvaluate_NestedFlattening
+=== RUN   TestEvaluate_NestedFlattening/SUM(Row1)
+=== RUN   TestEvaluate_NestedFlattening/SUM(Row1,_Row2)
+=== RUN   TestEvaluate_NestedFlattening/SUM(Matrix)
+=== RUN   TestEvaluate_NestedFlattening/MAX(Matrix)
+=== RUN   TestEvaluate_NestedFlattening/MIN(Matrix)
+=== RUN   TestEvaluate_NestedFlattening/AVG(Matrix)
+--- PASS: TestEvaluate_NestedFlattening (0.00s)
+    --- PASS: TestEvaluate_NestedFlattening/SUM(Row1) (0.00s)
+    --- PASS: TestEvaluate_NestedFlattening/SUM(Row1,_Row2) (0.00s)
+    --- PASS: TestEvaluate_NestedFlattening/SUM(Matrix) (0.00s)
+    --- PASS: TestEvaluate_NestedFlattening/MAX(Matrix) (0.00s)
+    --- PASS: TestEvaluate_NestedFlattening/MIN(Matrix) (0.00s)
+    --- PASS: TestEvaluate_NestedFlattening/AVG(Matrix) (0.00s)
+PASS
+ok  	insight-engine-backend/services/formula_engine	0.580s

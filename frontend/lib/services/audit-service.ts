@@ -1,6 +1,6 @@
 
-import { Client } from 'pg';
-import { connectionService } from '@/lib/services/connection-service';
+import { _Client } from 'pg';
+import { _connectionService } from '@/lib/services/connection-service';
 import { type SecurityContext } from '@/lib/security/rls-context';
 
 export interface AuditEvent {

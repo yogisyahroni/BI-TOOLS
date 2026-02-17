@@ -11,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Play, Database, Filter, TrendingUp, X, Copy, Check } from 'lucide-react';
-import { useSemanticModels, useSemanticMetrics, useExecuteSemanticQuery } from '@/hooks/use-semantic-layer';
+import { useSemanticModels, _useSemanticMetrics, useExecuteSemanticQuery } from '@/hooks/use-semantic-layer';
 import { toast } from 'sonner';
 import type { SemanticQueryRequest } from '@/lib/types/semantic-layer';
 
@@ -57,6 +57,8 @@ export function SemanticQueryBuilder({ modelId: initialModelId, className }: Sem
         try {
             await executeQuery.mutateAsync(request);
             toast.success('Query executed successfully');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.message || 'Failed to execute query');
         }

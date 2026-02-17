@@ -57,7 +57,7 @@ export function ForecastChart({ history, forecast, className }: ForecastChartPro
         // creates a continuous line visually in most cases, or we can just let them be separate.
         // Let's add the last history point to the forecast line as a starting point if available.
         if (history.length > 0 && forecast.length > 0) {
-            const lastHistory = history[history.length - 1]
+            const _lastHistory = history[history.length - 1]
             // Push a point that has BOTH history and forecast values (equal) to connect lines?
             // Or just a duplicate point with forecast value = history value.
             // Actually, easiest is to have the forecast line start exactly where history ends.

@@ -7,6 +7,8 @@ export interface LineageNode {
     data: {
         label: string;
         type: 'SOURCE' | 'PIPELINE' | 'DESTINATION';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         details?: any
     };
     position: { x: number; y: number }; // We'll set 0,0 and let dagre handle layout
@@ -55,7 +57,9 @@ export const lineageService = {
 
             // 2. Source Node
             let sourceId = '';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             let sourceLabel = '';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const config = pipeline.sourceConfig as any;
 
             if (pipeline.sourceType === 'postgres') {
@@ -95,8 +99,10 @@ export const lineageService = {
 
             if (pipeline.destinationType === 'INTERNAL_RAW') {
                 destLabel = 'Raw Store';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 destId = 'internal-raw';
             } else if (pipeline.destinationType === 'POSTGRES') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const destConfig = pipeline.destinationConfig as any;
                 destLabel = destConfig?.tableName || 'Dest Table';
                 destId = `dest-${destLabel}`;

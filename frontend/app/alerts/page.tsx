@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Plus, Bell, Activity, AlertTriangle, CheckCircle2, VolumeX } from 'lucide-react';
+import { Plus, Bell, Activity, CheckCircle2, VolumeX } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AlertList } from '@/components/alerts/alert-list';
 import { TriggeredAlerts } from '@/components/alerts/triggered-alerts';
@@ -48,6 +48,8 @@ export default function AlertsPage() {
 
     useEffect(() => {
         fetchData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleCreateAlert = async (data: CreateAlertRequest) => {

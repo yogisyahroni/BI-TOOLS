@@ -6,7 +6,7 @@ interface VideoPlayerProps {
     poster?: string;
 }
 
-export function VideoPlayer({ src, title, poster }: VideoPlayerProps) {
+export function VideoPlayer({ src, title, _poster }: VideoPlayerProps) {
     return (
         <div className="overflow-hidden rounded-lg border bg-black shadow-sm">
             <div className="relative aspect-video">

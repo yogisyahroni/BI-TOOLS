@@ -1,6 +1,6 @@
 import React from 'react';
 import { type Slide } from '@/types/presentation';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { _Card, _CardContent, _CardHeader, _CardTitle } from '@/components/ui/card';
 
 interface SlideProps {
     slide: Slide;

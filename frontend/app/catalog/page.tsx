@@ -9,13 +9,12 @@ import { useSavedQueries } from '@/hooks/use-saved-queries';
 import { useBusinessMetrics } from '@/hooks/use-business-metrics';
 import { CatalogItemCard } from '@/components/catalog/catalog-item-card';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, Loader2, Filter } from 'lucide-react';
 import { type SavedQuery, type BusinessMetric } from '@/lib/types';
 
 export default function DataCatalogPage() {
-    const { toggle: toggleSidebar } = useSidebar(); // Assuming context provides toggle
+    const { toggle: _toggleSidebar } = useSidebar();
     const { queries, isLoading: queriesLoading } = useSavedQueries({ autoFetch: true });
     const { metrics, isLoading: metricsLoading } = useBusinessMetrics({ autoFetch: true });
 
@@ -102,26 +101,34 @@ export default function DataCatalogPage() {
 
                 {/* Content */}
                 <div className="flex-1 overflow-y-auto p-6">
-                    {isLoading ? (
-                        <div className="h-64 flex items-center justify-center">
-                            <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                        </div>
-                    ) : sortedItems.length === 0 ? (
-                        <div className="h-64 flex flex-col items-center justify-center text-muted-foreground">
-                            <Filter className="h-12 w-12 mb-4 opacity-20" />
-                            <p>No items found matching your criteria.</p>
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {sortedItems.map((item) => (
-                                <CatalogItemCard
-                                    key={`${item.type}-${item.id}`}
-                                    item={item}
-                                    type={item.type}
-                                />
-                            ))}
-                        </div>
-                    )}
+                    {(() => {
+                        if (isLoading) {
+                            return (
+                                <div className="h-64 flex items-center justify-center">
+                                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                                </div>
+                            );
+                        }
+                        if (sortedItems.length === 0) {
+                            return (
+                                <div className="h-64 flex flex-col items-center justify-center text-muted-foreground">
+                                    <Filter className="h-12 w-12 mb-4 opacity-20" />
+                                    <p>No items found matching your criteria.</p>
+                                </div>
+                            );
+                        }
+                        return (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                                {sortedItems.map((item) => (
+                                    <CatalogItemCard
+                                        key={`${item.type}-${item.id}`}
+                                        item={item}
+                                        type={item.type}
+                                    />
+                                ))}
+                            </div>
+                        );
+                    })()}
                 </div>
             </div>
         </SidebarLayout>

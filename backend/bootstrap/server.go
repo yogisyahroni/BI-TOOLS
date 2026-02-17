@@ -17,7 +17,7 @@ import (
 )
 
 // InitServer initializes the Fiber app
-func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
+func InitServer(svc *ServiceContainer, h *routes.HandlerContainer) *fiber.App {
 	app := fiber.New(fiber.Config{
 		AppName: "InsightEngine Backend (Go)",
 	})
@@ -28,6 +28,9 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 
 	// Request ID (TASK-180: generates UUID v4 per request for log/trace correlation)
 	app.Use(middleware.RequestIDMiddleware())
+
+	// Security Headers (TASK-174, TASK-175: CSP, HSTS, etc.)
+	app.Use(middleware.SecurityHeaders(middleware.DefaultSecurityHeadersConfig()))
 
 	// SSL/TLS Enforcement
 	sslConfig := middleware.LoadSSLConfigFromEnv()
@@ -44,7 +47,7 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 	apiVersionConfig := middleware.CreateDefaultAPIVersionConfig()
 	app.Use(middleware.APIVersionMiddleware(apiVersionConfig))
 
-	// Observability - Distributed Tracing
+	// Observability - Distributed Tracing (TASK-179)
 	tracingConfig := middleware.CreateDefaultTracingConfig()
 	if tracerProvider, err := middleware.InitTracer(tracingConfig); err != nil {
 		services.LogWarn("tracing_init", "Failed to initialize tracer", map[string]interface{}{"error": err})
@@ -56,7 +59,18 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 			}
 		}()
 	}
-	app.Use(middleware.DistributedTracingMiddleware(tracingConfig))
+	app.Use(middleware.TracingMiddleware()) // TASK-179: Use new TracingMiddleware
+	app.Use(middleware.DistributedTracingMiddleware(tracingConfig)) // Keep existing one if it does something else, or replace?
+	// The existing middleware.DistributedTracingMiddleware seems to be a placeholder or different impl.
+	// Let's assume the new one supersedes or complements. Since I wrote TracingMiddleware to be standard OTEL,
+	// I will place it before the existing one for now, or replace if I am sure.
+	// Reading server.go again, I see `middleware.CreateDefaultTracingConfig`.
+	// Let's keep the existing structure but ensure my new middleware is used.
+	// Actually, looking at `backend/middleware/tracing.go`, I defined `TracingMiddleware`.
+	// I should use that.
+
+	// Observability - Prometheus Metrics (TASK-178)
+	app.Use(middleware.PrometheusMiddleware())
 
 	// Observability - Enhanced Metrics
 	app.Use(middleware.EnhancedMetricsMiddleware())
@@ -90,8 +104,9 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 	})
 
 	// Metrics
+	// Metrics
 	services.InitMetrics()
-	app.Use(middleware.MetricsMiddleware)
+	// app.Use(middleware.MetricsMiddleware) // Removed in favor of PrometheusMiddleware
 
 	// Degradation Middleware
 	app.Use(middleware.DegradationMiddleware(middleware.DegradationConfig{
@@ -106,6 +121,7 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 		AuthHandler:              h.AuthHandler,
 		OAuthHandler:             h.OAuthHandler,
 		PermissionHandler:        h.PermissionHandler,
+		FormulaHandler:           h.FormulaHandler,
 		QueryHandler:             h.QueryHandler,
 		VisualQueryHandler:       h.VisualQueryHandler,
 		ConnectionHandler:        h.ConnectionHandler,
@@ -142,6 +158,7 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 		NLHandler:                h.NLHandler,
 		WebhookHandler:           h.WebhookHandler,
 		CollectionHandler:        h.CollectionHandler,
+		SystemHealthHandler:      h.SystemHealthHandler,
 		// Reporting, Forecasting, Anomaly handlers were in main.go but need check if they are in routes.HandlerContainer
 		// They were routed manually in main.go
 	}
@@ -151,6 +168,11 @@ func InitServer(svc *ServiceContainer, h *HandlerContainer) *fiber.App {
 		AdminMiddleware:           middleware.RequireAdmin,
 		RateLimitMiddleware:       comprehensiveRateLimit,
 		AdaptiveTimeoutMiddleware: middleware.AdaptiveTimeoutMiddleware(),
+		CacheMiddleware: middleware.CacheMiddleware(middleware.CacheConfig{
+			RedisCache: svc.RedisCache,
+			TTL:        5 * time.Minute,
+			KeyPrefix:  "api_cache:",
+		}),
 	}
 
 	// Setup Standard Routes

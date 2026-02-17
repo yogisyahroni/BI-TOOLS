@@ -50,6 +50,8 @@ interface SaveMetadata {
 
 interface QueryExecutionResult {
     success: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: any[];
     columns?: string[];
     rowCount?: number;
@@ -107,7 +109,7 @@ export function VisualQueryWorkspace({
         setHasUnsavedChanges(true);
     };
 
-    const handleSortsChange = (sorts: SortRule[]) => {
+    const _handleSortsChange = (sorts: SortRule[]) => {
         setConfig((prev) => ({ ...prev, sorts }));
         setHasUnsavedChanges(true);
     };
@@ -213,7 +215,7 @@ export function VisualQueryWorkspace({
             });
             setHasUnsavedChanges(false);
             toast.success('Query saved successfully');
-        } catch (err) {
+        } catch (_err) {
             toast.error('Failed to save query');
         }
     };
@@ -240,7 +242,7 @@ export function VisualQueryWorkspace({
                 setExecutionResult(null);
                 toast.success('Query loaded successfully');
             }
-        } catch (err) {
+        } catch (_err) {
             toast.error('Failed to load query');
         }
     };

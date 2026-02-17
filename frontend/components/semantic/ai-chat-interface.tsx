@@ -25,7 +25,7 @@ export function AIChatInterface({ conversationId: initialConversationId, classNa
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     // Hooks
-    const { sendMessage, streamMessage, isSending, isStreaming, response, streamedResponse } = useSemanticChat();
+    const { _sendMessage, streamMessage, isSending, isStreaming, response, streamedResponse } = useSemanticChat();
     const { data: conversation, isLoading, refetch } = useSemanticConversation(conversationId);
 
     // Auto-scroll to bottom when new messages arrive

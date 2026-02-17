@@ -123,7 +123,7 @@ export function getColorForValue(
     value: number,
     colorScale: ColorScale
 ): string {
-    const { type, colors, domain, steps } = colorScale
+    const { type, colors, domain, _steps } = colorScale
 
     if (type === 'categorical') {
         // Simple categorical mapping
@@ -199,6 +199,8 @@ export function generateColorSteps(
 /**
  * Validate GeoJSON structure
  */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function validateGeoJSON(data: any): data is GeoJSONFeatureCollection {
     if (!data || typeof data !== 'object') {
         return false

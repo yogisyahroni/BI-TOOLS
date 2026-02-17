@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"insight-engine-backend/models"
 	"regexp"
 	"strings"
 )
@@ -22,26 +23,9 @@ type OptimizationPattern struct {
 	Example     string
 }
 
-// OptimizationSuggestion represents a single optimization suggestion
-type OptimizationSuggestion struct {
-	Type        string `json:"type"`     // "index", "join", "select", "where", "subquery"
-	Severity    string `json:"severity"` // "high", "medium", "low"
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Original    string `json:"original"`
-	Optimized   string `json:"optimized"`
-	Impact      string `json:"impact"` // Estimated performance impact
-	Example     string `json:"example"`
-}
+// OptimizationSuggestion moved to models
 
-// QueryAnalysisResult represents the result of query analysis
-type QueryAnalysisResult struct {
-	Query                string                   `json:"query"`
-	Suggestions          []OptimizationSuggestion `json:"suggestions"`
-	PerformanceScore     int                      `json:"performanceScore"`     // 0-100
-	ComplexityLevel      string                   `json:"complexityLevel"`      // "low", "medium", "high"
-	EstimatedImprovement string                   `json:"estimatedImprovement"` // e.g., "30-50%"
-}
+// QueryAnalysisResult moved to models
 
 // NewQueryOptimizer creates a new query optimizer
 func NewQueryOptimizer() *QueryOptimizer {
@@ -116,14 +100,14 @@ func NewQueryOptimizer() *QueryOptimizer {
 }
 
 // AnalyzeQuery analyzes a SQL query and provides optimization suggestions
-func (qo *QueryOptimizer) AnalyzeQuery(query string) *QueryAnalysisResult {
+func (qo *QueryOptimizer) AnalyzeQuery(query string) *models.QueryAnalysisResult {
 	query = strings.TrimSpace(query)
-	suggestions := []OptimizationSuggestion{}
+	suggestions := []models.OptimizationSuggestion{}
 
 	// Check each pattern
 	for _, pattern := range qo.patterns {
 		if pattern.Pattern.MatchString(query) {
-			suggestion := OptimizationSuggestion{
+			suggestion := models.OptimizationSuggestion{
 				Type:        qo.categorizePattern(pattern.Name),
 				Severity:    pattern.Severity,
 				Title:       pattern.Name,
@@ -159,7 +143,7 @@ func (qo *QueryOptimizer) AnalyzeQuery(query string) *QueryAnalysisResult {
 	// Estimate improvement
 	improvement := qo.estimateImprovement(suggestions)
 
-	return &QueryAnalysisResult{
+	return &models.QueryAnalysisResult{
 		Query:                query,
 		Suggestions:          suggestions,
 		PerformanceScore:     score,
@@ -244,7 +228,7 @@ func (qo *QueryOptimizer) determineComplexity(query string) string {
 }
 
 // estimateImprovement estimates overall improvement potential
-func (qo *QueryOptimizer) estimateImprovement(suggestions []OptimizationSuggestion) string {
+func (qo *QueryOptimizer) estimateImprovement(suggestions []models.OptimizationSuggestion) string {
 	if len(suggestions) == 0 {
 		return "Query is already optimized"
 	}
@@ -287,4 +271,272 @@ func (qo *QueryOptimizer) OptimizeQuery(query string) string {
 	}
 
 	return optimized
+}
+
+// ============================================================
+// EXPLAIN Integration (GAP-009)
+// ============================================================
+
+// ExplainResult, ExplainNode, IndexRecommendation, CostEstimate moved to models
+
+// ParseExplainOutput parses raw EXPLAIN text output into structured ExplainResult
+func (qo *QueryOptimizer) ParseExplainOutput(rawPlan string) *models.ExplainResult {
+	result := &models.ExplainResult{
+		RawPlan: rawPlan,
+		Nodes:   []models.ExplainNode{},
+	}
+
+	lines := strings.Split(rawPlan, "\n")
+
+	// Regex patterns for EXPLAIN output parsing
+	nodePattern := regexp.MustCompile(`(?i)(Seq Scan|Index Scan|Index Only Scan|Bitmap Heap Scan|Bitmap Index Scan|Hash Join|Merge Join|Nested Loop|Sort|Aggregate|Hash|Materialize|Limit|Append|Subquery Scan|CTE Scan|Gather|Gather Merge)\s+(?:on\s+)?(\S+)?`)
+	costPattern := regexp.MustCompile(`cost=(\d+\.?\d*)\.\.(\d+\.?\d*)\s+rows=(\d+)\s+width=(\d+)`)
+	actualPattern := regexp.MustCompile(`actual time=(\d+\.?\d*)\.\.(\d+\.?\d*)\s+rows=(\d+)`)
+	filterPattern := regexp.MustCompile(`Filter:\s+(.+)`)
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" || strings.HasPrefix(line, "Planning") || strings.HasPrefix(line, "Execution") {
+			continue
+		}
+
+		nodeMatch := nodePattern.FindStringSubmatch(line)
+		if nodeMatch == nil {
+			continue
+		}
+
+		node := models.ExplainNode{
+			NodeType: nodeMatch[1],
+		}
+		if len(nodeMatch) > 2 {
+			node.On = nodeMatch[2]
+		}
+
+		// Parse cost
+		costMatch := costPattern.FindStringSubmatch(line)
+		if costMatch != nil {
+			cost, _ := parseFloat(costMatch[2])
+			rows, _ := parseInt(costMatch[3])
+			width, _ := parseInt(costMatch[4])
+
+			node.Cost = cost
+			node.Rows = int64(rows)
+			node.Width = width
+
+			// Track total cost from root node
+			if result.TotalCost == 0 {
+				result.TotalCost = cost
+				result.RowEstimate = int64(rows)
+			}
+		}
+
+		// Parse actual time (if ANALYZE was used)
+		actualMatch := actualPattern.FindStringSubmatch(line)
+		if actualMatch != nil {
+			actualTime, _ := parseFloat(actualMatch[2])
+			actualRows, _ := parseInt(actualMatch[3])
+			node.ActualTimeMs = actualTime
+			node.ActualRows = int64(actualRows)
+
+			if result.ActualTimeMs == 0 {
+				result.ActualTimeMs = actualTime
+				result.ActualRows = int64(actualRows)
+			}
+		}
+
+		// Parse filter
+		filterMatch := filterPattern.FindStringSubmatch(line)
+		if filterMatch != nil {
+			node.Filter = filterMatch[1]
+		}
+
+		// Detect warnings
+		if strings.EqualFold(node.NodeType, "Seq Scan") && node.Rows > 1000 {
+			node.Warning = fmt.Sprintf("Sequential scan on %s with %d estimated rows — consider adding an index", node.On, node.Rows)
+			result.Warnings = append(result.Warnings, node.Warning)
+		}
+
+		result.Nodes = append(result.Nodes, node)
+	}
+
+	return result
+}
+
+// RecommendIndexes analyzes a SQL query and suggests indexes based on WHERE, JOIN, and ORDER BY columns
+func (qo *QueryOptimizer) RecommendIndexes(query string) []models.IndexRecommendation {
+	var recs []models.IndexRecommendation
+	upperQ := strings.ToUpper(query)
+	lowerQ := strings.ToLower(query)
+
+	// Extract table names from FROM clause
+	fromPattern := regexp.MustCompile(`(?i)FROM\s+(\w+)`)
+	fromMatches := fromPattern.FindAllStringSubmatch(query, -1)
+	tableSet := make(map[string]bool)
+	for _, m := range fromMatches {
+		tableSet[m[1]] = true
+	}
+
+	// Extract JOIN tables
+	joinPattern := regexp.MustCompile(`(?i)JOIN\s+(\w+)`)
+	joinMatches := joinPattern.FindAllStringSubmatch(query, -1)
+	for _, m := range joinMatches {
+		tableSet[m[1]] = true
+	}
+
+	// Extract WHERE column references (simple heuristic)
+	wherePattern := regexp.MustCompile(`(?i)WHERE\s+(.+?)(?:GROUP|ORDER|HAVING|LIMIT|;|$)`)
+	whereMatch := wherePattern.FindStringSubmatch(query)
+	if whereMatch != nil {
+		whereClause := whereMatch[1]
+		colPattern := regexp.MustCompile(`(\w+)\s*(?:=|>|<|>=|<=|<>|!=|LIKE|IN|BETWEEN|IS)`)
+		colMatches := colPattern.FindAllStringSubmatch(whereClause, -1)
+		seen := make(map[string]bool)
+		for _, cm := range colMatches {
+			colName := strings.ToLower(cm[1])
+			if isReservedWord(colName) || seen[colName] {
+				continue
+			}
+			seen[colName] = true
+
+			// Find the most likely table for this column
+			table := guessTableForColumn(colName, tableSet)
+			recs = append(recs, models.IndexRecommendation{
+				Table:     table,
+				Columns:   colName,
+				Reason:    fmt.Sprintf("Column '%s' used in WHERE clause", colName),
+				CreateSQL: fmt.Sprintf("CREATE INDEX CONCURRENTLY idx_%s_%s ON %s (%s);", table, colName, table, colName),
+				Priority:  "high",
+			})
+		}
+	}
+
+	// Extract ORDER BY columns
+	orderPattern := regexp.MustCompile(`(?i)ORDER\s+BY\s+(\w+(?:\s*,\s*\w+)*)`)
+	orderMatch := orderPattern.FindStringSubmatch(query)
+	if orderMatch != nil {
+		cols := strings.Split(orderMatch[1], ",")
+		for _, col := range cols {
+			col = strings.TrimSpace(strings.ToLower(col))
+			col = strings.Fields(col)[0] // Remove ASC/DESC
+			if isReservedWord(col) {
+				continue
+			}
+			table := guessTableForColumn(col, tableSet)
+			recs = append(recs, models.IndexRecommendation{
+				Table:     table,
+				Columns:   col,
+				Reason:    fmt.Sprintf("Column '%s' used in ORDER BY clause", col),
+				CreateSQL: fmt.Sprintf("CREATE INDEX CONCURRENTLY idx_%s_%s ON %s (%s);", table, col, table, col),
+				Priority:  "medium",
+			})
+		}
+	}
+
+	// Check for JOIN conditions (foreign key indexes)
+	joinCondPattern := regexp.MustCompile(`(?i)ON\s+(\w+)\.(\w+)\s*=\s*(\w+)\.(\w+)`)
+	joinCondMatches := joinCondPattern.FindAllStringSubmatch(query, -1)
+	for _, jm := range joinCondMatches {
+		for i := 1; i <= 3; i += 2 {
+			tbl := strings.ToLower(jm[i])
+			col := strings.ToLower(jm[i+1])
+			recs = append(recs, models.IndexRecommendation{
+				Table:     tbl,
+				Columns:   col,
+				Reason:    fmt.Sprintf("Column '%s.%s' used in JOIN condition", tbl, col),
+				CreateSQL: fmt.Sprintf("CREATE INDEX CONCURRENTLY idx_%s_%s ON %s (%s);", tbl, col, tbl, col),
+				Priority:  "high",
+			})
+		}
+	}
+
+	// Suppress noise
+	_ = upperQ
+	_ = lowerQ
+
+	return deduplicateIndexRecs(recs)
+}
+
+func (qo *QueryOptimizer) EstimateCost(explainResult *models.ExplainResult) *models.CostEstimate {
+	if explainResult == nil {
+		return &models.CostEstimate{CostCategory: "unknown"}
+	}
+
+	est := &models.CostEstimate{
+		PlannerCost:   explainResult.TotalCost,
+		EstimatedRows: explainResult.RowEstimate,
+	}
+
+	// Calculate width from first node
+	if len(explainResult.Nodes) > 0 {
+		est.EstimatedWidth = explainResult.Nodes[0].Width
+	}
+	est.EstimatedDataSize = est.EstimatedRows * int64(est.EstimatedWidth)
+
+	// Categorize cost
+	switch {
+	case est.PlannerCost < 10:
+		est.CostCategory = "cheap"
+	case est.PlannerCost < 100:
+		est.CostCategory = "moderate"
+	case est.PlannerCost < 10000:
+		est.CostCategory = "expensive"
+	default:
+		est.CostCategory = "very_expensive"
+	}
+
+	return est
+}
+
+// ---- Helpers ----
+
+func parseFloat(s string) (float64, error) {
+	var f float64
+	_, err := fmt.Sscanf(s, "%f", &f)
+	return f, err
+}
+
+func parseInt(s string) (int, error) {
+	var i int
+	_, err := fmt.Sscanf(s, "%d", &i)
+	return i, err
+}
+
+func isReservedWord(s string) bool {
+	reserved := map[string]bool{
+		"select": true, "from": true, "where": true, "and": true, "or": true,
+		"not": true, "in": true, "like": true, "between": true, "is": true,
+		"null": true, "true": true, "false": true, "as": true, "on": true,
+		"join": true, "left": true, "right": true, "inner": true, "outer": true,
+		"group": true, "order": true, "by": true, "having": true, "limit": true,
+		"offset": true, "union": true, "all": true, "distinct": true, "case": true,
+		"when": true, "then": true, "else": true, "end": true, "exists": true,
+	}
+	return reserved[strings.ToLower(s)]
+}
+
+func guessTableForColumn(col string, tables map[string]bool) string {
+	// If only one table, use it
+	if len(tables) == 1 {
+		for t := range tables {
+			return strings.ToLower(t)
+		}
+	}
+	// Otherwise return first table (imprecise but useful for suggestions)
+	for t := range tables {
+		return strings.ToLower(t)
+	}
+	return "unknown_table"
+}
+
+func deduplicateIndexRecs(recs []models.IndexRecommendation) []models.IndexRecommendation {
+	seen := make(map[string]bool)
+	var unique []models.IndexRecommendation
+	for _, r := range recs {
+		key := r.Table + "." + r.Columns
+		if !seen[key] {
+			seen[key] = true
+			unique = append(unique, r)
+		}
+	}
+	return unique
 }

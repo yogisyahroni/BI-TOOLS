@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { useExplainData } from '@/hooks/use-semantic';
 import { toast } from 'sonner';
-import type { ExplainDataRequest } from '@/lib/types/semantic';
+import type { _ExplainDataRequest } from '@/lib/types/semantic';
 
 interface DataExplainerProps {
     className?: string;
@@ -43,10 +43,12 @@ export function DataExplainer({ className }: DataExplainerProps) {
     const handleExplain = () => {
         if (!prompt.trim() || isExplaining) return;
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let parsedContext: Record<string, any> = {};
         try {
             parsedContext = JSON.parse(context);
-        } catch (e) {
+        } catch (_e) {
             toast.error('Invalid JSON in context');
             return;
         }
@@ -66,7 +68,7 @@ export function DataExplainer({ className }: DataExplainerProps) {
             setCopied(true);
             toast.success('Explanation copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to copy explanation');
         }
     };

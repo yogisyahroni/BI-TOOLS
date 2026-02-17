@@ -4,19 +4,21 @@ import (
 	"insight-engine-backend/controllers"
 	"insight-engine-backend/database"
 	"insight-engine-backend/handlers"
+	"insight-engine-backend/routes"
 )
 
 // InitHandlers initializes all handlers
-func InitHandlers(svc *ServiceContainer) *HandlerContainer {
+func InitHandlers(svc *ServiceContainer) *routes.HandlerContainer {
 
 	// Core Handlers
 	aiHandler := handlers.NewAIHandler(svc.AIService, svc.AIReasoningService, svc.AIOptimizerService, svc.StoryGeneratorService)
+	storyHandler := handlers.NewStoryHandler(svc.StoryGeneratorService, svc.PPTXGenerator) // TASK-161
 	authHandler := handlers.NewAuthHandler(svc.AuthService)
 	oauthHandler := handlers.NewOAuthHandler(svc.OAuthService)
 
 	visualQueryHandler := handlers.NewVisualQueryHandler(database.DB, svc.QueryBuilder, svc.QueryExecutor, svc.SchemaDiscovery, svc.QueryCache)
 	connectionHandler := handlers.NewConnectionHandler(svc.QueryExecutor, svc.SchemaDiscovery)
-	queryHandler := handlers.NewQueryHandler(svc.QueryExecutor)
+	queryHandler := handlers.NewQueryHandler(svc.QueryExecutor, svc.QueryCache)
 	queryAnalyzerHandler := handlers.NewQueryAnalyzerHandler(database.DB, svc.QueryExecutor)
 
 	materializedViewHandler := handlers.NewMaterializedViewHandler(database.DB, svc.MaterializedViewService)
@@ -74,12 +76,16 @@ func InitHandlers(svc *ServiceContainer) *HandlerContainer {
 
 	lineageController := controllers.NewLineageController()
 	permissionHandler := handlers.NewPermissionHandler(database.DB)
+	formulaHandler := handlers.NewFormulaHandler(svc.FormulaEngine) // GAP-004
 
-	return &HandlerContainer{
+	return &routes.HandlerContainer{
 		AIHandler:                aiHandler,
+		StoryHandler:             storyHandler, // TASK-161
 		AuthHandler:              authHandler,
 		OAuthHandler:             oauthHandler,
+
 		PermissionHandler:        permissionHandler,
+		FormulaHandler:           formulaHandler, // GAP-004
 		QueryHandler:             queryHandler,
 		VisualQueryHandler:       visualQueryHandler,
 		ConnectionHandler:        connectionHandler,
@@ -120,5 +126,6 @@ func InitHandlers(svc *ServiceContainer) *HandlerContainer {
 		AnomalyHandler:           anomalyHandler,
 		LineageController:        lineageController,
 		CollectionHandler:        handlers.NewCollectionHandler(),
+		SystemHealthHandler:      handlers.NewSystemHealthHandler(svc.SystemHealthService),
 	}
 }

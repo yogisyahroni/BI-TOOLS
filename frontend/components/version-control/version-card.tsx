@@ -9,7 +9,7 @@ import {
   GitCompare, 
   Trash2,
   Clock,
-  User,
+  _User,
   ChevronRight
 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'

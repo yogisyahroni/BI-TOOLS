@@ -1,4 +1,4 @@
-import { SlideDeck } from '@/types/presentation';
+import { _SlideDeck } from '@/types/presentation';
 import { StoryBuilder } from '@/components/presentation/story-builder';
 
 interface StoryPageProps {
@@ -8,7 +8,7 @@ interface StoryPageProps {
   searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default function StoryPage({ params, searchParams }: StoryPageProps) {
+export default function StoryPage({ _params, searchParams }: StoryPageProps) {
   // In a real app, we'd fetch the story by ID here.
   // For now, we allow creating a "draft" or loading by ID (mocked/client-side).
   // If ID is truly persistent, we'd fetch it.

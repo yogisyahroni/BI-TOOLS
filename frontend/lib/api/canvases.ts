@@ -15,6 +15,8 @@ export const canvasApi = {
     },
 
     // POST /api/go/canvases
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     create: async (data: { appId: string; name: string; config?: Record<string, any> }): Promise<Canvas> => {
         const res = await fetch(`${API_BASE}/canvases`, {
             method: 'POST',

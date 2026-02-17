@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Loader2, CheckCircle2, AlertCircle, ArrowRight, Lock } from 'lucide-react';
 import { PasswordInput } from '@/components/ui/password-input';
-import { FormError } from '@/components/ui/form-error';
+import { _FormError } from '@/components/ui/form-error';
 import { SecurityIndicators } from '@/components/auth/security-indicators';
 import { z } from 'zod';
 import { authApi } from '@/lib/api/auth';

@@ -55,6 +55,8 @@ export function WebAuthnSignin() {
                 toast.error('Verification failed');
             }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error(error);
             if (error.name === 'NotAllowedError') {

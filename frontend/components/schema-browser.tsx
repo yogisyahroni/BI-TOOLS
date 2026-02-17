@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
-import { X, Database, Table, AlertCircle, Search, ChevronDown, ChevronRight, Key, Link } from 'lucide-react';
+import { _X, Database, Table, AlertCircle, Search, ChevronDown, ChevronRight, Key, Link } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -24,7 +24,7 @@ const EMPTY_SCHEMA: SchemaInfo = {
 };
 
 export function SchemaBrowser({
-  onClose,
+  _onClose,
   schema,
   isLoading = false,
   connectionName = 'Default Connection',

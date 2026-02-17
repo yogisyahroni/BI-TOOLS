@@ -1,6 +1,7 @@
 package middleware
 
 import (
+    "context"
 	"fmt"
 	"insight-engine-backend/services"
 	"os"
@@ -103,12 +104,30 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	}
 
 	// 3. Extract user ID from claims and store in context (Normal User Flow)
+	// 3. Extract user ID from claims and store in context (Normal User Flow)
 	if sub, ok := claims["sub"].(string); ok {
 		c.Locals("userID", sub)
 		c.Locals("userId", sub)
+        
+        // Inject into UserContext
+        ctx := c.UserContext()
+        if ctx == nil {
+            ctx = c.Context()
+        }
+        ctx = context.WithValue(ctx, "userID", sub)
+        c.SetUserContext(ctx)
+
 	} else if id, ok := claims["id"].(string); ok {
 		c.Locals("userID", id)
 		c.Locals("userId", id)
+
+        // Inject into UserContext
+        ctx := c.UserContext()
+        if ctx == nil {
+            ctx = c.Context()
+        }
+        ctx = context.WithValue(ctx, "userID", id)
+        c.SetUserContext(ctx)
 	}
 
 	if email, ok := claims["email"].(string); ok {

@@ -57,7 +57,7 @@ export default function ThemeSettingsPage() {
                     darkMode: data.darkMode ?? false
                 });
             })
-            .catch(err => toast.error("Failed to load theme"))
+            .catch(_err => toast.error("Failed to load theme"))
             .finally(() => setLoading(false));
     }, [workspaceId]);
 
@@ -75,7 +75,7 @@ export default function ThemeSettingsPage() {
             toast.success("Theme updated successfully");
             // Force reload to apply changes (since provider fetches on mount)
             window.location.reload();
-        } catch (error) {
+        } catch (_error) {
             toast.error("Failed to update theme");
         } finally {
             setSaving(false);

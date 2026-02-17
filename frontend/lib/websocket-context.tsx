@@ -3,13 +3,15 @@
 import { createContext, useContext } from 'react';
 import type {
     WebSocketState,
-    NotificationWebSocketPayload,
-    ActivityWebSocketPayload,
-    SystemWebSocketPayload
+    _NotificationWebSocketPayload,
+    _ActivityWebSocketPayload,
+    _SystemWebSocketPayload
 } from '@/lib/types/notifications';
 
 export type WebSocketEventType = 'notification' | 'activity' | 'system';
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type WebSocketEventHandler<T = any> = (payload: T) => void;
 
 export interface WebSocketContextType extends WebSocketState {

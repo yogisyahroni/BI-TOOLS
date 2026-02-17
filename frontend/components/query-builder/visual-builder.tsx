@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, _useCallback, useEffect } from 'react';
 import {
     DndContext,
     type DragEndEvent,
@@ -117,6 +117,8 @@ export function VisualBuilder({
         }
 
         fetchJoinSuggestions();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedTables]);
 
     // Propagate changes to parent

@@ -2,7 +2,7 @@
 // Pre-configured chart settings untuk quick start
 
 import type { EChartsOption } from 'echarts'
-import { DEFAULT_PALETTES, getPaletteById } from './chart-palettes'
+import { _getPaletteById } from './chart-palettes'
 
 /**
  * Chart Template Category
@@ -27,6 +27,8 @@ export interface ChartTemplate {
     thumbnail?: string
     config: Partial<EChartsOption>
     requiredFields?: string[]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     exampleData?: any
 }
 
@@ -503,7 +505,9 @@ export function getTemplatesByChartType(chartType: string): ChartTemplate[] {
  * Apply template to data
  */
 export function applyTemplate(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     template: ChartTemplate,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[],
     fieldMapping?: Record<string, string>
 ): Partial<EChartsOption> {

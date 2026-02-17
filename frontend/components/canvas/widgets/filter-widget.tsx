@@ -8,7 +8,7 @@ interface WidgetProps {
     readOnly?: boolean;
 }
 
-export function FilterWidget({ widget, readOnly }: WidgetProps) {
+export function FilterWidget({ widget, _readOnly }: WidgetProps) {
     const type = widget.config.filterType || 'date';
 
     return (

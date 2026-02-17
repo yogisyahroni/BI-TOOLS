@@ -2,9 +2,9 @@ export const dynamic = 'force-dynamic';
 
 
 import { type NextRequest, NextResponse } from 'next/server';
+import { _db } from '@/lib/db';
 import { Client } from 'pg';
 import Papa from 'papaparse';
-import { connectionService } from '@/lib/services/connection-service';
 import { getSecurityContext } from '@/lib/security/rls-context';
 
 export async function POST(request: NextRequest) {
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ success: false, error: 'CSV Parse Error', details: parsed.errors }, { status: 400 });
         }
 
-        const data = parsed.data as any[];
+        const data = parsed.data as Record<string, unknown>[];
         if (data.length === 0) {
             return NextResponse.json({ success: false, error: 'CSV is empty' }, { status: 400 });
         }
@@ -35,9 +35,11 @@ export async function POST(request: NextRequest) {
         // Infer Types
         const types = safeHeaders.map((header, index) => {
             const originalHeader = headers[index];
-            const sample = data.find(row => row[originalHeader] !== null && row[originalHeader] !== '')?.[originalHeader];
+            const sampleValue = data.find(row => row[originalHeader] !== null && row[originalHeader] !== '')?.[originalHeader];
 
-            if (sample === undefined) return 'TEXT'; // All nulls
+            const sample = String(sampleValue ?? '');
+
+            if (sample === '') return 'TEXT'; // All nulls or empty
             if (!isNaN(Number(sample))) return 'DECIMAL';
             const date = Date.parse(sample);
             if (!isNaN(date) && sample.includes('-')) return 'TIMESTAMP'; // Basic date check

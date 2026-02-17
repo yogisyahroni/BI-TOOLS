@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from 'react';
+import { useState, _useEffect } from 'react';
 import Link from 'next/link';
 import {
   ArrowLeft,
@@ -11,15 +11,15 @@ import {
   Share2,
   MoreVertical,
   Calendar,
-  Users,
-  TrendingUp,
+  _Users,
+  _TrendingUp,
   Search,
   Pin,
   Play,
   FileCode,
   Sparkles,
   Eye,
-  Loader2,
+  _Loader2,
   Menu,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -47,8 +47,8 @@ export default function SavedQueriesPage() {
   const {
     queries,
     isLoading,
-    error,
-    fetchQueries,
+    _error,
+    _fetchQueries,
     deleteQuery,
     pinQuery,
     updateQuery,

@@ -40,14 +40,15 @@ export class GeminiProvider implements IAIProvider {
             // Clean markdown blocks if present
             const cleanJson = responseText.replace(/```json\n?|\n?```/g, '').trim();
             return JSON.parse(cleanJson) as AIResponse;
-        } catch (e) {
+        } catch (_e) {
             console.error("[GeminiProvider] Failed to parse AI response:", responseText);
             throw new Error("AI returned invalid JSON format.");
         }
     }
 
-    async analyzeResults(data: any[], sql: string): Promise<string[]> {
+    async analyzeResults(data: any[], query: string): Promise<string[]> {
         // Implementation for analyzing raw data results
+        // This is a placeholder for future implementation
         return ["Insight analysis not yet implemented for live data."];
     }
 }

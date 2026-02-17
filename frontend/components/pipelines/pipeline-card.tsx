@@ -5,7 +5,7 @@ import type { Pipeline, SSEProgressEvent } from '@/lib/types/batch2';
 import { pipelineApi } from '@/lib/api/pipelines';
 import {
     Play,
-    Pause,
+    _Pause,
     Trash2,
     Settings,
     Clock,

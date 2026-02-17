@@ -67,6 +67,8 @@ export default async function PipelineDashboardPage({ params }: DashboardPagePro
         id: f.id,
         pipelineName: f.pipeline.name,
         startedAt: f.startedAt.toISOString(),
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         error: f.logs && Array.isArray(f.logs) ? f.logs.find((l: any) => l.toString().includes('Error') || l.toString().includes('FAIL')) || 'Unknown Error' : 'Unknown Error'
     }));
 

@@ -11,32 +11,15 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/glebarez/sqlite"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
-// setupTestDB creates an in-memory SQLite database for testing
-func setupTestDB(t *testing.T) *gorm.DB {
-	db, err := gorm.Open(sqlite.Open(":memory:"), &gorm.Config{})
-	if err != nil {
-		t.Fatalf("Failed to connect to test database: %v", err)
-	}
-
-	// Auto-migrate models
-	err = db.AutoMigrate(&models.VisualQuery{}, &models.Connection{}, &models.Collection{})
-	if err != nil {
-		t.Fatalf("Failed to migrate test database: %v", err)
-	}
-
-	return db
-}
-
 // setupTestHandler creates a test handler with dependencies
 func setupTestHandler(t *testing.T) (*VisualQueryHandler, *gorm.DB) {
-	db := setupTestDB(t)
+	db := SetupTestDB()
 
-	queryExecutor := services.NewQueryExecutor(&resilience.MockCircuitBreaker{NameVal: "test"})
+	queryExecutor := services.NewQueryExecutor(&resilience.MockCircuitBreaker{NameVal: "test"}, nil, nil)
 	schemaDiscovery := services.NewSchemaDiscovery(queryExecutor)
 	queryValidator := services.NewQueryValidator([]string{})
 	queryBuilder := services.NewQueryBuilder(queryValidator, schemaDiscovery, nil, nil, nil, nil)

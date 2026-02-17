@@ -27,7 +27,7 @@ import {
   FileText,
   CheckCircle2,
   XCircle,
-  AlertCircle,
+  _AlertCircle,
 } from 'lucide-react';
 import type { ScheduledReportResponse } from '@/types/scheduled-reports';
 

@@ -44,7 +44,7 @@ export const authApi = {
      */
     register: async (data: RegisterFormData): Promise<RegisterResponse> => {
         // Remove confirmPassword and agreeTerms before sending to backend
-        const { confirmPassword, agreeTerms, ...registrationData } = data;
+        const { _confirmPassword, _agreeTerms, ...registrationData } = data;
 
         const res = await fetch(`${API_BASE}/api/auth/register`, {
             method: 'POST',

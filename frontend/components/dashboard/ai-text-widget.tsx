@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { _Card, _CardContent, _CardHeader, _CardTitle, _CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -10,7 +10,7 @@ interface AiTextWidgetProps {
     initialContent?: string;
 }
 
-export function AiTextWidget({ title, description, initialContent }: AiTextWidgetProps) {
+export function AiTextWidget({ _title, _description, initialContent }: AiTextWidgetProps) {
     const [content, setContent] = useState<string>(initialContent || "AI summary will appear here. Click regenerate to fetch new insights.");
     const [isLoading, setIsLoading] = useState(false);
 

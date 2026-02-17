@@ -5,9 +5,9 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { useWebSocket } from '@/hooks/use-websocket';
 import { WebSocketContext, type WebSocketEventType, type WebSocketEventHandler } from '@/lib/websocket-context';
 import type {
-    NotificationWebSocketPayload,
-    ActivityWebSocketPayload,
-    SystemWebSocketPayload
+    _NotificationWebSocketPayload,
+    _ActivityWebSocketPayload,
+    _SystemWebSocketPayload
 } from '@/lib/types/notifications';
 
 /**
@@ -49,6 +49,8 @@ export function WebSocketProvider({ children }: { children: React.ReactNode }) {
     }, []);
 
     // Dispatch events to listeners
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const dispatch = useCallback((type: WebSocketEventType, payload: any) => {
         const listeners = listenersRef.current.get(type);
         if (listeners) {

@@ -13,7 +13,7 @@ interface ForecastChartProps {
     className?: string;
 }
 
-export function ForecastChart({ data, title, metricLabel = 'Value', className }: ForecastChartProps) {
+export function ForecastChart({ data, title, _metricLabel = 'Value', className }: ForecastChartProps) {
 
     const options = useMemo(() => {
         // 1. Combine History and Forecast for the X-Axis

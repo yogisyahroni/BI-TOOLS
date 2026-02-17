@@ -67,6 +67,8 @@ export default function CanvasPage() {
                     const data = await res.json();
                     setCanvases(data.canvases || []);
                 })
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 .catch((error: any) => {
                     toast.error(error.message || 'Failed to load canvases');
                 })
@@ -113,7 +115,9 @@ export default function CanvasPage() {
             setShowCreateDialog(false);
 
             // Navigate to new canvas
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             router.push(`/canvas/${data.canvas.id}`);
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.message || 'Failed to create canvas');
         } finally {
@@ -171,89 +175,97 @@ export default function CanvasPage() {
             {/* Content */}
             <div className="flex-1 overflow-auto">
                 <div className="container py-6">
-                    {loading ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[1, 2, 3, 4, 5, 6].map((i) => (
-                                <Card key={i} className="animate-pulse">
-                                    <CardHeader>
-                                        <div className="h-6 bg-muted rounded w-3/4" />
-                                        <div className="h-4 bg-muted rounded w-1/2 mt-2" />
-                                    </CardHeader>
-                                    <CardContent>
-                                        <div className="h-32 bg-muted rounded" />
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    ) : filteredCanvases.length === 0 ? (
-                        <div className="text-center py-12">
-                            <Grid3x3 className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
-                            <h3 className="text-lg font-semibold mb-2">
-                                {searchQuery ? 'No canvases found' : 'No canvases yet'}
-                            </h3>
-                            <p className="text-muted-foreground mb-4">
-                                {searchQuery
-                                    ? 'Try adjusting your search query'
-                                    : 'Get started by creating your first canvas'}
-                            </p>
-                            {!searchQuery && (
-                                <Button onClick={() => setShowCreateDialog(true)}>
-                                    <Plus className="w-4 h-4 mr-2" />
-                                    Create Canvas
-                                </Button>
-                            )}
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {filteredCanvases.map((canvas) => (
-                                <Card
-                                    key={canvas.id}
-                                    className="cursor-pointer hover:shadow-lg transition-shadow"
-                                    onClick={() => router.push(`/canvas/${canvas.id}`)}
-                                >
-                                    <CardHeader>
-                                        <div className="flex items-start justify-between">
-                                            <div className="flex-1">
-                                                <CardTitle className="line-clamp-1">
-                                                    {canvas.name}
-                                                </CardTitle>
-                                                <CardDescription className="line-clamp-2 mt-1">
-                                                    {canvas.description || 'No description'}
-                                                </CardDescription>
+                    {(() => {
+                        if (loading) {
+                            return (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                                        <Card key={i} className="animate-pulse">
+                                            <CardHeader>
+                                                <div className="h-6 bg-muted rounded w-3/4" />
+                                                <div className="h-4 bg-muted rounded w-1/2 mt-2" />
+                                            </CardHeader>
+                                            <CardContent>
+                                                <div className="h-32 bg-muted rounded" />
+                                            </CardContent>
+                                        </Card>
+                                    ))}
+                                </div>
+                            );
+                        }
+                        if (filteredCanvases.length === 0) {
+                            return (
+                                <div className="text-center py-12">
+                                    <Grid3x3 className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
+                                    <h3 className="text-lg font-semibold mb-2">
+                                        {searchQuery ? 'No canvases found' : 'No canvases yet'}
+                                    </h3>
+                                    <p className="text-muted-foreground mb-4">
+                                        {searchQuery
+                                            ? 'Try adjusting your search query'
+                                            : 'Get started by creating your first canvas'}
+                                    </p>
+                                    {!searchQuery && (
+                                        <Button onClick={() => setShowCreateDialog(true)}>
+                                            <Plus className="w-4 h-4 mr-2" />
+                                            Create Canvas
+                                        </Button>
+                                    )}
+                                </div>
+                            );
+                        }
+                        return (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {filteredCanvases.map((canvas) => (
+                                    <Card
+                                        key={canvas.id}
+                                        className="cursor-pointer hover:shadow-lg transition-shadow"
+                                        onClick={() => router.push(`/canvas/${canvas.id}`)}
+                                    >
+                                        <CardHeader>
+                                            <div className="flex items-start justify-between">
+                                                <div className="flex-1">
+                                                    <CardTitle className="line-clamp-1">
+                                                        {canvas.name}
+                                                    </CardTitle>
+                                                    <CardDescription className="line-clamp-2 mt-1">
+                                                        {canvas.description || 'No description'}
+                                                    </CardDescription>
+                                                </div>
+                                                {canvas.layout === 'grid' ? (
+                                                    <LayoutGrid className="w-4 h-4 text-muted-foreground ml-2 flex-shrink-0" />
+                                                ) : (
+                                                    <Grid3x3 className="w-4 h-4 text-muted-foreground ml-2 flex-shrink-0" />
+                                                )}
                                             </div>
-                                            {canvas.layout === 'grid' ? (
-                                                <LayoutGrid className="w-4 h-4 text-muted-foreground ml-2 flex-shrink-0" />
-                                            ) : (
-                                                <Grid3x3 className="w-4 h-4 text-muted-foreground ml-2 flex-shrink-0" />
-                                            )}
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent>
-                                        {/* Preview Placeholder */}
-                                        <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
-                                            <div className="text-center">
-                                                <Grid3x3 className="w-8 h-8 mx-auto text-muted-foreground/50 mb-2" />
-                                                <p className="text-xs text-muted-foreground">
-                                                    {canvas._count.widgets} widget{canvas._count.widgets !== 1 ? 's' : ''}
-                                                </p>
+                                        </CardHeader>
+                                        <CardContent>
+                                            {/* Preview Placeholder */}
+                                            <div className="aspect-video bg-muted rounded-lg flex items-center justify-center mb-4">
+                                                <div className="text-center">
+                                                    <Grid3x3 className="w-8 h-8 mx-auto text-muted-foreground/50 mb-2" />
+                                                    <p className="text-xs text-muted-foreground">
+                                                        {canvas._count.widgets} widget{canvas._count.widgets !== 1 ? 's' : ''}
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        {/* Meta */}
-                                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                                            <div className="flex items-center">
-                                                <Calendar className="w-3 h-3 mr-1" />
-                                                {formatDate(canvas.updatedAt)}
+                                            {/* Meta */}
+                                            <div className="flex items-center justify-between text-xs text-muted-foreground">
+                                                <div className="flex items-center">
+                                                    <Calendar className="w-3 h-3 mr-1" />
+                                                    {formatDate(canvas.updatedAt)}
+                                                </div>
+                                                <div className="truncate ml-2">
+                                                    {canvas.creator.name || canvas.creator.email}
+                                                </div>
                                             </div>
-                                            <div className="truncate ml-2">
-                                                {canvas.creator.name || canvas.creator.email}
-                                            </div>
-                                        </div>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </div>
-                    )}
+                                        </CardContent>
+                                    </Card>
+                                ))}
+                            </div>
+                        );
+                    })()}
                 </div>
             </div>
 

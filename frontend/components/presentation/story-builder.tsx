@@ -20,7 +20,7 @@ interface StoryBuilderProps {
 }
 
 export function StoryBuilder({ dashboardId, initialSlides }: StoryBuilderProps) {
-    const router = useRouter();
+    const _router = useRouter();
     const searchParams = useSearchParams();
     const dbId = dashboardId || searchParams.get('dashboardId');
 
@@ -44,7 +44,7 @@ export function StoryBuilder({ dashboardId, initialSlides }: StoryBuilderProps) 
     const [selectedModel, setSelectedModel] = useState<AIModel>(DEFAULT_AI_MODEL);
 
     // Fetch Dashboard Data for Charts
-    const { dashboard, isLoading: isDashboardLoading } = useDashboard(dbId || '');
+    const { dashboard, isLoading: _isDashboardLoading } = useDashboard(dbId || '');
 
     // Generate initial slides if none exist and we have a dashboard ID
     useEffect(() => {

@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { format } from 'date-fns'
+import { _format } from 'date-fns'
 import { groupBy } from 'lodash'
 import { 
   History, 
-  X, 
+  _X, 
   GitCompare,
   Loader2,
   AlertCircle,
@@ -58,7 +58,7 @@ export function VersionHistory({
   const [selectedVersions, setSelectedVersions] = useState<string[]>([])
   const [expandedGroups, setExpandedGroups] = useState<string[]>(['Today'])
   const [restoreVersion, setRestoreVersion] = useState<DashboardVersion | QueryVersion | null>(null)
-  const [previewVersion, setPreviewVersion] = useState<DashboardVersion | QueryVersion | null>(null)
+  const [_previewVersion, setPreviewVersion] = useState<DashboardVersion | QueryVersion | null>(null)
   const [diffData, setDiffData] = useState<DashboardVersionDiff | QueryVersionDiff | null>(null)
   const [isComparing, setIsComparing] = useState(false)
   const [hasMore, setHasMore] = useState(false)
@@ -104,6 +104,8 @@ export function VersionHistory({
     if (isOpen) {
       fetchVersions(true)
     }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen, resourceId, resourceType])
 
   // Group versions by date

@@ -16,6 +16,7 @@ type DashboardCard struct {
 	TextContent         *string        `gorm:"type:text" json:"textContent"`
 	Position            datatypes.JSON `gorm:"type:jsonb;not null" json:"position"` // {x, y, w, h}
 	VisualizationConfig datatypes.JSON `gorm:"type:jsonb" json:"visualizationConfig"`
+	CalculatedFields    datatypes.JSON `gorm:"type:jsonb" json:"calculatedFields"` // [{name: "Profit", formula: "[Sales]-[Cost]"}]
 	CreatedAt           time.Time      `gorm:"autoCreateTime" json:"createdAt"`
 	UpdatedAt           time.Time      `gorm:"autoUpdateTime" json:"updatedAt"`
 

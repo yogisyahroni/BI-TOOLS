@@ -28,12 +28,16 @@ export class GroqProvider implements IAIProvider {
             if (!content) throw new Error('No response from Groq');
 
             return this.parseResponse(content);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('[Groq] Query generation failed:', error);
             throw new Error(`Groq query generation failed: ${error.message}`);
         }
     }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async analyzeResults(data: any[], sql: string): Promise<string[]> {
         if (!data || data.length === 0) {
             return ['No data returned from the query.'];
@@ -115,7 +119,7 @@ Confidence scale:
                 suggestedVisualization: parsed.suggestedVisualization || 'table',
                 insights: parsed.insights || [],
             };
-        } catch (error) {
+        } catch (_error) {
             // Fallback if JSON parsing fails
             return {
                 sql: content.trim(),

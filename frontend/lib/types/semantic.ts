@@ -13,6 +13,8 @@ export interface SemanticRequest {
     conversationId?: string;
     type: SemanticOperationType;
     prompt: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context?: Record<string, any>;
     response: string;
     generatedSql?: string;
@@ -31,7 +33,9 @@ export interface SemanticRequest {
 export interface ExplainDataRequest {
     providerId?: string; // Optional, uses default if not provided
     type: 'data' | 'query' | 'chart';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prompt: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context: Record<string, any>;
 }
 
@@ -44,16 +48,20 @@ export interface GenerateQueryRequest {
 export interface GenerateFormulaRequest {
     providerId?: string;
     description?: string; // Legacy support
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     prompt: string;
     dataSourceId?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context?: Record<string, any>;
     availableColumns?: string[];
 }
 
 export interface ChatRequest {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     providerId?: string;
     message: string;
     conversationId?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     context?: Record<string, any>;
 }
 

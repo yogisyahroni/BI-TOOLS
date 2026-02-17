@@ -7,7 +7,7 @@ import { fetchWithAuth } from '@/lib/utils';
 import { SidebarLayout } from '@/components/sidebar-layout';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Upload, FileText, CheckCircle2, Loader2, AlertCircle, ArrowRight, Table as TableIcon, Database, ShieldCheck, ChevronRight } from 'lucide-react';
+import { Upload, FileText, CheckCircle2, Loader2, Table as TableIcon, Database, ShieldCheck, ChevronRight } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { toast } from 'sonner';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -18,7 +18,7 @@ type IngestStep = 'upload' | 'preview' | 'ingesting' | 'complete';
 export default function IngestPage() {
     const [step, setStep] = useState<IngestStep>('upload');
     const [file, setFile] = useState<File | null>(null);
-    const [previewData, setPreviewData] = useState<{ headers: { name: string; type: string }[]; rows: any[] } | null>(null);
+    const [previewData, setPreviewData] = useState<{ headers: { name: string; type: string }[]; rows: Record<string, unknown>[] } | null>(null);
     const [isProcessing, setIsProcessing] = useState(false);
     const [progress, setProgress] = useState(0);
     const [result, setResult] = useState<{ tableName: string; rowCount: number } | null>(null);
@@ -43,8 +43,9 @@ export default function IngestPage() {
 
             setPreviewData(data);
             setStep('preview');
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'An unknown error occurred';
+            toast.error(message);
             setFile(null);
         } finally {
             setIsProcessing(false);
@@ -79,8 +80,9 @@ export default function IngestPage() {
             } else {
                 throw new Error(data.error || 'Ingestion failed');
             }
-        } catch (error: any) {
-            toast.error(error.message);
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'Ingestion failed';
+            toast.error(message);
             setStep('preview');
             setProgress(0);
         }
@@ -254,16 +256,31 @@ export default function IngestPage() {
 }
 
 function StepIndicator({ active, done, label }: { active: boolean, done: boolean, label: string }) {
+    let bgClass = 'bg-muted-foreground/20 text-muted-foreground';
+    let textClass = 'text-muted-foreground/40';
+
+    if (done) {
+        bgClass = 'bg-green-500 text-white shadow-lg shadow-green-500/20';
+        textClass = 'text-muted-foreground/40'; // Done steps usually have muted labels unless we want them highlighted? Matches original.
+    } else if (active) {
+        bgClass = 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110';
+        textClass = 'text-foreground';
+    }
+
+    // Correcting text class logic based on original ternary:
+    // ${active ? 'text-foreground' : 'text-muted-foreground/40'}
+    textClass = active ? 'text-foreground' : 'text-muted-foreground/40';
+
     return (
         <div className="flex items-center gap-2">
-            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${done ? 'bg-green-500 text-white shadow-lg shadow-green-500/20' :
-                active ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110' :
-                    'bg-muted-foreground/20 text-muted-foreground'
-                }`}>
-                {done ? <CheckCircle2 className="w-3 h-3" /> : active ? <div className="w-1.5 h-1.5 rounded-full bg-white" /> : null}
+            <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold transition-all duration-300 ${bgClass}`}>
+                {(() => {
+                    if (done) return <CheckCircle2 className="w-3 h-3" />;
+                    if (active) return <div className="w-1.5 h-1.5 rounded-full bg-white" />;
+                    return null;
+                })()}
             </div>
-            <span className={`text-[10px] uppercase tracking-widest font-bold transition-all duration-300 ${active ? 'text-foreground' : 'text-muted-foreground/40'
-                }`}>{label}</span>
+            <span className={`text-[10px] uppercase tracking-widest font-bold transition-all duration-300 ${textClass}`}>{label}</span>
         </div>
     );
 }

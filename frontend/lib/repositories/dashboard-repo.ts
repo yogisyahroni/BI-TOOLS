@@ -44,6 +44,8 @@ export class DashboardRepository {
         });
     }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async updateLayout(dashboardId: string, cards: any[]): Promise<Dashboard> {
         // Transactional update:
         // 1. Delete existing cards (simplest strategy for layout sync)

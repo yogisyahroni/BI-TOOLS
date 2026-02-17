@@ -3,7 +3,7 @@
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Clock, Copy, Trash2, RotateCcw } from 'lucide-react';
+import { Clock, Copy, _Trash2, RotateCcw } from 'lucide-react';
 
 interface QueryHistoryEntry {
   id: string;

@@ -34,7 +34,9 @@ export class OpenAIProvider implements IAIProvider {
         return JSON.parse(content) as AIResponse;
     }
 
-    async analyzeResults(data: any[], sql: string): Promise<string[]> {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async analyzeResults(_data: any[], sql: string): Promise<string[]> {
         return ["Insight analysis pending."];
     }
 }

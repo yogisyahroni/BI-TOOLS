@@ -60,6 +60,8 @@ export function ReportHistory({ reportId }: ReportHistoryProps) {
 
   useEffect(() => {
     fetchHistory(1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reportId]);
 
   const handleLoadMore = () => {

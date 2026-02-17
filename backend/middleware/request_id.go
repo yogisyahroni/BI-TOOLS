@@ -1,6 +1,7 @@
 package middleware
 
 import (
+    "context"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 )
@@ -26,6 +27,15 @@ func RequestIDMiddleware() fiber.Handler {
 
 		// Store in locals for logger/tracing correlation
 		c.Locals(LocalsKeyRequestID, requestID)
+
+        // Inject into UserContext for logger.WithContext()
+        // We use the string key "requestID" to match what services/logger.go expects
+        ctx := c.UserContext()
+        if ctx == nil {
+            ctx = c.Context()
+        }
+        ctx = context.WithValue(ctx, "requestID", requestID)
+        c.SetUserContext(ctx)
 
 		// Set response header so clients can correlate requests
 		c.Set(HeaderXRequestID, requestID)

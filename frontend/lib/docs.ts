@@ -17,7 +17,7 @@ export function getDocBySlug(slug: string) {
             frontmatter: data,
             content,
         };
-    } catch (e) {
+    } catch (_e) {
         return null;
     }
 }

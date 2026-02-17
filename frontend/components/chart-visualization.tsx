@@ -17,7 +17,7 @@ import { useWorkspaceTheme } from '@/components/theme/theme-provider';
 import { MetricCard } from './metric-card';
 import { ProgressBar } from './progress-bar';
 import { GaugeChart } from './gauge-chart';
-import { SmallMultiples } from './visualizations/small-multiples';
+import { _SmallMultiples } from './visualizations/small-multiples';
 
 // Import annotation components
 import { ChartAnnotations } from './charts/chart-annotations';
@@ -34,9 +34,13 @@ import type { Comment, CreateAnnotationRequest, AnnotationPosition } from '@/typ
 import { type FilterCriteria } from '@/lib/cross-filter-context';
 
 interface ChartVisualizationProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: Record<string, any>[];
   config: Partial<VisualizationConfig>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isLoading?: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onDataClick?: (params: any) => void;
 
   // Annotation props (optional)
@@ -281,8 +285,10 @@ export function ChartVisualization({
       <EChartsWrapper
         options={options}
         isLoading={isLoading}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         className="h-full w-full"
         onEvents={{
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
           click: (params: any) => {
             if (!isAnnotationMode && onDataClick) {
               onDataClick(params);

@@ -29,7 +29,7 @@ const TileLayer = dynamic(
     { ssr: false }
 )
 
-const Marker = dynamic(
+const _Marker = dynamic(
     () => import('react-leaflet').then((mod) => mod.Marker),
     { ssr: false }
 )
@@ -76,7 +76,11 @@ function MarkerClusterLayer({
     markerColor?: string
     showPopup?: boolean
 }) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [MarkerClusterGroup, setMarkerClusterGroup] = useState<any>(null)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [L, setL] = useState<any>(null)
 
     useEffect(() => {
@@ -85,8 +89,10 @@ function MarkerClusterLayer({
             import('leaflet'),
             import('leaflet.markercluster')
         ]).then(([leaflet]) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setL(leaflet.default)
             // MarkerClusterGroup is attached to L after import
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setMarkerClusterGroup(() => (leaflet.default as any).MarkerClusterGroup)
         })
     }, [])
@@ -163,19 +169,25 @@ function HeatmapLayer({
     blur = 15
 }: {
     points: MapDataPoint[]
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     radius?: number
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     blur?: number
 }) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [HeatLayer, setHeatLayer] = useState<any>(null)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [L, setL] = useState<any>(null)
 
     useEffect(() => {
         // Load Leaflet and Heatmap plugin dynamically
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         Promise.all([
             import('leaflet'),
             import('leaflet.heat')
         ]).then(([leaflet]) => {
             setL(leaflet.default)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             setHeatLayer(() => (leaflet.default as any).heatLayer)
         })
     }, [])

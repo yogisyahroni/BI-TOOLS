@@ -35,6 +35,8 @@ import { PageHeader, PageActions, PageContent } from '@/components/page-header';
 
 export default function QueryBuilderPage() {
     const { workspace } = useWorkspace();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [connections, setConnections] = useState<any[]>([]);
     const [isLoadingConnections, setIsLoadingConnections] = useState(true);
 
@@ -46,7 +48,9 @@ export default function QueryBuilderPage() {
 
     // Load connections on mount
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         fetchConnections();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [workspace]);
 
     // Initial state when connection changes

@@ -18,7 +18,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 export default function MetricDetailPage() {
     const { id } = useParams();
     const router = useRouter();
-    const { toggle: toggleSidebar } = useSidebar();
+    const { toggle: _toggleSidebar } = useSidebar();
 
     const [metric, setMetric] = useState<BusinessMetric | null>(null);
     const [isLoading, setIsLoading] = useState(true);

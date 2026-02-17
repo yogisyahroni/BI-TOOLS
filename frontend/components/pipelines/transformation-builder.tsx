@@ -1,12 +1,12 @@
 
 "use client";
 
-import { useState } from "react";
+import { _useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Trash, Plus, ArrowDown, ArrowUp } from "lucide-react";
+import { Card, CardContent, CardHeader, _CardTitle } from "@/components/ui/card";
+import { Trash, _Plus, _ArrowDown, _ArrowUp } from "lucide-react";
 
 interface TransformationStep {
     type: string;
@@ -14,6 +14,8 @@ interface TransformationStep {
     fields?: string[];
     targetType?: string;
     operator?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value?: any;
     pattern?: string;
     replacement?: string;
@@ -43,7 +45,9 @@ export function TransformationBuilder({ steps, onChange }: TransformationBuilder
         newSteps.splice(index, 1);
         onChange(newSteps);
     };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateStep = (index: number, key: string, value: any) => {
         const newSteps = [...steps];
         newSteps[index] = { ...newSteps[index], [key]: value };

@@ -51,7 +51,7 @@ export function TriggeredAlerts({
         }
     };
 
-    const getSeverityOrder = (severity: AlertSeverity): number => {
+    const _getSeverityOrder = (severity: AlertSeverity): number => {
         const order: Record<AlertSeverity, number> = {
             critical: 0,
             warning: 1,

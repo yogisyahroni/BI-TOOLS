@@ -7,7 +7,7 @@ const API_BASE_URL = process.env.GO_BACKEND_URL || 'http://127.0.0.1:8080';
 export async function GET(request: NextRequest) {
   try {
     const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET });
-    
+
     if (!token) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
         const data = await response.json();
         return NextResponse.json(data);
       }
-    } catch (error) {
+    } catch (_error) {
       console.warn('Backend scheduler not available, returning empty array');
     }
 

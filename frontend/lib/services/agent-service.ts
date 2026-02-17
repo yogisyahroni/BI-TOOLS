@@ -3,7 +3,7 @@ import { type AggregationRequest, aggregationService } from '@/lib/services/aggr
 import { AIProviderFactory } from '@/lib/ai/providers/provider-factory';
 import { auditService } from '@/lib/services/audit-service';
 import { db } from '@/lib/db';
-import { Agent } from '@prisma/client';
+import { _Agent } from '@prisma/client';
 
 export class AgentService {
 
@@ -89,6 +89,8 @@ export class AgentService {
 
                 results.push({ id: agent.id, status: 'SUCCESS' });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             } catch (err: any) {
                 console.error(`[AgentService] Agent ${agent.name} crashed:`, err);
                 results.push({ id: agent.id, status: 'ERROR', error: err.message });

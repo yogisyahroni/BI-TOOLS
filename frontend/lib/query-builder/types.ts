@@ -173,6 +173,8 @@ export interface DatabaseSchema {
  */
 export interface QueryResult {
     success: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: any[];
     columns?: string[];
     rowCount?: number;

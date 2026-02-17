@@ -50,6 +50,10 @@ lint:
 lint-fix:
 	golangci-lint run --fix
 
+## Run OpenAPI linter
+lint-api:
+	npx spectral lint docs/openapi.yaml
+
 # ──────────────────────────────────────────────────────────────────────
 # Build
 # ──────────────────────────────────────────────────────────────────────

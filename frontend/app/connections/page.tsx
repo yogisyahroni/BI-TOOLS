@@ -28,7 +28,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import {
     Database,
-    RefreshCcw,
     MoreVertical,
     Trash2,
     Settings,
@@ -51,7 +50,6 @@ export default function ConnectionsPage() {
         isLoading,
         isTestingConnection,
         error,
-        refetch,
         testConnection,
         deleteConnection
     } = useConnections();
@@ -142,141 +140,149 @@ export default function ConnectionsPage() {
                         </div>
                     )}
 
-                    {isLoading && connections.length === 0 ? (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {[...Array(3)].map((_, i) => (
-                                <Skeleton key={i} className="h-40 w-full rounded-lg" />
-                            ))}
-                        </div>
-                    ) : connections.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-16 px-4">
-                            <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-6">
-                                <Database className="w-10 h-10 text-muted-foreground" />
-                            </div>
-                            <h3 className="text-xl font-semibold text-foreground mb-2">No connections yet</h3>
-                            <p className="text-muted-foreground text-center max-w-md mb-6">
-                                Connect to a database to start querying your data with SQL or AI-powered prompts
-                            </p>
-                            <AddConnectionDialog />
-                        </div>
-                    ) : (
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {connections.map((conn) => {
-                                const dbStyle = getDbTypeStyle(conn.type);
-                                const testResult = testResults[conn.id];
+                    {(() => {
+                        if (isLoading && connections.length === 0) {
+                            return (
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    {[...Array(3)].map((_, i) => (
+                                        <Skeleton key={i} className="h-40 w-full rounded-lg" />
+                                    ))}
+                                </div>
+                            );
+                        }
+                        if (connections.length === 0) {
+                            return (
+                                <div className="flex flex-col items-center justify-center py-16 px-4">
+                                    <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center mb-6">
+                                        <Database className="w-10 h-10 text-muted-foreground" />
+                                    </div>
+                                    <h3 className="text-xl font-semibold text-foreground mb-2">No connections yet</h3>
+                                    <p className="text-muted-foreground text-center max-w-md mb-6">
+                                        Connect to a database to start querying your data with SQL or AI-powered prompts
+                                    </p>
+                                    <AddConnectionDialog />
+                                </div>
+                            );
+                        }
+                        return (
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {connections.map((conn) => {
+                                    const dbStyle = getDbTypeStyle(conn.type);
+                                    const testResult = testResults[conn.id];
 
-                                return (
-                                    <Card key={conn.id} className="hover:shadow-lg transition-all group">
-                                        <CardHeader className="flex flex-row items-start justify-between pb-3">
-                                            <div className="flex items-center gap-3">
-                                                <div className={`w-10 h-10 rounded-lg ${dbStyle.bg} flex items-center justify-center`}>
-                                                    <Server className={`w-5 h-5 ${dbStyle.text}`} />
+                                    return (
+                                        <Card key={conn.id} className="hover:shadow-lg transition-all group">
+                                            <CardHeader className="flex flex-row items-start justify-between pb-3">
+                                                <div className="flex items-center gap-3">
+                                                    <div className={`w-10 h-10 rounded-lg ${dbStyle.bg} flex items-center justify-center`}>
+                                                        <Server className={`w-5 h-5 ${dbStyle.text}`} />
+                                                    </div>
+                                                    <div>
+                                                        <CardTitle className="text-base font-medium">{conn.name}</CardTitle>
+                                                        <p className="text-xs text-muted-foreground mt-0.5">
+                                                            {conn.type.toUpperCase()}
+                                                        </p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <CardTitle className="text-base font-medium">{conn.name}</CardTitle>
-                                                    <p className="text-xs text-muted-foreground mt-0.5">
-                                                        {conn.type.toUpperCase()}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100">
-                                                        <MoreVertical className="w-4 h-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    <DropdownMenuItem onClick={() => handleTestConnection(conn.id)}>
-                                                        <Zap className="w-4 h-4 mr-2" />
-                                                        Test Connection
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem>
-                                                        <Settings className="w-4 h-4 mr-2" />
-                                                        Edit Settings
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuSeparator />
-                                                    <DropdownMenuItem
-                                                        className="text-destructive"
-                                                        onClick={() => {
-                                                            setConnectionToDelete({ id: conn.id, name: conn.name });
-                                                            setDeleteDialogOpen(true);
-                                                        }}
-                                                    >
-                                                        <Trash2 className="w-4 h-4 mr-2" />
-                                                        Delete
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </CardHeader>
-                                        <CardContent className="pt-0">
-                                            <div className="space-y-3">
-                                                <div className="text-sm text-muted-foreground">
-                                                    <span className="font-mono text-xs">{conn.host || 'localhost'}:{conn.port || 5432}</span>
-                                                    <span className="mx-2">•</span>
-                                                    <span>{conn.database}</span>
-                                                </div>
+                                                <DropdownMenu>
+                                                    <DropdownMenuTrigger asChild>
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 opacity-0 group-hover:opacity-100">
+                                                            <MoreVertical className="w-4 h-4" />
+                                                        </Button>
+                                                    </DropdownMenuTrigger>
+                                                    <DropdownMenuContent align="end">
+                                                        <DropdownMenuItem onClick={() => handleTestConnection(conn.id)}>
+                                                            <Zap className="w-4 h-4 mr-2" />
+                                                            Test Connection
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem>
+                                                            <Settings className="w-4 h-4 mr-2" />
+                                                            Edit Settings
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuSeparator />
+                                                        <DropdownMenuItem
+                                                            className="text-destructive"
+                                                            onClick={() => {
+                                                                setConnectionToDelete({ id: conn.id, name: conn.name });
+                                                                setDeleteDialogOpen(true);
+                                                            }}
+                                                        >
+                                                            <Trash2 className="w-4 h-4 mr-2" />
+                                                            Delete
+                                                        </DropdownMenuItem>
+                                                    </DropdownMenuContent>
+                                                </DropdownMenu>
+                                            </CardHeader>
+                                            <CardContent className="pt-0">
+                                                <div className="space-y-3">
+                                                    <div className="text-sm text-muted-foreground">
+                                                        <span className="font-mono text-xs">{conn.host || 'localhost'}:{conn.port || 5432}</span>
+                                                        <span className="mx-2">•</span>
+                                                        <span>{conn.database}</span>
+                                                    </div>
 
-                                                <div className="flex items-center justify-between">
-                                                    <Badge
-                                                        variant={conn.isActive ? 'default' : 'secondary'}
-                                                        className="text-xs"
-                                                    >
-                                                        {conn.isActive ? (
-                                                            <>
-                                                                <Check className="w-3 h-3 mr-1" />
-                                                                Active
-                                                            </>
-                                                        ) : (
-                                                            'Inactive'
-                                                        )}
-                                                    </Badge>
-
-                                                    {testResult && (
+                                                    <div className="flex items-center justify-between">
                                                         <Badge
-                                                            variant={testResult.success ? 'default' : 'destructive'}
+                                                            variant={conn.isActive ? 'default' : 'secondary'}
                                                             className="text-xs"
                                                         >
-                                                            {testResult.success ? (
+                                                            {conn.isActive ? (
                                                                 <>
                                                                     <Check className="w-3 h-3 mr-1" />
-                                                                    Connected
+                                                                    Active
                                                                 </>
                                                             ) : (
-                                                                <>
-                                                                    <X className="w-3 h-3 mr-1" />
-                                                                    Failed
-                                                                </>
+                                                                'Inactive'
                                                             )}
                                                         </Badge>
-                                                    )}
-                                                </div>
 
-                                                <Button
-                                                    variant="outline"
-                                                    size="sm"
-                                                    className="w-full gap-2"
-                                                    onClick={() => handleTestConnection(conn.id)}
-                                                    disabled={isTestingConnection}
-                                                >
-                                                    {isTestingConnection ? (
-                                                        <>
-                                                            <Loader2 className="w-3 h-3 animate-spin" />
-                                                            Testing...
-                                                        </>
-                                                    ) : (
-                                                        <>
-                                                            <Zap className="w-3 h-3" />
-                                                            Test Connection
-                                                        </>
-                                                    )}
-                                                </Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-                                );
-                            })}
-                        </div>
-                    )}
+                                                        {testResult && (
+                                                            <Badge
+                                                                variant={testResult.success ? 'default' : 'destructive'}
+                                                                className="text-xs"
+                                                            >
+                                                                {testResult.success ? (
+                                                                    <>
+                                                                        <Check className="w-3 h-3 mr-1" />
+                                                                        Connected
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        <X className="w-3 h-3 mr-1" />
+                                                                        Failed
+                                                                    </>
+                                                                )}
+                                                            </Badge>
+                                                        )}
+                                                    </div>
+
+                                                    <Button
+                                                        variant="outline"
+                                                        size="sm"
+                                                        className="w-full gap-2"
+                                                        onClick={() => handleTestConnection(conn.id)}
+                                                        disabled={isTestingConnection}
+                                                    >
+                                                        {isTestingConnection ? (
+                                                            <>
+                                                                <Loader2 className="w-3 h-3 animate-spin" />
+                                                                Testing...
+                                                            </>
+                                                        ) : (
+                                                            <>
+                                                                <Zap className="w-3 h-3" />
+                                                                Test Connection
+                                                            </>
+                                                        )}
+                                                    </Button>
+                                                </div>
+                                            </CardContent>
+                                        </Card>
+                                    );
+                                })}
+                            </div>
+                        );
+                    })()}
                 </div>
 
                 {/* Delete Confirmation Dialog */}

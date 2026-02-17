@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { CalendarIcon, TrendingUp } from "lucide-react"
+import { _CalendarIcon, TrendingUp } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import {

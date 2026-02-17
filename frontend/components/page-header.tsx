@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
+import { _Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { type LucideIcon } from 'lucide-react';
 

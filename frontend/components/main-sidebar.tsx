@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { usePathname, useParams } from 'next/navigation';
+import { usePathname, _useParams } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -15,15 +15,15 @@ import {
   FolderOpen,
   Settings,
   LogOut,
-  Zap,
+  _Zap,
   Search,
-  Home,
+  _Home,
   BookOpen,
   Database,
   PieChart,
   Upload,
   Bell,
-  Activity,
+  _Activity,
   Clock,
   Boxes,
   AlertTriangle,

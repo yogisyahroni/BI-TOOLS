@@ -1,4 +1,4 @@
-import { type Dashboard, type DashboardCard, VisualizationConfig } from '@/lib/types';
+import { type Dashboard, type DashboardCard, _VisualizationConfig } from '@/lib/types';
 import { fetchWithAuth } from '@/lib/utils';
 
 export interface CreateDashboardInput {
@@ -14,6 +14,8 @@ export interface UpdateDashboardInput {
     isPublic?: boolean;
     collectionId?: string;
     tags?: string[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filters?: any[];
     cards?: DashboardCard[]; // Full sync of layout
 }

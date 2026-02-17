@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { _Card, _CardContent, _CardHeader, _CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { 
     ArrowUpRight, 
@@ -9,10 +9,10 @@ import {
     TrendingUp,
     Brain,
     Target,
-    Zap,
+    _Zap,
     BarChart3,
-    Lightbulb,
-    CheckCircle2
+    _Lightbulb,
+    _CheckCircle2
 } from 'lucide-react';
 import { type Insight } from '@/types/analytics';
 import { cn } from '@/lib/utils';

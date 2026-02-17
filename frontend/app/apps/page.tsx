@@ -58,6 +58,8 @@ export default function AppsPage() {
         if (workspaceId) {
             fetchApps();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [workspaceId]);
 
     const fetchApps = async () => {
@@ -179,58 +181,66 @@ export default function AppsPage() {
                 </Dialog>
             </div>
 
-            {loading ? (
-                <div className="flex justify-center py-20">
-                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </div>
-            ) : apps.length === 0 ? (
-                <div className="text-center py-20 border-2 border-dashed rounded-lg">
-                    <Layout className="mx-auto h-12 w-12 text-muted-foreground/50" />
-                    <h3 className="mt-4 text-lg font-semibold">No apps yet</h3>
-                    <p className="text-muted-foreground">Create your first Data App to get started.</p>
-                    <Button variant="link" onClick={() => setCreateOpen(true)} className="mt-2">Create App</Button>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {apps.map((app) => (
-                        <Card key={app.id} className="hover:shadow-md transition-shadow">
-                            <CardHeader>
-                                <div className="flex justify-between items-start">
-                                    <CardTitle className="truncate">{app.name}</CardTitle>
-                                    {app.isPublished ? (
-                                        <Badge variant="default" className="bg-green-600">Published</Badge>
-                                    ) : (
-                                        <Badge variant="secondary">Draft</Badge>
-                                    )}
-                                </div>
-                                <CardDescription className="line-clamp-2">
-                                    {app.description || 'No description provided.'}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="text-sm text-muted-foreground flex items-center gap-4">
-                                    <span>{app._count.pages} Pages</span>
-                                    <span>Updated {new Date(app.updatedAt).toLocaleDateString()}</span>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex justify-end gap-2 border-t pt-4">
-                                <Button variant="ghost" size="sm" asChild>
-                                    <Link href={`/apps/builder/${app.id}`}>
-                                        <Settings className="mr-2 h-4 w-4" />
-                                        Configure
-                                    </Link>
-                                </Button>
-                                <Button variant="outline" size="sm" asChild>
-                                    <Link href={`/apps/public/${app.slug}`} target="_blank">
-                                        <ExternalLink className="mr-2 h-4 w-4" />
-                                        Preview
-                                    </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
-            )}
+            {(() => {
+                if (loading) {
+                    return (
+                        <div className="flex justify-center py-20">
+                            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                        </div>
+                    );
+                }
+                if (apps.length === 0) {
+                    return (
+                        <div className="text-center py-20 border-2 border-dashed rounded-lg">
+                            <Layout className="mx-auto h-12 w-12 text-muted-foreground/50" />
+                            <h3 className="mt-4 text-lg font-semibold">No apps yet</h3>
+                            <p className="text-muted-foreground">Create your first Data App to get started.</p>
+                            <Button variant="link" onClick={() => setCreateOpen(true)} className="mt-2">Create App</Button>
+                        </div>
+                    );
+                }
+                return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {apps.map((app) => (
+                            <Card key={app.id} className="hover:shadow-md transition-shadow">
+                                <CardHeader>
+                                    <div className="flex justify-between items-start">
+                                        <CardTitle className="truncate">{app.name}</CardTitle>
+                                        {app.isPublished ? (
+                                            <Badge variant="default" className="bg-green-600">Published</Badge>
+                                        ) : (
+                                            <Badge variant="secondary">Draft</Badge>
+                                        )}
+                                    </div>
+                                    <CardDescription className="line-clamp-2">
+                                        {app.description || 'No description provided.'}
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="text-sm text-muted-foreground flex items-center gap-4">
+                                        <span>{app._count.pages} Pages</span>
+                                        <span>Updated {new Date(app.updatedAt).toLocaleDateString()}</span>
+                                    </div>
+                                </CardContent>
+                                <CardFooter className="flex justify-end gap-2 border-t pt-4">
+                                    <Button variant="ghost" size="sm" asChild>
+                                        <Link href={`/apps/builder/${app.id}`}>
+                                            <Settings className="mr-2 h-4 w-4" />
+                                            Configure
+                                        </Link>
+                                    </Button>
+                                    <Button variant="outline" size="sm" asChild>
+                                        <Link href={`/apps/public/${app.slug}`} target="_blank">
+                                            <ExternalLink className="mr-2 h-4 w-4" />
+                                            Preview
+                                        </Link>
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        ))}
+                    </div>
+                );
+            })()}
         </div>
     );
 }

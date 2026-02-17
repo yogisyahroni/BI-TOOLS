@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, _DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -38,7 +38,7 @@ export function ShareDialog({ resourceId, resourceType, trigger }: ShareDialogPr
             } else {
                 toast.error(data.error || 'Failed to create link');
             }
-        } catch (e) {
+        } catch (_e) {
             toast.error('Network error');
         } finally {
             setIsLoading(false);

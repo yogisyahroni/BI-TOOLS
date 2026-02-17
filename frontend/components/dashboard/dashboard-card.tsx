@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, _CardHeader, _CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { MoreVertical, Trash2, Maximize2, Pencil, Sparkles, Download, Image, FileText } from 'lucide-react';
 import {
@@ -21,7 +21,7 @@ const ChartVisualization = dynamic(() => import('@/components/chart-visualizatio
 import { type VisualizationConfig } from '@/lib/types';
 import { AiTextWidget } from "./ai-text-widget";
 import { ExportService } from '@/lib/services/export-service';
-import { StatusBadge } from '@/components/catalog/status-badge';
+import { _StatusBadge } from '@/components/catalog/status-badge';
 
 import { toast } from 'sonner';
 import { AIExplainDialog } from './ai-explain-dialog';
@@ -35,6 +35,8 @@ interface DashboardCardProps {
         id: string;
         title: string;
         type: 'visualization' | 'text' | 'ai-text';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data?: any[];
         visualizationConfig?: VisualizationConfig;
         query?: {
@@ -47,7 +49,9 @@ interface DashboardCardProps {
     isEditing?: boolean;
     onRemove?: (cardId: string) => void;
     onEdit?: (cardId: string) => void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     className?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChartClick?: (params: any, cardId: string) => void;
     onDrillThrough?: (cardId: string) => void;
     activeFilters?: FilterCriteria[];
@@ -55,7 +59,7 @@ interface DashboardCardProps {
 
 export function DashboardCard({
     card,
-    isEditing,
+    _isEditing,
     onRemove,
     onEdit,
     className,
@@ -162,7 +166,7 @@ export function DashboardCard({
                                             try {
                                                 ExportService.downloadPNG(`card-${card.id}`, card.title);
                                                 toast.success('Downloading PNG...');
-                                            } catch (e) { toast.error('PNG Export failed'); }
+                                            } catch (_e) { toast.error('PNG Export failed'); }
                                         }}>
                                             <Image className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
                                             Export as PNG
@@ -171,7 +175,7 @@ export function DashboardCard({
                                             try {
                                                 ExportService.downloadPDF(`card-${card.id}`, card.title);
                                                 toast.success('Downloading PDF...');
-                                            } catch (e) { toast.error('PDF Export failed'); }
+                                            } catch (_e) { toast.error('PDF Export failed'); }
                                         }}>
                                             <FileText className="mr-2 h-3.5 w-3.5 text-muted-foreground" />
                                             Export as PDF
@@ -181,7 +185,7 @@ export function DashboardCard({
                                                 try {
                                                     ExportService.exportDataToCSV(card.data!, `${card.title.replace(/\s+/g, '_')}_data.csv`);
                                                     toast.success('CSV exported successfully');
-                                                } catch (error) {
+                                                } catch (_error) {
                                                     toast.error('Failed to export CSV');
                                                 }
                                             }}>

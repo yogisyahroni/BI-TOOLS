@@ -1,6 +1,6 @@
 
-import { SlideDeck } from '@/types/presentation';
-import { api } from '@/lib/api';
+import { _SlideDeck } from '@/types/presentation';
+import { _api } from '@/lib/api';
 import { fetchWithAuth } from '@/lib/utils';
 
 export const presentationApi = {

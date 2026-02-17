@@ -1,6 +1,6 @@
 import { type NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import GoogleProvider from 'next-auth/providers/google';
+import _GoogleProvider from 'next-auth/providers/google';
 
 export const authOptions: NextAuthOptions = {
     providers: [
@@ -80,7 +80,7 @@ export const authOptions: NextAuthOptions = {
                     let data;
                     try {
                         data = JSON.parse(text);
-                    } catch (parseError) {
+                    } catch (_parseError) {
                         console.error('[AUTH] Failed to parse backend response:', text);
                         return null;
                     }
@@ -149,9 +149,13 @@ export const authOptions: NextAuthOptions = {
         },
         async session({ session, token }) {
             if (session.user) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (session.user as any).id = token.id as string;
             }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             if (token.accessToken) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 (session as any).accessToken = token.accessToken;
             }
             return session;

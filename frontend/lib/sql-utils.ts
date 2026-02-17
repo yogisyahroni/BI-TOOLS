@@ -241,6 +241,8 @@ export function extractQueryVariables(sql: string): string[] {
  */
 export function applyFiltersToSql(
     sql: string,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filters: Record<string, any> | FilterCriteria[]
 ): string {
     if (!sql || !filters) {
@@ -259,7 +261,9 @@ export function applyFiltersToSql(
             // Sanitization
             const fieldName = filter.fieldName.replace(/[^a-zA-Z0-9_.]/g, '');
             if (!fieldName) return;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const safeValue = (val: any) => typeof val === 'string' ? `'${val.replace(/'/g, "''")}'` : val;
 
             switch (filter.operator) {

@@ -82,7 +82,7 @@ export function AlertBuilderDialog({
             // Reset form
             setName('');
             setThreshold('');
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to create alert');
         } finally {
             setIsSubmitting(false);

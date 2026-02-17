@@ -11,7 +11,7 @@ import {
     AccordionItem,
     AccordionTrigger,
 } from '@/components/ui/accordion';
-import { Mail, Webhook, Bell, MessageSquare, Plus, Trash2 } from 'lucide-react';
+import { Mail, Webhook, Bell, MessageSquare, _Plus, Trash2 } from 'lucide-react';
 import type { AlertChannelInput, AlertNotificationChannel } from '@/types/alerts';
 import { ALERT_CHANNELS } from '@/types/alerts';
 
@@ -21,7 +21,7 @@ interface NotificationConfigProps {
 }
 
 export function NotificationConfig({ channels, onChange }: NotificationConfigProps) {
-    const [newChannelType, setNewChannelType] = useState<AlertNotificationChannel>('email');
+    const [_newChannelType, _setNewChannelType] = useState<AlertNotificationChannel>('email');
 
     const addChannel = (type: AlertNotificationChannel) => {
         const existingIndex = channels.findIndex((c) => c.channelType === type);

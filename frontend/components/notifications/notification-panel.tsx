@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useNotifications } from '@/hooks/use-notifications';
-import { Bell, Check, CheckCheck, Trash2, AlertCircle } from 'lucide-react';
+import { Bell, Check, CheckCheck, Trash2, _AlertCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
 import type { Notification } from '@/lib/types/notifications';

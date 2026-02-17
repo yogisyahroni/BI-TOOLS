@@ -8,7 +8,7 @@ interface WidgetProps {
     readOnly?: boolean;
 }
 
-export function ChartWidget({ widget, readOnly }: WidgetProps) {
+export function ChartWidget({ widget, _readOnly }: WidgetProps) {
     const chartId = widget.config.chartId;
 
     if (!chartId) {

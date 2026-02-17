@@ -4,29 +4,36 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/gofiber/fiber/v2"
 	"insight-engine-backend/services"
+
+	"github.com/gofiber/fiber/v2"
 )
 
 // SQLInjectionMiddleware provides protection against SQL injection attacks
 func SQLInjectionMiddleware() fiber.Handler {
 	return func(c *fiber.Ctx) error {
+		// Whitelist endpoints that legitimately include SQL or "execute" keyword
+		path := c.Path()
+		if strings.HasPrefix(path, "/api/queries") || strings.HasPrefix(path, "/api/query") {
+			return c.Next()
+		}
+
 		// Check request body for potential SQL injection
 		body := string(c.Body())
 		if isSQLInjection(body) {
 			ip := c.IP()
 			path := c.Path()
-			
+
 			services.LogSQLInjectionAttempt(
 				ip,
 				path,
 				body,
 				"Potential SQL injection pattern detected in request body",
 			)
-			
+
 			return c.Status(400).JSON(fiber.Map{
-				"error": "Malformed request",
-				"type":  "security_violation",
+				"error":   "Malformed request",
+				"type":    "security_violation",
 				"message": "Request blocked due to potential security threat",
 			})
 		}
@@ -36,17 +43,17 @@ func SQLInjectionMiddleware() fiber.Handler {
 		if isSQLInjection(query) {
 			ip := c.IP()
 			path := c.Path()
-			
+
 			services.LogSQLInjectionAttempt(
 				ip,
 				path,
 				query,
 				"Potential SQL injection pattern detected in query parameters",
 			)
-			
+
 			return c.Status(400).JSON(fiber.Map{
-				"error": "Malformed request",
-				"type":  "security_violation",
+				"error":   "Malformed request",
+				"type":    "security_violation",
 				"message": "Request blocked due to potential security threat",
 			})
 		}

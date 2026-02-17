@@ -60,6 +60,8 @@ export interface Canvas {
     id: string;
     appId: string;
     name: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     config?: Record<string, any>;
     createdAt: string;
     updatedAt: string;
@@ -68,7 +70,9 @@ export interface Canvas {
 export interface Widget {
     id: string;
     canvasId: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     type: 'chart' | 'table' | 'metric';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     config: Record<string, any>;
     position?: {
         x: number;

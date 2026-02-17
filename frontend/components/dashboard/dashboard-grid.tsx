@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Responsive } from 'react-grid-layout';
 import { DashboardCard } from './dashboard-card';
-import { type DashboardCard as DashboardCardType, VisualizationConfig } from '@/lib/types';
+import { type DashboardCard as DashboardCardType, _VisualizationConfig } from '@/lib/types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
@@ -12,11 +12,17 @@ import { type FilterCriteria } from '@/lib/cross-filter-context';
 
 interface DashboardGridProps {
     cards: DashboardCardType[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queriesData?: Record<string, any>; // Map queryId -> result data
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     isEditing: boolean;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onLayoutChange: (layout: any) => void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onRemoveCard: (cardId: string) => void;
     onUpdateCard?: (cardId: string, updates: Partial<DashboardCardType>) => void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChartClick?: (params: any, cardId: string) => void;
     onDrillThrough?: (cardId: string) => void;
     isMobileView?: boolean;
@@ -111,7 +117,7 @@ export function DashboardGrid({
                     const queryId = card.queryId;
                     // eslint-disable-next-line @typescript-eslint/no-unused-vars
                     const queryResult = queryId && queriesData[queryId] ? queriesData[queryId].data : undefined;
-                    const isLoading = queryId && queriesData[queryId] ? queriesData[queryId].isLoading : false;
+                    const _isLoading = queryId && queriesData[queryId] ? queriesData[queryId].isLoading : false;
                     const queryName = queryId && queriesData[queryId] ? queriesData[queryId].name : undefined;
 
                     // If data is ready, we might need configuration from query OR dashboard override

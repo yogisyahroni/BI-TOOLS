@@ -24,7 +24,7 @@ import { FormError } from '@/components/ui/form-error';
 import { signInSchema, type SignInFormData } from '@/lib/validations/auth';
 
 function SignInContent() {
-    const router = useRouter();
+    const _router = useRouter();
     const searchParams = useSearchParams();
     const callbackUrl = searchParams.get('callbackUrl') || '/dashboards';
 
@@ -91,7 +91,7 @@ function SignInContent() {
                 setSuccessRedirect(true);
                 toast.success('Signed in successfully!');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('An unexpected error occurred. Please try again.');
         } finally {
             setIsLoading(false);
@@ -246,7 +246,7 @@ function SignInContent() {
 
                 {/* Sign Up Link */}
                 <p className="text-center text-sm text-muted-foreground">
-                    Don't have an account?{' '}
+                    Don&apos;t have an account?{' '}
                     <Link
                         href="/auth/register"
                         className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded px-1"

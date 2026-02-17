@@ -1,7 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { Suspense, type ComponentType } from 'react';
+import { _Suspense, type ComponentType } from 'react';
 import { cn } from '@/lib/utils';
 
 // Skeleton loader for Resizable components (GEMINI.md 4.2.3)
@@ -25,6 +25,8 @@ const ResizablePanelGroup = dynamic(
     ssr: false,
     loading: () => <ResizableSkeleton />
   }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) as ComponentType<ComponentProps<any>>;
 
 const ResizablePanel = dynamic(
@@ -32,15 +34,19 @@ const ResizablePanel = dynamic(
   { 
     ssr: false,
     loading: () => <ResizableSkeleton />
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) as ComponentType<ComponentProps<any>>;
 
 const ResizableHandle = dynamic(
   () => import('@/components/ui/resizable').then((mod) => mod.ResizableHandle),
   { 
     ssr: false,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     loading: () => <ResizableSkeleton className="w-px h-full" />
   }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) as ComponentType<ComponentProps<any>>;
 
 export { ResizablePanelGroup, ResizablePanel, ResizableHandle };

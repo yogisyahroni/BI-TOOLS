@@ -1,0 +1,458 @@
+
+> my-v0-project@0.1.0 lint
+> next lint
+
+
+./app/api/notifications/send/route.ts
+69:36  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+69:73  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/apps/builder/[id]/pages-tab.tsx
+130:14  Warning: Unexpected confirm.  no-alert
+178:52  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+237:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/apps/builder/[id]/settings-tab.tsx
+70:14  Warning: Unexpected confirm.  no-alert
+
+./app/apps/page.tsx
+184:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/auth/signin/page.tsx
+249:24  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/canvas/page.tsx
+178:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/canvas/[id]/page.tsx
+171:14  Warning: Unexpected confirm.  no-alert
+
+./app/catalog/glossary/page.tsx
+144:57  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/catalog/page.tsx
+105:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/connections/components/rest-api-form.tsx
+300:75  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+300:88  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./app/connections/page.tsx
+145:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/dashboards/page.tsx
+177:10  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/docs/api/page.tsx
+20:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+26:21  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+28:21  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./app/ingest/page.tsx
+277:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/modeling/page.tsx
+150:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/modeling/[id]/page.tsx
+116:24  Warning: Unexpected confirm.  no-alert
+253:103  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+253:111  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/onboarding/page.tsx
+286:20  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/presentation/[id]/page.tsx
+9:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/query-builder/page.tsx
+73:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/reports/schedule/page.tsx
+184:8  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/saved-queries/page.tsx
+105:23  Warning: Unexpected confirm.  no-alert
+197:16  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/settings/page.tsx
+288:25  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+293:42  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+295:112  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/share/[token]/page.tsx
+131:20  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+136:95  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+138:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/stories/[id]/edit/page.tsx
+82:7  Warning: Unexpected alert.  no-alert
+
+./app/visual-queries/new/page.tsx
+75:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/workspace/settings/page.tsx
+113:48  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+116:82  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+118:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/activity-feed.tsx
+58:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/agent-manager.tsx
+85:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+121:67  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+121:76  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/ai/ai-chat.tsx
+298:65  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./components/ai-usage/budget-management.tsx
+359:61  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+359:84  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/ai-usage/rate-limit-management.tsx
+358:61  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+358:83  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/alert-manager.tsx
+75:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/analytics/analytics-view.tsx
+80:42  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/analytics/auto-insights.tsx
+153:45  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/analytics/key-drivers.tsx
+81:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/canvas/widgets/metric-widget.tsx
+32:79  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/charts/chart-annotations.tsx
+107:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/collaboration/activity-feed.tsx
+50:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/collaboration/comment-thread.tsx
+201:35  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/collection-sidebar.tsx
+65:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+119:44  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+121:48  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/combo-chart.tsx
+120:27  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+./components/comments/comment-list.tsx
+207:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/comments/mention-popover.tsx
+125:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/connections/MongoDBForm.tsx
+43:21  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/connections/OracleForm.tsx
+41:21  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/connections/SqlServerForm.tsx
+40:21  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/add-card-dialog.tsx
+60:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/add-to-dashboard-dialog.tsx
+166:48  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+169:58  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+171:67  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/dashboard/ai-explain-dialog.tsx
+87:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/auto-refresh.tsx
+306:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/dashboard-card.tsx
+171:45  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+212:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/dashboard-filter-bar.tsx
+161:82  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+./components/dashboard/dashboard-filters.tsx
+80:38  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/dashboard-grid.tsx
+110:17  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+112:17  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./components/dashboard/export-dialog.tsx
+324:32  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+324:48  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/dashboard/global-filters.tsx
+274:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard-card.tsx
+76:24  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/home-page-content.tsx
+259:61  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+./components/main-sidebar.tsx
+59:3  Error: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+
+./components/metric-card.tsx
+89:23  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/activity-feed.tsx
+117:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/notification-bell.tsx
+93:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/notification-panel.tsx
+125:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/scheduler-manager.tsx
+114:14  Warning: Unexpected confirm.  no-alert
+305:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/dashboard/status-heatmap.tsx
+34:45  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/lineage/lineage-graph.tsx
+91:33  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/pipeline-history.tsx
+206:47  Warning: Do not nest ternary expressions.  no-nested-ternary
+276:60  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/pipeline-list.tsx
+67:27  Warning: Unexpected confirm.  no-alert
+
+./components/pipelines/quality-builder.tsx
+91:50  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+94:56  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+96:86  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+119:39  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+124:55  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+126:86  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/pipelines/schedule-picker.tsx
+25:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/progress-bar.tsx
+43:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+44:11  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/column-selector.tsx
+256:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/load-query-dialog.tsx
+137:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+147:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/query-preview.tsx
+258:40  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+262:61  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+265:110  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+267:61  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/query-builder/sql-preview.tsx
+137:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/visual-builder.tsx
+629:42  Warning: Do not nest ternary expressions.  no-nested-ternary
+636:45  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/visual-query-workspace.tsx
+186:14  Warning: Unexpected confirm.  no-alert
+206:22  Warning: Unexpected prompt.  no-alert
+209:29  Warning: Unexpected prompt.  no-alert
+232:14  Warning: Unexpected confirm.  no-alert
+
+./components/query-history/history-dialog.tsx
+125:33  Warning: Unexpected confirm.  no-alert
+210:41  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+210:57  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/query-optimizer/optimizer-panel.tsx
+57:35  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/reports/report-schedule-form.tsx
+424:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/results-panel.tsx
+332:20  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+336:54  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+339:99  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/security/policy-editor.tsx
+164:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+207:137  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+207:145  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/security/rls-manager.tsx
+68:14  Warning: Unexpected confirm.  no-alert
+140:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/ai-settings.tsx
+119:78  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+123:44  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+125:60  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/semantic/create-calculated-field-dialog.tsx
+168:61  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+172:69  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+174:69  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+186:31  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+191:73  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+193:73  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/semantic/create-relationship-dialog.tsx
+136:48  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+139:76  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+141:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/semantic/data-explainer.tsx
+169:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/formula-editor.tsx
+218:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+223:29  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/model-editor.tsx
+175:14  Warning: Unexpected confirm.  no-alert
+288:64  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+288:78  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+288:81  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+288:95  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/semantic/query-builder-ai.tsx
+122:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/query-builder.tsx
+200:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+206:29  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/relationship-editor.tsx
+171:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+616:38  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/request-history-table.tsx
+213:38  Warning: Do not nest ternary expressions.  no-nested-ternary
+253:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+281:71  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+286:40  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+288:62  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/settings/developer-settings.tsx
+78:14  Warning: Unexpected confirm.  no-alert
+174:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/settings/security/passkey-manager.tsx
+84:14  Warning: Unexpected confirm.  no-alert
+
+./components/share/embed-dialog.tsx
+352:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+478:16  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/share/share-resource-dialog.tsx
+394:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/share-modal.tsx
+115:15  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+119:63  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/table-visualization.tsx
+175:42  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/ui/slider.tsx
+18:7  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/version-control/version-history-sheet.tsx
+47:14  Warning: Unexpected confirm.  no-alert
+81:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visual-query/VisualQueryBuilder.tsx
+47:47  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+47:57  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/visualization-sidebar.tsx
+260:61  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+341:25  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+459:54  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+511:19  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+782:36  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+./components/visualizations/advanced-tooltips.tsx
+96:13  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/bullet-chart.tsx
+56:27  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/chart-formatting.tsx
+223:61  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+389:52  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+
+./components/visualizations/kpi-card.tsx
+224:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/map-config.tsx
+270:33  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/point-map.tsx
+342:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+364:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/small-multiples.tsx
+39:33  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+39:49  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/workspace/workspace-members.tsx
+169:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./lib/ai/providers/gemini-provider.ts
+51:40  Error: 'sql' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/ai/providers/openai-provider.ts
+39:40  Error: 'sql' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/connectors/base-connector.ts
+117:33  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+117:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./lib/connectors/parquet-connector.ts
+31:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./lib/db-connectors/postgres-connector.ts
+16:14  Warning: Expected a `const` assertion instead of a literal type annotation.  @typescript-eslint/prefer-as-const
+
+./lib/etl/quality-engine.ts
+49:13  Error: 'rowFailed' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+49:13  Warning: 'rowFailed' is never reassigned. Use 'const' instead.  prefer-const
+
+./lib/etl/transformation-engine.ts
+107:47  Warning: Expected '===' and instead saw '=='.  eqeqeq
+108:48  Warning: Expected '!==' and instead saw '!='.  eqeqeq
+
+./lib/repositories/settings-repo.ts
+24:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./lib/services/alert-service.ts
+93:31  Warning: Do not nest ternary expressions.  no-nested-ternary
+108:44  Warning: Expected '===' and instead saw '=='.  eqeqeq
+109:45  Warning: Expected '!==' and instead saw '!='.  eqeqeq
+
+./lib/services/insights-service.ts
+27:20  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./lib/tracing.ts
+50:5  Error: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

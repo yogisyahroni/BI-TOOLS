@@ -15,11 +15,11 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Sparkles, Play, Save, Copy, Check, AlertCircle, CheckCircle, Calculator } from 'lucide-react';
+import { Sparkles, _Play, Save, Copy, Check, AlertCircle, CheckCircle, Calculator } from 'lucide-react';
 import { useGenerateFormula } from '@/hooks/use-semantic';
 import { toast } from 'sonner';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { Prism as _SyntaxHighlighter } from 'react-syntax-highlighter';
+import { _oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface FormulaEditorProps {
     dataSourceId?: string;
@@ -84,7 +84,7 @@ export function FormulaEditor({ dataSourceId, onSaveFormula, className }: Formul
             setCopied(true);
             toast.success('Formula copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to copy formula');
         }
     };

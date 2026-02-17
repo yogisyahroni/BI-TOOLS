@@ -27,6 +27,8 @@ export interface MapDataPoint {
     lng: number
     value?: number
     label?: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     properties?: Record<string, any>
 }
 
@@ -36,9 +38,13 @@ export interface MapDataPoint {
 export interface GeoJSONFeature {
     type: 'Feature'
     geometry: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         type: string
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         coordinates: any
     }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     properties: Record<string, any>
     id?: string | number
 }

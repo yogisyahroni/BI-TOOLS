@@ -20,7 +20,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs';
 import { ConditionBuilder } from './condition-builder';
 import { NotificationConfig } from './notification-config';
 import { AlertReview } from './alert-review';
@@ -47,7 +47,7 @@ const STEPS = [
 export function AlertCreateDialog({ open, onOpenChange, onSubmit }: AlertCreateDialogProps) {
     const [currentStep, setCurrentStep] = useState(0);
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [testResult, setTestResult] = useState<{ success: boolean; message: string; value?: number } | null>(null);
+    const [_testResult, _setTestResult] = useState<{ success: boolean; message: string; value?: number } | null>(null);
 
     // Form state
     const [formData, setFormData] = useState({
@@ -65,8 +65,8 @@ export function AlertCreateDialog({ open, onOpenChange, onSubmit }: AlertCreateD
         channels: [] as AlertChannelInput[],
     });
 
-    const [availableQueries, setAvailableQueries] = useState<Array<{ id: string; name: string }>>([]);
-    const [availableColumns, setAvailableColumns] = useState<string[]>([]);
+    const [_availableQueries, _setAvailableQueries] = useState<Array<{ id: string; name: string }>>([]);
+    const [_availableColumns, _setAvailableColumns] = useState<string[]>([]);
 
     const handleNext = () => {
         if (currentStep < STEPS.length - 1) {

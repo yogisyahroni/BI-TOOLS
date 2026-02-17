@@ -6,12 +6,14 @@ export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
     const rawToken = await getToken({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         req: req as any,
         secret: process.env.NEXTAUTH_SECRET,
         raw: true
     });
 
     const decodedToken = await getToken({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         req: req as any,
         secret: process.env.NEXTAUTH_SECRET,
         raw: false

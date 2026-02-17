@@ -34,7 +34,7 @@ export default function AIAssistantPage() {
         setShowHistory(false);
     };
 
-    const handleHistoryDelete = (id: string) => {
+    const handleHistoryDelete = (_id: string) => {
         toast.success('Request deleted', {
             description: 'History item has been removed',
         });

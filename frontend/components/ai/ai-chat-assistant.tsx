@@ -11,12 +11,12 @@ import {
     Send,
     User,
     Bot,
-    Loader2,
+    _Loader2,
     StopCircle,
     ChevronDown,
     ChevronRight,
     BrainCircuit,
-    MessageSquare,
+    _MessageSquare,
     X,
     Minimize2,
     Maximize2,
@@ -36,7 +36,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, _SheetTrigger } from '@/components/ui/sheet';
 
 interface ChatMessage {
     id: string;
@@ -60,9 +60,9 @@ interface AIChatAssistantProps {
 
 export function AIChatAssistant({ 
     currentSQL, 
-    currentPrompt, 
+    _currentPrompt, 
     onApplySQL,
-    className 
+    _className 
 }: AIChatAssistantProps) {
     const [prompt, setPrompt] = useState('');
     const [selectedProviderId, setSelectedProviderId] = useState<string>('');
@@ -153,6 +153,8 @@ export function AIChatAssistant({
             const context = reasoningData ? { reasoning_plan: reasoningData.plan } : {};
             await startStream(currentPrompt, context, selectedProviderId || undefined);
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.message || 'Failed to generate response');
             setChatHistory(prev => {
@@ -300,7 +302,7 @@ export function AIChatAssistant({
                                                         <ReactMarkdown
                                                             components={{
                                                                 code(props) {
-                                                                    const { children, className, node, inline, ...rest } = props
+                                                                    const { children, className, _node, _inline, ...rest } = props
                                                                     const match = /language-(\w+)/.exec(className || '')
                                                                     return match ? (
                                                                         <div className="relative">

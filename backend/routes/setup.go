@@ -30,23 +30,23 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 	api.Get("/auth/:provider/callback", h.OAuthHandler.HandleCallback)
 
 	// --- Health Check Routes ---
-	api.Get("/health", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "ok", "service": "InsightEngine Backend", "version": "1.0.0"})
-	})
-	// Note: Readiness/Liveness logic from main.go requires DB access, kept simple here or moved to a HealthHandler?
-	// For now, let's keep simple json response here as in main.go, assuming DB check logic stays in main or moved.
-	// Actually, create a simple inline handler here if needed, or better, move handler logic to a dedicated handler file later.
-	// For this refactor, we'll implement simple responses to unblock.
-	api.Get("/health/live", func(c *fiber.Ctx) error {
-		return c.JSON(fiber.Map{"status": "alive"})
-	})
-	// For ready check, we might need DB reference. We'll skip complex ready logic here or require a HealthHandler.
-	// Let's assume HealthHandler exists or just use simple one for now to fix structure.
+	// --- Health Check Routes ---
+	api.Get("/health", h.SystemHealthHandler.GetHealth)
+	api.Get("/health/live", h.SystemHealthHandler.LivenessProbe)
+	api.Get("/health/ready", h.SystemHealthHandler.ReadinessProbe)
+
+	// Admin Health Routes
+	api.Get("/admin/health/db", m.AuthMiddleware, m.AdminMiddleware, h.SystemHealthHandler.GetDatabaseHealth)
+	api.Get("/admin/health/queries", m.AuthMiddleware, m.AdminMiddleware, h.SystemHealthHandler.GetQueryPerformance)
+	api.Get("/admin/health/cache", m.AuthMiddleware, m.AdminMiddleware, h.SystemHealthHandler.GetCacheStats)
+	api.Get("/admin/health/metrics", m.AuthMiddleware, m.AdminMiddleware, h.SystemHealthHandler.GetSystemMetrics)
+	api.Get("/admin/health/errors", m.AuthMiddleware, m.AdminMiddleware, h.SystemHealthHandler.GetRecentErrors)
+	api.Get("/admin/health/export", m.AuthMiddleware, m.AdminMiddleware, h.SystemHealthHandler.ExportHealthReport)
 
 	// --- Core Feature Routes ---
 
 	// Query Routes
-	api.Get("/queries", m.AuthMiddleware, h.QueryHandler.GetQueries)
+	api.Get("/queries", m.AuthMiddleware, m.CacheMiddleware, h.QueryHandler.GetQueries)
 	api.Post("/queries", m.AuthMiddleware, h.QueryHandler.CreateQuery)
 	api.Get("/queries/:id", m.AuthMiddleware, h.QueryHandler.GetQuery)
 	api.Put("/queries/:id", m.AuthMiddleware, h.QueryHandler.UpdateQuery)
@@ -95,7 +95,16 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 
 	// Advanced Analytics
 	api.Post("/analytics/insights", m.AuthMiddleware, h.AnalyticsHandler.GenerateInsights)
+	api.Post("/analytics/insights", m.AuthMiddleware, h.AnalyticsHandler.GenerateInsights)
 	api.Post("/analytics/correlations", m.AuthMiddleware, h.AnalyticsHandler.CalculateCorrelation)
+
+	// --- Stories & Presentations (TASK-161) ---
+	api.Post("/stories", m.AuthMiddleware, h.StoryHandler.CreateStory)
+	api.Get("/stories", m.AuthMiddleware, h.StoryHandler.GetStories)
+	api.Get("/stories/:id", m.AuthMiddleware, h.StoryHandler.GetStory)
+	api.Put("/stories/:id", m.AuthMiddleware, h.StoryHandler.UpdateStory)
+	api.Delete("/stories/:id", m.AuthMiddleware, h.StoryHandler.DeleteStory)
+	api.Get("/stories/:id/export", m.AuthMiddleware, h.StoryHandler.ExportPPTX)
 
 	api.Post("/engine/clustering", m.AuthMiddleware, h.EngineHandler.PerformClustering)
 
@@ -144,6 +153,8 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 	// Let's use `handlers.SemanticExplainData` directly here since they sound global.
 
 	// Modeling
+	h.FormulaHandler.RegisterRoutes(api)
+
 	api.Get("/modeling/definitions", m.AuthMiddleware, h.ModelingHandler.ListModelDefinitions)
 	api.Post("/modeling/definitions", m.AuthMiddleware, h.ModelingHandler.CreateModelDefinition)
 	api.Get("/modeling/definitions/:id", m.AuthMiddleware, h.ModelingHandler.GetModelDefinition)

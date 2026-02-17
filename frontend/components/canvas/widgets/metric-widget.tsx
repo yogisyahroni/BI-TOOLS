@@ -8,7 +8,7 @@ interface WidgetProps {
     readOnly?: boolean;
 }
 
-export function MetricWidget({ widget, readOnly }: WidgetProps) {
+export function MetricWidget({ widget, _readOnly }: WidgetProps) {
     const { label, value, trend, trendValue } = widget.config;
 
     if (!label && !value) {

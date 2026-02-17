@@ -1,0 +1,5 @@
+2026/02/17 02:28:21 ✅ Connection pool configured: MaxOpen=25, MaxIdle=10, MaxLifetime=30m0s, MaxIdleTime=5m0s
+2026/02/17 02:28:21 ✅ Connected to Database (PostgreSQL)
+2026/02/17 02:28:21 🔌 Active Database Name: Inside_engineer1
+2026/02/17 02:28:21 ⚠️ STARTUP CHECK: email_verified_at check skipped/failed (non-fatal): sql: Scan error on column index 0, name "email_verified_at": unsupported Scan, storing driver.Value type <nil> into type *time.Time
+2026/02/17 02:28:21 ✅ Connection pool configured: MaxOpen=50, MaxIdle=25, MaxLifetime=30m, MaxIdleTime=10m

@@ -1,4 +1,6 @@
 export interface CacheEntry {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[];
     timestamp: number;
     expiresAt: number;
@@ -14,7 +16,9 @@ export class QueryCacheManager {
     private static generateKey(connectionId: string, sql: string): string {
         return `${connectionId}:${Buffer.from(sql).toString('base64').substring(0, 50)}`;
     }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static get(connectionId: string, sql: string): any[] | null {
         const key = this.generateKey(connectionId, sql);
         const entry = this.cache[key];
@@ -26,8 +30,10 @@ export class QueryCacheManager {
         }
 
         return entry.data;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     static set(connectionId: string, sql: string, data: any[], ttlMs = this.DEFAULT_TTL): void {
         const key = this.generateKey(connectionId, sql);
         this.cache[key] = {

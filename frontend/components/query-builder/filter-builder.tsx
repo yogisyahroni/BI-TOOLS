@@ -449,9 +449,13 @@ function FilterConditionRow({
 
 // Type-aware Value Input
 interface ValueInputFieldProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
     operator: ComparisonOperator;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     columnType: 'string' | 'number' | 'date' | 'boolean';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onChange: (value: any) => void;
 }
 
@@ -561,8 +565,10 @@ function ValueInputField({ value, operator, columnType, onChange }: ValueInputFi
     );
 }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // Date Picker Component
 interface DatePickerProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     value: any;
     onChange: (value: string) => void;
     placeholder?: string;

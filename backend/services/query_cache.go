@@ -11,11 +11,25 @@ import (
 	"insight-engine-backend/models"
 )
 
+// QueryCacheInterface defines methods for caching query results
+type QueryCacheInterface interface {
+	GetCachedResult(ctx context.Context, key string) (*models.QueryResult, error)
+	SetCachedResult(ctx context.Context, key string, result *models.QueryResult, tags []string) error
+	GenerateCacheKey(config *models.VisualQueryConfig, conn *models.Connection, userId string) string
+	GenerateRawQueryCacheKey(connectionId string, sql string, params []interface{}, limit *int, offset *int) string
+	InvalidateQuery(ctx context.Context, visualQueryId string) error
+	InvalidateConnection(ctx context.Context, connectionId string) error
+	InvalidateUser(ctx context.Context, userId string) error
+}
+
 // QueryCache manages caching for visual query results
 type QueryCache struct {
 	redis *RedisCache
 	ttl   time.Duration
 }
+
+// Ensure QueryCache implements QueryCacheInterface
+var _ QueryCacheInterface = (*QueryCache)(nil)
 
 // NewQueryCache creates a new query cache instance
 func NewQueryCache(redis *RedisCache, ttl time.Duration) *QueryCache {
@@ -51,6 +65,39 @@ func (qc *QueryCache) GenerateCacheKey(config *models.VisualQueryConfig, conn *m
 
 	// Return cache key with prefix
 	return fmt.Sprintf("cache:vq:%s", hashStr)
+}
+
+// GenerateRawQueryCacheKey creates a deterministic cache key from raw SQL and params
+func (qc *QueryCache) GenerateRawQueryCacheKey(connectionId string, sql string, params []interface{}, limit *int, offset *int) string {
+	// Create a struct with all relevant data for hashing
+	keyData := struct {
+		ConnectionID string        `json:"connectionId"`
+		SQL          string        `json:"sql"`
+		Params       []interface{} `json:"params"`
+		Limit        *int          `json:"limit"`
+		Offset       *int          `json:"offset"`
+	}{
+		ConnectionID: connectionId,
+		SQL:          sql,
+		Params:       params,
+		Limit:        limit,
+		Offset:       offset,
+	}
+
+	// Marshal to JSON for consistent hashing
+	jsonData, err := json.Marshal(keyData)
+	if err != nil {
+		// Fallback to simple key if marshaling fails
+		hash := sha256.Sum256([]byte(fmt.Sprintf("%s:%s", connectionId, sql)))
+		return fmt.Sprintf("cache:raw:error:%s", hex.EncodeToString(hash[:]))
+	}
+
+	// Generate SHA-256 hash
+	hash := sha256.Sum256(jsonData)
+	hashStr := hex.EncodeToString(hash[:])
+
+	// Return cache key with prefix
+	return fmt.Sprintf("cache:raw:%s", hashStr)
 }
 
 // GetCachedResult retrieves a cached query result

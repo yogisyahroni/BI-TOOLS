@@ -1,0 +1,261 @@
+/pipelines:
+  get:
+    summary: Get all pipelines
+    description: Retrieve a list of pipelines for a workspace.
+    tags:
+      - Pipelines
+    parameters:
+      - $ref: "#/components/parameters/WorkspaceIdParam"
+      - $ref: "#/components/parameters/PageParam"
+      - $ref: "#/components/parameters/LimitParam"
+    responses:
+      "200":
+        description: List of pipelines
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/Pipeline"
+                pagination:
+                  $ref: "#/components/schemas/Pagination"
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+  post:
+    summary: Create a pipeline
+    description: Create a new data pipeline.
+    tags:
+      - Pipelines
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreatePipelineRequest"
+    responses:
+      "201":
+        description: Pipeline created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pipeline"
+      "400":
+        $ref: "#/components/responses/BadRequest"
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+
+/pipelines/{id}:
+  get:
+    summary: Get a pipeline
+    description: Retrieve a specific pipeline by ID.
+    tags:
+      - Pipelines
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    responses:
+      "200":
+        description: Pipeline details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pipeline"
+      "404":
+        $ref: "#/components/responses/NotFound"
+  put:
+    summary: Update a pipeline
+    description: Update an existing pipeline.
+    tags:
+      - Pipelines
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdatePipelineRequest"
+    responses:
+      "200":
+        description: Pipeline updated
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Pipeline"
+  delete:
+    summary: Delete a pipeline
+    description: Delete a pipeline and its executions.
+    tags:
+      - Pipelines
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    responses:
+      "204":
+        description: Pipeline deleted
+      "401":
+        $ref: "#/components/responses/Unauthorized"
+
+/pipelines/{id}/run:
+  post:
+    summary: Run a pipeline
+    description: Trigger a manual run of the pipeline.
+    tags:
+      - Pipelines
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    responses:
+      "201":
+        description: Job execution started
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/JobExecution"
+
+/pipelines/{id}/executions:
+  get:
+    summary: Get pipeline executions
+    description: Retrieve execution history for a pipeline.
+    tags:
+      - Pipelines
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+      - $ref: "#/components/parameters/PageParam"
+      - $ref: "#/components/parameters/LimitParam"
+    responses:
+      "200":
+        description: List of executions
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                executions:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/JobExecution"
+                total:
+                  type: integer
+                successRate:
+                  type: number
+
+/scheduled-reports:
+  get:
+    summary: Get scheduled reports
+    description: List scheduled reports.
+    tags:
+      - Scheduled Reports
+    parameters:
+      - name: resourceType
+        in: query
+        schema:
+          type: string
+      - name: resourceId
+        in: query
+        schema:
+          type: string
+    responses:
+      "200":
+        description: List of scheduled reports
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/ScheduledReport"
+  post:
+    summary: Create scheduled report
+    description: Create a new scheduled report.
+    tags:
+      - Scheduled Reports
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateScheduledReportRequest"
+    responses:
+      "201":
+        description: Created
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledReport"
+
+/scheduled-reports/{id}:
+  get:
+    summary: Get scheduled report
+    tags:
+      - Scheduled Reports
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    responses:
+      "200":
+        description: Details
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledReport"
+  put:
+    summary: Update scheduled report
+    tags:
+      - Scheduled Reports
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateScheduledReportRequest"
+    responses:
+      "200":
+        description: Updated
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduledReport"
+  delete:
+    summary: Delete scheduled report
+    tags:
+      - Scheduled Reports
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    responses:
+      "204":
+        description: Deleted
+
+/scheduled-reports/{id}/trigger:
+  post:
+    summary: Trigger report
+    tags:
+      - Scheduled Reports
+    parameters:
+      - $ref: "#/components/parameters/IdParam"
+    responses:
+      "200":
+        description: Triggered
+
+/scheduled-reports/timezones:
+  get:
+    summary: Get timezones
+    tags:
+      - Scheduled Reports
+    responses:
+      "200":
+        description: List of timezones
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                timezones:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      value:
+                        type: string
+                      label:
+                        type: string

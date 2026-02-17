@@ -55,7 +55,7 @@ export function ForgotPasswordModal({ open, onOpenChange }: ForgotPasswordModalP
                     reset();
                 }, 300);
             }, 3000);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to send reset email. Please try again.');
         } finally {
             setIsLoading(false);

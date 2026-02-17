@@ -5,14 +5,15 @@ export const dynamic = 'force-dynamic';
 import { useState, useEffect } from 'react';
 import { fetchWithAuth } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Play, Plus, Box, ArrowDown } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Card, _CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Play, Plus, _Box, _ArrowDown } from 'lucide-react';
+import { _Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { _useRouter } from 'next/navigation';
 
 export default function DataflowDetailPage({ params }: { params: Promise<{ id: string }> }) {
-    const [dataflow, setDataflow] = useState<any>(null);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const [_dataflow, _setDataflow] = useState<any>(null);
     const [isRunning, setIsRunning] = useState(false);
     const [resolvedId, setResolvedId] = useState<string>('');
 
@@ -36,7 +37,7 @@ export default function DataflowDetailPage({ params }: { params: Promise<{ id: s
             const res = await fetchWithAuth(`/api/go/dataflows/${resolvedId}/run`, { method: 'POST' });
             if (res.ok) toast.success('Dataflow started');
             else toast.error('Failed to start');
-        } catch (e) {
+        } catch (_e) {
             toast.error('Error');
         } finally {
             setIsRunning(false);

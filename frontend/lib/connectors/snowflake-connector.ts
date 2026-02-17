@@ -1,4 +1,4 @@
-import { BaseConnector, ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
+import { BaseConnector, _ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
 
 /**
  * Snowflake Connector Implementation
@@ -16,7 +16,7 @@ export class SnowflakeConnector extends BaseConnector {
         throw new Error('Snowflake connector not yet implemented');
     }
 
-    async executeQuery(sql: string): Promise<QueryResult> {
+    async executeQuery(_sql: string): Promise<QueryResult> {
         // TODO: Execute via Snowflake REST API
         throw new Error('Snowflake connector not yet implemented');
     }

@@ -23,14 +23,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
-import { Utils } from '@/lib/utils'
+import { _Utils } from '@/lib/utils'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import type {
   DashboardVersionDiff,
   QueryVersionDiff,
   DashboardVersion,
   QueryVersion,
-  VersionCard,
+  _VersionCard,
   DashboardCardChange
 } from '@/types/versions'
 

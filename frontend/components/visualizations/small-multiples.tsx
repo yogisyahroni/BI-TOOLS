@@ -7,13 +7,15 @@ import { type VisualizationConfig } from '@/lib/types';
 import { Card } from '@/components/ui/card';
 
 interface SmallMultiplesProps {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: Record<string, any>[];
     config: VisualizationConfig;
     isLoading?: boolean;
 }
 
 export function SmallMultiples({ data, config, isLoading }: SmallMultiplesProps) {
-    const { seriesBreakout, xAxis, yAxis } = config;
+    const { seriesBreakout, _xAxis, _yAxis } = config;
 
     // Group data by breakout column
     const groupedData = useMemo(() => {
@@ -23,7 +25,9 @@ export function SmallMultiples({ data, config, isLoading }: SmallMultiplesProps)
             const key = String(row[seriesBreakout]);
             if (!acc[key]) acc[key] = [];
             acc[key].push(row);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             return acc;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         }, {} as Record<string, any[]>);
     }, [data, seriesBreakout]);
 

@@ -8,6 +8,10 @@ import (
 )
 
 func main() {
+	// 0. Initialize Tracing
+	shutdown := bootstrap.InitTracing()
+	defer shutdown()
+
 	// 1. Initialize Security Logger First
 	// Security logging must be available from application start
 	services.InitSecurityLogger("InsightEngine Backend (Go)")

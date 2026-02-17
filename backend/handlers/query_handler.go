@@ -12,11 +12,12 @@ import (
 )
 
 type QueryHandler struct {
-	queryExecutor     *services.QueryExecutor
+	queryExecutor     services.QueryExecutorInterface
+	queryCache        *services.QueryCache
 	encryptionService *services.EncryptionService
 }
 
-func NewQueryHandler(qe *services.QueryExecutor) *QueryHandler {
+func NewQueryHandler(qe services.QueryExecutorInterface, qc *services.QueryCache) *QueryHandler {
 	// Initialize encryption service (fail gracefully if not configured)
 	encryptionService, err := services.NewEncryptionService()
 	if err != nil {
@@ -25,6 +26,7 @@ func NewQueryHandler(qe *services.QueryExecutor) *QueryHandler {
 
 	return &QueryHandler{
 		queryExecutor:     qe,
+		queryCache:        qc,
 		encryptionService: encryptionService,
 	}
 }
@@ -330,9 +332,24 @@ func (h *QueryHandler) RunQuery(c *fiber.Ctx) error {
 		})
 	}
 
-	// Execute query
+	// Execute query context
 	ctx := context.Background()
-	// Updated: include params (nil)
+
+	// Check cache
+	var cacheKey string
+	if h.queryCache != nil {
+		cacheKey = h.queryCache.GenerateRawQueryCacheKey(query.Connection.ID, query.SQL, nil, params.Limit, params.Offset)
+		cachedResult, err := h.queryCache.GetCachedResult(ctx, cacheKey)
+		if err == nil && cachedResult != nil {
+			return c.JSON(fiber.Map{
+				"success": true,
+				"data":    cachedResult,
+				"cached":  true,
+			})
+		}
+	}
+
+	// Execute query
 	result, err := h.queryExecutor.Execute(ctx, query.Connection, query.SQL, nil, params.Limit, params.Offset)
 
 	if err != nil {
@@ -341,6 +358,12 @@ func (h *QueryHandler) RunQuery(c *fiber.Ctx) error {
 			"message": "Query execution failed",
 			"error":   err.Error(),
 		})
+	}
+
+	// Cache result
+	if h.queryCache != nil {
+		tags := h.queryCache.GenerateTags("saved_query:"+query.ID, query.Connection.ID, userID)
+		_ = h.queryCache.SetCachedResult(ctx, cacheKey, result, tags)
 	}
 
 	return c.JSON(fiber.Map{
@@ -407,8 +430,23 @@ func (h *QueryHandler) ExecuteAdHocQuery(c *fiber.Ctx) error {
 		conn.Password = &decryptedPassword
 	}
 
-	// Execute query
+	// Execute query context
 	ctx := c.UserContext()
+
+	// Check cache
+	var cacheKey string
+	if h.queryCache != nil {
+		cacheKey = h.queryCache.GenerateRawQueryCacheKey(conn.ID, req.SQL, nil, nil, nil)
+		cachedResult, err := h.queryCache.GetCachedResult(ctx, cacheKey)
+		if err == nil && cachedResult != nil {
+			return c.JSON(fiber.Map{
+				"success": true,
+				"data":    cachedResult,
+				"cached":  true,
+			})
+		}
+	}
+
 	// Updated: include params (nil)
 	result, err := h.queryExecutor.Execute(ctx, &conn, req.SQL, nil, nil, nil)
 
@@ -418,6 +456,13 @@ func (h *QueryHandler) ExecuteAdHocQuery(c *fiber.Ctx) error {
 			"message": "Query execution failed",
 			"error":   err.Error(),
 		})
+	}
+
+	// Cache result
+	if h.queryCache != nil {
+		// Ad-hoc queries don't have a saved query ID, so we just tag by connection and user
+		tags := h.queryCache.GenerateTags("adhoc", conn.ID, userID)
+		_ = h.queryCache.SetCachedResult(ctx, cacheKey, result, tags)
 	}
 
 	return c.JSON(fiber.Map{

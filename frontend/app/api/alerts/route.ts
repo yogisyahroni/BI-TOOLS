@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
     }
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(_req: NextRequest) {
     try {
         const session = await getServerSession(authOptions);
         if (!session?.user?.id) {
@@ -52,14 +52,20 @@ export async function GET(req: NextRequest) {
         const alerts = await db.alert.findMany({
             where: { userId: session.user.id },
             include: {
-                query: { select: { name: true } }
+                query: {
+                    select: { name: true }
+                }
             },
             orderBy: { createdAt: 'desc' }
         });
 
-        return NextResponse.json({ success: true, alerts });
-
+        return NextResponse.json(alerts);
     } catch (error) {
-        return NextResponse.json({ error: 'Failed to fetch alerts' }, { status: 500 });
+        return NextResponse.json(
+            { error: error instanceof Error ? error.message : 'Failed to fetch alerts' },
+            { status: 500 }
+        );
     }
 }
+
+

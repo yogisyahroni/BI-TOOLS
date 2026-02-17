@@ -1,7 +1,7 @@
 "use client"
 
 import { useMemo } from "react"
-import { CartesianGrid, ComposedChart, Line, Scatter, XAxis, YAxis, Tooltip, Legend } from "recharts"
+import { CartesianGrid, ComposedChart, Line, Scatter, XAxis, YAxis, _Tooltip, _Legend } from "recharts"
 import { format } from "date-fns"
 
 import {
@@ -10,7 +10,7 @@ import {
     ChartLegend,
     ChartLegendContent,
     ChartTooltip,
-    ChartTooltipContent,
+    _ChartTooltipContent,
 } from "@/components/ui/chart"
 
 export interface AnomalyDataPoint {
@@ -76,7 +76,7 @@ export function AnomalyChart({ data, anomalies, className }: AnomalyChartProps) 
                 />
                 <ChartTooltip
                     cursor={false}
-                    content={({ active, payload, label }) => {
+                    content={({ active, payload, _label }) => {
                         if (active && payload && payload.length) {
                             const dataPoint = payload[0].payload;
                             return (

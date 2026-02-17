@@ -5,13 +5,15 @@ import { useState, useEffect } from 'react';
 import { fetchWithAuth } from '@/lib/utils';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Bell, Play, CheckCircle, AlertTriangle } from 'lucide-react';
+import { Bell, Play, _CheckCircle, _AlertTriangle } from 'lucide-react';
 import { type AlertRule } from '@/lib/services/alert-service';
 
 export function AlertManager() {
     const [alerts, setAlerts] = useState<Partial<AlertRule>[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isChecking, setIsChecking] = useState(false);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [lastResult, setLastResult] = useState<any>(null);
 
     // Fetch alerts on mount

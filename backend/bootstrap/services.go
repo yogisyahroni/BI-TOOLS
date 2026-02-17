@@ -4,12 +4,14 @@ import (
 	"insight-engine-backend/database"
 	"insight-engine-backend/pkg/resilience"
 	"insight-engine-backend/services"
+	"insight-engine-backend/services/formula_engine"
 	"os"
 	"time"
 )
 
 // InitServices initializes all services
 func InitServices() *ServiceContainer {
+	// ... (imports) ...
 	// 1. Encryption Service
 	encryptionService, err := services.NewEncryptionService()
 	if err != nil {
@@ -47,20 +49,7 @@ func InitServices() *ServiceContainer {
 	// Job Queue
 	services.InitJobQueue(5)
 
-	// Core Query Architecture
-	cbConfig := resilience.CircuitBreakerConfig{
-		Name:        "query-executor",
-		MaxRequests: 5,
-		Interval:    60 * time.Second,
-		Timeout:     30 * time.Second,
-	}
-	circuitBreaker := resilience.NewCircuitBreaker(cbConfig)
-	queryExecutor := services.NewQueryExecutor(circuitBreaker)
-	queryQueueService := services.NewQueryQueueService(queryExecutor, 10)
-	schemaDiscovery := services.NewSchemaDiscovery(queryExecutor)
-	queryValidator := services.NewQueryValidator([]string{})
-
-	// Redis
+	// Redis (Moved up for QueryExecutor dependency)
 	redisConfig := services.RedisCacheConfig{
 		Host:       os.Getenv("REDIS_HOST"),
 		Password:   os.Getenv("REDIS_PASSWORD"),
@@ -73,9 +62,29 @@ func InitServices() *ServiceContainer {
 	}
 
 	var queryCache *services.QueryCache
-	if redisCache, err := services.NewRedisCache(redisConfig); err == nil {
+	var redisCache *services.RedisCache
+	if redisCache, err = services.NewRedisCache(redisConfig); err == nil {
 		queryCache = services.NewQueryCache(redisCache, 5*time.Minute)
+	} else {
+		// Log error but continue (fallback to nil or handle gracefully if services allow nil)
+		// QueryCache handles nil RedisCache? NewQueryCache might need valid RedisCache.
+		// Let's check NewQueryCache. If it fails, queryCache is nil.
+		services.LogWarn("redis_init", "Failed to initialize Redis cache", map[string]interface{}{"error": err})
 	}
+
+	// Core Query Architecture
+	cbConfig := resilience.CircuitBreakerConfig{
+		Name:        "query-executor",
+		MaxRequests: 5,
+		Interval:    60 * time.Second,
+		Timeout:     30 * time.Second,
+	}
+	circuitBreaker := resilience.NewCircuitBreaker(cbConfig)
+	queryOptimizer := services.NewQueryOptimizer()
+	queryExecutor := services.NewQueryExecutor(circuitBreaker, queryOptimizer, queryCache)
+	queryQueueService := services.NewQueryQueueService(queryExecutor, 10)
+	schemaDiscovery := services.NewSchemaDiscovery(queryExecutor)
+	queryValidator := services.NewQueryValidator([]string{})
 
 	// Business Services
 	rlsService := services.NewRLSService(database.DB)
@@ -105,6 +114,8 @@ func InitServices() *ServiceContainer {
 	embedService := services.NewEmbedService(database.DB)
 	commentService := services.NewCommentService(database.DB, notificationService)
 
+	pptxGenerator := services.NewPPTXGenerator() // TASK-161
+
 	semanticLayerService := services.NewSemanticLayerService(database.DB)
 	modelingService := services.NewModelingService(database.DB)
 
@@ -128,7 +139,9 @@ func InitServices() *ServiceContainer {
 		AIService:                aiService,
 		AIReasoningService:       aiReasoningService,
 		AIOptimizerService:       aiOptimizerService,
+
 		StoryGeneratorService:    storyGeneratorService,
+		PPTXGenerator:            pptxGenerator, // TASK-161
 		SemanticLayerService:     semanticLayerService,
 		ModelingService:          modelingService,
 		RateLimiterService:       rateLimiterService,
@@ -169,5 +182,9 @@ func InitServices() *ServiceContainer {
 		CommentService:           commentService,
 		ScheduledReportService:   scheduledReportService,
 		SecurityLogService:       securityLogService,
+		SystemHealthService:      services.NewSystemHealthService(database.DB, redisCache),
+		// ...
+		FormulaEngine: formula_engine.NewFormulaEngine(), // GAP-004
+		RedisCache:    redisCache,
 	}
 }

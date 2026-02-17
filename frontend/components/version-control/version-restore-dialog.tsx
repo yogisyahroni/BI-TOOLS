@@ -5,7 +5,7 @@ import { format } from 'date-fns'
 import { 
   AlertTriangle, 
   RotateCcw, 
-  X, 
+  _X, 
   Loader2,
   CheckCircle2,
   Eye
@@ -22,7 +22,7 @@ import {
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Badge } from '@/components/ui/badge'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { _ScrollArea } from '@/components/ui/scroll-area'
 import { Separator } from '@/components/ui/separator'
 import type { 
   DashboardVersion, 

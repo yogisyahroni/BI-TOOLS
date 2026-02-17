@@ -86,6 +86,8 @@ export function HeatmapChart({
             } : undefined,
             tooltip: {
                 position: 'top',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter: function (params: any) {
                     const [xIndex, yIndex, value] = params.value
                     const point = data.find(d =>
@@ -152,7 +154,9 @@ export function HeatmapChart({
                     data: heatmapData,
                     label: {
                         show: showValues,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         fontSize: 10,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         formatter: function (params: any) {
                             return formatLargeNumber(params.value[2])
                         }
@@ -170,8 +174,10 @@ export function HeatmapChart({
         }
     }, [data, title, xAxis, yAxis, xAxisLabel, yAxisLabel, colorRange, valueRange, heatmapData, showValues, validation.isValid])
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // Event handlers
     const handleEvents = useMemo(() => ({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         click: (params: any) => {
             if (onCellClick && params.value) {
                 const [xIndex, yIndex] = params.value

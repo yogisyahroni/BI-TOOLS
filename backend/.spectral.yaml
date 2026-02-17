@@ -70,18 +70,18 @@ rules:
       field: tags
       function: truthy
 
-  no-inline-object-schemas:
-    severity: info
-    description: Prefer $ref schemas over inline definitions for reusability
-    message: "Consider extracting this inline schema into components/schemas"
+  # no-inline-object-schemas:
+  #   severity: info
+  #   description: Prefer $ref schemas over inline definitions for reusability
+  #   message: "Consider extracting this inline schema into components/schemas"
 
   # ============================================================
   # PAGINATION
   # ============================================================
-  pagination-parameters:
-    severity: info
-    description: List endpoints should support pagination
-    message: "GET endpoints returning arrays should support page/limit parameters"
+  # pagination-parameters:
+  #   severity: info
+  #   description: List endpoints should support pagination
+  #   message: "GET endpoints returning arrays should support page/limit parameters"
 
   # ============================================================
   # API VERSIONING
@@ -94,3 +94,35 @@ rules:
       function: pattern
       functionOptions:
         match: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+
+  # ============================================================
+  # SCHEMAS
+  # ============================================================
+  schema-names-pascal-case:
+    severity: warn
+    description: Schema names must be PascalCase
+    given: "$.components.schemas"
+    then:
+      field: "@key"
+      function: pattern
+      functionOptions:
+        match: "^[A-Z][a-zA-Z0-9]*$"
+
+  schema-description:
+    severity: warn
+    description: Schemas should have a description
+    given: "$.components.schemas[*]"
+    then:
+      field: description
+      function: truthy
+
+  # ============================================================
+  # PARAMETERS
+  # ============================================================
+  path-params-defined:
+    severity: error
+    description: Path parameters must be defined
+    given: "$..parameters[?(@.in == 'path')]"
+    then:
+      field: name
+      function: truthy

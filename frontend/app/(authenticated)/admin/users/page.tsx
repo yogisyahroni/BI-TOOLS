@@ -1,9 +1,7 @@
 'use client';
 
-export const dynamic = 'force-dynamic';
-
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useEffect, useState, useCallback } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -73,12 +71,7 @@ export default function UserManagementPage() {
     });
     const [deactivateReason, setDeactivateReason] = useState('');
 
-    useEffect(() => {
-        loadUsers();
-        loadStats();
-    }, [page, search, statusFilter, roleFilter]);
-
-    const loadUsers = async () => {
+    const loadUsers = useCallback(async () => {
         try {
             setLoading(true);
             const data = await userAdminApi.list({
@@ -90,25 +83,31 @@ export default function UserManagementPage() {
             });
             setUsers(data.data);
             setTotal(data.pagination.total);
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to load users';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to load users',
+                description: errorMessage,
                 variant: 'destructive',
             });
         } finally {
             setLoading(false);
         }
-    };
+    }, [page, search, statusFilter, roleFilter, toast]);
 
-    const loadStats = async () => {
+    const loadStats = useCallback(async () => {
         try {
             const data = await userAdminApi.getStats();
             setStats(data);
         } catch (error) {
             console.error('Failed to load stats:', error);
         }
-    };
+    }, []);
+
+    useEffect(() => {
+        loadUsers();
+        loadStats();
+    }, [loadUsers, loadStats]);
 
     const handleActivate = async (user: AdminUser) => {
         try {
@@ -119,10 +118,11 @@ export default function UserManagementPage() {
             });
             loadUsers();
             loadStats();
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to activate user';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to activate user',
+                description: errorMessage,
                 variant: 'destructive',
             });
         }
@@ -143,10 +143,11 @@ export default function UserManagementPage() {
             setDeactivateReason('');
             loadUsers();
             loadStats();
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to deactivate user';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to deactivate user',
+                description: errorMessage,
                 variant: 'destructive',
             });
         }
@@ -163,10 +164,11 @@ export default function UserManagementPage() {
             });
             setRoleDialog({ open: false, user: null, role: '' });
             loadUsers();
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to update role';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to update role',
+                description: errorMessage,
                 variant: 'destructive',
             });
         }
@@ -185,17 +187,18 @@ export default function UserManagementPage() {
 
             // Reload the page to apply the new token
             window.location.href = '/';
-        } catch (error: any) {
+        } catch (error: unknown) {
+            const errorMessage = error instanceof Error ? error.message : 'Failed to impersonate user';
             toast({
                 title: 'Error',
-                description: error.message || 'Failed to impersonate user',
+                description: errorMessage,
                 variant: 'destructive',
             });
         }
     };
 
     const getStatusBadge = (status: string) => {
-        const config: Record<string, { variant: any; icon: any }> = {
+        const config: Record<string, { variant: "default" | "secondary" | "outline" | "destructive"; icon: React.ElementType }> = {
             active: { variant: 'default', icon: CheckCircle },
             inactive: { variant: 'secondary', icon: XCircle },
             pending: { variant: 'outline', icon: Clock },
@@ -211,19 +214,96 @@ export default function UserManagementPage() {
         );
     };
 
+    const renderTableBody = () => {
+        if (loading) {
+            return Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                    <TableCell><Skeleton className="h-4 w-[200px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[120px]" /></TableCell>
+                    <TableCell><Skeleton className="h-4 w-[40px]" /></TableCell>
+                </TableRow>
+            ));
+        }
+
+        if (users.length === 0) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={5} className="text-center text-muted-foreground">
+                        No users found
+                    </TableCell>
+                </TableRow>
+            );
+        }
+
+        return users.map((user) => (
+            <TableRow key={user.id}>
+                <TableCell>
+                    <div>
+                        <div className="font-medium">{user.name || 'N/A'}</div>
+                        <div className="text-sm text-muted-foreground">{user.email}</div>
+                    </div>
+                </TableCell>
+                <TableCell>
+                    <Badge variant="outline">{user.role}</Badge>
+                </TableCell>
+                <TableCell>
+                    {getStatusBadge(user.status)}
+                </TableCell>
+                <TableCell className="text-muted-foreground">
+                    {new Date(user.createdAt).toLocaleDateString()}
+                </TableCell>
+                <TableCell className="text-right">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="sm">
+                                <MoreVertical className="h-4 w-4" />
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => handleImpersonate(user)}>
+                                <Eye className="h-4 w-4 mr-2" />
+                                Impersonate
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => setRoleDialog({ open: true, user, role: user.role })}>
+                                <Shield className="h-4 w-4 mr-2" />
+                                Update Role
+                            </DropdownMenuItem>
+                            {user.status === 'active' ? (
+                                <DropdownMenuItem
+                                    onClick={() => setDeactivateDialog({ open: true, user })}
+                                    className="text-destructive"
+                                >
+                                    <UserX className="h-4 w-4 mr-2" />
+                                    Deactivate
+                                </DropdownMenuItem>
+                            ) : (
+                                <DropdownMenuItem onClick={() => handleActivate(user)}>
+                                    <UserCheck className="h-4 w-4 mr-2" />
+                                    Activate
+                                </DropdownMenuItem>
+                            )}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </TableCell>
+            </TableRow>
+        ));
+    };
+
     return (
         <div className="container mx-auto p-6 space-y-6">
-            {/* Header */}
-            <div>
-                <h1 className="text-3xl font-bold">User Management</h1>
-                <p className="text-muted-foreground">
-                    Manage users, roles, and permissions
-                </p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold">User Management</h1>
+                    <p className="text-muted-foreground">Manage users and roles</p>
+                </div>
             </div>
 
             {/* Stats */}
             {stats && (
-                <div className="grid gap-4 md:grid-cols-4">
+                <div className="grid gap-4 md:grid-cols-3">
                     <Card>
                         <CardHeader className="pb-2">
                             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -237,7 +317,6 @@ export default function UserManagementPage() {
                             </div>
                         </CardContent>
                     </Card>
-
                     <Card>
                         <CardHeader className="pb-2">
                             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -245,35 +324,17 @@ export default function UserManagementPage() {
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex items-center gap-2">
-                                <UserCheck className="h-4 w-4 text-green-600" />
-                                <span className="text-2xl font-bold">{stats.activeUsers}</span>
-                            </div>
+                            <span className="text-2xl font-bold">{stats.activeUsers}</span>
                         </CardContent>
                     </Card>
-
                     <Card>
                         <CardHeader className="pb-2">
                             <CardTitle className="text-sm font-medium text-muted-foreground">
-                                Inactive Users
+                                New (This Month)
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex items-center gap-2">
-                                <UserX className="h-4 w-4 text-red-600" />
-                                <span className="text-2xl font-bold">{stats.inactiveUsers}</span>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader className="pb-2">
-                            <CardTitle className="text-sm font-medium text-muted-foreground">
-                                New This Month
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <span className="text-2xl font-bold">{stats.newThisMonth}</span>
+                            <span className="text-2xl font-bold">{stats.newUsersLastMonth}</span>
                         </CardContent>
                     </Card>
                 </div>
@@ -283,36 +344,34 @@ export default function UserManagementPage() {
             <Card>
                 <CardContent className="pt-6">
                     <div className="flex flex-col md:flex-row gap-4">
-                        <div className="flex-1 relative">
+                        <div className="relative flex-1">
                             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
-                                placeholder="Search by email, name, or username..."
+                                placeholder="Search users by name or email..."
                                 value={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 className="pl-10"
                             />
                         </div>
-
                         <Select value={statusFilter} onValueChange={setStatusFilter}>
-                            <SelectTrigger className="w-full md:w-[180px]">
-                                <SelectValue placeholder="Filter by status" />
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Status" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="">All Statuses</SelectItem>
+                                <SelectItem value="all">All Status</SelectItem>
                                 <SelectItem value="active">Active</SelectItem>
                                 <SelectItem value="inactive">Inactive</SelectItem>
                                 <SelectItem value="pending">Pending</SelectItem>
                             </SelectContent>
                         </Select>
-
                         <Select value={roleFilter} onValueChange={setRoleFilter}>
-                            <SelectTrigger className="w-full md:w-[180px]">
-                                <SelectValue placeholder="Filter by role" />
+                            <SelectTrigger className="w-[180px]">
+                                <SelectValue placeholder="Role" />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="">All Roles</SelectItem>
-                                <SelectItem value="admin">Admin</SelectItem>
+                                <SelectItem value="all">All Roles</SelectItem>
                                 <SelectItem value="user">User</SelectItem>
+                                <SelectItem value="admin">Admin</SelectItem>
                             </SelectContent>
                         </Select>
                     </div>
@@ -332,93 +391,14 @@ export default function UserManagementPage() {
                         <TableHeader>
                             <TableRow>
                                 <TableHead>User</TableHead>
-                                <TableHead>Status</TableHead>
                                 <TableHead>Role</TableHead>
-                                <TableHead>Verified</TableHead>
-                                <TableHead>Created</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Joined</TableHead>
                                 <TableHead className="text-right">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {loading ? (
-                                Array.from({ length: 5 }).map((_, i) => (
-                                    <TableRow key={i}>
-                                        <TableCell><Skeleton className="h-4 w-[200px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[80px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[60px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[60px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
-                                        <TableCell><Skeleton className="h-4 w-[40px]" /></TableCell>
-                                    </TableRow>
-                                ))
-                            ) : users.length === 0 ? (
-                                <TableRow>
-                                    <TableCell colSpan={6} className="text-center text-muted-foreground">
-                                        No users found
-                                    </TableCell>
-                                </TableRow>
-                            ) : (
-                                users.map((user) => (
-                                    <TableRow key={user.id}>
-                                        <TableCell>
-                                            <div>
-                                                <p className="font-medium">{user.name || user.username}</p>
-                                                <p className="text-sm text-muted-foreground">{user.email}</p>
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>{getStatusBadge(user.status)}</TableCell>
-                                        <TableCell>
-                                            <Badge variant="outline">{user.role}</Badge>
-                                        </TableCell>
-                                        <TableCell>
-                                            {user.emailVerified ? (
-                                                <CheckCircle className="h-4 w-4 text-green-600" />
-                                            ) : (
-                                                <XCircle className="h-4 w-4 text-muted-foreground" />
-                                            )}
-                                        </TableCell>
-                                        <TableCell className="text-sm text-muted-foreground">
-                                            {new Date(user.createdAt).toLocaleDateString()}
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            <DropdownMenu>
-                                                <DropdownMenuTrigger asChild>
-                                                    <Button variant="ghost" size="sm">
-                                                        <MoreVertical className="h-4 w-4" />
-                                                    </Button>
-                                                </DropdownMenuTrigger>
-                                                <DropdownMenuContent align="end">
-                                                    {user.status === 'active' ? (
-                                                        <DropdownMenuItem
-                                                            onClick={() => setDeactivateDialog({ open: true, user })}
-                                                            className="text-destructive"
-                                                        >
-                                                            <UserX className="h-4 w-4 mr-2" />
-                                                            Deactivate
-                                                        </DropdownMenuItem>
-                                                    ) : (
-                                                        <DropdownMenuItem onClick={() => handleActivate(user)}>
-                                                            <UserCheck className="h-4 w-4 mr-2" />
-                                                            Activate
-                                                        </DropdownMenuItem>
-                                                    )}
-                                                    <DropdownMenuItem
-                                                        onClick={() => setRoleDialog({ open: true, user, role: user.role })}
-                                                    >
-                                                        <Shield className="h-4 w-4 mr-2" />
-                                                        Change Role
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuSeparator />
-                                                    <DropdownMenuItem onClick={() => handleImpersonate(user)}>
-                                                        <Eye className="h-4 w-4 mr-2" />
-                                                        Impersonate
-                                                    </DropdownMenuItem>
-                                                </DropdownMenuContent>
-                                            </DropdownMenu>
-                                        </TableCell>
-                                    </TableRow>
-                                ))
-                            )}
+                            {renderTableBody()}
                         </TableBody>
                     </Table>
 
@@ -460,16 +440,14 @@ export default function UserManagementPage() {
                             Are you sure you want to deactivate {deactivateDialog.user?.email}?
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4">
-                        <div>
-                            <Label htmlFor="reason">Reason (optional)</Label>
-                            <Textarea
-                                id="reason"
-                                value={deactivateReason}
-                                onChange={(e) => setDeactivateReason(e.target.value)}
-                                placeholder="Enter reason for deactivation..."
-                            />
-                        </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="reason">Reason (Optional)</Label>
+                        <Textarea
+                            id="reason"
+                            value={deactivateReason}
+                            onChange={(e) => setDeactivateReason(e.target.value)}
+                            placeholder="Why is this user being deactivated?"
+                        />
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setDeactivateDialog({ open: false, user: null })}>
@@ -482,28 +460,26 @@ export default function UserManagementPage() {
                 </DialogContent>
             </Dialog>
 
-            {/* Role Change Dialog */}
+            {/* Role Dialog */}
             <Dialog open={roleDialog.open} onOpenChange={(open) => setRoleDialog({ open, user: null, role: '' })}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Change User Role</DialogTitle>
+                        <DialogTitle>Update User Role</DialogTitle>
                         <DialogDescription>
-                            Update the role for {roleDialog.user?.email}
+                            Change the role for {roleDialog.user?.email}
                         </DialogDescription>
                     </DialogHeader>
-                    <div className="space-y-4">
-                        <div>
-                            <Label htmlFor="role">Role</Label>
-                            <Select value={roleDialog.role} onValueChange={(role) => setRoleDialog({ ...roleDialog, role })}>
-                                <SelectTrigger>
-                                    <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="user">User</SelectItem>
-                                    <SelectItem value="admin">Admin</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        </div>
+                    <div className="space-y-2">
+                        <Label>Role</Label>
+                        <Select value={roleDialog.role} onValueChange={(role) => setRoleDialog(prev => ({ ...prev, role }))}>
+                            <SelectTrigger>
+                                <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="user">User</SelectItem>
+                                <SelectItem value="admin">Admin</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
                     <DialogFooter>
                         <Button variant="outline" onClick={() => setRoleDialog({ open: false, user: null, role: '' })}>

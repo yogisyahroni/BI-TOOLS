@@ -4,8 +4,8 @@
 // UI untuk configure map settings, upload GeoJSON, dan column mapping
 
 import React, { useState, useCallback } from 'react'
-import { Upload, MapPin, Layers, Palette, Settings, FileJson, Trash2, Loader2 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Upload, _MapPin, _Layers, _Palette, Settings, _FileJson, _Trash2, Loader2 } from 'lucide-react'
+import { _Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -15,7 +15,7 @@ import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import type { MapConfigProps, GeoJSONFile, ChoroplethConfig, PointMapConfig } from './map-types'
+import type { MapConfigProps, _GeoJSONFile, ChoroplethConfig, PointMapConfig } from './map-types'
 import { DEFAULT_COLOR_SCALES } from './map-utils'
 
 /**

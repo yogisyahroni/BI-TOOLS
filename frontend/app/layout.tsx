@@ -14,7 +14,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.css'
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
 
 const geist = Geist({ subsets: ["latin"] });
-const geistMono = Geist_Mono({ subsets: ["latin"] });
+const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const viewport: Viewport = {
   themeColor: "#0f172a",
@@ -50,6 +50,7 @@ export const metadata: Metadata = {
 import { ThemeProvider } from "@/components/theme-provider"
 import { WebSocketProvider } from "@/components/providers/websocket-provider"
 import { ServiceWorkerReset } from "@/components/ServiceWorkerReset"
+import { TracingProvider } from "@/components/tracing-provider"
 
 export default function RootLayout({
   children,
@@ -61,26 +62,28 @@ export default function RootLayout({
       <body className={`${geist.className} font-sans antialiased bg-background text-foreground transition-colors duration-300`}>
         <ServiceWorkerReset />
         <Providers>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <StoryProvider>
-              <DatabaseProvider>
-                <UserProvider>
-                  <WorkspaceProvider>
-                    <SidebarProvider>
-                      <WebSocketProvider>
-                        {children}
-                      </WebSocketProvider>
-                    </SidebarProvider>
-                  </WorkspaceProvider>
-                </UserProvider>
-              </DatabaseProvider>
-            </StoryProvider>
-          </ThemeProvider>
+          <TracingProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <StoryProvider>
+                <DatabaseProvider>
+                  <UserProvider>
+                    <WorkspaceProvider>
+                      <SidebarProvider>
+                        <WebSocketProvider>
+                          {children}
+                        </WebSocketProvider>
+                      </SidebarProvider>
+                    </WorkspaceProvider>
+                  </UserProvider>
+                </DatabaseProvider>
+              </StoryProvider>
+            </ThemeProvider>
+          </TracingProvider>
         </Providers>
         {/* Only enable Analytics on Vercel deployments */}
         {process.env.VERCEL && <Analytics />}

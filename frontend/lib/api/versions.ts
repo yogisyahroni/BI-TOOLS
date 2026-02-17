@@ -18,7 +18,7 @@ import type {
   DashboardVersionDiff,
   QueryVersionDiff,
   RestoreVersionResponse,
-  CompareVersionsRequest,
+  _CompareVersionsRequest,
 } from '@/types/versions'
 
 // ============================================================================

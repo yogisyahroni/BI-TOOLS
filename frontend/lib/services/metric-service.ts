@@ -1,5 +1,5 @@
 import { db } from '@/lib/db';
-import { type Metric, Dimension } from '@prisma/client';
+import { type Metric, _Dimension } from '@prisma/client';
 
 export interface SQLFragment {
     select: string;

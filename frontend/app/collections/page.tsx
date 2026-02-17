@@ -17,14 +17,14 @@ import {
     DialogFooter,
 } from '@/components/ui/dialog';
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
+    _DropdownMenu,
+    _DropdownMenuContent,
+    _DropdownMenuItem,
+    _DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { MoveToCollectionDialog } from '@/components/move-collection-dialog';
-import { MoreHorizontal } from 'lucide-react';
+import { _MoreHorizontal } from 'lucide-react';
 
 export default function CollectionsPage() {
     const {
@@ -60,7 +60,7 @@ export default function CollectionsPage() {
         window.location.reload(); // Simple reload to refresh state for now
     };
 
-    const openMoveDialog = (e: React.MouseEvent, id: string, type: 'dashboard' | 'query') => {
+    const _openMoveDialog = (e: React.MouseEvent, id: string, type: 'dashboard' | 'query') => {
         e.stopPropagation();
         setMoveItem({ id, type });
         setMoveOpen(true);

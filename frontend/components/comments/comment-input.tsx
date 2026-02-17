@@ -149,7 +149,7 @@ export function CommentInput({
         { icon: Quote, label: 'Quote', action: () => insertFormatting('> ', '') },
     ];
 
-    const getInitials = (name: string) => {
+    const _getInitials = (name: string) => {
         return name
             .split(' ')
             .map((n) => n[0])

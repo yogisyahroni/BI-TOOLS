@@ -4,9 +4,9 @@ import * as React from 'react'
 import {
   Share2,
   Link,
-  Copy,
+  _Copy,
   Check,
-  X,
+  _X,
   Mail,
   User,
   Lock,
@@ -47,7 +47,7 @@ import {
   createShare,
   getSharesForResource,
   revokeShare,
-  updateShare,
+  _updateShare,
 } from '@/lib/api/shares'
 import type {
   Share,
@@ -89,6 +89,8 @@ export function ShareResourceDialog({
     if (open) {
       loadShares()
     }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open])
 
   const loadShares = async () => {

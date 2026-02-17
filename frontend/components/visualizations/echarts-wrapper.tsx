@@ -10,6 +10,8 @@ interface EChartsWrapperProps {
     options: EChartsOption;
     isLoading?: boolean;
     className?: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onEvents?: Record<string, (...args: any[]) => any>;
 }
 

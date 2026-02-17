@@ -1,0 +1,6 @@
+FAIL	insight-engine-backend/services [build failed]
+# insight-engine-backend/services [insight-engine-backend/services.test]
+services\query_builder_test.go:24:85: not enough arguments in call to NewQueryExecutor
+	have (*resilience.MockCircuitBreaker, nil)
+	want (resilience.CircuitBreaker, *QueryOptimizer, QueryCacheInterface)
+FAIL

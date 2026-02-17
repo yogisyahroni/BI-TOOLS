@@ -1,0 +1,547 @@
+
+> my-v0-project@0.1.0 lint
+> next lint
+
+
+./app/api/notifications/send/route.ts
+66:36  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+66:73  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/api/upload/route.ts
+5:10  Error: 'db' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/apps/builder/[id]/pages-tab.tsx
+128:14  Warning: Unexpected confirm.  no-alert
+234:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/apps/builder/[id]/settings-tab.tsx
+69:14  Warning: Unexpected confirm.  no-alert
+
+./app/apps/page.tsx
+183:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/ask/page.tsx
+21:17  Error: 'TabsContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+21:30  Error: 'TabsList' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+21:40  Error: 'TabsTrigger' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/auth/signin/page.tsx
+249:24  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/canvas/page.tsx
+176:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/canvas/[id]/page.tsx
+48:21  Error: 'setSaving' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+169:14  Warning: Unexpected confirm.  no-alert
+
+./app/catalog/glossary/page.tsx
+144:57  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/catalog/page.tsx
+105:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/connections/components/rest-api-form.tsx
+297:75  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+297:88  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./app/connections/page.tsx
+145:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/dashboards/page.tsx
+177:10  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/dataflows/[id]/page.tsx
+9:28  Error: 'ArrowDown' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+15:23  Error: 'setDataflow' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+15:47  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/docs/api/page.tsx
+20:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+26:21  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+28:21  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./app/docs/layout.tsx
+6:35  Error: 'StickyNote' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/ingest/page.tsx
+277:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/metadata/components/classification-tags.tsx
+24:36  Error: 'ColumnMetadata' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/modeling/page.tsx
+149:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/modeling/[id]/page.tsx
+113:24  Warning: Unexpected confirm.  no-alert
+248:103  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+248:111  Warning: `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`.  react/no-unescaped-entities
+
+./app/onboarding/page.tsx
+37:85  Error: 'selectConnection' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+283:20  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/presentation/[id]/page.tsx
+9:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/query-builder/page.tsx
+71:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/reports/schedule/page.tsx
+182:8  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/saved-queries/page.tsx
+105:23  Warning: Unexpected confirm.  no-alert
+197:16  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/settings/page.tsx
+7:80  Error: 'Edit' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+288:42  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+290:112  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/share/[token]/page.tsx
+131:95  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+133:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./app/stories/[id]/edit/page.tsx
+10:17  Error: 'TabsContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+10:30  Error: 'TabsList' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+10:40  Error: 'TabsTrigger' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+81:7  Warning: Unexpected alert.  no-alert
+
+./app/templates/page.tsx
+12:17  Error: 'TabsContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:30  Error: 'TabsList' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+12:40  Error: 'TabsTrigger' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./app/visual-queries/new/page.tsx
+75:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./app/workspace/settings/page.tsx
+32:49  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+111:82  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+113:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/activity-feed.tsx
+5:47  Error: 'Trash2' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+56:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/agent-manager.tsx
+85:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+121:67  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+121:76  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/ai/ai-chat-assistant.tsx
+304:105  Error: 'inline' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/ai/ai-chat.tsx
+6:30  Error: 'CardHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+6:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+71:40  Error: 'streamMessages' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+71:56  Error: 'isStreaming' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+71:69  Error: 'stopStream' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+293:93  Error: 'inline' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+297:65  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./components/ai-model-selector.tsx
+4:47  Error: 'Sparkles' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/ai-usage/budget-management.tsx
+359:61  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+359:84  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/ai-usage/rate-limit-management.tsx
+358:61  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+358:83  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/alert-manager.tsx
+8:36  Error: 'AlertTriangle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+74:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/alerts/alert-create-dialog.tsx
+23:17  Error: 'TabsContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+23:30  Error: 'TabsList' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+23:40  Error: 'TabsTrigger' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+50:25  Error: 'setTestResult' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+68:31  Error: 'setAvailableQueries' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+69:31  Error: 'setAvailableColumns' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/alerts/alert-list.tsx
+4:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/alerts/notification-config.tsx
+24:29  Error: 'setNewChannelType' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/analytics/analytics-view.tsx
+80:42  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/analytics/anomaly-view.tsx
+3:20  Error: 'AlertTriangle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/analytics/auto-insights.tsx
+2:17  Error: 'CardContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+2:30  Error: 'CardHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+2:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+153:45  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/analytics/key-drivers.tsx
+2:17  Error: 'CardContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+2:30  Error: 'CardHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+2:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+2:53  Error: 'CardDescription' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+81:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/canvas/canvas-board.tsx
+3:40  Error: 'useCallback' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+6:44  Error: 'Settings' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/canvas/widgets/metric-widget.tsx
+32:79  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/charts/chart-annotations.tsx
+107:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/collaboration/activity-feed.tsx
+50:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/collaboration/comment-thread.tsx
+201:35  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/collection-sidebar.tsx
+64:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+116:44  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+118:48  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/collections-sidebar.tsx
+13:41  Error: 'FolderOpen' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/comments/comment-list.tsx
+207:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/comments/mention-popover.tsx
+125:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/connections/MongoDBForm.tsx
+40:21  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/connections/OracleForm.tsx
+38:21  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/connections/SqlServerForm.tsx
+37:21  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/add-card-dialog.tsx
+60:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/add-to-dashboard-dialog.tsx
+166:58  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+168:67  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/dashboard/add-widget-dialog.tsx
+14:37  Error: 'FileText' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/dashboard/ai-explain-dialog.tsx
+84:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/ai-text-widget.tsx
+1:17  Error: 'CardContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:30  Error: 'CardHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+1:53  Error: 'CardDescription' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+13:40  Error: 'description' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/dashboard/auto-refresh.tsx
+306:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/dashboard-card.tsx
+3:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+169:45  Warning: Image elements must have an alt prop, either with meaningful text, or an empty string for decorative images.  jsx-a11y/alt-text
+210:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/dashboard-filters.tsx
+78:38  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard/dashboard-grid.tsx
+107:17  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+109:17  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./components/dashboard/export-dialog.tsx
+323:32  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+323:48  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/dashboard/global-filters.tsx
+268:34  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/dashboard-card.tsx
+74:24  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/lineage/lineage-graph.tsx
+22:17  Error: 'CardContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+22:30  Error: 'CardHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+22:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/main-sidebar.tsx
+59:3  Error: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+
+./components/metric-card.tsx
+89:23  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/activity-feed.tsx
+117:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/notification-bell.tsx
+93:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/notification-panel.tsx
+125:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/notifications/scheduler-manager.tsx
+114:14  Warning: Unexpected confirm.  no-alert
+305:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/dashboard/status-heatmap.tsx
+34:45  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/lineage/lineage-graph.tsx
+90:33  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/pipeline-history.tsx
+206:47  Warning: Do not nest ternary expressions.  no-nested-ternary
+276:60  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/pipeline-list.tsx
+67:27  Warning: Unexpected confirm.  no-alert
+
+./components/pipelines/quality-builder.tsx
+91:56  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+93:86  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+119:55  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+121:86  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/pipelines/schedule-picker.tsx
+25:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/pipelines/transformation-builder.tsx
+9:24  Error: 'ArrowDown' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+9:35  Error: 'ArrowUp' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/presentation/slide-view.tsx
+3:17  Error: 'CardContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+3:30  Error: 'CardHeader' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+3:42  Error: 'CardTitle' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/progress-bar.tsx
+43:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+44:11  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/column-selector.tsx
+254:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/load-query-dialog.tsx
+136:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+146:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/query-preview.tsx
+258:40  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+260:61  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+261:110  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+263:61  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/query-builder/sql-preview.tsx
+136:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/visual-builder.tsx
+628:42  Warning: Do not nest ternary expressions.  no-nested-ternary
+635:45  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/query-builder/visual-query-workspace.tsx
+185:14  Warning: Unexpected confirm.  no-alert
+205:22  Warning: Unexpected prompt.  no-alert
+208:29  Warning: Unexpected prompt.  no-alert
+231:14  Warning: Unexpected confirm.  no-alert
+
+./components/query-history/history-dialog.tsx
+125:33  Warning: Unexpected confirm.  no-alert
+210:41  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+210:57  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/query-optimizer/optimizer-panel.tsx
+54:35  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/reports/report-schedule-form.tsx
+423:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/results-panel.tsx
+332:54  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+335:99  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/security/policy-editor.tsx
+163:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+206:137  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+206:145  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/security/rls-manager.tsx
+68:14  Warning: Unexpected confirm.  no-alert
+140:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/ai-settings.tsx
+119:44  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+121:60  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/semantic/column-display-settings.tsx
+9:24  Error: 'EyeOff' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/semantic/create-calculated-field-dialog.tsx
+168:69  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+170:69  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+185:73  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+187:73  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/semantic/create-relationship-dialog.tsx
+136:76  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+138:65  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/semantic/data-explainer.tsx
+168:25  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/formula-editor.tsx
+218:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+223:29  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/model-editor.tsx
+170:14  Warning: Unexpected confirm.  no-alert
+282:64  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+282:78  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+282:81  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+282:95  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/semantic/query-builder-ai.tsx
+122:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/query-builder.tsx
+200:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+206:29  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/relationship-editor.tsx
+171:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+616:38  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/semantic/request-history-table.tsx
+210:38  Warning: Do not nest ternary expressions.  no-nested-ternary
+250:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+281:40  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+283:62  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/settings/developer-settings.tsx
+78:14  Warning: Unexpected confirm.  no-alert
+174:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/settings/security/passkey-manager.tsx
+83:14  Warning: Unexpected confirm.  no-alert
+
+./components/share/embed-dialog.tsx
+351:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+477:16  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/share/share-resource-dialog.tsx
+393:14  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/share-modal.tsx
+115:15  Error: Comments inside children section of tag should be placed inside braces  react/jsx-no-comment-textnodes
+117:63  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./components/table-visualization.tsx
+6:20  Error: 'ArrowDown' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+6:31  Error: 'Minus' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+173:42  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/ui/slider.tsx
+18:7  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/version-control/version-history-sheet.tsx
+46:14  Warning: Unexpected confirm.  no-alert
+80:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visual-query/FilterBuilder.tsx
+15:17  Error: 'CardContent' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/visual-query/VisualQueryBuilder.tsx
+47:47  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+47:57  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/visualizations/advanced-tooltips.tsx
+95:13  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/anomaly-chart.tsx
+4:79  Error: 'Legend' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./components/visualizations/bullet-chart.tsx
+56:27  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/kpi-card.tsx
+224:30  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/map-config.tsx
+7:27  Error: 'Layers' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+7:35  Error: 'Palette' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+7:54  Error: 'FileJson' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+7:64  Error: 'Trash2' is defined but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+270:33  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/point-map.tsx
+336:26  Warning: Do not nest ternary expressions.  no-nested-ternary
+358:18  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./components/visualizations/small-multiples.tsx
+17:37  Error: 'yAxis' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+37:33  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+37:49  Warning: `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`.  react/no-unescaped-entities
+
+./components/workspace/workspace-members.tsx
+166:22  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./lib/ai/providers/gemini-provider.ts
+49:33  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+49:40  Error: 'sql' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/ai/providers/openai-provider.ts
+37:33  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+37:40  Error: 'sql' is defined but never used. Allowed unused args must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/api/auth.ts
+47:35  Error: 'agreeTerms' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+
+./lib/connectors/base-connector.ts
+113:33  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+113:54  Error: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any
+
+./lib/connectors/parquet-connector.ts
+29:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./lib/db-connectors/postgres-connector.ts
+16:14  Warning: Expected a `const` assertion instead of a literal type annotation.  @typescript-eslint/prefer-as-const
+
+./lib/etl/quality-engine.ts
+44:13  Error: 'rowFailed' is assigned a value but never used. Allowed unused vars must match /^_/u.  @typescript-eslint/no-unused-vars
+44:13  Warning: 'rowFailed' is never reassigned. Use 'const' instead.  prefer-const
+
+./lib/etl/transformation-engine.ts
+105:47  Warning: Expected '===' and instead saw '=='.  eqeqeq
+106:48  Warning: Expected '!==' and instead saw '!='.  eqeqeq
+
+./lib/repositories/settings-repo.ts
+22:13  Warning: Include a description after the "@ts-expect-error" directive to explain why the @ts-expect-error is necessary. The description must be 3 characters or longer.  @typescript-eslint/ban-ts-comment
+
+./lib/services/alert-service.ts
+93:31  Warning: Do not nest ternary expressions.  no-nested-ternary
+108:44  Warning: Expected '===' and instead saw '=='.  eqeqeq
+109:45  Warning: Expected '!==' and instead saw '!='.  eqeqeq
+
+./lib/services/insights-service.ts
+26:20  Warning: Do not nest ternary expressions.  no-nested-ternary
+
+./lib/tracing.ts
+50:5  Error: Unexpected console statement. Only these console methods are allowed: warn, error.  no-console
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules

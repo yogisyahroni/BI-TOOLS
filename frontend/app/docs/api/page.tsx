@@ -17,15 +17,15 @@ export default function ApiDocs() {
         script.src = 'https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui-bundle.js';
         script.async = true;
         script.onload = () => {
-            // @ts-expect-error
+            // @ts-expect-error -- SwaggerUIBundle is loaded via script tag
             window.SwaggerUIBundle({
                 url: '/api/docs',
                 dom_id: '#swagger-ui',
                 deepLinking: true,
                 presets: [
-                    // @ts-expect-error
+                    // @ts-expect-error -- SwaggerUIBundle is loaded via script tag
                     window.SwaggerUIBundle.presets.apis,
-                    // @ts-expect-error
+                    // @ts-expect-error -- SwaggerUIBundle is loaded via script tag
                     window.SwaggerUIBundle.SwaggerUIStandalonePreset
                 ],
                 layout: "BaseLayout"

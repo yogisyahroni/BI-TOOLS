@@ -21,7 +21,7 @@ export async function GET(request: NextRequest) {
 
         // getToken (without raw: true) decodes the JWE and returns the claims object
         const decoded = await getToken({
-            req: request as any,
+            req: request,
             secret: secret,
         });
 

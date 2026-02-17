@@ -130,9 +130,7 @@ func EnhancedMetricsMiddleware() fiber.Handler {
 		path := c.Path()
 		method := c.Method()
 
-		// Increment active connections gauge
-		services.ActiveConnections.Inc()
-		defer services.ActiveConnections.Dec()
+
 
 		// Continue processing
 		err := c.Next()
@@ -142,8 +140,10 @@ func EnhancedMetricsMiddleware() fiber.Handler {
 		status := strconv.Itoa(c.Response().StatusCode())
 
 		// Record metrics
-		services.HttpRequestsTotal.WithLabelValues(status, method, path).Inc()
-		services.HttpRequestDuration.WithLabelValues(method, path).Observe(duration)
+
+		// Standard metrics (HttpRequestsTotal, HttpRequestDuration, ActiveConnections) 
+
+		// are now handled by PrometheusMiddleware in prometheus.go to avoid duplication and conflicts.
 
 		// Note: error responses are already counted in the general counter above.
 		// No duplicate increment needed.
@@ -270,11 +270,8 @@ func ErrorTrackingMiddleware() fiber.Handler {
 			}
 
 			// Record error metrics
-			services.HttpRequestsTotal.WithLabelValues(
-				strconv.Itoa(c.Response().StatusCode()),
-				c.Method(),
-				c.Path(),
-			).Inc()
+			// Standard metrics (HttpRequestsTotal) are already handled by PrometheusMiddleware.
+			// We only need to log the error here.
 
 			// Log error
 			services.LogError("request_error", "Request resulted in error", map[string]interface{}{

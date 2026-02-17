@@ -75,6 +75,8 @@ export function FunnelChart({
             } : undefined,
             tooltip: {
                 trigger: 'item',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 formatter: function (params: any) {
                     const index = params.dataIndex
                     const stage = data[index]
@@ -116,7 +118,9 @@ export function FunnelChart({
                     sort: sort,
                     label: {
                         show: true,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         position: 'inside',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                         formatter: function (params: any) {
                             const stage = data[params.dataIndex]
                             const conversion = conversionRates[params.dataIndex]
@@ -147,7 +151,7 @@ export function FunnelChart({
                             fontWeight: 'bold'
                         }
                     },
-                    data: data.map((point, index) => ({
+                    data: data.map((point, _index) => ({
                         name: point.name,
                         value: point.value,
                         itemStyle: point.color ? {
@@ -162,8 +166,10 @@ export function FunnelChart({
         }
     }, [data, title, sort, gap, funnelAlign, showConversionRate, conversionRates, dropoffRates, validation.isValid])
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     // Event handlers
     const handleEvents = useMemo(() => ({
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         click: (params: any) => {
             if (onStageClick && params.dataIndex !== undefined) {
                 const stage = data[params.dataIndex]

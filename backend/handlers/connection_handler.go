@@ -3,6 +3,7 @@ package handlers
 import (
 	"insight-engine-backend/database"
 	"insight-engine-backend/models"
+	"insight-engine-backend/pkg/datatypes"
 	"insight-engine-backend/pkg/validator"
 	"insight-engine-backend/services"
 	"strings"
@@ -13,12 +14,12 @@ import (
 )
 
 type ConnectionHandler struct {
-	queryExecutor     *services.QueryExecutor
+	queryExecutor     services.QueryExecutorInterface
 	schemaDiscovery   *services.SchemaDiscovery
 	encryptionService *services.EncryptionService
 }
 
-func NewConnectionHandler(qe *services.QueryExecutor, sd *services.SchemaDiscovery) *ConnectionHandler {
+func NewConnectionHandler(qe services.QueryExecutorInterface, sd *services.SchemaDiscovery) *ConnectionHandler {
 	// Initialize encryption service (fail gracefully if not configured)
 	encryptionService, err := services.NewEncryptionService()
 	if err != nil {
@@ -156,9 +157,11 @@ func (h *ConnectionHandler) CreateConnection(c *fiber.Ctx) error {
 	}
 
 	// Map DTO to Model
-	options := req.Config
-	if options == nil {
-		options = make(map[string]interface{})
+	var options datatypes.JSONMap
+	if req.Config != nil {
+		options = datatypes.JSONMap(req.Config)
+	} else {
+		options = make(datatypes.JSONMap)
 	}
 
 	// Handle SSL settings
@@ -290,7 +293,7 @@ func (h *ConnectionHandler) UpdateConnection(c *fiber.Ctx) error {
 
 	// Handle Config/Options
 	if req.Config != nil || req.SSL != nil || req.SSLMode != nil {
-		currentOptions := map[string]interface{}{}
+		currentOptions := make(datatypes.JSONMap)
 		if existing.Options != nil {
 			currentOptions = *existing.Options
 		}

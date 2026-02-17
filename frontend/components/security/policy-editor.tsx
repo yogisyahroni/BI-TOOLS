@@ -10,7 +10,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { toast } from 'sonner';
 import { fetchWithAuth } from '@/lib/utils';
-import { Loader2, HelpCircle, Plus, X } from 'lucide-react';
+import { Loader2, _HelpCircle, Plus, X } from 'lucide-react';
 import { type RLSPolicy } from './rls-manager';
 
 interface PolicyEditorProps {
@@ -117,6 +117,8 @@ export function PolicyEditor({ onSave, onCancel, initialData }: PolicyEditorProp
 
             toast.success(initialData?.id ? 'Policy updated successfully' : 'Policy created successfully');
             onSave();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             toast.error(err.message || 'Error saving policy');
             console.error(err);

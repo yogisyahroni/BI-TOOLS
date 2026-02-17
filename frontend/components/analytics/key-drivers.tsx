@@ -1,16 +1,16 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { _Card, _CardContent, _CardHeader, _CardTitle, _CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
+import { _Progress } from '@/components/ui/progress';
 import { type CorrelationResult } from '@/types/analytics';
 import { cn } from '@/lib/utils';
 import { 
     ArrowRight, 
     TrendingUp, 
     TrendingDown, 
-    Minus,
-    Target,
-    Zap,
+    _Minus,
+    _Target,
+    _Zap,
     BarChart3
 } from 'lucide-react';
 

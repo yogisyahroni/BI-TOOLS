@@ -1,0 +1,633 @@
+=== RUN   TestEvaluateAlert_GreaterThan_Triggered
+--- PASS: TestEvaluateAlert_GreaterThan_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_GreaterThan_NotTriggered
+--- PASS: TestEvaluateAlert_GreaterThan_NotTriggered (0.00s)
+=== RUN   TestEvaluateAlert_LessThan_Triggered
+--- PASS: TestEvaluateAlert_LessThan_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_Equal_Triggered
+--- PASS: TestEvaluateAlert_Equal_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_DoubleEqual_Triggered
+--- PASS: TestEvaluateAlert_DoubleEqual_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_GreaterEqual_Triggered
+--- PASS: TestEvaluateAlert_GreaterEqual_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_LessEqual_Triggered
+--- PASS: TestEvaluateAlert_LessEqual_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_NotEqual_Triggered
+--- PASS: TestEvaluateAlert_NotEqual_Triggered (0.00s)
+=== RUN   TestEvaluateAlert_NotEqual_NotTriggered
+--- PASS: TestEvaluateAlert_NotEqual_NotTriggered (0.00s)
+=== RUN   TestEvaluateAlert_IntValue
+--- PASS: TestEvaluateAlert_IntValue (0.00s)
+=== RUN   TestEvaluateAlert_Int32Value
+--- PASS: TestEvaluateAlert_Int32Value (0.00s)
+=== RUN   TestEvaluateAlert_Int64Value
+--- PASS: TestEvaluateAlert_Int64Value (0.00s)
+=== RUN   TestEvaluateAlert_Float32Value
+--- PASS: TestEvaluateAlert_Float32Value (0.00s)
+=== RUN   TestEvaluateAlert_StringNumericValue
+--- PASS: TestEvaluateAlert_StringNumericValue (0.00s)
+=== RUN   TestEvaluateAlert_ColumnNotFound
+--- PASS: TestEvaluateAlert_ColumnNotFound (0.00s)
+=== RUN   TestEvaluateAlert_NonNumericString
+--- PASS: TestEvaluateAlert_NonNumericString (0.00s)
+=== RUN   TestEvaluateAlert_NonNumericType
+--- PASS: TestEvaluateAlert_NonNumericType (0.00s)
+=== RUN   TestEvaluateAlert_UnknownOperator
+--- PASS: TestEvaluateAlert_UnknownOperator (0.00s)
+=== RUN   TestEvaluateAlert_MessageContainsColumn
+--- PASS: TestEvaluateAlert_MessageContainsColumn (0.00s)
+=== RUN   TestCalculateNextRun_CronExpression
+--- PASS: TestCalculateNextRun_CronExpression (0.00s)
+=== RUN   TestCalculateNextRun_PredefinedSchedule_1m
+--- PASS: TestCalculateNextRun_PredefinedSchedule_1m (0.00s)
+=== RUN   TestCalculateNextRun_PredefinedSchedule_5m
+--- PASS: TestCalculateNextRun_PredefinedSchedule_5m (0.00s)
+=== RUN   TestCalculateNextRun_PredefinedSchedule_1h
+--- PASS: TestCalculateNextRun_PredefinedSchedule_1h (0.00s)
+=== RUN   TestCalculateNextRun_NumericMinutes
+--- PASS: TestCalculateNextRun_NumericMinutes (0.00s)
+=== RUN   TestCalculateNextRun_InvalidSchedule
+--- PASS: TestCalculateNextRun_InvalidSchedule (0.00s)
+=== RUN   TestCalculateNextRun_InvalidCron
+--- PASS: TestCalculateNextRun_InvalidCron (0.00s)
+=== RUN   TestCalculateNextRun_InvalidTimezone
+--- PASS: TestCalculateNextRun_InvalidTimezone (0.00s)
+=== RUN   TestAuthService_Register_Success
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "newuser@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "newuser" ORDER BY `users`.`id` LIMIT 1
+    auth_service_test.go:63: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service_test.go:63
+        	Error:      	Received unexpected error:
+        	            	crypto/bcrypt: hashedSecret too short to be a bcrypted password
+        	Test:       	TestAuthService_Register_Success
+        	Messages:   	Password should be hashed with bcrypt
+--- FAIL: TestAuthService_Register_Success (0.08s)
+=== RUN   TestAuthService_Register_DuplicateEmail
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "dup@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "user1" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_Register_DuplicateEmail (0.08s)
+=== RUN   TestAuthService_Register_DuplicateUsername
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "a@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.748ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "sameuser" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "b@example.com" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_Register_DuplicateUsername (0.08s)
+=== RUN   TestAuthService_Register_InvalidEmail
+=== RUN   TestAuthService_Register_InvalidEmail/empty_email
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.553ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "validuser" ORDER BY `users`.`id` LIMIT 1
+    auth_service_test.go:115: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service_test.go:115
+        	Error:      	An error is expected but got nil.
+        	Test:       	TestAuthService_Register_InvalidEmail/empty_email
+        	Messages:   	Should fail for: empty email
+=== RUN   TestAuthService_Register_InvalidEmail/no_@_symbol
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "invalid" ORDER BY `users`.`id` LIMIT 1
+=== RUN   TestAuthService_Register_InvalidEmail/no_local_part
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "@example.com" ORDER BY `users`.`id` LIMIT 1
+=== RUN   TestAuthService_Register_InvalidEmail/no_domain
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "test@" ORDER BY `users`.`id` LIMIT 1
+--- FAIL: TestAuthService_Register_InvalidEmail (0.08s)
+    --- FAIL: TestAuthService_Register_InvalidEmail/empty_email (0.08s)
+    --- PASS: TestAuthService_Register_InvalidEmail/no_@_symbol (0.00s)
+    --- PASS: TestAuthService_Register_InvalidEmail/no_local_part (0.00s)
+    --- PASS: TestAuthService_Register_InvalidEmail/no_domain (0.00s)
+=== RUN   TestAuthService_Register_ShortPassword
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "valid@example.com" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_Register_ShortPassword (0.00s)
+=== RUN   TestAuthService_Register_EmptyUsername
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "valid@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "" ORDER BY `users`.`id` LIMIT 1
+    auth_service_test.go:133: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service_test.go:133
+        	Error:      	An error is expected but got nil.
+        	Test:       	TestAuthService_Register_EmptyUsername
+--- FAIL: TestAuthService_Register_EmptyUsername (0.07s)
+=== RUN   TestAuthService_GetUserByEmail_Found
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "findme@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "findme" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_GetUserByEmail_Found (0.08s)
+=== RUN   TestAuthService_GetUserByEmail_NotFound
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:202 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "nonexistent@example.com" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_GetUserByEmail_NotFound (0.00s)
+=== RUN   TestAuthService_GetUserByUsername_Found
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "user@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "findusername" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_GetUserByUsername_Found (0.08s)
+=== RUN   TestAuthService_GetUserByUsername_NotFound
+
+2026/02/17 03:19:28 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:215 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "ghostuser" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_GetUserByUsername_NotFound (0.00s)
+=== RUN   TestAuthService_VerifyPassword_Correct
+--- PASS: TestAuthService_VerifyPassword_Correct (0.16s)
+=== RUN   TestAuthService_VerifyPassword_Incorrect
+--- PASS: TestAuthService_VerifyPassword_Incorrect (0.16s)
+=== RUN   TestAuthService_ChangePassword_Success
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "change@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.999ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "changeuser" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ChangePassword_Success (0.46s)
+=== RUN   TestAuthService_ChangePassword_WrongCurrentPassword
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "wrong@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.511ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "wronguser" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ChangePassword_WrongCurrentPassword (0.16s)
+=== RUN   TestAuthService_ChangePassword_ShortNewPassword
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "short@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "shortuser" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ChangePassword_ShortNewPassword (0.08s)
+=== RUN   TestAuthService_RequestPasswordReset_ExistingUser
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "reset@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "resetuser" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_RequestPasswordReset_ExistingUser (0.09s)
+=== RUN   TestAuthService_RequestPasswordReset_NonExistentUser
+
+2026/02/17 03:19:29 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:247 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "ghost@example.com" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_RequestPasswordReset_NonExistentUser (0.00s)
+=== RUN   TestAuthService_ResetPassword_ValidToken
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "valid-reset@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "validreset" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ResetPassword_ValidToken (0.23s)
+=== RUN   TestAuthService_ResetPassword_InvalidToken
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:289 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE password_reset_token = "invalid-token-12345" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ResetPassword_InvalidToken (0.00s)
+=== RUN   TestAuthService_ValidateResetToken_Valid
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:43 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE email = "validate@example.com" ORDER BY `users`.`id` LIMIT 1
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:50 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE username = "validateuser" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ValidateResetToken_Valid (0.08s)
+=== RUN   TestAuthService_ValidateResetToken_Invalid
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/auth_service.go:329 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `users` WHERE password_reset_token = "bogus-token" ORDER BY `users`.`id` LIMIT 1
+--- PASS: TestAuthService_ValidateResetToken_Invalid (0.00s)
+=== RUN   TestGetAllPermissions_Success
+--- PASS: TestGetAllPermissions_Success (0.01s)
+=== RUN   TestGetAllPermissions_EmptyDB
+    permission_service_test.go:109: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:109
+        	Error:      	"[{9 admin:manage_users admin manage_users Manage users 2026-02-17 03:19:30.3213909 +0700 +0700} {10 admin:system_settings admin system_settings System settings 2026-02-17 03:19:30.3213909 +0700 +0700} {5 dashboard:create dashboard create Create dashboards 2026-02-17 03:19:30.3203816 +0700 +0700} {8 dashboard:delete dashboard delete Delete dashboards 2026-02-17 03:19:30.3213909 +0700 +0700} {6 dashboard:read dashboard read Read dashboards 2026-02-17 03:19:30.3203816 +0700 +0700} {7 dashboard:update dashboard update Update dashboards 2026-02-17 03:19:30.3203816 +0700 +0700} {1 query:create query create Create queries 2026-02-17 03:19:30.3203816 +0700 +0700} {4 query:delete query delete Delete queries 2026-02-17 03:19:30.3203816 +0700 +0700} {2 query:read query read Read queries 2026-02-17 03:19:30.3203816 +0700 +0700} {3 query:update query update Update queries 2026-02-17 03:19:30.3203816 +0700 +0700}]" should have 0 item(s), but has 10
+        	Test:       	TestGetAllPermissions_EmptyDB
+--- FAIL: TestGetAllPermissions_EmptyDB (0.00s)
+=== RUN   TestGetPermissionsByResource_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.328") RETURNING `id`
+    permission_service_test.go:118: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:118
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestGetPermissionsByResource_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestGetPermissionsByResource_Success (0.00s)
+=== RUN   TestGetPermissionsByResource_NonExistent
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.332") RETURNING `id`
+    permission_service_test.go:133: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:133
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestGetPermissionsByResource_NonExistent
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestGetPermissionsByResource_NonExistent (0.00s)
+=== RUN   TestGetPermissionsByResource_AdminResource
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.335") RETURNING `id`
+    permission_service_test.go:144: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:144
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestGetPermissionsByResource_AdminResource
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestGetPermissionsByResource_AdminResource (0.00s)
+=== RUN   TestCreateRole_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.533ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.337") RETURNING `id`
+    permission_service_test.go:166: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:166
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestCreateRole_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestCreateRole_Success (0.00s)
+=== RUN   TestCreateRole_DuplicateName
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.341") RETURNING `id`
+    permission_service_test.go:188: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:188
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestCreateRole_DuplicateName
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestCreateRole_DuplicateName (0.00s)
+=== RUN   TestCreateRole_EmptyName
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.344") RETURNING `id`
+    permission_service_test.go:205: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:205
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestCreateRole_EmptyName
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestCreateRole_EmptyName (0.00s)
+=== RUN   TestCreateRole_NoPermissions
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service.go:148 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `roles` WHERE name = "Empty Role" ORDER BY `roles`.`id` LIMIT 1
+--- PASS: TestCreateRole_NoPermissions (0.01s)
+=== RUN   TestUpdateRole_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.353") RETURNING `id`
+    permission_service_test.go:233: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:233
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestUpdateRole_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestUpdateRole_Success (0.00s)
+=== RUN   TestUpdateRole_NonExistent
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service.go:192 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `roles` WHERE `roles`.`id` = 99999 ORDER BY `roles`.`id` LIMIT 1
+--- PASS: TestUpdateRole_NonExistent (0.00s)
+=== RUN   TestDeleteRole_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.537ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.36") RETURNING `id`
+    permission_service_test.go:266: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:266
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestDeleteRole_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestDeleteRole_Success (0.00s)
+=== RUN   TestDeleteRole_NonExistent
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service.go:229 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `roles` WHERE `roles`.`id` = 99999 ORDER BY `roles`.`id` LIMIT 1
+--- PASS: TestDeleteRole_NonExistent (0.01s)
+=== RUN   TestGetAllRoles_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.369") RETURNING `id`
+    permission_service_test.go:294: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:294
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestGetAllRoles_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestGetAllRoles_Success (0.00s)
+=== RUN   TestGetAllRoles_EmptyDB
+--- PASS: TestGetAllRoles_EmptyDB (0.00s)
+=== RUN   TestGetRoleByID_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.538ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.375") RETURNING `id`
+    permission_service_test.go:322: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:322
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestGetRoleByID_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestGetRoleByID_Success (0.00s)
+=== RUN   TestGetRoleByID_NotFound
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service.go:274 [35;1mrecord not found
+[0m[33m[0.000ms] [34;1m[rows:0][0m SELECT * FROM `roles` WHERE `roles`.`id` = 99999 ORDER BY `roles`.`id` LIMIT 1
+--- PASS: TestGetRoleByID_NotFound (0.00s)
+=== RUN   TestAssignPermissionsToRole_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.38") RETURNING `id`
+    permission_service_test.go:349: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:349
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestAssignPermissionsToRole_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestAssignPermissionsToRole_Success (0.00s)
+=== RUN   TestAssignRoleToUser_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.384") RETURNING `id`
+    permission_service_test.go:382: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:382
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestAssignRoleToUser_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestAssignRoleToUser_Success (0.00s)
+=== RUN   TestAssignRoleToUser_DuplicateAssignment
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.388") RETURNING `id`
+    permission_service_test.go:402: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:402
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestAssignRoleToUser_DuplicateAssignment
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestAssignRoleToUser_DuplicateAssignment (0.00s)
+=== RUN   TestRemoveRoleFromUser_Success
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.39") RETURNING `id`
+    permission_service_test.go:421: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:421
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestRemoveRoleFromUser_Success
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestRemoveRoleFromUser_Success (0.00s)
+=== RUN   TestGetUserRoles_NoRoles
+--- PASS: TestGetUserRoles_NoRoles (0.00s)
+=== RUN   TestCheckPermission_HasPermission
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.398") RETURNING `id`
+    permission_service_test.go:457: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:457
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestCheckPermission_HasPermission
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestCheckPermission_HasPermission (0.00s)
+=== RUN   TestCheckPermission_DoesNotHavePermission
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[1.006ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.4") RETURNING `id`
+    permission_service_test.go:475: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:475
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestCheckPermission_DoesNotHavePermission
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestCheckPermission_DoesNotHavePermission (0.00s)
+=== RUN   TestCheckPermission_NoRoles
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.405") RETURNING `id`
+    permission_service_test.go:493: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:493
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestCheckPermission_NoRoles
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestCheckPermission_NoRoles (0.00s)
+=== RUN   TestGetUserPermissions_MultipleRoles
+
+2026/02/17 03:19:30 [31;1mE:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:55 [35;1mconstraint failed: UNIQUE constraint failed: permissions.name (2067)
+[0m[33m[0.000ms] [34;1m[rows:0][0m INSERT INTO `permissions` (`name`,`resource`,`action`,`description`,`created_at`) VALUES ("query:create","query","create","Create queries","2026-02-17 03:19:30.408") RETURNING `id`
+    permission_service_test.go:505: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:56
+        	            				E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/permission_service_test.go:505
+        	Error:      	Received unexpected error:
+        	            	constraint failed: UNIQUE constraint failed: permissions.name (2067)
+        	Test:       	TestGetUserPermissions_MultipleRoles
+        	Messages:   	Failed to seed permission: query:create
+--- FAIL: TestGetUserPermissions_MultipleRoles (0.00s)
+=== RUN   TestBuildSQL_SimpleSelect
+--- PASS: TestBuildSQL_SimpleSelect (0.00s)
+=== RUN   TestBuildSQL_WithJoins
+=== RUN   TestBuildSQL_WithJoins/INNER_JOIN
+=== RUN   TestBuildSQL_WithJoins/LEFT_JOIN
+=== RUN   TestBuildSQL_WithJoins/RIGHT_JOIN
+=== RUN   TestBuildSQL_WithJoins/FULL_JOIN
+--- PASS: TestBuildSQL_WithJoins (0.00s)
+    --- PASS: TestBuildSQL_WithJoins/INNER_JOIN (0.00s)
+    --- PASS: TestBuildSQL_WithJoins/LEFT_JOIN (0.00s)
+    --- PASS: TestBuildSQL_WithJoins/RIGHT_JOIN (0.00s)
+    --- PASS: TestBuildSQL_WithJoins/FULL_JOIN (0.00s)
+=== RUN   TestBuildSQL_WithFilters
+--- PASS: TestBuildSQL_WithFilters (0.00s)
+=== RUN   TestBuildSQL_WithAggregations
+=== RUN   TestBuildSQL_WithAggregations/SUM
+=== RUN   TestBuildSQL_WithAggregations/AVG
+=== RUN   TestBuildSQL_WithAggregations/COUNT
+=== RUN   TestBuildSQL_WithAggregations/MIN
+=== RUN   TestBuildSQL_WithAggregations/MAX
+--- PASS: TestBuildSQL_WithAggregations (0.00s)
+    --- PASS: TestBuildSQL_WithAggregations/SUM (0.00s)
+    --- PASS: TestBuildSQL_WithAggregations/AVG (0.00s)
+    --- PASS: TestBuildSQL_WithAggregations/COUNT (0.00s)
+    --- PASS: TestBuildSQL_WithAggregations/MIN (0.00s)
+    --- PASS: TestBuildSQL_WithAggregations/MAX (0.00s)
+=== RUN   TestBuildSQL_WithGroupBy
+--- PASS: TestBuildSQL_WithGroupBy (0.00s)
+=== RUN   TestBuildSQL_WithOrderBy
+=== RUN   TestBuildSQL_WithOrderBy/ASC
+=== RUN   TestBuildSQL_WithOrderBy/DESC
+--- PASS: TestBuildSQL_WithOrderBy (0.00s)
+    --- PASS: TestBuildSQL_WithOrderBy/ASC (0.00s)
+    --- PASS: TestBuildSQL_WithOrderBy/DESC (0.00s)
+=== RUN   TestBuildSQL_WithLimit
+--- PASS: TestBuildSQL_WithLimit (0.00s)
+=== RUN   TestBuildSQL_ComplexQuery
+--- PASS: TestBuildSQL_ComplexQuery (0.00s)
+=== RUN   TestValidateConfig_InvalidTable
+    query_builder_test.go:349: Requires database connection for schema discovery
+--- SKIP: TestValidateConfig_InvalidTable (0.00s)
+=== RUN   TestValidateConfig_InvalidColumn
+    query_builder_test.go:356: Requires database connection for schema discovery
+--- SKIP: TestValidateConfig_InvalidColumn (0.00s)
+=== RUN   TestBuildSQL_SQLInjectionPrevention
+--- PASS: TestBuildSQL_SQLInjectionPrevention (0.00s)
+=== RUN   TestGenerateCacheKey
+--- PASS: TestGenerateCacheKey (0.01s)
+=== RUN   TestGenerateCacheKey_Deterministic
+--- PASS: TestGenerateCacheKey_Deterministic (0.01s)
+=== RUN   TestGenerateCacheKey_DifferentInputs
+--- PASS: TestGenerateCacheKey_DifferentInputs (0.01s)
+=== RUN   TestGetCachedResult_Hit
+--- PASS: TestGetCachedResult_Hit (0.01s)
+=== RUN   TestGetCachedResult_Miss
+--- PASS: TestGetCachedResult_Miss (0.01s)
+=== RUN   TestSetCachedResult
+--- PASS: TestSetCachedResult (0.01s)
+=== RUN   TestSetCachedResult_TTL
+--- PASS: TestSetCachedResult_TTL (0.01s)
+=== RUN   TestInvalidateQuery
+--- PASS: TestInvalidateQuery (0.01s)
+=== RUN   TestInvalidateConnection
+--- PASS: TestInvalidateConnection (0.01s)
+=== RUN   TestInvalidateUser
+--- PASS: TestInvalidateUser (0.01s)
+=== RUN   TestCacheStats
+--- PASS: TestCacheStats (0.01s)
+=== RUN   TestGenerateTags
+--- PASS: TestGenerateTags (0.01s)
+=== RUN   TestCachedResultWithMetadata
+--- PASS: TestCachedResultWithMetadata (0.01s)
+=== RUN   TestClearAll
+--- PASS: TestClearAll (0.01s)
+=== RUN   TestExecute_CacheHit
+--- PASS: TestExecute_CacheHit (0.00s)
+=== RUN   TestNewRedisCache
+=== RUN   TestNewRedisCache/Success
+=== RUN   TestNewRedisCache/ConnectionFailure
+redis: 2026/02/17 03:19:31 pool.go:426: redis: connection pool: failed to dial after 5 attempts: dial tcp [::1]:9999: connectex: No connection could be made because the target machine actively refused it.
+--- PASS: TestNewRedisCache (0.55s)
+    --- PASS: TestNewRedisCache/Success (0.01s)
+    --- PASS: TestNewRedisCache/ConnectionFailure (0.54s)
+=== RUN   TestRedisCache_SetGet
+=== RUN   TestRedisCache_SetGet/SetAndGet
+=== RUN   TestRedisCache_SetGet/GetNonExistent
+=== RUN   TestRedisCache_SetGet/SetWithTTL
+--- PASS: TestRedisCache_SetGet (0.01s)
+    --- PASS: TestRedisCache_SetGet/SetAndGet (0.00s)
+    --- PASS: TestRedisCache_SetGet/GetNonExistent (0.00s)
+    --- PASS: TestRedisCache_SetGet/SetWithTTL (0.00s)
+=== RUN   TestRedisCache_Delete
+=== RUN   TestRedisCache_Delete/DeleteExisting
+=== RUN   TestRedisCache_Delete/DeleteNonExistent
+--- PASS: TestRedisCache_Delete (0.01s)
+    --- PASS: TestRedisCache_Delete/DeleteExisting (0.00s)
+    --- PASS: TestRedisCache_Delete/DeleteNonExistent (0.00s)
+=== RUN   TestRedisCache_DeleteByPattern
+--- PASS: TestRedisCache_DeleteByPattern (0.01s)
+=== RUN   TestRedisCache_GetStats
+--- PASS: TestRedisCache_GetStats (0.01s)
+=== RUN   TestRedisCache_Exists
+=== RUN   TestRedisCache_Exists/ExistingKey
+=== RUN   TestRedisCache_Exists/NonExistentKey
+--- PASS: TestRedisCache_Exists (0.01s)
+    --- PASS: TestRedisCache_Exists/ExistingKey (0.00s)
+    --- PASS: TestRedisCache_Exists/NonExistentKey (0.00s)
+=== RUN   TestRedisCache_SetWithTags
+--- PASS: TestRedisCache_SetWithTags (0.01s)
+=== RUN   TestRedisCache_InvalidateByTag
+--- PASS: TestRedisCache_InvalidateByTag (0.01s)
+=== RUN   TestRedisCache_FlushDB
+--- PASS: TestRedisCache_FlushDB (0.01s)
+=== RUN   TestSendTeamsNotification
+--- PASS: TestSendTeamsNotification (0.00s)
+=== RUN   TestGetUsers
+=== RUN   TestGetUsers/GetAllUsers
+    user_admin_service_test.go:83: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/user_admin_service_test.go:83
+        	Error:      	Not equal: 
+        	            	expected: 3
+        	            	actual  : 4
+        	Test:       	TestGetUsers/GetAllUsers
+    user_admin_service_test.go:84: 
+        	Error Trace:	E:/antigraviti google/inside engine/insight-engine-ai-ui/backend/services/user_admin_service_test.go:84
+        	Error:      	"[{user-1 admin@example.com admin Admin User  admin false <nil>  <nil>  <nil>   2026-02-17 03:19:31.1052214 +0700 +0700 2026-02-17 03:19:31.1052214 +0700 +0700 active <nil> <nil> <nil>  <nil> <nil> []} {user-2 user@example.com user Regular User  user false <nil>  <nil>  <nil>   2026-02-17 03:19:31.1052214 +0700 +0700 2026-02-17 03:19:31.1052214 +0700 +0700 active <nil> <nil> <nil>  <nil> <nil> []} {user-3 inactive@example.com inactive Inactive User  user false <nil>  <nil>  <nil>   2026-02-17 03:19:31.1052214 +0700 +0700 2026-02-17 03:19:31.1052214 +0700 +0700 inactive <nil> <nil> <nil>  <nil> <nil> []} {user-no-roles-0001 user-no-roles-0001@test.com user_user-no- Test User  user false <nil>  <nil>  <nil>   2026-02-17 03:19:30.3946527 +0700 +0700 2026-02-17 03:19:30.3946527 +0700 +0700 active <nil> <nil> <nil>  <nil> <nil> []}]" should have 3 item(s), but has 4
+        	Test:       	TestGetUsers/GetAllUsers
+=== RUN   TestGetUsers/FilterByRole
+=== RUN   TestGetUsers/FilterByStatus
+=== RUN   TestGetUsers/Search
+--- FAIL: TestGetUsers (0.00s)
+    --- FAIL: TestGetUsers/GetAllUsers (0.00s)
+    --- PASS: TestGetUsers/FilterByRole (0.00s)
+    --- PASS: TestGetUsers/FilterByStatus (0.00s)
+    --- PASS: TestGetUsers/Search (0.00s)
+=== RUN   TestUpdateUser
+=== RUN   TestUpdateUser/UpdateNameAndRole
+=== RUN   TestUpdateUser/UpdateEmailDuplicate
+--- PASS: TestUpdateUser (0.00s)
+    --- PASS: TestUpdateUser/UpdateNameAndRole (0.00s)
+    --- PASS: TestUpdateUser/UpdateEmailDuplicate (0.00s)
+=== RUN   TestActivateDeactivateUser
+=== RUN   TestActivateDeactivateUser/DeactivateUser
+=== RUN   TestActivateDeactivateUser/ActivateUser
+--- PASS: TestActivateDeactivateUser (0.00s)
+    --- PASS: TestActivateDeactivateUser/DeactivateUser (0.00s)
+    --- PASS: TestActivateDeactivateUser/ActivateUser (0.00s)
+=== RUN   TestDeleteUser
+--- PASS: TestDeleteUser (0.00s)
+=== RUN   TestImpersonation
+=== RUN   TestImpersonation/ImpersonateUser
+=== RUN   TestImpersonation/ValidateImpersonationToken
+--- PASS: TestImpersonation (0.01s)
+    --- PASS: TestImpersonation/ImpersonateUser (0.00s)
+    --- PASS: TestImpersonation/ValidateImpersonationToken (0.00s)
+FAIL
+FAIL	insight-engine-backend/services	3.033s
+FAIL

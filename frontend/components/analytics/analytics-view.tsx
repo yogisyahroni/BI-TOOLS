@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import {
-    Calculator,
+    _Calculator,
     Sparkles,
     Network,
     TrendingUp,
@@ -26,13 +26,13 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/components/ui/use-toast"
-import { ForecastView } from "@/components/analytics/forecast-view"
-import { AnomalyView } from "@/components/analytics/anomaly-view"
+import { _ForecastView } from "@/components/analytics/forecast-view"
+import { _AnomalyView } from "@/components/analytics/anomaly-view"
 import { AutoInsights } from "@/components/analytics/auto-insights"
 import { KeyDrivers } from "@/components/analytics/key-drivers"
-import { AnomalyDataPoint } from "@/components/visualizations/anomaly-chart"
+import { _AnomalyDataPoint } from "@/components/visualizations/anomaly-chart"
 import { type Insight, type CorrelationResult } from "@/types/analytics"
-import { cn, fetchWithAuth } from "@/lib/utils"
+import { _cn, fetchWithAuth } from "@/lib/utils"
 import Link from "next/link"
 
 interface MetricCardProps {

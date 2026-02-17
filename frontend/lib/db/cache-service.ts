@@ -25,6 +25,8 @@ export const cacheService = {
      * Set a value in the cache.
      * Fails silently if cache is disabled.
      */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async set(key: string, value: any, ttlSeconds: number = DEFAULT_TTL): Promise<void> {
         if (!redis) return;
 

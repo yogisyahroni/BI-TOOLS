@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { format } from 'date-fns'
 import { fetchWithAuth } from '@/lib/utils'
 
@@ -45,7 +45,7 @@ export default function AuditLogsPage() {
     const [currentPage, setCurrentPage] = useState(1)
 
     // Fetch audit logs
-    const fetchLogs = async () => {
+    const fetchLogs = useCallback(async () => {
         setLoading(true)
         try {
             const params = new URLSearchParams()
@@ -69,7 +69,7 @@ export default function AuditLogsPage() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [filters])
 
     // Export to CSV
     const exportToCSV = async () => {
@@ -134,7 +134,7 @@ export default function AuditLogsPage() {
     // Fetch on mount and filter changes
     useEffect(() => {
         fetchLogs()
-    }, [filters.offset])
+    }, [fetchLogs])
 
     // Action badge color
     const getActionBadgeColor = (action: string) => {

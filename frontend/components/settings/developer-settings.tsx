@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Badge } from '@/components/ui/badge';
+import { _Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Plus, Copy, Trash2, CheckCircle, Terminal } from 'lucide-react';
 import { toast } from 'sonner';
@@ -43,7 +43,7 @@ export function DeveloperSettings() {
             if (data.success) {
                 setKeys(data.keys);
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to load API keys');
         } finally {
             setIsLoading(false);
@@ -67,7 +67,7 @@ export function DeveloperSettings() {
             } else {
                 toast.error(data.error);
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to create key');
         } finally {
             setIsCreating(false);
@@ -82,7 +82,7 @@ export function DeveloperSettings() {
                 setKeys(keys.filter(k => k.id !== id));
                 toast.success('Key revoked');
             }
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to revoke key');
         }
     };

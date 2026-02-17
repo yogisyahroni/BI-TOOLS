@@ -9,14 +9,14 @@
     ],
     "rules": {
         "@typescript-eslint/no-unused-vars": [
-            "warn",
+            "error",
             {
                 "argsIgnorePattern": "^_",
                 "varsIgnorePattern": "^_",
                 "caughtErrorsIgnorePattern": "^_"
             }
         ],
-        "@typescript-eslint/no-explicit-any": "warn",
+        "@typescript-eslint/no-explicit-any": "error",
         "@typescript-eslint/consistent-type-imports": [
             "warn",
             {
@@ -52,7 +52,7 @@
         "no-duplicate-imports": "off",
         "@typescript-eslint/no-duplicate-imports": "off",
         "no-console": [
-            "warn",
+            "error",
             {
                 "allow": [
                     "warn",

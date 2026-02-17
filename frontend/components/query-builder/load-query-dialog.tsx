@@ -20,7 +20,7 @@ import {
     Tag,
     Database,
     AlertCircle,
-    Loader2,
+    _Loader2,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { fetchWithAuth } from '@/lib/utils';
@@ -51,6 +51,8 @@ export function LoadQueryDialog({
         if (open) {
             fetchQueries();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [open, workspaceId]);
 
     useEffect(() => {

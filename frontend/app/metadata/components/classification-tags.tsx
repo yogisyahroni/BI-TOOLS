@@ -4,7 +4,7 @@ import * as React from "react"
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query"
 import { dataGovernanceApi } from "@/lib/api/data-governance"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+
 import {
     Command,
     CommandEmpty,
@@ -90,7 +90,12 @@ export function ClassificationTag({
             )}
             style={{
                 borderColor: currentClassification?.color || undefined,
-                backgroundColor: currentClassification?.color ? `${currentClassification.color}10` : undefined, // 10% opacity
+                backgroundColor: (() => {
+                    if (currentClassification?.color) {
+                        return `${currentClassification.color}10`; // 10% opacity
+                    }
+                    return undefined;
+                })(),
                 color: currentClassification?.color || undefined,
             }}
         >

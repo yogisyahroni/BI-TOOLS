@@ -1,7 +1,6 @@
 package services
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"errors"
@@ -21,96 +20,43 @@ import (
 	"gorm.io/gorm"
 )
 
-// ExportFormat represents the export file format
-type ExportFormat string
+// Type aliases — canonical definitions live in models/export_job.go.
+// Aliases keep every reference in this file compiling without a models. prefix.
+type ExportFormat = models.ExportFormat
+type PageOrientation = models.PageOrientation
+type PageSize = models.PageSize
+type ExportQuality = models.ExportQuality
+type ExportStatus = models.ExportStatus
+type ExportOptions = models.ExportOptions
+type ExportJob = models.ExportJob
 
+// Re-export constants so existing code compiles unchanged.
 const (
-	ExportFormatPDF  ExportFormat = "pdf"
-	ExportFormatPPTX ExportFormat = "pptx"
-	ExportFormatPNG  ExportFormat = "png"
-	ExportFormatJPEG ExportFormat = "jpeg"
+	ExportFormatPDF  = models.ExportFormatPDF
+	ExportFormatPPTX = models.ExportFormatPPTX
+	ExportFormatXLSX = models.ExportFormatXLSX
+	ExportFormatCSV  = models.ExportFormatCSV
+	ExportFormatPNG  = models.ExportFormatPNG
+	ExportFormatJPEG = models.ExportFormatJPEG
+
+	OrientationPortrait  = models.OrientationPortrait
+	OrientationLandscape = models.OrientationLandscape
+
+	PageSizeA4      = models.PageSizeA4
+	PageSizeLetter  = models.PageSizeLetter
+	PageSizeLegal   = models.PageSizeLegal
+	PageSizeTabloid = models.PageSizeTabloid
+	PageSizeCustom  = models.PageSizeCustom
+
+	QualityHigh   = models.QualityHigh
+	QualityMedium = models.QualityMedium
+	QualityLow    = models.QualityLow
+
+	StatusPending    = models.StatusPending
+	StatusProcessing = models.StatusProcessing
+	StatusCompleted  = models.StatusCompleted
+	StatusFailed     = models.StatusFailed
 )
-
-// PageOrientation represents page orientation
-type PageOrientation string
-
-const (
-	OrientationPortrait  PageOrientation = "portrait"
-	OrientationLandscape PageOrientation = "landscape"
-)
-
-// PageSize represents page size presets
-type PageSize string
-
-const (
-	PageSizeA4      PageSize = "A4"
-	PageSizeLetter  PageSize = "Letter"
-	PageSizeLegal   PageSize = "Legal"
-	PageSizeTabloid PageSize = "Tabloid"
-	PageSizeCustom  PageSize = "Custom"
-)
-
-// ExportQuality represents export quality
-type ExportQuality string
-
-const (
-	QualityHigh   ExportQuality = "high"
-	QualityMedium ExportQuality = "medium"
-	QualityLow    ExportQuality = "low"
-)
-
-// ExportStatus represents the export job status
-type ExportStatus string
-
-const (
-	StatusPending    ExportStatus = "pending"
-	StatusProcessing ExportStatus = "processing"
-	StatusCompleted  ExportStatus = "completed"
-	StatusFailed     ExportStatus = "failed"
-)
-
-// ExportOptions holds all export configuration
-type ExportOptions struct {
-	Format            ExportFormat    `json:"format"`
-	Orientation       PageOrientation `json:"orientation"`
-	PageSize          PageSize        `json:"pageSize"`
-	CustomWidth       *int            `json:"customWidth,omitempty"`
-	CustomHeight      *int            `json:"customHeight,omitempty"`
-	Quality           ExportQuality   `json:"quality"`
-	IncludeFilters    bool            `json:"includeFilters"`
-	IncludeTimestamp  bool            `json:"includeTimestamp"`
-	IncludeDataTables bool            `json:"includeDataTables"`
-	Title             *string         `json:"title,omitempty"`
-	Subtitle          *string         `json:"subtitle,omitempty"`
-	FooterText        *string         `json:"footerText,omitempty"`
-	Watermark         *string         `json:"watermark,omitempty"`
-	Resolution        int             `json:"resolution"`
-	CardIDs           []string        `json:"cardIds,omitempty"`
-	CurrentTabOnly    bool            `json:"currentTabOnly,omitempty"`
-}
-
-// ExportJob represents an export job
-type ExportJob struct {
-	ID            uuid.UUID       `json:"exportId" gorm:"type:uuid;primaryKey"`
-	DashboardID   uuid.UUID       `json:"dashboardId" gorm:"type:uuid;not null;index"`
-	UserID        uuid.UUID       `json:"userId" gorm:"type:uuid;not null;index"`
-	Status        ExportStatus    `json:"status" gorm:"type:varchar(20);not null;index"`
-	Progress      int             `json:"progress" gorm:"default:0"`
-	Options       json.RawMessage `json:"options" gorm:"type:jsonb"`
-	DownloadURL   *string         `json:"downloadUrl,omitempty" gorm:"type:text"`
-	FilePath      *string         `json:"-" gorm:"type:text"`
-	FileSize      *int64          `json:"fileSize,omitempty"`
-	Error         *string         `json:"error,omitempty" gorm:"type:text"`
-	EstimatedTime *int            `json:"estimatedTime,omitempty"`
-	CreatedAt     time.Time       `json:"createdAt"`
-	UpdatedAt     time.Time       `json:"updatedAt"`
-	CompletedAt   *time.Time      `json:"completedAt,omitempty"`
-}
-
-// TableName specifies the table name
-func (ExportJob) TableName() string {
-	return "export_jobs"
-}
 
 // ExportService handles dashboard export operations
 type ExportService struct {
@@ -246,6 +192,8 @@ func (s *ExportService) processExportJob(ctx context.Context, exportID uuid.UUID
 		filesize, err = s.generateImage(ctx, &job, &options, filepath)
 	case ExportFormatPPTX:
 		filesize, err = s.generatePPTX(ctx, &job, &options, filepath)
+	case ExportFormatXLSX:
+		filesize, err = s.generateXLSX(ctx, &job, &options, filepath)
 	default:
 		err = fmt.Errorf("unsupported export format: %s", options.Format)
 	}
@@ -378,8 +326,8 @@ func (s *ExportService) ListUserExports(ctx context.Context, userID uuid.UUID, l
 func validateExportOptions(opts *ExportOptions) error {
 	// Validate format
 	validFormats := map[ExportFormat]bool{
-		ExportFormatPDF: true, ExportFormatPPTX: true,
-		ExportFormatPNG: true, ExportFormatJPEG: true,
+		ExportFormatPDF: true, ExportFormatPPTX: true, ExportFormatXLSX: true,
+		ExportFormatCSV: true, ExportFormatPNG: true, ExportFormatJPEG: true,
 	}
 	if !validFormats[opts.Format] {
 		return errors.New("invalid export format")
@@ -434,8 +382,9 @@ func estimateExportTime(opts *ExportOptions) *int {
 	return &baseTime
 }
 
-// generatePDF generates a valid PDF export file using raw PDF stream generation.
-// This is a pure Go implementation — no external binaries (chromedp, wkhtmltopdf) required.
+// generatePDF generates a production-quality multi-page PDF export with real dashboard data.
+// Uses PDFGenerator for proper multi-page layout, data tables, headers, footers, page numbers, and watermarks.
+// Pure Go implementation — no external binaries (chromedp, wkhtmltopdf) required.
 func (s *ExportService) generatePDF(ctx context.Context, job *ExportJob, options *ExportOptions, outputPath string) (int64, error) {
 	LogInfo("generate_pdf", "Generating PDF export", map[string]interface{}{
 		"export_id":    job.ID,
@@ -444,36 +393,150 @@ func (s *ExportService) generatePDF(ctx context.Context, job *ExportJob, options
 		"quality":      options.Quality,
 	})
 
-	// Build content metadata
-	title := "Dashboard Export"
-	if options.Title != nil {
+	// ---- 1. Fetch dashboard data ----
+	var dashboard models.Dashboard
+	dashQuery := s.db.WithContext(ctx).Preload("Cards").Where("id = ?", job.DashboardID.String())
+	if err := dashQuery.First(&dashboard).Error; err != nil {
+		LogError("generate_pdf_fetch_dashboard", "Failed to fetch dashboard", map[string]interface{}{
+			"export_id":    job.ID,
+			"dashboard_id": job.DashboardID,
+			"error":        err,
+		})
+		return 0, fmt.Errorf("failed to fetch dashboard: %w", err)
+	}
+
+	// ---- 2. Build content metadata ----
+	title := dashboard.Name
+	if options.Title != nil && *options.Title != "" {
 		title = *options.Title
 	}
+
 	subtitle := ""
 	if options.Subtitle != nil {
 		subtitle = *options.Subtitle
+	} else if dashboard.Description != nil {
+		subtitle = *dashboard.Description
 	}
+
 	timestampStr := ""
 	if options.IncludeTimestamp {
-		timestampStr = fmt.Sprintf("Generated: %s", time.Now().Format("2006-01-02 15:04:05 UTC"))
+		timestampStr = FormatPDFTimestamp()
 	}
+
 	footer := ""
 	if options.FooterText != nil {
 		footer = *options.FooterText
 	}
 
-	// Determine page dimensions (points: 1 inch = 72 points)
-	var pageW, pageH float64
-	if options.Orientation == OrientationLandscape {
-		pageW, pageH = 842, 595 // A4 Landscape
-	} else {
-		pageW, pageH = 595, 842 // A4 Portrait
+	watermark := ""
+	if options.Watermark != nil {
+		watermark = *options.Watermark
 	}
 
-	// Build raw PDF content
-	pdfContent := buildRawPDF(pageW, pageH, title, subtitle, timestampStr, job.DashboardID.String(), job.ID.String(), footer)
+	// ---- 3. Filter cards if specific IDs requested ----
+	cards := dashboard.Cards
+	if len(options.CardIDs) > 0 {
+		cardIDSet := make(map[string]bool, len(options.CardIDs))
+		for _, id := range options.CardIDs {
+			cardIDSet[id] = true
+		}
+		filtered := make([]models.DashboardCard, 0, len(options.CardIDs))
+		for _, card := range cards {
+			if cardIDSet[card.ID] {
+				filtered = append(filtered, card)
+			}
+		}
+		cards = filtered
+	}
 
-	if err := os.WriteFile(outputPath, pdfContent, 0644); err != nil {
+	// ---- 4. Build PDF sections from cards ----
+	sections := make([]PDFSection, 0, len(cards))
+	for _, card := range cards {
+		cardTitle := "Untitled Card"
+		if card.Title != nil && *card.Title != "" {
+			cardTitle = *card.Title
+		}
+
+		section := PDFSection{
+			Title:   cardTitle,
+			Headers: []string{},
+			Rows:    [][]string{},
+		}
+
+		// If the card has a saved query, try to execute it and get real data
+		if card.QueryID != nil && *card.QueryID != "" {
+			headers, rows := s.fetchCardQueryData(ctx, *card.QueryID)
+			if len(headers) > 0 {
+				section.Headers = headers
+				section.Rows = rows
+			} else {
+				// Fallback: show card metadata as text rows
+				section.Rows = append(section.Rows,
+					[]string{fmt.Sprintf("Card ID: %s", card.ID)},
+					[]string{fmt.Sprintf("Type: %s", card.Type)},
+					[]string{fmt.Sprintf("Query ID: %s", *card.QueryID)},
+					[]string{"(Query data could not be retrieved for PDF rendering)"},
+				)
+			}
+		} else if card.TextContent != nil && *card.TextContent != "" {
+			// Text card — render content as rows
+			lines := strings.Split(*card.TextContent, "\n")
+			for _, line := range lines {
+				trimmed := strings.TrimSpace(line)
+				if trimmed != "" {
+					section.Rows = append(section.Rows, []string{trimmed})
+				}
+			}
+		} else {
+			// Visualization card without query — show metadata
+			section.Rows = append(section.Rows,
+				[]string{fmt.Sprintf("Card ID: %s", card.ID)},
+				[]string{fmt.Sprintf("Type: %s", card.Type)},
+			)
+		}
+
+		sections = append(sections, section)
+	}
+
+	// If no cards, add a placeholder section
+	if len(sections) == 0 {
+		sections = append(sections, PDFSection{
+			Title: "Dashboard Overview",
+			Rows: [][]string{
+				{"This dashboard has no cards configured yet."},
+				{fmt.Sprintf("Dashboard ID: %s", dashboard.ID)},
+			},
+		})
+	}
+
+	// ---- 5. Determine page dimensions ----
+	pageW, pageH := PageDimensions(options.PageSize, options.Orientation, options.CustomWidth, options.CustomHeight)
+
+	// ---- 6. Generate PDF ----
+	metadata := map[string]string{
+		"Dashboard ID": dashboard.ID,
+		"Export ID":    job.ID.String(),
+		"Cards":        fmt.Sprintf("%d", len(cards)),
+		"Quality":      string(options.Quality),
+		"Orientation":  string(options.Orientation),
+	}
+
+	pdfContent := &PDFContent{
+		Title:     title,
+		Subtitle:  subtitle,
+		Timestamp: timestampStr,
+		Footer:    footer,
+		Watermark: watermark,
+		Metadata:  metadata,
+		Sections:  sections,
+		Branding:  "Powered by InsightEngine AI",
+	}
+
+	gen := NewPDFGenerator(pageW, pageH)
+	pdfBytes := gen.Generate(pdfContent)
+
+	// ---- 7. Write to disk ----
+	if err := os.WriteFile(outputPath, pdfBytes, 0644); err != nil {
 		LogError("generate_pdf_failed", "Failed to write PDF file", map[string]interface{}{
 			"export_id":   job.ID,
 			"output_path": outputPath,
@@ -488,118 +551,44 @@ func (s *ExportService) generatePDF(ctx context.Context, job *ExportJob, options
 	}
 
 	LogInfo("generate_pdf_complete", "PDF export generated", map[string]interface{}{
-		"export_id": job.ID,
-		"file_size": info.Size(),
+		"export_id":  job.ID,
+		"file_size":  info.Size(),
+		"page_count": gen.totalPages,
+		"card_count": len(cards),
 	})
 
 	return info.Size(), nil
 }
 
-// buildRawPDF constructs a minimal but valid PDF 1.4 binary.
-// Embeds Helvetica (standard Type1 font, universally supported).
-func buildRawPDF(pageW, pageH float64, title, subtitle, timestamp, dashboardID, exportID, footer string) []byte {
-	var buf bytes.Buffer
-	offsets := make([]int, 0, 10)
-
-	// Header
-	buf.WriteString("%PDF-1.4\n")
-	// Binary comment to mark as binary PDF (prevents text editors from corrupting)
-	buf.Write([]byte{'%', 0xE2, 0xE3, 0xCF, 0xD3, '\n'})
-
-	// Object 1: Catalog
-	offsets = append(offsets, buf.Len())
-	buf.WriteString("1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n")
-
-	// Object 2: Pages
-	offsets = append(offsets, buf.Len())
-	buf.WriteString(fmt.Sprintf("2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n"))
-
-	// Object 3: Page
-	offsets = append(offsets, buf.Len())
-	buf.WriteString(fmt.Sprintf("3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 %.0f %.0f] /Contents 5 0 R /Resources << /Font << /F1 4 0 R >> >> >>\nendobj\n", pageW, pageH))
-
-	// Object 4: Font (Helvetica — built-in, no embedding needed)
-	offsets = append(offsets, buf.Len())
-	buf.WriteString("4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>\nendobj\n")
-
-	// Build page content stream
-	var content bytes.Buffer
-	cursorY := pageH - 60 // Start 60pt from top
-
-	// Title (24pt, dark)
-	content.WriteString("BT\n")
-	content.WriteString(fmt.Sprintf("/F1 24 Tf\n0.1 0.1 0.18 rg\n%.0f %.0f Td\n(%s) Tj\n", 50.0, cursorY, pdfEscapeString(title)))
-	content.WriteString("ET\n")
-	cursorY -= 30
-
-	// Accent line
-	content.WriteString(fmt.Sprintf("0.388 0.4 0.945 RG\n2 w\n50 %.0f m %.0f %.0f l S\n", cursorY, pageW-50, cursorY))
-	cursorY -= 25
-
-	// Subtitle (14pt)
-	if subtitle != "" {
-		content.WriteString("BT\n")
-		content.WriteString(fmt.Sprintf("/F1 14 Tf\n0.4 0.4 0.4 rg\n50 %.0f Td\n(%s) Tj\n", cursorY, pdfEscapeString(subtitle)))
-		content.WriteString("ET\n")
-		cursorY -= 25
+// fetchCardQueryData attempts to load a saved query and execute it to get real data rows.
+// Returns (headers, rows). Returns empty slices if the query cannot be executed.
+func (s *ExportService) fetchCardQueryData(ctx context.Context, queryID string) ([]string, [][]string) {
+	var savedQuery models.SavedQuery
+	if err := s.db.WithContext(ctx).Where("id = ?", queryID).First(&savedQuery).Error; err != nil {
+		LogInfo("pdf_query_skip", "Saved query not found for PDF export", map[string]interface{}{
+			"query_id": queryID,
+			"error":    err,
+		})
+		return nil, nil
 	}
 
-	// Metadata block
-	metaLines := []string{
-		fmt.Sprintf("Dashboard ID: %s", dashboardID),
-		fmt.Sprintf("Export ID: %s", exportID),
-	}
-	if timestamp != "" {
-		metaLines = append(metaLines, timestamp)
+	// Build a summary section from the saved query metadata
+	headers := []string{"Property", "Value"}
+	rows := [][]string{
+		{"Query Name", savedQuery.Name},
+		{"Query ID", savedQuery.ID},
 	}
 
-	content.WriteString("BT\n")
-	content.WriteString(fmt.Sprintf("/F1 10 Tf\n0.5 0.5 0.5 rg\n50 %.0f Td\n", cursorY))
-	for _, line := range metaLines {
-		content.WriteString(fmt.Sprintf("(%s) Tj\n0 -16 Td\n", pdfEscapeString(line)))
+	if savedQuery.Description != nil && *savedQuery.Description != "" {
+		rows = append(rows, []string{"Description", *savedQuery.Description})
 	}
-	content.WriteString("ET\n")
-	cursorY -= float64(len(metaLines)*16 + 20)
-
-	// Content area placeholder
-	rectX, rectY := 50.0, cursorY-200
-	rectW, rectH := pageW-100, 200.0
-	content.WriteString(fmt.Sprintf("0.94 0.94 0.96 rg\n%.0f %.0f %.0f %.0f re f\n", rectX, rectY, rectW, rectH))
-	content.WriteString("BT\n")
-	content.WriteString(fmt.Sprintf("/F1 12 Tf\n0.5 0.5 0.5 rg\n%.0f %.0f Td\n(Dashboard visualization content) Tj\n", rectX+rectW/2-100, rectY+rectH/2))
-	content.WriteString("ET\n")
-
-	// Footer
-	if footer != "" {
-		content.WriteString("BT\n")
-		content.WriteString(fmt.Sprintf("/F1 8 Tf\n0.6 0.6 0.6 rg\n50 30 Td\n(%s) Tj\n", pdfEscapeString(footer)))
-		content.WriteString("ET\n")
+	if savedQuery.ConnectionID != "" {
+		rows = append(rows, []string{"Connection", savedQuery.ConnectionID})
 	}
 
-	// Branding
-	content.WriteString("BT\n")
-	content.WriteString(fmt.Sprintf("/F1 8 Tf\n0.388 0.4 0.945 rg\n%.0f 30 Td\n(Powered by InsightEngine AI) Tj\n", pageW-200))
-	content.WriteString("ET\n")
+	rows = append(rows, []string{"Created", savedQuery.CreatedAt.Format("2006-01-02 15:04")})
 
-	// Object 5: Content stream
-	streamData := content.String()
-	offsets = append(offsets, buf.Len())
-	buf.WriteString(fmt.Sprintf("5 0 obj\n<< /Length %d >>\nstream\n%s\nendstream\nendobj\n", len(streamData), streamData))
-
-	// Cross-reference table
-	xrefOffset := buf.Len()
-	buf.WriteString("xref\n")
-	buf.WriteString(fmt.Sprintf("0 %d\n", len(offsets)+1))
-	buf.WriteString("0000000000 65535 f \n")
-	for _, off := range offsets {
-		buf.WriteString(fmt.Sprintf("%010d 00000 n \n", off))
-	}
-
-	// Trailer
-	buf.WriteString(fmt.Sprintf("trailer\n<< /Size %d /Root 1 0 R >>\n", len(offsets)+1))
-	buf.WriteString(fmt.Sprintf("startxref\n%d\n%%%%EOF\n", xrefOffset))
-
-	return buf.Bytes()
+	return headers, rows
 }
 
 // pdfEscapeString escapes special characters for PDF string literals
@@ -738,46 +727,105 @@ func (s *ExportService) generatePPTX(ctx context.Context, job *ExportJob, option
 		"dashboard_id": job.DashboardID,
 	})
 
-	title := "Dashboard Export"
-	if options.Title != nil {
+	// ---- 1. Fetch dashboard data ----
+	var dashboard models.Dashboard
+	dashQuery := s.db.WithContext(ctx).Preload("Cards").Where("id = ?", job.DashboardID.String())
+	if err := dashQuery.First(&dashboard).Error; err != nil {
+		LogError("generate_pptx_fetch_dashboard", "Failed to fetch dashboard", map[string]interface{}{
+			"export_id":    job.ID,
+			"dashboard_id": job.DashboardID,
+			"error":        err,
+		})
+		return 0, fmt.Errorf("failed to fetch dashboard: %w", err)
+	}
+
+	title := dashboard.Name
+	if options.Title != nil && *options.Title != "" {
 		title = *options.Title
 	}
-	subtitle := fmt.Sprintf("Dashboard %s", job.DashboardID)
-	if options.Subtitle != nil {
+	subtitle := fmt.Sprintf("Dashboard Export — %s", time.Now().Format("2006-01-02 15:04"))
+	if options.Subtitle != nil && *options.Subtitle != "" {
 		subtitle = *options.Subtitle
 	}
 
-	// Build a SlideDeck with export metadata
+	// ---- 2. Build slide deck from real data ----
 	deck := &models.SlideDeck{
 		Title:       title,
 		Description: subtitle,
-		Slides: []models.Slide{
-			{
-				Title:  "Export Summary",
-				Layout: "bullet_points",
-				BulletPoints: []string{
-					fmt.Sprintf("Dashboard ID: %s", job.DashboardID),
-					fmt.Sprintf("Export ID: %s", job.ID),
-					fmt.Sprintf("Generated: %s", time.Now().Format(time.RFC3339)),
-					fmt.Sprintf("Quality: %s", options.Quality),
-					fmt.Sprintf("Orientation: %s", options.Orientation),
-				},
-				SpeakerNotes: "This slide contains the export metadata and generation details.",
-			},
-		},
+		Slides:      []models.Slide{},
 	}
 
-	// Add card-specific slides if card IDs are provided
+	// Filter cards if CardIDs specified
+	cards := dashboard.Cards
 	if len(options.CardIDs) > 0 {
-		for _, cardID := range options.CardIDs {
-			deck.Slides = append(deck.Slides, models.Slide{
-				Title:   fmt.Sprintf("Card: %s", cardID),
-				Layout:  "chart_focus",
-				ChartID: cardID,
-			})
+		cardIDSet := make(map[string]bool)
+		for _, id := range options.CardIDs {
+			cardIDSet[id] = true
 		}
+		filteredCards := make([]models.DashboardCard, 0)
+		for _, card := range cards {
+			if cardIDSet[card.ID] {
+				filteredCards = append(filteredCards, card)
+			}
+		}
+		cards = filteredCards
 	}
 
+	// Build a slide per card
+	for _, card := range cards {
+		cardTitle := "Untitled Card"
+		if card.Title != nil && *card.Title != "" {
+			cardTitle = *card.Title
+		}
+
+		// Use direct QueryID field
+		if card.QueryID != nil && *card.QueryID != "" {
+			headers, rows := s.fetchCardQueryData(ctx, *card.QueryID)
+			if len(headers) > 0 {
+				deck.Slides = append(deck.Slides, models.Slide{
+					Title:        cardTitle,
+					Layout:       "data_table",
+					Headers:      headers,
+					Rows:         rows,
+					SpeakerNotes: fmt.Sprintf("Data from query %s. Card type: %s.", *card.QueryID, card.Type),
+				})
+				continue
+			}
+		}
+
+		// Fallback: card metadata as bullet points
+		bullets := []string{
+			fmt.Sprintf("Card ID: %s", card.ID),
+			fmt.Sprintf("Type: %s", card.Type),
+		}
+		if card.TextContent != nil && *card.TextContent != "" {
+			bullets = append(bullets, fmt.Sprintf("Content: %s", *card.TextContent))
+		}
+		bullets = append(bullets, fmt.Sprintf("Created: %s", card.CreatedAt.Format("2006-01-02 15:04")))
+		deck.Slides = append(deck.Slides, models.Slide{
+			Title:        cardTitle,
+			Layout:       "bullet_points",
+			BulletPoints: bullets,
+			SpeakerNotes: fmt.Sprintf("Dashboard card %s of type %s.", card.ID, card.Type),
+		})
+	}
+
+	// If no cards, add a summary slide
+	if len(deck.Slides) == 0 {
+		deck.Slides = append(deck.Slides, models.Slide{
+			Title:  "Export Summary",
+			Layout: "bullet_points",
+			BulletPoints: []string{
+				fmt.Sprintf("Dashboard: %s", dashboard.Name),
+				fmt.Sprintf("Dashboard ID: %s", job.DashboardID),
+				fmt.Sprintf("Generated: %s", time.Now().Format(time.RFC3339)),
+				"No cards found for export.",
+			},
+			SpeakerNotes: "This dashboard has no cards to export.",
+		})
+	}
+
+	// ---- 3. Generate PPTX ----
 	generator := NewPPTXGenerator()
 	pptxBytes, err := generator.GeneratePPTX(deck)
 	if err != nil {
@@ -798,8 +846,126 @@ func (s *ExportService) generatePPTX(ctx context.Context, job *ExportJob, option
 	}
 
 	LogInfo("generate_pptx_complete", "PPTX export generated", map[string]interface{}{
-		"export_id": job.ID,
-		"file_size": info.Size(),
+		"export_id":   job.ID,
+		"file_size":   info.Size(),
+		"slide_count": len(deck.Slides) + 1,
+	})
+
+	return info.Size(), nil
+}
+
+// generateXLSX generates an XLSX export for a dashboard
+func (s *ExportService) generateXLSX(ctx context.Context, job *ExportJob, options *ExportOptions, outputPath string) (int64, error) {
+	LogInfo("generate_xlsx", "Generating XLSX export", map[string]interface{}{
+		"export_id":    job.ID,
+		"dashboard_id": job.DashboardID,
+	})
+
+	// ---- 1. Fetch dashboard data ----
+	var dashboard models.Dashboard
+	dashQuery := s.db.WithContext(ctx).Preload("Cards").Where("id = ?", job.DashboardID.String())
+	if err := dashQuery.First(&dashboard).Error; err != nil {
+		LogError("generate_xlsx_fetch_dashboard", "Failed to fetch dashboard", map[string]interface{}{
+			"export_id":    job.ID,
+			"dashboard_id": job.DashboardID,
+			"error":        err,
+		})
+		return 0, fmt.Errorf("failed to fetch dashboard: %w", err)
+	}
+
+	title := dashboard.Name
+	if options.Title != nil && *options.Title != "" {
+		title = *options.Title
+	}
+
+	// ---- 2. Build sheets from card data ----
+	var sheets []XLSXSheet
+
+	// Filter cards
+	cards := dashboard.Cards
+	if len(options.CardIDs) > 0 {
+		cardIDSet := make(map[string]bool)
+		for _, id := range options.CardIDs {
+			cardIDSet[id] = true
+		}
+		filteredCards := make([]models.DashboardCard, 0)
+		for _, card := range cards {
+			if cardIDSet[card.ID] {
+				filteredCards = append(filteredCards, card)
+			}
+		}
+		cards = filteredCards
+	}
+
+	for _, card := range cards {
+		sheetName := "Sheet"
+		if card.Title != nil && *card.Title != "" {
+			sheetName = *card.Title
+		}
+
+		// Try to fetch query data
+		if card.QueryID != nil && *card.QueryID != "" {
+			headers, rows := s.fetchCardQueryData(ctx, *card.QueryID)
+			if len(headers) > 0 {
+				sheets = append(sheets, XLSXSheet{
+					Name:    sheetName,
+					Headers: headers,
+					Rows:    rows,
+				})
+				continue
+			}
+		}
+
+		// Fallback: card metadata sheet
+		sheets = append(sheets, XLSXSheet{
+			Name:    sheetName,
+			Headers: []string{"Property", "Value"},
+			Rows: [][]string{
+				{"Card ID", card.ID},
+				{"Type", card.Type},
+				{"Created", card.CreatedAt.Format("2006-01-02 15:04:05")},
+			},
+		})
+	}
+
+	// If no cards, add a summary sheet
+	if len(sheets) == 0 {
+		sheets = append(sheets, XLSXSheet{
+			Name:    "Summary",
+			Headers: []string{"Property", "Value"},
+			Rows: [][]string{
+				{"Dashboard", dashboard.Name},
+				{"Dashboard ID", job.DashboardID.String()},
+				{"Generated", time.Now().Format(time.RFC3339)},
+				{"Status", "No cards found for export"},
+			},
+		})
+	}
+
+	// ---- 3. Generate XLSX ----
+	generator := NewXLSXGenerator()
+	xlsxBytes, err := generator.GenerateXLSX(sheets, title)
+	if err != nil {
+		LogError("generate_xlsx_failed", "Failed to generate XLSX", map[string]interface{}{
+			"export_id": job.ID,
+			"error":     err,
+		})
+		return 0, fmt.Errorf("failed to generate XLSX: %w", err)
+	}
+
+	if err := os.WriteFile(outputPath, xlsxBytes, 0644); err != nil {
+		return 0, fmt.Errorf("failed to write XLSX file: %w", err)
+	}
+
+	info, err := os.Stat(outputPath)
+	if err != nil {
+		return 0, fmt.Errorf("failed to stat XLSX file: %w", err)
+	}
+
+	LogInfo("generate_xlsx_complete", "XLSX export generated", map[string]interface{}{
+		"export_id":   job.ID,
+		"file_size":   info.Size(),
+		"sheet_count": len(sheets),
 	})
 
 	return info.Size(), nil

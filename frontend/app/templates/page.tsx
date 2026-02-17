@@ -4,12 +4,12 @@ export const dynamic = 'force-dynamic';
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Plus, Star, Copy, Eye, Trash2 } from 'lucide-react';
+import { ArrowLeft, Plus, Star, Copy, Eye, _Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs';
 
 const QUERY_TEMPLATES = [
   {

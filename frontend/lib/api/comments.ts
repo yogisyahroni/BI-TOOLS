@@ -2,7 +2,7 @@ import type {
     Comment, 
     CreateCommentRequest, 
     UpdateCommentRequest, 
-    ResolveCommentRequest,
+    _ResolveCommentRequest,
     CommentsResponse,
     CreateAnnotationRequest,
     CommentUser,

@@ -26,7 +26,7 @@ export function MoveToCollectionDialog({
     open,
     onOpenChange,
     collections,
-    currentCollectionId,
+    _currentCollectionId,
     onMove,
     title = "Move Item"
 }: MoveToCollectionDialogProps) {

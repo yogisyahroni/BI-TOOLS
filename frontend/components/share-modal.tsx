@@ -113,6 +113,9 @@ export function ShareModal({
                 }
               }}
             />
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             <Select value={permission} onValueChange={(value: any) => setPermission(value)}>
               <SelectTrigger className="w-32">
                 <SelectValue />

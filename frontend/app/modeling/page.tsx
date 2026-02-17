@@ -76,6 +76,8 @@ export default function ModelingPage() {
             setNewModelName('');
             setNewModelTable('');
             setNewModelDescription('');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast.error(error.message || 'Failed to create model');
         } finally {

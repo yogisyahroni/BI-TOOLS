@@ -15,7 +15,7 @@ async function sendEmail(to: string, subject: string, attachmentPath: string) {
 
 const shouldStart = !!(redis || process.env.REDIS_URL);
 
-export const reportingWorker = shouldStart ? new Worker('reporting-jobs', async (job: Job) => {
+export const reportingWorker = shouldStart ? new Worker('reporting-jobs', async (_job: Job) => {
     console.warn(`[ReportingWorker] Checking for due reports...`);
 
     // 1. Find Due Schedules

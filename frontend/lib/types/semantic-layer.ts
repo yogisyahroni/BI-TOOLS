@@ -79,15 +79,21 @@ export interface SemanticQueryRequest {
     modelId: string;
     dimensions: string[]; // Business names
     metrics: string[]; // Business names
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     filters?: Record<string, any>;
     limit?: number;
 }
 
 export interface SemanticQueryResponse {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     sql: string;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     args: any[];
     dimensions: string[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     metrics: string[];
     rowCount: number;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data?: any[]; // Query results (if executed)
 }

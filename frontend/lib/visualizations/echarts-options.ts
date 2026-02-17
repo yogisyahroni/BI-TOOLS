@@ -13,6 +13,8 @@ const DEFAULT_COLORS = [
 ];
 
 export function buildEChartsOptions(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: Record<string, any>[],
     config: VisualizationConfig,
     theme: string = 'light',
@@ -34,7 +36,9 @@ export function buildEChartsOptions(
             highlightedField = myFilter.fieldName;
         }
     }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const getItemStyle = (dataItem: any) => {
         if (!highlightedValue || !highlightedField) return {};
 
@@ -62,17 +66,21 @@ export function buildEChartsOptions(
         tooltip: {
             trigger: (type === 'pie' || type === 'funnel') ? 'item' : 'axis',
             axisPointer: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 type: 'cross'
             },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             formatter: config.tooltipTemplate ? (params: any) => {
                 const template = config.tooltipTemplate || '';
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const replaceVars = (str: string, item: any) => {
                     let res = str;
                     const name = item.name || item.axisValueLabel || '';
                     const value = item.value;
                     const seriesName = item.seriesName || '';
-                    const color = item.color;
+                    const _color = item.color;
 
                     // Format value if numeric
                     let formattedValue = value;
@@ -105,10 +113,12 @@ export function buildEChartsOptions(
                         return replaceVars(template, p);
                     }).join('<br/>');
                 } else {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     return replaceVars(template, params);
                 }
             } : undefined, // Fallback to default if no template
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             valueFormatter: config.tooltipTemplate ? undefined : (value: any) => { // Disable if custom formatter used ? No, valueFormatter is specifically for axis pointer label usually or default content.
                 const numVal = Number(value);
                 if (isNaN(numVal)) return value as string;
@@ -141,7 +151,7 @@ export function buildEChartsOptions(
 
     // 1. Pie & Funnel Charts (Single Series, Non-Cartesian)
     if (type === 'pie' || type === 'funnel') {
-        const seriesData = data.map(item => ({
+        const _seriesData = data.map(item => ({
             name: item[xAxis],
             value: item[yAxis[0]],
             itemStyle: getItemStyle({ [xAxis]: item[xAxis] }) // pass object to mimic data item structure if needed, or just pass item if we use item[field]
@@ -174,20 +184,24 @@ export function buildEChartsOptions(
                     shadowOffsetX: 0,
                     shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             }
         }];
 
         // For funnel, we might want to sort
         if (type === 'funnel') {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             (options.series[0] as any).sort = 'descending';
         }
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         return options;
     }
 
     // 2. Cartesian Charts (Bar, Line, Scatter, Area, Combo)
 
     let echartsType: 'bar' | 'line' | 'scatter' = 'bar';
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let areaStyle: any = undefined;
 
     if (type === 'line' || type === 'area') {
@@ -290,13 +304,15 @@ export function buildEChartsOptions(
                 data: getDataWithStyle(yAxis[1]),
                 smooth: true
             }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ];
     } else {
         // Split data into Historical and Forecast
         const historicalData = data.filter(d => !d._isForecast);
         const forecastData = data.filter(d => d._isForecast);
 
-        options.series = yAxis.map((axisKey, index) => {
+        options.series = yAxis.map((axisKey, _index) => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const series: any[] = [];
 
             // 1. Historical Data Series

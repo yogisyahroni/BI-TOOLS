@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"insight-engine-backend/controllers"
 	"insight-engine-backend/handlers"
 
 	"github.com/gofiber/fiber/v2"
@@ -25,6 +26,7 @@ type HandlerContainer struct {
 	DataGovernanceHandler   *handlers.DataGovernanceHandler
 	SemanticLayerHandler    *handlers.SemanticLayerHandler
 	ModelingHandler         *handlers.ModelingHandler
+	FormulaHandler          *handlers.FormulaHandler // GAP-004
 
 	// Real-time & Collaboration Handlers
 	NotificationHandler  *handlers.NotificationHandler
@@ -42,6 +44,7 @@ type HandlerContainer struct {
 	FrontendLogHandler       *handlers.FrontendLogHandler
 	RateLimitHandler         *handlers.RateLimitHandler
 	AIHandler                *handlers.AIHandler
+	StoryHandler             *handlers.StoryHandler // TASK-161
 	AIUsageHandler           *handlers.AIUsageHandler
 	AlertHandler             *handlers.AlertHandler
 	AlertNotificationHandler *handlers.AlertNotificationHandler
@@ -49,6 +52,11 @@ type HandlerContainer struct {
 	GlossaryHandler          *handlers.GlossaryHandler // TASK-125
 	NLHandler                *handlers.NLHandler       // TASK-120-122
 	WebhookHandler           *handlers.WebhookHandler
+
+	// Analytics & ML Handlers
+	ReportingHandler   *handlers.ReportingHandler
+	ForecastingHandler *handlers.ForecastingHandler
+	AnomalyHandler     *handlers.AnomalyHandler
 
 	// Admin Handlers
 	AdminOrgHandler    *handlers.AdminOrganizationHandler
@@ -64,6 +72,12 @@ type HandlerContainer struct {
 
 	// Collection Handler
 	CollectionHandler *handlers.CollectionHandler
+
+	// Lineage Controller
+	LineageController *controllers.LineageController
+
+	// System Health Handler
+	SystemHealthHandler *handlers.SystemHealthHandler
 }
 
 // MiddlewareContainer holds middleware functions
@@ -72,4 +86,5 @@ type MiddlewareContainer struct {
 	AdminMiddleware           fiber.Handler
 	RateLimitMiddleware       fiber.Handler
 	AdaptiveTimeoutMiddleware fiber.Handler
+	CacheMiddleware           fiber.Handler
 }

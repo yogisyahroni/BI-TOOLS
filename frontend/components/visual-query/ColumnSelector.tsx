@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Check, Columns } from "lucide-react";
+import { _Check, Columns } from "lucide-react";
 import { useQueryBuilderStore } from "@/stores/useQueryBuilderStore";
 import { Button } from "@/components/ui/button";
 import {
@@ -36,7 +36,7 @@ export function ColumnSelector() {
         return allCols;
     };
 
-    const allColumns = getAllColumns();
+    const _allColumns = getAllColumns();
     const selectedCount = config.columns.length;
 
     const isSelected = (table: string, column: string) => {

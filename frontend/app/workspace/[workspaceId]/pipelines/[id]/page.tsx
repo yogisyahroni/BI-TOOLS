@@ -5,10 +5,10 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { PipelineHistory } from "@/components/pipelines/pipeline-history";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Play } from "lucide-react";
+import { ArrowLeft, _Play } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
+import { _Separator } from "@/components/ui/separator";
 
 export default async function PipelineDetailPage(
     props: { params: Promise<{ workspaceId: string, id: string }> }

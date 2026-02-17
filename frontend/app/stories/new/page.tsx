@@ -13,6 +13,8 @@ import { fetchWithAuth } from '@/lib/utils';
 export default function NewStoryPage() {
     const router = useRouter();
     const { selectedDatabase } = useDatabase();
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const [dashboards, setDashboards] = useState<any[]>([]);
     const [selectedDashboardId, setSelectedDashboardId] = useState<string>('');
     const [isLoading, setIsLoading] = useState(false);

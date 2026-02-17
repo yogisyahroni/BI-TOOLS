@@ -18,6 +18,8 @@ import { fetchWithAuth } from '@/lib/utils';
 interface CreateWorkspaceDialogProps {
     open: boolean;
     onOpenChange: (open: boolean) => void;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onWorkspaceCreated?: (workspace: any) => void;
 }
 
@@ -72,7 +74,9 @@ export function CreateWorkspaceDialog({
 
             setName('');
             setSlug('');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
             onWorkspaceCreated?.(workspace);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast({
                 title: 'Error',

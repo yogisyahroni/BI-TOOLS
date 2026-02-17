@@ -42,8 +42,8 @@ export function ProviderList({ onEdit }: ProviderListProps) {
         isLoading,
         deleteProvider,
         testProvider,
-        isDeleting,
-        isTesting,
+        _isDeleting,
+        _isTesting,
     } = useAIProviders();
 
     const [testingId, setTestingId] = useState<string | null>(null);

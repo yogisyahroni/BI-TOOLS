@@ -57,9 +57,12 @@ func TestAuthService_Register_Success(t *testing.T) {
 	assert.Equal(t, "New User", result.User.Name)
 	assert.NotEmpty(t, result.User.ID)
 
-	// Password must be hashed, not plaintext
-	assert.NotEqual(t, "SecurePass123!", result.User.Password)
-	err = bcrypt.CompareHashAndPassword([]byte(result.User.Password), []byte("SecurePass123!"))
+	// Verify password hash in DB
+	var dbUser models.User
+	err = db.First(&dbUser, "email = ?", "newuser@example.com").Error
+	assert.NoError(t, err)
+	assert.NotEqual(t, "SecurePass123!", dbUser.Password)
+	err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte("SecurePass123!"))
 	assert.NoError(t, err, "Password should be hashed with bcrypt")
 }
 

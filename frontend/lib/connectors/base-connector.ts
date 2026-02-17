@@ -31,6 +31,8 @@ export interface ConnectionConfig {
     authToken?: string;
 
     // Extended config (JSON)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     extraConfig?: Record<string, any>;
 }
 
@@ -67,7 +69,9 @@ export interface ColumnInfo {
 }
 
 export interface QueryResult {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     columns: string[];
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     rows: Record<string, any>[];
     rowCount: number;
     executionTime: number;
@@ -106,9 +110,11 @@ export abstract class BaseConnector {
 
     /**
      * Extract data for ETL pipelines
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
      * Yields batches of rows [row1, row2, ..., rowN]
      */
-    async *extractData(config: any): AsyncGenerator<any[], void, unknown> {
+    async *extractData(_config: any): AsyncGenerator<any[], void, unknown> {
         // Default implementation (can be overridden)
         // If not implemented, one-shot fetch via executeQuery might be used
         yield [];

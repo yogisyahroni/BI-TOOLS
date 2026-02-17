@@ -514,7 +514,7 @@ func (s *SemanticService) EstimateCost(req EstimateCostRequest) *EstimateCostRes
 }
 
 // AnalyzeQueryOptimization analyzes a SQL query and provides optimization suggestions
-func (s *SemanticService) AnalyzeQueryOptimization(query string) *QueryAnalysisResult {
+func (s *SemanticService) AnalyzeQueryOptimization(query string) *models.QueryAnalysisResult {
 	return s.queryOptimizer.AnalyzeQuery(query)
 }
 

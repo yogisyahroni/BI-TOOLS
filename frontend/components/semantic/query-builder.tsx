@@ -57,7 +57,7 @@ export function QueryBuilder({ onExecuteQuery, onSaveQuery, className }: QueryBu
             setCopied(true);
             toast.success('SQL copied to clipboard');
             setTimeout(() => setCopied(false), 2000);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to copy SQL');
         }
     };
@@ -213,6 +213,8 @@ export function QueryBuilder({ onExecuteQuery, onSaveQuery, className }: QueryBu
                             <div className="relative group">
                                 <SyntaxHighlighter
                                     language="sql"
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                     style={oneDark as any}
                                     customStyle={{
                                         margin: 0,

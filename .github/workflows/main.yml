@@ -27,6 +27,21 @@ jobs:
           working-directory: backend
           args: --timeout=5m --config=.golangci.yaml
 
+  api-lint:
+    name: API Lint (Spectral)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install Spectral
+        run: npm install -g @stoplight/spectral-cli
+      - name: Lint OpenAPI Spec
+        working-directory: backend
+        run: spectral lint docs/openapi.yaml --ruleset .spectral.yaml
+
   backend-test:
     name: Backend Test (Go)
     runs-on: ubuntu-latest

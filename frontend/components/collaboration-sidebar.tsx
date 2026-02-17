@@ -13,8 +13,8 @@ interface CollaborationSidebarProps {
 }
 
 export function CollaborationSidebar({
-  queryId,
-  dashboardId,
+  _queryId,
+  _dashboardId,
 }: CollaborationSidebarProps) {
   const { user } = useUser();
 

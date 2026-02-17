@@ -9,7 +9,7 @@ interface WidgetProps {
     readOnly?: boolean;
 }
 
-export function ImageWidget({ widget, readOnly }: WidgetProps) {
+export function ImageWidget({ widget, _readOnly }: WidgetProps) {
     const src = widget.config.url;
     const fit = widget.config.objectFit || 'cover';
 

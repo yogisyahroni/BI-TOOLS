@@ -76,6 +76,8 @@ export function InviteMemberDialog({
             setRole('VIEWER');
             onMemberInvited?.();
             onOpenChange(false);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             toast({
                 title: 'Error',
@@ -112,7 +114,9 @@ export function InviteMemberDialog({
                     <div className="space-y-2">
                         <Label htmlFor="member-role">Role</Label>
                         <Select
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             value={role}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                             onValueChange={(value: any) => setRole(value)}
                         >
                             <SelectTrigger id="member-role">

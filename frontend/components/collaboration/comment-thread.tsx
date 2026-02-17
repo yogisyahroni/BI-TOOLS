@@ -23,7 +23,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { formatDistanceToNow } from 'date-fns';
 import { CommentInput } from './comment-input';
-import type { Comment, CommentEntityType, CreateCommentRequest, CommentUser } from '@/types/comments';
+import type { Comment, CommentEntityType, CreateCommentRequest, _CommentUser } from '@/types/comments';
 
 // Helper to parse and highlight mentions
 function HighlightMentions({ content }: { content: string }) {
@@ -235,7 +235,7 @@ function CommentItem({
                     {isReplying && (
                         <div className="mt-3">
                             <CommentInput
-                                onSubmit={async (data) => {
+                                onSubmit={async (_data) => {
                                     await onReply(comment.id);
                                     setIsReplying(false);
                                 }}

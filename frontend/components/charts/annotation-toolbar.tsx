@@ -11,14 +11,14 @@ import {
 } from '@/components/ui/popover';
 import { 
     MapPin, 
-    MousePointer2, 
+    _MousePointer2, 
     Type, 
     MoveHorizontal,
     Palette,
     MessageSquare,
     X
 } from 'lucide-react';
-import type { Annotation } from '@/types/comments';
+import type { _Annotation } from '@/types/comments';
 
 type AnnotationType = 'point' | 'range' | 'text';
 

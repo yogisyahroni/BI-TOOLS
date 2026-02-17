@@ -7,6 +7,8 @@ import (
 	"os"
 	"runtime"
 	"time"
+
+	"go.opentelemetry.io/otel/trace"
 )
 
 // LogLevel represents the severity of a log entry
@@ -189,6 +191,10 @@ func (cl *ContextLogger) extractMetadata(metadata map[string]interface{}) map[st
 		metadata = make(map[string]interface{})
 	}
 
+	// Extract from Fiber context locals if available
+	// Note: This relies on TracingMiddleware setting locals
+	// In a real implementation, we would extract from the otel Span directly
+
 	// Extract from context if available
 	if userID, ok := cl.ctx.Value("userID").(string); ok && userID != "" {
 		metadata["user_id"] = userID
@@ -196,12 +202,13 @@ func (cl *ContextLogger) extractMetadata(metadata map[string]interface{}) map[st
 	if requestID, ok := cl.ctx.Value("requestID").(string); ok && requestID != "" {
 		metadata["request_id"] = requestID
 	}
+
 	// TASK-180: Trace-log correlation
-	if traceID, ok := cl.ctx.Value("traceID").(string); ok && traceID != "" {
-		metadata["trace_id"] = traceID
-	}
-	if spanID, ok := cl.ctx.Value("spanID").(string); ok && spanID != "" {
-		metadata["span_id"] = spanID
+	// Improve: extract from context directly using otel
+	span := trace.SpanFromContext(cl.ctx)
+	if span.SpanContext().IsValid() {
+		metadata["trace_id"] = span.SpanContext().TraceID().String()
+		metadata["span_id"] = span.SpanContext().SpanID().String()
 	}
 
 	return metadata

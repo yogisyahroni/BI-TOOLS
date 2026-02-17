@@ -2,7 +2,7 @@
 
 import React, { useMemo, useCallback } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { type DrillPath, DrillLevel, canDrillUp, canDrillDown, getBreadcrumbTrail } from '@/lib/drill-config';
+import { type DrillPath, _DrillLevel, canDrillUp, canDrillDown, getBreadcrumbTrail } from '@/lib/drill-config';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -18,7 +18,7 @@ import {
     ChevronRight,
     Home,
     RotateCcw,
-    ExternalLink,
+    _ExternalLink,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -110,6 +110,8 @@ export function DrillNavigation({
      * Update URL parameters when drill level changes
      */
     const updateUrlParams = useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (levelIndex: number, value?: any) => {
             if (!syncWithUrl) return;
 
@@ -420,7 +422,9 @@ export function useDrillUrlSync(
     /**
      * Set drill state to URL
      */
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const setDrillStateToUrl = useCallback(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (level: number, value?: any) => {
             const params = new URLSearchParams(searchParams.toString());
 

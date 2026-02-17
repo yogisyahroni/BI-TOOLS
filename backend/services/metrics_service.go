@@ -12,7 +12,7 @@ var (
 			Name: "http_requests_total",
 			Help: "Total number of HTTP requests processed, partitioned by status code and method.",
 		},
-		[]string{"status", "method", "path"},
+		[]string{"method", "path", "status"},
 	)
 
 	HttpRequestDuration = prometheus.NewHistogramVec(
@@ -21,7 +21,7 @@ var (
 			Help:    "Histogram of response latency (seconds) of HTTP requests.",
 			Buckets: prometheus.DefBuckets,
 		},
-		[]string{"method", "path"},
+		[]string{"method", "path", "status"},
 	)
 
 	ActiveConnections = prometheus.NewGauge(

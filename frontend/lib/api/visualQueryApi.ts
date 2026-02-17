@@ -52,6 +52,8 @@ export const visualQueryApi = {
         if (!response.ok) throw new Error('Failed to delete visual query');
     },
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     generateSql: async (config: VisualQueryConfig): Promise<{ sql: string, params: any[] }> => {
         const response = await fetchWithAuth(`/api/go/visual-queries/generate-sql`, {
             method: 'POST',
@@ -61,7 +63,9 @@ export const visualQueryApi = {
         const json = await response.json();
         return json.data;
     },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     preview: async (id: string, config?: VisualQueryConfig): Promise<any[]> => {
         const response = await fetchWithAuth(`/api/go/visual-queries/${id}/preview`, { // Changed to specific ID preview or general preview
             method: 'POST',

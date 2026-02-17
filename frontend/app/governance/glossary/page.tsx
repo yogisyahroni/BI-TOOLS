@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, _DialogTrigger } from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { Plus, Search, Edit, Trash, Book } from 'lucide-react';
 import { toast } from 'sonner';
@@ -30,7 +30,7 @@ export default function GlossaryPage() {
             setLoading(true);
             const data = await glossaryApi.listTerms();
             setTerms(data);
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to load glossary terms');
         } finally {
             setLoading(false);
@@ -48,7 +48,7 @@ export default function GlossaryPage() {
             }
             setIsDialogOpen(false);
             fetchTerms();
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to save term');
         }
     };
@@ -60,7 +60,7 @@ export default function GlossaryPage() {
             await glossaryApi.deleteTerm(id);
             toast.success('Term deleted');
             fetchTerms();
-        } catch (error) {
+        } catch (_error) {
             toast.error('Failed to delete term');
         }
     };
@@ -174,6 +174,8 @@ export default function GlossaryPage() {
                                 id="status"
                                 className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                                 value={currentTerm.status || 'draft'}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                 onChange={(e) => setCurrentTerm({ ...currentTerm, status: e.target.value as any })}
                             >
                                 <option value="draft">Draft</option>

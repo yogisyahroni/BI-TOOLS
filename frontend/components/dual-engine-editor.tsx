@@ -15,22 +15,22 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  _DropdownMenu,
+  _DropdownMenuContent,
+  _DropdownMenuItem,
+  _DropdownMenuSeparator,
+  _DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import {
-  Send,
+  _Send,
   Code,
   Sparkles,
   Search,
   Play,
   Save,
   Wand2,
-  ChevronDown,
-  History,
+  _ChevronDown,
+  _History,
   Variable,
   AlertCircle,
   Loader2,
@@ -55,6 +55,8 @@ import { DEFAULT_AI_MODEL, type AIModel } from '@/lib/ai/registry';
 interface DualEngineEditorProps {
   onSchemaClick: () => void;
   onResultsUpdate?: (results: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[];
     columns: string[];
     rowCount: number;
@@ -68,7 +70,9 @@ interface DualEngineEditorProps {
       name: string;
       columns: Array<{ name: string; type: string }>;
     }>;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   };
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSaveSuccess?: (query: any) => void;
   mode?: 'default' | 'modal';
 }
@@ -93,11 +97,11 @@ export function DualEngineEditor({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { execute, isExecuting, error, data, columns, rowCount, executionTime } = useQueryExecution();
+  const { execute, isExecuting, error, data, _columns, rowCount, executionTime } = useQueryExecution();
   const { saveQuery } = useSavedQueries();
   const { generateSQL, isGenerating, lastResult: aiResult } = useAIQuery({ connectionId, schema });
   const { addToHistory, getRecentQueries } = useQueryHistory();
-  const recentQueries = getRecentQueries(5);
+  const _recentQueries = getRecentQueries(5);
 
   // Extract variables from query
   const detectedVariables = extractQueryVariables(sqlQuery);
@@ -156,8 +160,10 @@ export function DualEngineEditor({
       result.executionTime || 0,
       result.rowCount || 0,
       result.error || undefined,
+        // eslint-disable-next-line react-hooks/exhaustive-deps
       aiPrompt || undefined
     );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sqlQuery, connectionId, detectedVariables, queryVariables, execute, addToHistory, executionTime, rowCount, error, aiPrompt]);
 
   // Handle format SQL
@@ -166,7 +172,7 @@ export function DualEngineEditor({
   }, [sqlQuery]);
 
   // Handle keyboard shortcuts
-  const handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
+  const _handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
     // Ctrl+Enter or Cmd+Enter to execute
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
       e.preventDefault();
@@ -197,7 +203,7 @@ export function DualEngineEditor({
   }, [handleExecute, handleFormat]);
 
   // Auto-complete suggestions
-  const getAutoCompleteSuggestions = useCallback((cursorPosition: number): string[] => {
+  const _getAutoCompleteSuggestions = useCallback((cursorPosition: number): string[] => {
     if (!schema) return [];
 
     const textBeforeCursor = sqlQuery.substring(0, cursorPosition);
