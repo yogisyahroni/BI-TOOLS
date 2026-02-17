@@ -3,11 +3,25 @@ name: CI/CD Pipeline
 on:
   push:
     branches: [main, develop]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
   pull_request:
     branches: [main]
+    paths-ignore:
+      - "**.md"
+      - "docs/**"
+
+permissions:
+  contents: read
+  security-events: write
 
 jobs:
+  # ------------------------------------------------------------------
+  # BACKEND CI
+  # ------------------------------------------------------------------
   test-backend:
+    name: Backend (Go)
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -29,35 +43,44 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: "1.21"
+          go-version: "1.24"
           cache: true
+          cache-dependency-path: backend/go.sum
 
-      - name: Install dependencies
+      - name: Verify Formatting (gofmt)
         run: |
-          cd backend
-          go mod download
+          if [ -n "$(gofmt -l backend)" ]; then
+            echo "Go code is not formatted:"
+            gofmt -d backend
+            exit 1
+          fi
 
-      - name: Run linters
-        run: |
-          cd backend
-          go vet ./...
-          # Install and run golangci-lint if available
-          go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
-          ~/go/bin/golangci-lint run
+      - name: Run Linters (golangci-lint)
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          working-directory: backend
+          args: --timeout=5m
+          skip-cache: true # Optional: sometimes cache causes issues in CI
 
-      - name: Run tests
+      - name: Run Tests
         run: |
           cd backend
           go test -v ./... -race -coverprofile=coverage.out -covermode=atomic
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Upload Coverage
+        uses: codecov/codecov-action@v4
         with:
           file: ./backend/coverage.out
           flags: backend
-          name: backend-coverage
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
+  # ------------------------------------------------------------------
+  # FRONTEND CI
+  # ------------------------------------------------------------------
   test-frontend:
+    name: Frontend (Node.js)
     runs-on: ubuntu-latest
 
     steps:
@@ -70,59 +93,79 @@ jobs:
           cache: "npm"
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: |
           cd frontend
           npm ci
 
-      - name: Run linters
+      - name: Run Linter
         run: |
           cd frontend
           npm run lint
 
-      - name: Run tests with coverage
+      - name: Run Tests
         run: |
           cd frontend
           npx vitest run --coverage
         env:
           CI: true
 
-      - name: Upload frontend coverage to Codecov
+      - name: Upload Coverage
         uses: codecov/codecov-action@v4
         with:
           directory: ./frontend/coverage
           flags: frontend
-          name: frontend-coverage
-          fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false
 
-      - name: Build frontend
+      - name: Build
         run: |
           cd frontend
           npm run build
 
+  # ------------------------------------------------------------------
+  # SECURITY AUDIT
+  # ------------------------------------------------------------------
   security-audit:
+    name: Security Scan
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Security audit Go dependencies
-        run: |
-          cd backend
-          go list -json -m all | nancy sleuth
+      - name: Audit Go Dependencies (Nancy)
+        uses: sonatype-nexus-community/nancy-github-action@main
+        with:
+          go-sum: ./backend/go.sum
 
-      - name: Security audit Node.js dependencies
+      - name: Audit Node.js Dependencies
         run: |
           cd frontend
-          npm audit --audit-level high
+          npm audit --audit-level=high
 
+      - name: Filesystem Scan (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: "fs"
+          scan-ref: "."
+          ignore-unfixed: true
+          format: "table"
+          severity: "CRITICAL,HIGH"
+          exit-code: "1"
+
+  # ------------------------------------------------------------------
+  # DOCKER BUILD & PUSH (Only on Main)
+  # ------------------------------------------------------------------
   docker-build:
+    name: Docker Build
     runs-on: ubuntu-latest
-    needs: [test-backend, test-frontend]
+    needs: [test-backend, test-frontend, security-audit]
     if: github.ref == 'refs/heads/main'
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -133,7 +176,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push backend
+      - name: Build/Push Backend
         uses: docker/build-push-action@v5
         with:
           context: ./backend
@@ -142,7 +185,7 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push frontend
+      - name: Build/Push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ./frontend
@@ -151,37 +194,17 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  deploy-staging:
+  # ------------------------------------------------------------------
+  # DEPLOY (Placeholder)
+  # ------------------------------------------------------------------
+  deploy-production:
+    name: Deploy to Production
     runs-on: ubuntu-latest
     needs: docker-build
     if: github.ref == 'refs/heads/main'
-    environment: staging
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Deploy to staging
-        run: |
-          echo "Deploying to staging environment..."
-          # Add deployment commands here
-          # This could be kubectl apply, docker stack deploy, etc.
-          # For now, just echo the deployment
-          echo "Deployment to staging completed"
-
-  deploy-production:
-    runs-on: ubuntu-latest
-    needs: deploy-staging
-    if: github.ref == 'refs/heads/main'
     environment: production
-    concurrency: production
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Deploy to production
-        run: |
-          echo "Deploying to production environment..."
-          # Add production deployment commands here
-          # This could be kubectl apply, docker stack deploy, etc.
-          # For now, just echo the deployment
-          echo "Production deployment completed"
+      - name: Deploy
+        run: echo "Starting deployment sequence..."
