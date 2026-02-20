@@ -1,6 +1,7 @@
 package bootstrap
 
 import (
+	"fmt"
 	"insight-engine-backend/database"
 	"insight-engine-backend/pkg/resilience"
 	"insight-engine-backend/services"
@@ -34,11 +35,24 @@ func InitServices() *ServiceContainer {
 	wsHub := services.NewWebSocketHub()
 	go wsHub.Run() // Start WS Hub immediately
 
-	notificationService := services.NewNotificationService(database.DB, wsHub)
+	// Slack Service (TASK-156)
+	slackService := services.NewSlackService()
+
+	notificationService := services.NewNotificationService(database.DB, wsHub, slackService)
 	activityService := services.NewActivityService(database.DB, wsHub)
+
+	// Pulse Service (TASK-156)
+	fmt.Println("DEBUG: Initializing ScreenshotService")
+	screenshotService := services.NewScreenshotService()
+	fmt.Println("DEBUG: Initializing PulseService")
+	pulseService := services.NewPulseService(database.DB, screenshotService, slackService)
+	// Set admin token for screenshot service - ideally from ENV or internal auth
+	pulseService.SetAdminToken(os.Getenv("INTERNAL_ADMIN_TOKEN"))
+	fmt.Println("DEBUG: PulseService initialized")
 
 	// Cron & Scheduler
 	cronService := services.NewCronService(database.DB)
+	cronService.SetPulseService(pulseService) // Inject PulseService
 	cronService.Start()
 
 	schedulerService := services.NewSchedulerService(database.DB)
@@ -134,11 +148,17 @@ func InitServices() *ServiceContainer {
 		services.LogWarn("scheduled_report_init", "Failed to initialize scheduled report service", map[string]interface{}{"error": err})
 	}
 
+	// System Health (GAP-003)
+	systemHealthService := services.NewSystemHealthService(database.DB, redisCache)
+
+	// Formula Engine (GAP-004)
+	formulaEngine := formula_engine.NewFormulaEngine()
+
 	return &ServiceContainer{
-		EncryptionService:        encryptionService,
-		AIService:                aiService,
-		AIReasoningService:       aiReasoningService,
-		AIOptimizerService:       aiOptimizerService,
+		EncryptionService:  encryptionService,
+		AIService:          aiService,
+		AIReasoningService: aiReasoningService,
+		AIOptimizerService: aiOptimizerService,
 
 		StoryGeneratorService:    storyGeneratorService,
 		PPTXGenerator:            pptxGenerator, // TASK-161
@@ -147,10 +167,11 @@ func InitServices() *ServiceContainer {
 		RateLimiterService:       rateLimiterService,
 		UsageTrackerService:      usageTrackerService,
 		CronService:              cronService,
+		SchedulerService:         schedulerService,
 		WebSocketHub:             wsHub,
 		NotificationService:      notificationService,
+		SlackService:             slackService,
 		ActivityService:          activityService,
-		SchedulerService:         schedulerService,
 		AuditService:             auditService,
 		QueryExecutor:            queryExecutor,
 		QueryQueueService:        queryQueueService,
@@ -180,11 +201,14 @@ func InitServices() *ServiceContainer {
 		OrganizationService:      organizationService,
 		EmbedService:             embedService,
 		CommentService:           commentService,
-		ScheduledReportService:   scheduledReportService,
-		SecurityLogService:       securityLogService,
-		SystemHealthService:      services.NewSystemHealthService(database.DB, redisCache),
+
+		ScheduledReportService: scheduledReportService,
+		SecurityLogService:     securityLogService,
+		SystemHealthService:    systemHealthService,
+		PulseService:           pulseService,
+		ScreenshotService:      screenshotService,
 		// ...
-		FormulaEngine: formula_engine.NewFormulaEngine(), // GAP-004
+		FormulaEngine: formulaEngine, // GAP-004
 		RedisCache:    redisCache,
 	}
 }
