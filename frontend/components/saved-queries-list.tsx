@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { _useState } from 'react';
-import { useSavedQueries } from '@/hooks/use-saved-queries';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useSavedQueries } from "@/hooks/use-saved-queries";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
-import { Star, MoreHorizontal, Trash2, Copy, Play } from 'lucide-react';
-import { formatDistanceToNow } from 'date-fns';
+} from "@/components/ui/dropdown-menu";
+import { Badge } from "@/components/ui/badge";
+import { Star, MoreHorizontal, Trash2, Copy, Play } from "lucide-react";
+import { formatDistanceToNow } from "date-fns";
 
 interface SavedQueriesListProps {
   collectionId?: string;
@@ -51,9 +51,7 @@ export function SavedQueriesList({ collectionId, onQuerySelect }: SavedQueriesLi
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h4 className="font-medium text-sm text-foreground truncate">
-                  {query.name}
-                </h4>
+                <h4 className="font-medium text-sm text-foreground truncate">{query.name}</h4>
                 {query.pinned && (
                   <Star className="w-4 h-4 fill-yellow-400 text-yellow-400 flex-shrink-0" />
                 )}
@@ -64,9 +62,7 @@ export function SavedQueriesList({ collectionId, onQuerySelect }: SavedQueriesLi
                 </p>
               )}
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs text-muted-foreground">
-                  {query.views} views
-                </span>
+                <span className="text-xs text-muted-foreground">{query.views} views</span>
                 <span className="text-xs text-muted-foreground">
                   {formatDistanceToNow(new Date(query.updatedAt), {
                     addSuffix: true,
@@ -95,9 +91,7 @@ export function SavedQueriesList({ collectionId, onQuerySelect }: SavedQueriesLi
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem
-                  onClick={() => onQuerySelect?.(query.id, query.sql)}
-                >
+                <DropdownMenuItem onClick={() => onQuerySelect?.(query.id, query.sql)}>
                   <Play className="w-4 h-4 mr-2" />
                   Execute
                 </DropdownMenuItem>
@@ -111,7 +105,7 @@ export function SavedQueriesList({ collectionId, onQuerySelect }: SavedQueriesLi
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => pinQuery(query.id)}>
                   <Star className="w-4 h-4 mr-2" />
-                  {query.pinned ? 'Unpin' : 'Pin'}
+                  {query.pinned ? "Unpin" : "Pin"}
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={() => deleteQuery(query.id)}

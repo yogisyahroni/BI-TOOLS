@@ -1,6 +1,6 @@
-'use client'
+"use client";
 
-import * as React from 'react'
+import * as React from "react";
 import {
   Code2,
   Copy,
@@ -14,12 +14,12 @@ import {
   Plus,
   Eye,
   Lock,
-  _RefreshCw,
-} from 'lucide-react'
-import { format } from 'date-fns'
+  RefreshCw,
+} from "lucide-react";
+import { format } from "date-fns";
 
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -27,31 +27,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  createEmbedToken,
-  getEmbedTokensForResource,
-  revokeEmbedToken,
-} from '@/lib/api/shares'
-import type {
-  EmbedToken,
-  ResourceType,
-} from '@/types/share'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { createEmbedToken, getEmbedTokensForResource, revokeEmbedToken } from "@/lib/api/shares";
+import type { EmbedToken, ResourceType } from "@/types/share";
 
 interface EmbedDialogProps {
-  resourceType: ResourceType
-  resourceId: string
-  resourceName: string
-  children?: React.ReactNode
+  resourceType: ResourceType;
+  resourceId: string;
+  resourceName: string;
+  children?: React.ReactNode;
 }
 
 export function EmbedDialog({
@@ -60,67 +53,67 @@ export function EmbedDialog({
   resourceName,
   children,
 }: EmbedDialogProps) {
-  const [open, setOpen] = React.useState(false)
-  const [tokens, setTokens] = React.useState<EmbedToken[]>([])
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [isCreating, setIsCreating] = React.useState(false)
-  const [error, setError] = React.useState<string | null>(null)
-  const [copiedId, setCopiedId] = React.useState<string | null>(null)
-  const [showEmbedCode, setShowEmbedCode] = React.useState<string | null>(null)
+  const [open, setOpen] = React.useState(false);
+  const [tokens, setTokens] = React.useState<EmbedToken[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isCreating, setIsCreating] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
+  const [showEmbedCode, setShowEmbedCode] = React.useState<string | null>(null);
 
   // Form state
-  const [allowedDomains, setAllowedDomains] = React.useState('')
-  const [allowedIPs, setAllowedIPs] = React.useState('')
-  const [setExpiration, setSetExpiration] = React.useState(false)
-  const [expirationDate, setExpirationDate] = React.useState('')
-  const [description, setDescription] = React.useState('')
+  const [allowedDomains, setAllowedDomains] = React.useState("");
+  const [allowedIPs, setAllowedIPs] = React.useState("");
+  const [setExpiration, setSetExpiration] = React.useState(false);
+  const [expirationDate, setExpirationDate] = React.useState("");
+  const [description, setDescription] = React.useState("");
 
   React.useEffect(() => {
     if (open) {
-      loadTokens()
+      loadTokens();
     }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   const loadTokens = async () => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
     try {
-      const data = await getEmbedTokensForResource(resourceType, resourceId)
-      setTokens(data)
+      const data = await getEmbedTokensForResource(resourceType, resourceId);
+      setTokens(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load embed tokens')
+      setError(err instanceof Error ? err.message : "Failed to load embed tokens");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleCreateToken = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    setIsCreating(true)
-    setError(null)
+    setIsCreating(true);
+    setError(null);
 
     try {
       const request: {
-        resource_type: ResourceType
-        resource_id: string
-        allowed_domains?: string[]
-        allowed_ips?: string[]
-        expires_at?: string
-        description?: string
+        resource_type: ResourceType;
+        resource_id: string;
+        allowed_domains?: string[];
+        allowed_ips?: string[];
+        expires_at?: string;
+        description?: string;
       } = {
         resource_type: resourceType,
         resource_id: resourceId,
-      }
+      };
 
       // Parse domains (comma or newline separated)
       if (allowedDomains.trim()) {
         request.allowed_domains = allowedDomains
           .split(/[\n,]/)
           .map((d) => d.trim())
-          .filter((d) => d.length > 0)
+          .filter((d) => d.length > 0);
       }
 
       // Parse IPs (comma or newline separated)
@@ -128,80 +121,80 @@ export function EmbedDialog({
         request.allowed_ips = allowedIPs
           .split(/[\n,]/)
           .map((ip) => ip.trim())
-          .filter((ip) => ip.length > 0)
+          .filter((ip) => ip.length > 0);
       }
 
       if (setExpiration && expirationDate) {
-        request.expires_at = new Date(expirationDate).toISOString()
+        request.expires_at = new Date(expirationDate).toISOString();
       }
 
       if (description.trim()) {
-        request.description = description.trim()
+        request.description = description.trim();
       }
 
-      await createEmbedToken(request)
+      await createEmbedToken(request);
 
       // Reset form
-      setAllowedDomains('')
-      setAllowedIPs('')
-      setExpirationDate('')
-      setDescription('')
-      setSetExpiration(false)
+      setAllowedDomains("");
+      setAllowedIPs("");
+      setExpirationDate("");
+      setDescription("");
+      setSetExpiration(false);
 
       // Reload tokens
-      await loadTokens()
+      await loadTokens();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create embed token')
+      setError(err instanceof Error ? err.message : "Failed to create embed token");
     } finally {
-      setIsCreating(false)
+      setIsCreating(false);
     }
-  }
+  };
 
   const handleRevokeToken = async (tokenId: string) => {
     try {
-      await revokeEmbedToken(tokenId)
-      await loadTokens()
+      await revokeEmbedToken(tokenId);
+      await loadTokens();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to revoke token')
+      setError(err instanceof Error ? err.message : "Failed to revoke token");
     }
-  }
+  };
 
   const handleCopyToken = async (token: string, tokenId: string) => {
     try {
-      await navigator.clipboard.writeText(token)
-      setCopiedId(tokenId)
-      setTimeout(() => setCopiedId(null), 2000)
+      await navigator.clipboard.writeText(token);
+      setCopiedId(tokenId);
+      setTimeout(() => setCopiedId(null), 2000);
     } catch {
-      setCopiedId(tokenId)
-      setTimeout(() => setCopiedId(null), 2000)
+      setCopiedId(tokenId);
+      setTimeout(() => setCopiedId(null), 2000);
     }
-  }
+  };
 
   const handleCopyEmbedCode = async (token: string) => {
-    const embedUrl = `${window.location.origin}/embed/${token}`
+    const embedUrl = `${window.location.origin}/embed/${token}`;
     const embedCode = `<iframe
   src="${embedUrl}"
   width="100%"
   height="600"
   frameborder="0"
   allowfullscreen
-></iframe>`
+></iframe>`;
     try {
-      await navigator.clipboard.writeText(embedCode)
-      setCopiedId(`code-${token}`)
-      setTimeout(() => setCopiedId(null), 2000)
+      await navigator.clipboard.writeText(embedCode);
+      setCopiedId(`code-${token}`);
+      setTimeout(() => setCopiedId(null), 2000);
     } catch {
-      setCopiedId(`code-${token}`)
-      setTimeout(() => setCopiedId(null), 2000)
+      setCopiedId(`code-${token}`);
+      setTimeout(() => setCopiedId(null), 2000);
     }
-  }
+  };
 
-  const activeTokens = tokens.filter((t) => !t.is_revoked && !isExpired(t))
-  const revokedTokens = tokens.filter((t) => t.is_revoked || isExpired(t))
+  const activeTokens = tokens.filter((t) => !t.is_revoked && !isExpired(t));
+  const revokedTokens = tokens.filter((t) => t.is_revoked || isExpired(t));
 
   function isExpired(token: EmbedToken): boolean {
-    if (!token.expires_at) return false
-    return new Date(token.expires_at) < new Date()
+    if (!token.expires_at) return false;
+    return new Date(token.expires_at) < new Date();
   }
 
   return (
@@ -218,10 +211,11 @@ export function EmbedDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Code2 className="h-5 w-5" />
-            Embed {resourceType === 'dashboard' ? 'Dashboard' : 'Query'}
+            Embed {resourceType === "dashboard" ? "Dashboard" : "Query"}
           </DialogTitle>
           <DialogDescription>
-            Create embed tokens to share &quot;{resourceName}&quot; externally with domain and IP restrictions.
+            Create embed tokens to share &quot;{resourceName}&quot; externally with domain and IP
+            restrictions.
           </DialogDescription>
         </DialogHeader>
 
@@ -274,8 +268,7 @@ export function EmbedDialog({
                   className="font-mono text-sm"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Enter one IP address per line or comma-separated.
-                  Leave empty to allow all IPs.
+                  Enter one IP address per line or comma-separated. Leave empty to allow all IPs.
                 </p>
               </div>
 
@@ -328,11 +321,7 @@ export function EmbedDialog({
                 </Alert>
               )}
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={isCreating}
-              >
+              <Button type="submit" className="w-full" disabled={isCreating}>
                 {isCreating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -419,19 +408,19 @@ export function EmbedDialog({
         </Tabs>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 interface TokenItemProps {
-  token: EmbedToken
-  onRevoke: () => void
-  onCopy: () => void
-  onCopyCode: () => void
-  copied: boolean
-  codeCopied: boolean
-  showEmbedCode: boolean
-  onToggleEmbedCode: () => void
-  disabled?: boolean
+  token: EmbedToken;
+  onRevoke: () => void;
+  onCopy: () => void;
+  onCopyCode: () => void;
+  copied: boolean;
+  codeCopied: boolean;
+  showEmbedCode: boolean;
+  onToggleEmbedCode: () => void;
+  disabled?: boolean;
 }
 
 function TokenItem({
@@ -445,26 +434,19 @@ function TokenItem({
   onToggleEmbedCode,
   disabled = false,
 }: TokenItemProps) {
-  const embedUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/embed/${token.token}`
+  const embedUrl = `${typeof window !== "undefined" ? window.location.origin : ""}/embed/${token.token}`;
   const embedCode = `<iframe
   src="${embedUrl}"
   width="100%"
   height="600"
   frameborder="0"
   allowfullscreen
-></iframe>`
+></iframe>`;
 
-  const isExpired = token.expires_at
-    ? new Date(token.expires_at) < new Date()
-    : false
+  const isExpired = token.expires_at ? new Date(token.expires_at) < new Date() : false;
 
   return (
-    <div
-      className={cn(
-        'rounded-lg border p-3 space-y-3',
-        disabled && 'opacity-50'
-      )}
-    >
+    <div className={cn("rounded-lg border p-3 space-y-3", disabled && "opacity-50")}>
       <div className="flex items-start justify-between">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
@@ -489,7 +471,7 @@ function TokenItem({
               {token.expires_at && (
                 <span className="flex items-center gap-1">
                   <Clock className="h-3 w-3" />
-                  Expires {format(new Date(token.expires_at), 'MMM d')}
+                  Expires {format(new Date(token.expires_at), "MMM d")}
                 </span>
               )}
             </div>
@@ -498,17 +480,8 @@ function TokenItem({
 
         {!disabled && (
           <div className="flex items-center gap-1">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onCopy}
-              title="Copy token"
-            >
-              {copied ? (
-                <Check className="h-4 w-4 text-green-500" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
+            <Button variant="ghost" size="icon" onClick={onCopy} title="Copy token">
+              {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
             </Button>
             <Button
               variant="ghost"
@@ -551,7 +524,7 @@ function TokenItem({
             onClick={onToggleEmbedCode}
             className="w-full"
           >
-            {showEmbedCode ? 'Hide' : 'Show'} Embed Code
+            {showEmbedCode ? "Hide" : "Show"} Embed Code
           </Button>
 
           {showEmbedCode && (
@@ -566,11 +539,7 @@ function TokenItem({
                   onClick={onCopyCode}
                   className="absolute top-2 right-2"
                 >
-                  {codeCopied ? (
-                    <Check className="h-3 w-3" />
-                  ) : (
-                    <Copy className="h-3 w-3" />
-                  )}
+                  {codeCopied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
                 </Button>
               </div>
             </div>
@@ -578,5 +547,5 @@ function TokenItem({
         </div>
       )}
     </div>
-  )
+  );
 }

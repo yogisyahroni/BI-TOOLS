@@ -1,80 +1,88 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { ArrowLeft, Plus, Star, Copy, Eye, _Trash2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs';
+import { useState } from "react";
+import Link from "next/link";
+import { ArrowLeft, Plus, Star, Copy, Eye, Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const QUERY_TEMPLATES = [
   {
     id: 1,
-    title: 'Top Customers by Revenue',
-    description: 'Identify your most valuable customers based on total purchase amount',
-    category: 'Sales',
+    title: "Top Customers by Revenue",
+    description: "Identify your most valuable customers based on total purchase amount",
+    category: "Sales",
     queries: 3,
     popularity: 24,
     isFavorite: true,
-    preview: 'SELECT customer_id, SUM(amount) as total_revenue FROM orders GROUP BY customer_id ORDER BY total_revenue DESC LIMIT 10',
+    preview:
+      "SELECT customer_id, SUM(amount) as total_revenue FROM orders GROUP BY customer_id ORDER BY total_revenue DESC LIMIT 10",
   },
   {
     id: 2,
-    title: 'Monthly Sales Trend',
-    description: 'Track revenue trends month-over-month to identify seasonal patterns',
-    category: 'Analytics',
+    title: "Monthly Sales Trend",
+    description: "Track revenue trends month-over-month to identify seasonal patterns",
+    category: "Analytics",
     queries: 5,
     popularity: 18,
     isFavorite: false,
-    preview: 'SELECT DATE_TRUNC(\'month\', created_at) as month, SUM(amount) as revenue FROM orders GROUP BY month ORDER BY month DESC',
+    preview:
+      "SELECT DATE_TRUNC('month', created_at) as month, SUM(amount) as revenue FROM orders GROUP BY month ORDER BY month DESC",
   },
   {
     id: 3,
-    title: 'Product Performance Analysis',
-    description: 'Analyze product sales, margins, and inventory levels',
-    category: 'Products',
+    title: "Product Performance Analysis",
+    description: "Analyze product sales, margins, and inventory levels",
+    category: "Products",
     queries: 4,
     popularity: 12,
     isFavorite: true,
-    preview: 'SELECT p.product_id, p.name, COUNT(o.id) as total_orders, SUM(o.amount) as revenue FROM products p LEFT JOIN orders o ON p.id = o.product_id',
+    preview:
+      "SELECT p.product_id, p.name, COUNT(o.id) as total_orders, SUM(o.amount) as revenue FROM products p LEFT JOIN orders o ON p.id = o.product_id",
   },
   {
     id: 4,
-    title: 'Customer Churn Analysis',
-    description: 'Identify inactive customers and calculate churn rate',
-    category: 'CRM',
+    title: "Customer Churn Analysis",
+    description: "Identify inactive customers and calculate churn rate",
+    category: "CRM",
     queries: 2,
     popularity: 15,
     isFavorite: false,
-    preview: 'SELECT c.customer_id, MAX(o.created_at) as last_order_date, CURRENT_DATE - MAX(o.created_at) as days_inactive FROM customers c LEFT JOIN orders o',
+    preview:
+      "SELECT c.customer_id, MAX(o.created_at) as last_order_date, CURRENT_DATE - MAX(o.created_at) as days_inactive FROM customers c LEFT JOIN orders o",
   },
   {
     id: 5,
-    title: 'Geographic Revenue Breakdown',
-    description: 'Analyze sales performance by region and country',
-    category: 'Geography',
+    title: "Geographic Revenue Breakdown",
+    description: "Analyze sales performance by region and country",
+    category: "Geography",
     queries: 3,
     popularity: 10,
     isFavorite: false,
-    preview: 'SELECT c.country, SUM(o.amount) as revenue, COUNT(o.id) as order_count FROM customers c JOIN orders o ON c.id = o.customer_id',
+    preview:
+      "SELECT c.country, SUM(o.amount) as revenue, COUNT(o.id) as order_count FROM customers c JOIN orders o ON c.id = o.customer_id",
   },
 ];
 
-const CATEGORIES = ['All', 'Sales', 'Analytics', 'Products', 'CRM', 'Geography'];
+const CATEGORIES = ["All", "Sales", "Analytics", "Products", "CRM", "Geography"];
 
 export default function TemplatesPage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [favorites, setFavorites] = useState(new Set(QUERY_TEMPLATES.filter(t => t.isFavorite).map(t => t.id)));
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [favorites, setFavorites] = useState(
+    new Set(QUERY_TEMPLATES.filter((t) => t.isFavorite).map((t) => t.id)),
+  );
 
-  const filteredTemplates = QUERY_TEMPLATES.filter(template => {
-    const matchesSearch = template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || template.category === selectedCategory;
+  const filteredTemplates = QUERY_TEMPLATES.filter((template) => {
+    const matchesSearch =
+      template.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      template.description.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || template.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
@@ -101,7 +109,9 @@ export default function TemplatesPage() {
             </Link>
             <div>
               <h1 className="text-3xl font-bold text-foreground">Query Templates</h1>
-              <p className="text-muted-foreground mt-1">Pre-built SQL queries for common analytics tasks</p>
+              <p className="text-muted-foreground mt-1">
+                Pre-built SQL queries for common analytics tasks
+              </p>
             </div>
           </div>
         </div>
@@ -109,7 +119,6 @@ export default function TemplatesPage() {
 
       {/* Content */}
       <div className="max-w-6xl mx-auto px-6 py-8">
-        
         {/* Search and Filter */}
         <div className="mb-8 space-y-4">
           <div className="flex gap-2">
@@ -127,10 +136,10 @@ export default function TemplatesPage() {
 
           {/* Category Filter */}
           <div className="flex gap-2 flex-wrap">
-            {CATEGORIES.map(category => (
+            {CATEGORIES.map((category) => (
               <Button
                 key={category}
-                variant={selectedCategory === category ? 'default' : 'outline'}
+                variant={selectedCategory === category ? "default" : "outline"}
                 size="sm"
                 onClick={() => setSelectedCategory(category)}
                 className="text-xs"
@@ -146,21 +155,29 @@ export default function TemplatesPage() {
           {filteredTemplates.length === 0 ? (
             <Card className="p-12 border border-border text-center">
               <p className="text-muted-foreground mb-4">No templates found matching your filters</p>
-              <Button variant="outline" onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('All');
-              }}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All");
+                }}
+              >
                 Clear Filters
               </Button>
             </Card>
           ) : (
-            filteredTemplates.map(template => (
-              <Card key={template.id} className="p-6 border border-border hover:border-primary/50 transition-all hover:shadow-lg">
+            filteredTemplates.map((template) => (
+              <Card
+                key={template.id}
+                className="p-6 border border-border hover:border-primary/50 transition-all hover:shadow-lg"
+              >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <h3 className="text-lg font-semibold text-foreground">{template.title}</h3>
-                      <Badge variant="outline" className="text-xs">{template.category}</Badge>
+                      <Badge variant="outline" className="text-xs">
+                        {template.category}
+                      </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">{template.description}</p>
                   </div>
@@ -168,9 +185,14 @@ export default function TemplatesPage() {
                     variant="ghost"
                     size="icon"
                     onClick={() => toggleFavorite(template.id)}
-                    className={favorites.has(template.id) ? 'text-yellow-500' : 'text-muted-foreground'}
+                    className={
+                      favorites.has(template.id) ? "text-yellow-500" : "text-muted-foreground"
+                    }
                   >
-                    <Star className="w-5 h-5" fill={favorites.has(template.id) ? 'currentColor' : 'none'} />
+                    <Star
+                      className="w-5 h-5"
+                      fill={favorites.has(template.id) ? "currentColor" : "none"}
+                    />
                   </Button>
                 </div>
 
@@ -197,7 +219,7 @@ export default function TemplatesPage() {
                       className="gap-2"
                       onClick={() => {
                         // Would navigate to editor with this template
-                        window.location.href = '/?template=' + template.id;
+                        window.location.href = "/?template=" + template.id;
                       }}
                     >
                       <Copy className="w-4 h-4" />
@@ -219,15 +241,20 @@ export default function TemplatesPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {[
-              { title: 'Active Users Last 30 Days', category: 'Analytics', author: 'Sarah Chen' },
-              { title: 'Revenue by Product Category', category: 'Sales', author: 'Michael Brown' },
-              { title: 'Customer Lifetime Value', category: 'CRM', author: 'Emma Wilson' },
+              { title: "Active Users Last 30 Days", category: "Analytics", author: "Sarah Chen" },
+              { title: "Revenue by Product Category", category: "Sales", author: "Michael Brown" },
+              { title: "Customer Lifetime Value", category: "CRM", author: "Emma Wilson" },
             ].map((template, idx) => (
-              <Card key={idx} className="p-4 border border-border hover:border-primary/50 transition-colors cursor-pointer">
+              <Card
+                key={idx}
+                className="p-4 border border-border hover:border-primary/50 transition-colors cursor-pointer"
+              >
                 <h4 className="font-semibold text-foreground mb-1">{template.title}</h4>
                 <div className="flex items-center justify-between mt-3">
                   <div className="flex items-center gap-2">
-                    <Badge variant="secondary" className="text-xs">{template.category}</Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {template.category}
+                    </Badge>
                     <span className="text-xs text-muted-foreground">by {template.author}</span>
                   </div>
                   <Button variant="ghost" size="icon" className="h-6 w-6">

@@ -39,6 +39,9 @@ func Connect() {
 	poolConfig := poolService.LoadConfigFromEnv()
 	poolService.Configure(sqlDB, poolConfig)
 
+	// Configure Read Replicas (TASK-150)
+	ConfigureReadReplicas(DB)
+
 	// Expose globally if needed, or just keep it local for config
 	// For now we just configure it.
 

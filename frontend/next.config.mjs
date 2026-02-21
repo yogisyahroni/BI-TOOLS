@@ -164,6 +164,11 @@ const nextConfig = {
         source: '/api/semantic/:path*',
         destination: `${backendUrl}/api/semantic/:path*`,
       },
+      // Stories API (TASK-161)
+      {
+        source: '/api/stories/:path*',
+        destination: `${backendUrl}/api/stories/:path*`,
+      },
       {
         source: '/api/widgets/:path*',
         destination: `${backendUrl}/api/widgets/:path*`,

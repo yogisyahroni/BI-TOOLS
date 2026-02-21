@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 	"insight-engine-backend/database"
 	"insight-engine-backend/models"
 	"insight-engine-backend/services/ai"
@@ -14,13 +15,17 @@ import (
 // AIService provides AI operations
 type AIService struct {
 	encryptionService *EncryptionService
+	embeddingService  *EmbeddingService
+	semanticService   *SemanticLayerService
 	providerFactory   *ai.ProviderFactory
 }
 
 // NewAIService creates a new AI service
-func NewAIService(encryptionService *EncryptionService) *AIService {
+func NewAIService(encryptionService *EncryptionService, embeddingService *EmbeddingService, semanticService *SemanticLayerService) *AIService {
 	return &AIService{
 		encryptionService: encryptionService,
+		embeddingService:  embeddingService,
+		semanticService:   semanticService,
 		providerFactory:   ai.NewProviderFactory(),
 	}
 }
@@ -64,9 +69,52 @@ func (s *AIService) Generate(ctx context.Context, providerID, userID, prompt str
 		return nil, err
 	}
 
+	enhancedPrompt := prompt
+	if context != nil {
+		contextPrefix := ""
+		if connID, ok := context["connectionId"].(string); ok && connID != "" {
+			// RAG Injection
+			if s.embeddingService != nil {
+				schemas, err := s.embeddingService.RetrieveRelevantSchema(ctx, userID, providerID, connID, prompt, 5) // Top 5
+				if err == nil && len(schemas) > 0 {
+					contextPrefix += "You have access to the following relevant database schemas to help answer the user's prompt:\n"
+					for _, sch := range schemas {
+						contextPrefix += fmt.Sprintf("- Table %s.%s: %s\n", sch["schema_name"], sch["table_name"], sch["description"])
+					}
+					contextPrefix += "\n"
+				}
+			}
+
+			// Semantic Metric Injection
+			if s.semanticService != nil {
+				// Metrics belong to models which belong to connections (data_source_id)
+				var modelsData []models.SemanticModel
+				if err := database.DB.Preload("Metrics").Where("data_source_id = ?", connID).Find(&modelsData).Error; err == nil {
+					hasMetrics := false
+					metricContext := "You MUST use the following predefined Business Metrics (Formulas) when generating SQL. Do NOT invent your own formulas for these metrics:\n"
+
+					for _, m := range modelsData {
+						for _, metric := range m.Metrics {
+							hasMetrics = true
+							metricContext += fmt.Sprintf("- Metric: %s | Formula: %s | Description: %s\n", metric.Name, metric.Formula, metric.Description)
+						}
+					}
+
+					if hasMetrics {
+						contextPrefix += metricContext + "\n"
+					}
+				}
+			}
+		}
+
+		if contextPrefix != "" {
+			enhancedPrompt = contextPrefix + "User Prompt:\n" + prompt
+		}
+	}
+
 	// Generate content
 	req := ai.GenerateRequest{
-		Prompt:      prompt,
+		Prompt:      enhancedPrompt,
 		Context:     context,
 		Temperature: 0.7, // Default
 		MaxTokens:   0,   // Use provider default
@@ -153,9 +201,51 @@ func (s *AIService) StreamGenerate(ctx context.Context, providerID, userID, prom
 		return nil, err
 	}
 
+	enhancedPrompt := prompt
+	if context != nil {
+		contextPrefix := ""
+		if connID, ok := context["connectionId"].(string); ok && connID != "" {
+			// RAG Injection
+			if s.embeddingService != nil {
+				schemas, err := s.embeddingService.RetrieveRelevantSchema(ctx, userID, providerID, connID, prompt, 5) // Top 5
+				if err == nil && len(schemas) > 0 {
+					contextPrefix += "You have access to the following relevant database schemas to help answer the user's prompt:\n"
+					for _, sch := range schemas {
+						contextPrefix += fmt.Sprintf("- Table %s.%s: %s\n", sch["schema_name"], sch["table_name"], sch["description"])
+					}
+					contextPrefix += "\n"
+				}
+			}
+
+			// Semantic Metric Injection
+			if s.semanticService != nil {
+				var modelsData []models.SemanticModel
+				if err := database.DB.Preload("Metrics").Where("data_source_id = ?", connID).Find(&modelsData).Error; err == nil {
+					hasMetrics := false
+					metricContext := "You MUST use the following predefined Business Metrics (Formulas) when generating SQL. Do NOT invent your own formulas for these metrics:\n"
+
+					for _, m := range modelsData {
+						for _, metric := range m.Metrics {
+							hasMetrics = true
+							metricContext += fmt.Sprintf("- Metric: %s | Formula: %s | Description: %s\n", metric.Name, metric.Formula, metric.Description)
+						}
+					}
+
+					if hasMetrics {
+						contextPrefix += metricContext + "\n"
+					}
+				}
+			}
+		}
+
+		if contextPrefix != "" {
+			enhancedPrompt = contextPrefix + "User Prompt:\n" + prompt
+		}
+	}
+
 	// Generate content with streaming
 	req := ai.GenerateRequest{
-		Prompt:      prompt,
+		Prompt:      enhancedPrompt,
 		Context:     context,
 		Temperature: 0.7, // Default
 		MaxTokens:   0,   // Use provider default

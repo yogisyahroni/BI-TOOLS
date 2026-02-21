@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"insight-engine-backend/database"
 	"insight-engine-backend/services"
 
 	"github.com/gofiber/fiber/v2"
@@ -14,9 +15,16 @@ var (
 
 // InitAIHandlers initializes AI handlers with encryption service
 func InitAIHandlers(encryptionService *services.EncryptionService) {
+	// Initialize Embedding Service (for RAG)
+	embeddingService := services.NewEmbeddingService(encryptionService)
 	aiProviderHandler = NewAIProviderHandler(encryptionService)
+
+	// Initialize Semantic Layer Service
+	semanticLayerService := services.NewSemanticLayerService(database.DB)
+
 	// 2.7. Initialize Semantic Handlers
-	aiService := services.NewAIService(encryptionService)
+	// Initialize AI Service
+	aiService := services.NewAIService(encryptionService, embeddingService, semanticLayerService)
 	aiReasoningService := services.NewAIReasoningService(aiService)
 	aiOptimizerService := services.NewAIOptimizerService(aiService)
 	storyGeneratorService := services.NewStoryGeneratorService(aiService)

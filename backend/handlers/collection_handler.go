@@ -18,9 +18,13 @@ func NewCollectionHandler() *CollectionHandler {
 // GetCollections returns all collections for a user
 func (h *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 	userID := c.Locals("userID").(string)
+	parsedUserID, err := uuid.Parse(userID)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid User ID"})
+	}
 
 	var collections []models.Collection
-	if err := database.DB.Where("user_id = ?", userID).
+	if err := database.DB.Where("user_id = ?", parsedUserID).
 		Preload("Items").
 		Order("created_at DESC").
 		Find(&collections).Error; err != nil {
@@ -33,6 +37,10 @@ func (h *CollectionHandler) GetCollections(c *fiber.Ctx) error {
 // CreateCollection creates a new collection
 func (h *CollectionHandler) CreateCollection(c *fiber.Ctx) error {
 	userID := c.Locals("userID").(string)
+	parsedUserID, err := uuid.Parse(userID)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid User ID"})
+	}
 
 	var input struct {
 		Name        string  `json:"name"`
@@ -45,10 +53,10 @@ func (h *CollectionHandler) CreateCollection(c *fiber.Ctx) error {
 	}
 
 	collection := models.Collection{
-		ID:          uuid.New().String(),
+		ID:          uuid.New(),
 		Name:        input.Name,
 		Description: input.Description,
-		UserID:      userID,
+		UserID:      parsedUserID,
 		WorkspaceID: input.WorkspaceID,
 		CreatedAt:   time.Now(),
 		UpdatedAt:   time.Now(),
@@ -133,6 +141,10 @@ func (h *CollectionHandler) DeleteCollection(c *fiber.Ctx) error {
 func (h *CollectionHandler) AddCollectionItem(c *fiber.Ctx) error {
 	collectionID := c.Params("id")
 	userID := c.Locals("userID").(string)
+	parsedCollectionID, err := uuid.Parse(collectionID)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid Collection ID"})
+	}
 
 	// Verify collection ownership
 	var collection models.Collection
@@ -150,8 +162,8 @@ func (h *CollectionHandler) AddCollectionItem(c *fiber.Ctx) error {
 	}
 
 	item := models.CollectionItem{
-		ID:           uuid.New().String(),
-		CollectionID: collectionID,
+		ID:           uuid.New(),
+		CollectionID: parsedCollectionID,
 		ItemType:     input.ItemType,
 		ItemID:       input.ItemID,
 		CreatedAt:    time.Now(),

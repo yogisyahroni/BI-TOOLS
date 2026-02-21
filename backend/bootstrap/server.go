@@ -59,7 +59,7 @@ func InitServer(svc *ServiceContainer, h *routes.HandlerContainer) *fiber.App {
 			}
 		}()
 	}
-	app.Use(middleware.TracingMiddleware()) // TASK-179: Use new TracingMiddleware
+	app.Use(middleware.TracingMiddleware())                         // TASK-179: Use new TracingMiddleware
 	app.Use(middleware.DistributedTracingMiddleware(tracingConfig)) // Keep existing one if it does something else, or replace?
 	// The existing middleware.DistributedTracingMiddleware seems to be a placeholder or different impl.
 	// Let's assume the new one supersedes or complements. Since I wrote TracingMiddleware to be standard OTEL,
@@ -114,54 +114,8 @@ func InitServer(svc *ServiceContainer, h *routes.HandlerContainer) *fiber.App {
 	}))
 
 	// Handlers & Middleware Containers
-	// IMPORTANT: Reconstruct HandlerContainer to match routes.HandlerContainer
-	// The bootstrap HandlerContainer fields must map 1:1 to routes package
-	routeHandlers := &routes.HandlerContainer{
-		AIHandler:                h.AIHandler,
-		AuthHandler:              h.AuthHandler,
-		OAuthHandler:             h.OAuthHandler,
-		PermissionHandler:        h.PermissionHandler,
-		FormulaHandler:           h.FormulaHandler,
-		QueryHandler:             h.QueryHandler,
-		VisualQueryHandler:       h.VisualQueryHandler,
-		ConnectionHandler:        h.ConnectionHandler,
-		QueryAnalyzerHandler:     h.QueryAnalyzerHandler,
-		MaterializedViewHandler:  h.MaterializedViewHandler,
-		EngineHandler:            h.EngineHandler,
-		GeoJSONHandler:           h.GeoJSONHandler,
-		DataGovernanceHandler:    h.DataGovernanceHandler,
-		SemanticLayerHandler:     h.SemanticLayerHandler,
-		ModelingHandler:          h.ModelingHandler,
-		DashboardHandler:         h.DashboardHandler,
-		DashboardCardHandler:     h.DashboardCardHandler,
-		NotificationHandler:      h.NotificationHandler,
-		ActivityHandler:          h.ActivityHandler,
-		SchedulerHandler:         h.SchedulerHandler,
-		WebSocketHandler:         h.WebSocketHandler,
-		CommentHandler:           h.CommentHandler,
-		ShareHandler:             h.ShareHandler,
-		EmbedHandler:             h.EmbedHandler,
-		AuditHandler:             h.AuditHandler,
-		FrontendLogHandler:       h.FrontendLogHandler,
-		RateLimitHandler:         h.RateLimitHandler,
-		AIUsageHandler:           h.AIUsageHandler,
-		AlertHandler:             h.AlertHandler,
-		AlertNotificationHandler: h.AlertNotificationHandler,
-		AnalyticsHandler:         h.AnalyticsHandler,
-		AdminOrgHandler:          h.AdminOrgHandler,
-		AdminUserHandler:         h.AdminUserHandler,
-		AdminSystemHandler:       h.AdminSystemHandler,
-		ScheduledReportHandler:   h.ScheduledReportHandler,
-		VersionHandler:           h.VersionHandler,
-		QueryVersionHandler:      h.QueryVersionHandler,
-		GlossaryHandler:          h.GlossaryHandler,
-		NLHandler:                h.NLHandler,
-		WebhookHandler:           h.WebhookHandler,
-		CollectionHandler:        h.CollectionHandler,
-		SystemHealthHandler:      h.SystemHealthHandler,
-		// Reporting, Forecasting, Anomaly handlers were in main.go but need check if they are in routes.HandlerContainer
-		// They were routed manually in main.go
-	}
+	// Use the passed HandlerContainer directly as it is already populated by InitHandlers
+	// This prevents regression where new handlers are added to InitHandlers but forgotten here.
 
 	middlewareContainer := &routes.MiddlewareContainer{
 		AuthMiddleware:            middleware.AuthMiddleware,
@@ -176,7 +130,7 @@ func InitServer(svc *ServiceContainer, h *routes.HandlerContainer) *fiber.App {
 	}
 
 	// Setup Standard Routes
-	routes.SetupRoutes(app, routeHandlers, middlewareContainer)
+	routes.SetupRoutes(app, h, middlewareContainer)
 
 	// Setup Custom Manual Routes (from main.go legacy)
 	api := app.Group("/api")

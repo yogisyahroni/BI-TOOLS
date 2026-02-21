@@ -1,30 +1,30 @@
-import { type AIModel, _AIProvider } from "../registry";
+import { type AIModel, AIProvider } from "../registry";
 
 export interface AIRequest {
-    prompt: string;
-    schemaDDL?: string;
-    databaseType: string;
-    model: AIModel;
+  prompt: string;
+  schemaDDL?: string;
+  databaseType: string;
+  model: AIModel;
 }
 
 export interface AIResponse {
-    sql: string;
-    explanation: string;
-    confidence: number;
-    suggestedVisualization?: 'bar' | 'line' | 'pie' | 'table' | 'metric';
-    insights: string[];
+  sql: string;
+  explanation: string;
+  confidence: number;
+  suggestedVisualization?: "bar" | "line" | "pie" | "table" | "metric";
+  insights: string[];
 }
 
 export interface IAIProvider {
-    /**
-     * Generate SQL/Query based on natural language and schema context
-     */
-    generateQuery(request: AIRequest): Promise<AIResponse>;
+  /**
+   * Generate SQL/Query based on natural language and schema context
+   */
+  generateQuery(request: AIRequest): Promise<AIResponse>;
 
-    /**
-     * Analyze query results and provide human-readable insights
-     */
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    analyzeResults(data: any[], sql: string): Promise<string[]>;
+  /**
+   * Analyze query results and provide human-readable insights
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  analyzeResults(data: any[], sql: string): Promise<string[]>;
 }

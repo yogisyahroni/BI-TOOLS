@@ -1,26 +1,20 @@
 "use client";
 
-import { MainSidebar } from "@/components/main-sidebar";
+import { SidebarLayout } from "@/components/sidebar-layout";
 import { StoryBuilder } from "@/components/story-builder/StoryBuilder";
-import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "@/components/ui/toaster";
-import { useState } from "react";
+import { motion } from "framer-motion";
 
 export default function StoriesPage() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="flex h-screen bg-background">
-        <MainSidebar
-          isCollapsed={isSidebarCollapsed}
-          onToggle={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-        />
-        <main className="flex-1 overflow-y-auto">
-          <StoryBuilder />
-        </main>
-        <Toaster />
-      </div>
-    </ThemeProvider>
+    <SidebarLayout>
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
+        style={{ height: "100%", width: "100%" }}
+      >
+        <StoryBuilder />
+      </motion.div>
+    </SidebarLayout>
   );
 }

@@ -25,6 +25,9 @@ func (h *AlertHandler) RegisterRoutes(app *fiber.App, authMiddleware func(*fiber
 
 	alertRoutes.Get("/", h.ListAlerts)
 	alertRoutes.Post("/", h.CreateAlert)
+	alertRoutes.Get("/triggered", h.GetTriggeredAlerts)
+	alertRoutes.Get("/stats", h.GetAlertStats)
+	alertRoutes.Post("/test", h.TestAlert)
 	alertRoutes.Get("/:id", h.GetAlert)
 	alertRoutes.Put("/:id", h.UpdateAlert)
 	alertRoutes.Delete("/:id", h.DeleteAlert)
@@ -33,9 +36,6 @@ func (h *AlertHandler) RegisterRoutes(app *fiber.App, authMiddleware func(*fiber
 	alertRoutes.Post("/:id/mute", h.MuteAlert)
 	alertRoutes.Post("/:id/unmute", h.UnmuteAlert)
 	alertRoutes.Get("/:id/history", h.GetAlertHistory)
-	alertRoutes.Get("/triggered", h.GetTriggeredAlerts)
-	alertRoutes.Get("/stats", h.GetAlertStats)
-	alertRoutes.Post("/test", h.TestAlert)
 }
 
 // ListAlerts handles GET /api/alerts

@@ -8,14 +8,18 @@ import (
 	"insight-engine-backend/models"
 
 	"github.com/glebarez/sqlite"
+	"github.com/google/uuid"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
 )
 
 // setupUserAdminTestDB initializes in-memory SQLite DB for testing
-func setupUserAdminTestDB() (*gorm.DB, *UserAdminService) {
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+func setupUserAdminTestDB(t *testing.T) (*gorm.DB, *UserAdminService) {
+	t.Helper()
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared&_busy_timeout=5000"), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		panic("failed to connect to test database")
 	}
@@ -25,14 +29,39 @@ func setupUserAdminTestDB() (*gorm.DB, *UserAdminService) {
 		sqlDB.SetMaxOpenConns(1)
 	}
 
-	// Migrate schemas
-	db.AutoMigrate(&models.User{}, &models.AuditLog{})
+	// Manually create users table to avoid SQLite error with uuid_generate_v4()
+	db.Exec(`CREATE TABLE IF NOT EXISTS users (
+		id TEXT PRIMARY KEY,
+		email TEXT NOT NULL UNIQUE,
+		username TEXT UNIQUE,
+		name TEXT,
+		password TEXT,
+		role TEXT DEFAULT 'user',
+		email_verified NUMERIC DEFAULT 0,
+		email_verified_at TIMESTAMP,
+		email_verification_token TEXT,
+		email_verification_expires TIMESTAMP,
+		password_reset_token TEXT,
+		password_reset_expires TIMESTAMP,
+		provider TEXT,
+		provider_id TEXT,
+		created_at DATETIME,
+		updated_at DATETIME,
+		status TEXT DEFAULT 'active',
+		deactivated_at TIMESTAMP,
+		deactivated_by TEXT,
+		deactivation_reason TEXT,
+		impersonation_token TEXT,
+		impersonation_expires TIMESTAMP,
+		impersonated_by TEXT
+	)`)
+
+	// Migrate schemas (skip User as it is manually created)
+	db.AutoMigrate(&models.AuditLog{})
 
 	// Initialize dependencies
 	auditService := NewAuditService(db)
-	userAdminService := NewUserAdminService(db, auditService)
-
-	return db, userAdminService
+	return db, NewUserAdminService(db, auditService)
 }
 
 func cleanupUserAdminTestDB(db *gorm.DB) {
@@ -41,13 +70,13 @@ func cleanupUserAdminTestDB(db *gorm.DB) {
 }
 
 func TestGetUsers(t *testing.T) {
-	db, service := setupUserAdminTestDB()
+	db, service := setupUserAdminTestDB(t)
 	defer cleanupUserAdminTestDB(db)
 
 	// Create test users
 	users := []models.User{
 		{
-			ID:       "user-1",
+			ID:       uuid.New(),
 			Name:     "Admin User",
 			Email:    "admin@example.com",
 			Username: "admin",
@@ -55,7 +84,7 @@ func TestGetUsers(t *testing.T) {
 			Status:   models.UserStatusActive,
 		},
 		{
-			ID:       "user-2",
+			ID:       uuid.New(),
 			Name:     "Regular User",
 			Email:    "user@example.com",
 			Username: "user",
@@ -63,7 +92,7 @@ func TestGetUsers(t *testing.T) {
 			Status:   models.UserStatusActive,
 		},
 		{
-			ID:       "user-3",
+			ID:       uuid.New(),
 			Name:     "Inactive User",
 			Email:    "inactive@example.com",
 			Username: "inactive",
@@ -110,11 +139,12 @@ func TestGetUsers(t *testing.T) {
 }
 
 func TestUpdateUser(t *testing.T) {
-	db, service := setupUserAdminTestDB()
+	db, service := setupUserAdminTestDB(t)
 	defer cleanupUserAdminTestDB(db)
 
+	userID := uuid.New()
 	user := models.User{
-		ID:       "user-update",
+		ID:       userID,
 		Name:     "Original Name",
 		Email:    "original@example.com",
 		Username: "original",
@@ -129,14 +159,14 @@ func TestUpdateUser(t *testing.T) {
 			Name: "Updated Name",
 			Role: "admin",
 		}
-		updatedUser, err := service.UpdateUser(ctx, user.ID, req)
+		updatedUser, err := service.UpdateUser(ctx, userID.String(), req)
 		require.NoError(t, err)
 		assert.Equal(t, "Updated Name", updatedUser.Name)
 		assert.Equal(t, "admin", updatedUser.Role)
 
 		// Verify in DB
 		var dbUser models.User
-		db.First(&dbUser, "id = ?", user.ID)
+		db.First(&dbUser, "id = ?", userID)
 		assert.Equal(t, "Updated Name", dbUser.Name)
 		assert.Equal(t, "admin", dbUser.Role)
 	})
@@ -144,7 +174,7 @@ func TestUpdateUser(t *testing.T) {
 	t.Run("UpdateEmailDuplicate", func(t *testing.T) {
 		// Create another user
 		otherUser := models.User{
-			ID:       "user-other",
+			ID:       uuid.New(),
 			Name:     "Other",
 			Email:    "other@example.com",
 			Username: "other",
@@ -154,7 +184,7 @@ func TestUpdateUser(t *testing.T) {
 		req := &UpdateUserRequest{
 			Email: "other@example.com", // Duplicate
 		}
-		_, err := service.UpdateUser(ctx, user.ID, req)
+		_, err := service.UpdateUser(ctx, userID.String(), req)
 		assert.Error(t, err)
 		// This line is not part of the original code, but was in the provided snippet.
 		// Assuming it's a placeholder or an example of a query that might use this pattern.
@@ -164,12 +194,13 @@ func TestUpdateUser(t *testing.T) {
 }
 
 func TestActivateDeactivateUser(t *testing.T) {
-	db, service := setupUserAdminTestDB()
+	db, service := setupUserAdminTestDB(t)
 	defer cleanupUserAdminTestDB(db)
 
 	adminID := "admin-123"
+	userID := uuid.New()
 	user := models.User{
-		ID:       "user-active",
+		ID:       userID,
 		Name:     "Test User",
 		Email:    "test@example.com",
 		Username: "test",
@@ -180,7 +211,7 @@ func TestActivateDeactivateUser(t *testing.T) {
 	ctx := context.Background()
 
 	t.Run("DeactivateUser", func(t *testing.T) {
-		deactivatedUser, err := service.DeactivateUser(ctx, user.ID, adminID, "Violation of terms")
+		deactivatedUser, err := service.DeactivateUser(ctx, userID.String(), adminID, "Violation of terms")
 		require.NoError(t, err)
 		assert.Equal(t, models.UserStatusInactive, deactivatedUser.Status)
 		assert.Equal(t, adminID, *deactivatedUser.DeactivatedBy)
@@ -189,7 +220,7 @@ func TestActivateDeactivateUser(t *testing.T) {
 	})
 
 	t.Run("ActivateUser", func(t *testing.T) {
-		activatedUser, err := service.ActivateUser(ctx, user.ID, adminID)
+		activatedUser, err := service.ActivateUser(ctx, userID.String(), adminID)
 		require.NoError(t, err)
 		assert.Equal(t, models.UserStatusActive, activatedUser.Status)
 		assert.Nil(t, activatedUser.DeactivatedBy)
@@ -199,12 +230,13 @@ func TestActivateDeactivateUser(t *testing.T) {
 }
 
 func TestDeleteUser(t *testing.T) {
-	db, service := setupUserAdminTestDB()
+	db, service := setupUserAdminTestDB(t)
 	defer cleanupUserAdminTestDB(db)
 
 	adminID := "admin-123"
+	userID := uuid.New()
 	user := models.User{
-		ID:       "user-delete",
+		ID:       userID,
 		Name:     "Delete Me",
 		Email:    "delete@example.com",
 		Username: "deleteme",
@@ -213,22 +245,23 @@ func TestDeleteUser(t *testing.T) {
 
 	ctx := context.Background()
 
-	err := service.DeleteUser(ctx, user.ID, adminID)
+	err := service.DeleteUser(ctx, userID.String(), adminID)
 	require.NoError(t, err)
 
 	// Verify deletion
 	var count int64
-	db.Model(&models.User{}).Where("id = ?", user.ID).Count(&count)
+	db.Model(&models.User{}).Where("id = ?", userID).Count(&count)
 	assert.Equal(t, int64(0), count)
 }
 
 func TestImpersonation(t *testing.T) {
-	db, service := setupUserAdminTestDB()
+	db, service := setupUserAdminTestDB(t)
 	defer cleanupUserAdminTestDB(db)
 
 	adminID := "admin-123"
+	userID := uuid.New()
 	user := models.User{
-		ID:       "user-impersonate",
+		ID:       userID,
 		Name:     "Target User",
 		Email:    "target@example.com",
 		Username: "target",
@@ -241,10 +274,10 @@ func TestImpersonation(t *testing.T) {
 	var token string
 
 	t.Run("ImpersonateUser", func(t *testing.T) {
-		resp, err := service.ImpersonateUser(ctx, user.ID, adminID)
+		resp, err := service.ImpersonateUser(ctx, userID.String(), adminID)
 		require.NoError(t, err)
 		assert.NotEmpty(t, resp.Token)
-		assert.Equal(t, user.ID, resp.UserID)
+		assert.Equal(t, userID, resp.UserID)
 		assert.WithinDuration(t, time.Now().Add(15*time.Minute), resp.ExpiresAt, 1*time.Minute)
 		token = resp.Token
 	})
@@ -252,11 +285,11 @@ func TestImpersonation(t *testing.T) {
 	t.Run("ValidateImpersonationToken", func(t *testing.T) {
 		impersonatedUser, err := service.ValidateImpersonationToken(ctx, token)
 		require.NoError(t, err)
-		assert.Equal(t, user.ID, impersonatedUser.ID)
+		assert.Equal(t, userID, impersonatedUser.ID)
 
 		// Token should be cleared after use
 		var dbUser models.User
-		db.First(&dbUser, "id = ?", user.ID)
+		db.First(&dbUser, "id = ?", userID)
 		assert.Empty(t, dbUser.ImpersonationToken)
 	})
 }

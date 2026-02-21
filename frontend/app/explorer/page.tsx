@@ -1,29 +1,39 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { useState, useEffect } from 'react';
-import { fetchWithAuth } from '@/lib/utils';
+import { useState, useEffect } from "react";
+import { fetchWithAuth } from "@/lib/utils";
 // toast removed
-import { CollectionsSidebar } from '@/components/collections-sidebar';
-import { SavedQueriesList } from '@/components/saved-queries-list';
-import { DualEngineEditor } from '@/components/dual-engine-editor';
-import { ConnectionSelector } from '@/components/connection-selector';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Plus, Search, Grid, List, ArrowLeft, Menu, Table as TableIcon, BarChart3 } from 'lucide-react';
-import { SidebarLayout } from '@/components/sidebar-layout';
-import { useSidebar } from '@/contexts/sidebar-context';
-import { ResultsTable } from '@/components/query-results/results-table';
-import { ChartVisualization } from '@/components/chart-visualization';
-import { VisualizationSidebar } from '@/components/visualization-sidebar';
-import { type VisualizationConfig } from '@/lib/types';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'; // TabsContent removed
+import { CollectionsSidebar } from "@/components/collections-sidebar";
+import { SavedQueriesList } from "@/components/saved-queries-list";
+import { DualEngineEditor } from "@/components/dual-engine-editor";
+import { ConnectionSelector } from "@/components/connection-selector";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Plus,
+  Search,
+  Grid,
+  List,
+  ArrowLeft,
+  Menu,
+  Table as TableIcon,
+  BarChart3,
+} from "lucide-react";
+import { SidebarLayout } from "@/components/sidebar-layout";
+import { useSidebarStore } from "@/stores/useSidebarStore";
+import { ResultsTable } from "@/components/query-results/results-table";
+import { ChartVisualization } from "@/components/chart-visualization";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
+import { VisualizationSidebar } from "@/components/visualization-sidebar";
+import { type VisualizationConfig } from "@/lib/types";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"; // TabsContent removed
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup,
-} from '@/components/resizable-client';
+} from "@/components/resizable-client";
 
 interface Anomaly {
   index: number;
@@ -37,14 +47,14 @@ interface Cluster {
 }
 
 export default function ExplorerPage() {
-  const { open: openSidebar } = useSidebar();
+  const openSidebar = useSidebarStore((state) => state.open);
   const [selectedCollectionId, setSelectedCollectionId] = useState<string | undefined>();
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("list");
+  const [searchQuery, setSearchQuery] = useState("");
 
   // New State for Query Runner
   const [isEditorOpen, setIsEditorOpen] = useState(false);
-  const [activeConnectionId, setActiveConnectionId] = useState<string>('');
+  const [activeConnectionId, setActiveConnectionId] = useState<string>("");
 
   // State for Query Results
   const [queryResults, setQueryResults] = useState<{
@@ -62,10 +72,10 @@ export default function ExplorerPage() {
   });
 
   // State for Visualization
-  const [activeResultTab, setActiveResultTab] = useState<'table' | 'chart'>('table');
+  const [activeResultTab, setActiveResultTab] = useState<"table" | "chart">("table");
   const [vizConfig, setVizConfig] = useState<Partial<VisualizationConfig>>({
-    type: 'bar',
-    xAxis: '',
+    type: "bar",
+    xAxis: "",
     yAxis: [],
   });
 
@@ -80,15 +90,15 @@ export default function ExplorerPage() {
       isLoading: false,
     });
     // Reset visualization tab to table on new query run
-    setActiveResultTab('table');
+    setActiveResultTab("table");
   };
 
   const handleChartClick = (params: { type?: string; payload?: unknown }) => {
-    if (params?.type === 'ANNOTATION_ADD') {
+    if (params?.type === "ANNOTATION_ADD") {
       const newAnnotation = params.payload as Record<string, unknown>; // Type assertion based on expected payload
-      setVizConfig(prev => ({
+      setVizConfig((prev) => ({
         ...prev,
-        annotations: [...(prev.annotations || []), newAnnotation]
+        annotations: [...(prev.annotations || []), newAnnotation],
       }));
     }
   };
@@ -111,16 +121,16 @@ export default function ExplorerPage() {
         const valueCol = vizConfig.yAxis?.[0];
         if (dateCol && valueCol) {
           try {
-            const res = await fetchWithAuth('/api/engine/forecast', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            const res = await fetchWithAuth("/api/engine/forecast", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 data: currentData,
                 dateColumn: dateCol,
                 valueColumn: valueCol,
                 periods: vizConfig.forecast.periods,
-                model: vizConfig.forecast.model
-              })
+                model: vizConfig.forecast.model,
+              }),
             });
             if (res.ok) {
               const json = await res.json();
@@ -128,7 +138,9 @@ export default function ExplorerPage() {
                 currentData = [...currentData, ...json.forecast];
               }
             }
-          } catch (e) { console.error('Forecast error', e); }
+          } catch (e) {
+            console.error("Forecast error", e);
+          }
         }
       }
 
@@ -137,15 +149,15 @@ export default function ExplorerPage() {
         const valueCol = vizConfig.yAxis?.[0];
         if (valueCol) {
           try {
-            const res = await fetchWithAuth('/api/engine/anomaly', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            const res = await fetchWithAuth("/api/engine/anomaly", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                data: currentData.filter(d => !d._isForecast), // Only historical
+                data: currentData.filter((d) => !d._isForecast), // Only historical
                 valueColumn: valueCol,
                 method: vizConfig.anomaly.method,
-                sensitivity: vizConfig.anomaly.sensitivity
-              })
+                sensitivity: vizConfig.anomaly.sensitivity,
+              }),
             });
             if (res.ok) {
               const json = await res.json();
@@ -156,28 +168,32 @@ export default function ExplorerPage() {
                     ...currentData[ann.index],
                     _isAnomaly: true,
                     _anomalyLabel: ann.label,
-                    _anomalyScore: ann.score
+                    _anomalyScore: ann.score,
                   };
                 }
               });
             }
-          } catch (e) { console.error('Anomaly error', e); }
+          } catch (e) {
+            console.error("Anomaly error", e);
+          }
         }
       }
 
       // 3. Clustering
       if (vizConfig.clustering?.enabled) {
         try {
-          const features = vizConfig.clustering.features.length ? vizConfig.clustering.features : vizConfig.yAxis;
+          const features = vizConfig.clustering.features.length
+            ? vizConfig.clustering.features
+            : vizConfig.yAxis;
           if (features?.length) {
-            const res = await fetchWithAuth('/api/engine/clustering', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
+            const res = await fetchWithAuth("/api/engine/clustering", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
-                data: currentData.filter(d => !d._isForecast),
+                data: currentData.filter((d) => !d._isForecast),
                 features: features,
-                k: vizConfig.clustering.k
-              })
+                k: vizConfig.clustering.k,
+              }),
             });
             if (res.ok) {
               const json = await res.json();
@@ -185,20 +201,29 @@ export default function ExplorerPage() {
                 if (currentData[c.dataIndex]) {
                   currentData[c.dataIndex] = {
                     ...currentData[c.dataIndex],
-                    _clusterId: c.clusterId
+                    _clusterId: c.clusterId,
                   };
                 }
               });
             }
           }
-        } catch (e) { console.error('Clustering error', e); }
+        } catch (e) {
+          console.error("Clustering error", e);
+        }
       }
 
       setAugmentedData(currentData);
     };
 
     runAnalytics();
-  }, [vizConfig.forecast, vizConfig.anomaly, vizConfig.clustering, queryResults.data, vizConfig.xAxis, vizConfig.yAxis]);
+  }, [
+    vizConfig.forecast,
+    vizConfig.anomaly,
+    vizConfig.clustering,
+    queryResults.data,
+    vizConfig.xAxis,
+    vizConfig.yAxis,
+  ]);
 
   return (
     <SidebarLayout>
@@ -241,7 +266,11 @@ export default function ExplorerPage() {
                 />
 
                 {isEditorOpen ? (
-                  <Button variant="outline" onClick={() => setIsEditorOpen(false)} className="gap-2">
+                  <Button
+                    variant="outline"
+                    onClick={() => setIsEditorOpen(false)}
+                    className="gap-2"
+                  >
                     <ArrowLeft className="w-4 h-4" /> Back to List
                   </Button>
                 ) : (
@@ -267,11 +296,13 @@ export default function ExplorerPage() {
                     {/* Top Panel: Editor */}
                     <ResizablePanel defaultSize={40} minSize={30}>
                       <div className="h-full overflow-y-auto p-4">
-                        <DualEngineEditor
-                          connectionId={activeConnectionId}
-                          onSchemaClick={() => console.warn('Show Schema')}
-                          onResultsUpdate={handleResultsUpdate}
-                        />
+                        <ErrorBoundary>
+                          <DualEngineEditor
+                            connectionId={activeConnectionId}
+                            onSchemaClick={() => console.warn("Show Schema")}
+                            onResultsUpdate={handleResultsUpdate}
+                          />
+                        </ErrorBoundary>
                       </div>
                     </ResizablePanel>
 
@@ -284,7 +315,7 @@ export default function ExplorerPage() {
                         <div className="border-b border-border bg-muted/40 px-4 pt-2">
                           <Tabs
                             value={activeResultTab}
-                            onValueChange={(v) => setActiveResultTab(v as 'table' | 'chart')}
+                            onValueChange={(v) => setActiveResultTab(v as "table" | "chart")}
                             className="w-full"
                           >
                             <TabsList>
@@ -292,7 +323,11 @@ export default function ExplorerPage() {
                                 <TableIcon className="w-4 h-4" />
                                 Table Result
                               </TabsTrigger>
-                              <TabsTrigger value="chart" className="gap-2" disabled={queryResults.rowCount === 0}>
+                              <TabsTrigger
+                                value="chart"
+                                className="gap-2"
+                                disabled={queryResults.rowCount === 0}
+                              >
                                 <BarChart3 className="w-4 h-4" />
                                 Visualization
                               </TabsTrigger>
@@ -302,7 +337,7 @@ export default function ExplorerPage() {
 
                         {/* Content */}
                         <div className="flex-1 overflow-hidden relative">
-                          {activeResultTab === 'table' ? (
+                          {activeResultTab === "table" ? (
                             <div className="absolute inset-0 overflow-auto p-4">
                               <ResultsTable
                                 data={queryResults.data}
@@ -317,12 +352,14 @@ export default function ExplorerPage() {
                               {/* Chart Area */}
                               <ResizablePanel defaultSize={75} minSize={50}>
                                 <div className="h-full p-4 overflow-hidden">
-                                  <ChartVisualization
-                                    data={augmentedData}
-                                    config={vizConfig}
-                                    isLoading={queryResults.isLoading}
-                                    onDataClick={handleChartClick}
-                                  />
+                                  <ErrorBoundary>
+                                    <ChartVisualization
+                                      data={augmentedData}
+                                      config={vizConfig}
+                                      isLoading={queryResults.isLoading}
+                                      onDataClick={handleChartClick}
+                                    />
+                                  </ErrorBoundary>
                                 </div>
                               </ResizablePanel>
 
@@ -364,18 +401,18 @@ export default function ExplorerPage() {
                     {/* View Toggles */}
                     <div className="flex gap-1 bg-muted rounded-lg p-1">
                       <Button
-                        variant={viewMode === 'list' ? 'default' : 'ghost'}
+                        variant={viewMode === "list" ? "default" : "ghost"}
                         size="icon"
                         className="w-8 h-8"
-                        onClick={() => setViewMode('list')}
+                        onClick={() => setViewMode("list")}
                       >
                         <List className="w-4 h-4" />
                       </Button>
                       <Button
-                        variant={viewMode === 'grid' ? 'default' : 'ghost'}
+                        variant={viewMode === "grid" ? "default" : "ghost"}
                         size="icon"
                         className="w-8 h-8"
-                        onClick={() => setViewMode('grid')}
+                        onClick={() => setViewMode("grid")}
                       >
                         <Grid className="w-4 h-4" />
                       </Button>
@@ -388,7 +425,7 @@ export default function ExplorerPage() {
                   <SavedQueriesList
                     collectionId={selectedCollectionId}
                     onQuerySelect={(queryId: string) => {
-                      console.warn('[v0] Query selected:', queryId);
+                      console.warn("[v0] Query selected:", queryId);
                       // TODO: Load into editor with saved query data
                       setIsEditorOpen(true);
                       // In real impl, we'd fetch the query details here

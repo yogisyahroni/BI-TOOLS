@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"time"
 
@@ -101,7 +102,7 @@ func (h *AuthHandler) Register(c *fiber.Ctx) error {
 	return c.Status(201).JSON(fiber.Map{
 		"status": "success",
 		"data": dtos.RegisterResponse{
-			UserID:   result.User.ID,
+			UserID:   result.User.ID.String(),
 			Email:    result.User.Email,
 			Username: result.User.Username,
 			Message:  message,
@@ -247,6 +248,7 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 	}
 
 	// Check if email is verified
+	fmt.Printf("DEBUG: Login checking email verification for %s. Verified: %v\n", user.Email, user.EmailVerified)
 	if !user.EmailVerified {
 		return c.Status(403).JSON(fiber.Map{
 			"error":         "Email not verified",
@@ -254,26 +256,31 @@ func (h *AuthHandler) Login(c *fiber.Ctx) error {
 			"needsVerified": true,
 		})
 	}
-
 	// Verify Password
 	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password))
 	if err != nil {
-		return c.Status(401).JSON(fiber.Map{"error": "Invalid credentials"})
+		fmt.Printf("DEBUG: Login failed for %s. Error: %v. StoredHash: %s\n", req.Email, err, user.Password)
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid credentials"})
 	}
 
-	// Generate JWT (Optional, if we want to return it for manual usage)
-	// But NextAuth Credentials Provider keeps its own session.
-	// We just need to return the User object to confirm success.
-	// However, if we want to support API usage directly, we should return a token.
+	fmt.Printf("DEBUG: Login user.ID from DB: '%s'\n", user.ID)
 
 	// Create token
 	token := jwt.New(jwt.SigningMethodHS256)
 	claims := token.Claims.(jwt.MapClaims)
 	claims["sub"] = user.ID
+	claims["id"] = user.ID
 	claims["email"] = user.Email
+	claims["name"] = user.Name
+	claims["role"] = user.Role
+	claims["iat"] = time.Now().Unix()
 	claims["exp"] = time.Now().Add(time.Hour * 72).Unix() // 3 days
 
-	t, err := token.SignedString([]byte(os.Getenv("NEXTAUTH_SECRET")))
+	fmt.Printf("DEBUG: Login claims sub: '%v'\n", claims["sub"])
+
+	// Sign token
+	secret := os.Getenv("NEXTAUTH_SECRET")
+	t, err := token.SignedString([]byte(secret))
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{"error": "Could not login"})
 	}

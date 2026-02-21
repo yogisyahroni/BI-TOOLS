@@ -10,7 +10,7 @@ import (
 // Notification represents a user notification
 type Notification struct {
 	ID        uuid.UUID      `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	UserID    uuid.UUID      `gorm:"not null;type:uuid" json:"userId"`
+	UserID    string         `gorm:"not null;type:text" json:"userId"`
 	Title     string         `gorm:"not null" json:"title"`
 	Message   string         `gorm:"not null;type:text" json:"message"`
 	Type      string         `gorm:"not null;default:'info'" json:"type"` // info, success, warning, error
@@ -23,16 +23,16 @@ type Notification struct {
 
 // ActivityLog represents an audit log entry
 type ActivityLog struct {
-	ID         uuid.UUID      `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
-	UserID     *uuid.UUID     `gorm:"type:uuid" json:"userId,omitempty"`
-	WorkspaceID *uuid.UUID    `gorm:"type:uuid" json:"workspaceId,omitempty"`
-	Action     string         `gorm:"not null" json:"action"`     // created_model, updated_budget
-	EntityType string         `gorm:"not null" json:"entityType"` // model, metric, budget
-	EntityID   *uuid.UUID     `gorm:"type:uuid" json:"entityId,omitempty"`
-	Metadata   datatypes.JSON `json:"metadata,omitempty"`
-	IPAddress  string         `json:"ipAddress,omitempty"`
-	UserAgent  string         `json:"userAgent,omitempty"`
-	CreatedAt  time.Time      `json:"createdAt"`
+	ID          uuid.UUID      `gorm:"type:uuid;default:gen_random_uuid();primaryKey" json:"id"`
+	UserID      *string        `gorm:"type:text" json:"userId,omitempty"`
+	WorkspaceID *uuid.UUID     `gorm:"type:uuid" json:"workspaceId,omitempty"`
+	Action      string         `gorm:"not null" json:"action"`     // created_model, updated_budget
+	EntityType  string         `gorm:"not null" json:"entityType"` // model, metric, budget
+	EntityID    *uuid.UUID     `gorm:"type:uuid" json:"entityId,omitempty"`
+	Metadata    datatypes.JSON `json:"metadata,omitempty"`
+	IPAddress   string         `json:"ipAddress,omitempty"`
+	UserAgent   string         `json:"userAgent,omitempty"`
+	CreatedAt   time.Time      `json:"createdAt"`
 }
 
 func (n *Notification) TableName() string {

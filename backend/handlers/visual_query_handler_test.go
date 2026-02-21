@@ -12,6 +12,7 @@ import (
 	"testing"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -72,7 +73,7 @@ func TestCreateVisualQuery(t *testing.T) {
 
 	// Create test connection and collection
 	conn := models.Connection{
-		ID:       "test-conn",
+		ID:       uuid.New().String(),
 		Name:     "Test Connection",
 		Type:     "postgres",
 		Database: "testdb",
@@ -81,9 +82,9 @@ func TestCreateVisualQuery(t *testing.T) {
 	db.Create(&conn)
 
 	coll := models.Collection{
-		ID:     "test-coll",
+		ID:     uuid.New(),
 		Name:   "Test Collection",
-		UserID: "test-user-123",
+		UserID: uuid.New(),
 	}
 	db.Create(&coll)
 
@@ -91,8 +92,8 @@ func TestCreateVisualQuery(t *testing.T) {
 	reqBody := map[string]interface{}{
 		"name":         "Test Query",
 		"description":  "Test Description",
-		"connectionId": "test-conn",
-		"collectionId": "test-coll",
+		"connectionId": conn.ID,
+		"collectionId": coll.ID.String(),
 		"config": map[string]interface{}{
 			"tables": []map[string]interface{}{
 				{"name": "users", "alias": "u"},
@@ -125,12 +126,11 @@ func TestGetVisualQuery(t *testing.T) {
 	handler, db := setupTestHandler(t)
 	app := setupTestApp(handler)
 
-	// Create test data
 	vq := models.VisualQuery{
 		ID:           "test-vq-123",
 		Name:         "Test Query",
-		ConnectionID: "test-conn",
-		CollectionID: "test-coll",
+		ConnectionID: uuid.New().String(),
+		CollectionID: uuid.New().String(),
 		UserID:       "test-user-123",
 		Config:       createTestConfig(),
 	}
@@ -179,9 +179,9 @@ func TestGetVisualQuery_Unauthorized(t *testing.T) {
 	vq := models.VisualQuery{
 		ID:           "test-vq-456",
 		Name:         "Other User Query",
-		ConnectionID: "test-conn",
-		CollectionID: "test-coll",
-		UserID:       "other-user-456",
+		ConnectionID: uuid.New().String(),
+		CollectionID: uuid.New().String(),
+		UserID:       uuid.New().String(),
 		Config:       createTestConfig(),
 	}
 	db.Create(&vq)
@@ -205,7 +205,7 @@ func TestUpdateVisualQuery(t *testing.T) {
 
 	// Create test connection
 	conn := models.Connection{
-		ID:       "test-conn",
+		ID:       uuid.New().String(),
 		Name:     "Test Connection",
 		Type:     "postgres",
 		Database: "testdb",
@@ -217,9 +217,9 @@ func TestUpdateVisualQuery(t *testing.T) {
 	vq := models.VisualQuery{
 		ID:           "test-vq-789",
 		Name:         "Original Name",
-		ConnectionID: "test-conn",
-		CollectionID: "test-coll",
-		UserID:       "test-user-123",
+		ConnectionID: conn.ID,
+		CollectionID: uuid.New().String(),
+		UserID:       conn.UserID,
 		Config:       createTestConfig(),
 	}
 	db.Create(&vq)
@@ -284,7 +284,7 @@ func TestDeleteVisualQuery(t *testing.T) {
 
 	// Create test connection
 	conn := models.Connection{
-		ID:       "test-conn",
+		ID:       uuid.New().String(),
 		Name:     "Test Connection",
 		Type:     "postgres",
 		Database: "testdb",
@@ -293,12 +293,13 @@ func TestDeleteVisualQuery(t *testing.T) {
 	db.Create(&conn)
 
 	// Create test data
+	testVQID := "test-vq-delete"
 	vq := models.VisualQuery{
-		ID:           "test-vq-delete",
+		ID:           testVQID,
 		Name:         "To Delete",
-		ConnectionID: "test-conn",
-		CollectionID: "test-coll",
-		UserID:       "test-user-123",
+		ConnectionID: conn.ID,
+		CollectionID: uuid.New().String(),
+		UserID:       conn.UserID,
 		Config:       createTestConfig(),
 	}
 	db.Create(&vq)
@@ -330,10 +331,10 @@ func TestGetVisualQueries(t *testing.T) {
 	// Create multiple test queries
 	for i := 1; i <= 5; i++ {
 		vq := models.VisualQuery{
-			ID:           fmt.Sprintf("test-vq-%d", i),
+			ID:           uuid.New().String(),
 			Name:         fmt.Sprintf("Query %d", i),
-			ConnectionID: "test-conn",
-			CollectionID: "test-coll",
+			ConnectionID: uuid.New().String(),
+			CollectionID: uuid.New().String(),
 			UserID:       "test-user-123",
 			Config:       createTestConfig(),
 		}
@@ -374,8 +375,9 @@ func TestGenerateSQL(t *testing.T) {
 	app := setupTestApp(handler)
 
 	// Create test connection
+	connID := uuid.New().String()
 	conn := models.Connection{
-		ID:       "test-conn-gen",
+		ID:       connID,
 		Name:     "Test Connection",
 		Type:     "postgres",
 		Database: "testdb",
@@ -385,7 +387,7 @@ func TestGenerateSQL(t *testing.T) {
 
 	// Request body
 	reqBody := map[string]interface{}{
-		"connectionId": "test-conn-gen",
+		"connectionId": connID,
 		"config": map[string]interface{}{
 			"tables": []map[string]interface{}{
 				{"name": "users", "alias": "u"},

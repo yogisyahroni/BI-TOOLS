@@ -1,0 +1,37 @@
+
+> my-v0-project@0.1.0 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mE:/antigraviti google/inside engine/insight-engine-ai-ui/frontend[39m
+
+ [32mΓ£ô[39m __tests__/dummy.test.ts [2m([22m[2m1 test[22m[2m)[22m[32m 6[2mms[22m[39m
+ [32mΓ£ô[39m __tests__/lib/chart-palettes.test.ts [2m([22m[2m36 tests[22m[2m)[22m[32m 30[2mms[22m[39m
+ [32mΓ£ô[39m __tests__/lib/sql-utils.test.ts [2m([22m[2m44 tests[22m[2m)[22m[32m 41[2mms[22m[39m
+ [32mΓ£ô[39m hooks/use-query-execution.test.ts [2m([22m[2m5 tests[22m[2m)[22m[32m 43[2mms[22m[39m
+ [32mΓ£ô[39m components/ui/alert.test.tsx [2m([22m[2m3 tests[22m[2m)[22m[32m 80[2mms[22m[39m
+ [32mΓ£ô[39m components/ui/card.test.tsx [2m([22m[2m2 tests[22m[2m)[22m[32m 79[2mms[22m[39m
+ [32mΓ£ô[39m components/ui/input.test.tsx [2m([22m[2m6 tests[22m[2m)[22m[32m 81[2mms[22m[39m
+ [32mΓ£ô[39m components/ui/button.test.tsx [2m([22m[2m9 tests[22m[2m)[22m[32m 113[2mms[22m[39m
+ [31mΓ¥»[39m components/results-panel.test.tsx [2m([22m[2m0 test[22m[2m)[22m
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ» Failed Suites 1 ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»
+
+ FAIL  components/results-panel.test.tsx [ components/results-panel.test.tsx ]
+TypeError: Cannot set property clipboard of [object Object] which has only a getter
+ Γ¥» components/results-panel.test.tsx:15:8
+     13| 
+     14| // Mock clipboard API
+     15| Object.assign(navigator, {
+       |        ^
+     16|     clipboard: {
+     17|         writeText: vi.fn(),
+
+ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»ΓÄ»[1/1]ΓÄ»
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m8 passed[39m[22m[90m (9)[39m
+[2m      Tests [22m [1m[32m106 passed[39m[22m[90m (106)[39m
+[2m   Start at [22m 00:37:59
+[2m   Duration [22m 2.89s[2m (transform 1.91s, setup 2.33s, import 3.97s, tests 472ms, environment 9.80s)[22m
+

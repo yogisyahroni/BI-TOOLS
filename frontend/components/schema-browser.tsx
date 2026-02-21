@@ -1,13 +1,23 @@
-'use client';
+"use client";
 
-import { useState, useMemo, useEffect } from 'react';
-import { _X, Database, Table, AlertCircle, Search, ChevronDown, ChevronRight, Key, Link } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import type { SchemaInfo } from '@/hooks/use-connections';
+import { useState, useMemo, useEffect } from "react";
+import {
+  X,
+  Database,
+  Table,
+  AlertCircle,
+  Search,
+  ChevronDown,
+  ChevronRight,
+  Key,
+  Link,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import type { SchemaInfo } from "@/hooks/use-connections";
 
 interface SchemaBrowserProps {
   onClose: () => void;
@@ -24,14 +34,14 @@ const EMPTY_SCHEMA: SchemaInfo = {
 };
 
 export function SchemaBrowser({
-  _onClose,
+  onClose,
   schema,
   isLoading = false,
-  connectionName = 'Default Connection',
+  connectionName = "Default Connection",
 }: SchemaBrowserProps) {
   const [mounted, setMounted] = useState(false);
-  const [expandedTables, setExpandedTables] = useState<Set<string>>(new Set(['orders']));
-  const [searchQuery, setSearchQuery] = useState('');
+  const [expandedTables, setExpandedTables] = useState<Set<string>>(new Set(["orders"]));
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setMounted(true);
@@ -47,7 +57,7 @@ export function SchemaBrowser({
     return schemaData.tables.filter(
       (table) =>
         table.name.toLowerCase().includes(query) ||
-        table.columns.some((col) => col.name.toLowerCase().includes(query))
+        table.columns.some((col) => col.name.toLowerCase().includes(query)),
     );
   }, [schemaData.tables, searchQuery]);
 
@@ -67,25 +77,33 @@ export function SchemaBrowser({
   // Get type badge color
   const getTypeColor = (type: string): string => {
     const lowerType = type.toLowerCase();
-    if (lowerType.includes('int') || lowerType.includes('numeric') || lowerType.includes('decimal')) {
-      return 'bg-blue-500/10 text-blue-400 border-blue-500/20';
+    if (
+      lowerType.includes("int") ||
+      lowerType.includes("numeric") ||
+      lowerType.includes("decimal")
+    ) {
+      return "bg-blue-500/10 text-blue-400 border-blue-500/20";
     }
-    if (lowerType.includes('varchar') || lowerType.includes('text') || lowerType.includes('char')) {
-      return 'bg-green-500/10 text-green-400 border-green-500/20';
+    if (lowerType.includes("varchar") || lowerType.includes("text") || lowerType.includes("char")) {
+      return "bg-green-500/10 text-green-400 border-green-500/20";
     }
-    if (lowerType.includes('timestamp') || lowerType.includes('date') || lowerType.includes('time')) {
-      return 'bg-amber-500/10 text-amber-400 border-amber-500/20';
+    if (
+      lowerType.includes("timestamp") ||
+      lowerType.includes("date") ||
+      lowerType.includes("time")
+    ) {
+      return "bg-amber-500/10 text-amber-400 border-amber-500/20";
     }
-    if (lowerType.includes('bool')) {
-      return 'bg-purple-500/10 text-purple-400 border-purple-500/20';
+    if (lowerType.includes("bool")) {
+      return "bg-purple-500/10 text-purple-400 border-purple-500/20";
     }
-    if (lowerType.includes('uuid')) {
-      return 'bg-pink-500/10 text-pink-400 border-pink-500/20';
+    if (lowerType.includes("uuid")) {
+      return "bg-pink-500/10 text-pink-400 border-pink-500/20";
     }
-    if (lowerType.includes('json')) {
-      return 'bg-orange-500/10 text-orange-400 border-orange-500/20';
+    if (lowerType.includes("json")) {
+      return "bg-orange-500/10 text-orange-400 border-orange-500/20";
     }
-    return 'bg-muted text-muted-foreground';
+    return "bg-muted text-muted-foreground";
   };
 
   // Format row count
@@ -134,7 +152,8 @@ export function SchemaBrowser({
             <p className="text-xs font-semibold text-foreground">{connectionName}</p>
           </div>
           <p className="text-xs text-muted-foreground">
-            {schemaData.tables.length} tables • Updated {mounted ? new Date(schemaData.lastSyncedAt).toLocaleTimeString() : '--:--'}
+            {schemaData.tables.length} tables • Updated{" "}
+            {mounted ? new Date(schemaData.lastSyncedAt).toLocaleTimeString() : "--:--"}
           </p>
         </Card>
 
@@ -170,15 +189,16 @@ export function SchemaBrowser({
                 <div className="bg-background border-t border-border divide-y divide-border/50">
                   {/* Columns */}
                   {table.columns.map((col) => {
-                    const fk = table.foreignKeys?.find(k => k.column === col.name);
+                    const fk = table.foreignKeys?.find((k) => k.column === col.name);
 
                     return (
-                      <div key={col.name} className="px-3 py-2.5 hover:bg-muted/30 transition-colors group/col">
+                      <div
+                        key={col.name}
+                        className="px-3 py-2.5 hover:bg-muted/30 transition-colors group/col"
+                      >
                         <div className="flex items-center gap-2">
                           <div className="flex items-center gap-1.5 min-w-[120px] flex-1">
-                            {col.isPrimary && (
-                              <Key className="w-3 h-3 text-amber-500 shrink-0" />
-                            )}
+                            {col.isPrimary && <Key className="w-3 h-3 text-amber-500 shrink-0" />}
                             {fk && (
                               <div className="group/fk relative">
                                 <Link className="w-3 h-3 text-blue-500 shrink-0" />
@@ -202,9 +222,14 @@ export function SchemaBrowser({
                         {/* Distribution Preview (Pseudo-stats for now) */}
                         <div className="mt-1.5 flex items-center gap-2">
                           <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden flex">
-                            <div className="h-full bg-primary/40 rounded-full" style={{ width: '45%' }} />
+                            <div
+                              className="h-full bg-primary/40 rounded-full"
+                              style={{ width: "45%" }}
+                            />
                           </div>
-                          <span className="text-[10px] text-muted-foreground tabular-nums">45%</span>
+                          <span className="text-[10px] text-muted-foreground tabular-nums">
+                            45%
+                          </span>
                         </div>
 
                         {col.description && (
@@ -213,16 +238,21 @@ export function SchemaBrowser({
                           </p>
                         )}
                       </div>
-                    )
+                    );
                   })}
 
                   {/* Relationships Section */}
                   {table.foreignKeys && table.foreignKeys.length > 0 && (
                     <div className="px-3 py-2 bg-muted/10 border-t border-border/50">
-                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">Relationships</p>
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-1">
+                        Relationships
+                      </p>
                       <div className="space-y-1">
                         {table.foreignKeys.map((fk, idx) => (
-                          <div key={idx} className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                          <div
+                            key={idx}
+                            className="flex items-center gap-1.5 text-xs text-muted-foreground"
+                          >
                             <Link className="w-3 h-3 opacity-50" />
                             <span className="font-mono">{fk.column}</span>
                             <span className="opacity-50">→</span>
@@ -234,7 +264,11 @@ export function SchemaBrowser({
                   )}
 
                   <div className="p-2 border-t border-border/50 bg-muted/20">
-                    <Button variant="ghost" size="sm" className="w-full h-7 text-xs text-primary hover:text-primary hover:bg-primary/5">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="w-full h-7 text-xs text-primary hover:text-primary hover:bg-primary/5"
+                    >
                       <Database className="w-3 h-3 mr-2" />
                       View Sample Data
                     </Button>
@@ -252,7 +286,8 @@ export function SchemaBrowser({
             <div>
               <p className="text-xs font-medium text-amber-200 mb-1">Tip</p>
               <p className="text-xs text-muted-foreground">
-                Hover over the <Link className="w-3 h-3 inline-block mx-0.5 text-blue-500" /> icon to see relationship details.
+                Hover over the <Link className="w-3 h-3 inline-block mx-0.5 text-blue-500" /> icon
+                to see relationship details.
               </p>
             </div>
           </div>

@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { Database, Menu } from 'lucide-react';
-import { useDatabase } from '@/contexts/database-context';
-import { NotificationBell } from '@/components/notifications';
-import { WebSocketIndicator } from '@/components/notifications';
-import { HelpButton } from '@/components/help/help-button';
+import { Button } from "@/components/ui/button";
+import { Database, Menu } from "lucide-react";
+import { useDatabaseStore } from "@/stores/useDatabaseStore";
+import { NotificationBell } from "@/components/notifications";
+import { WebSocketIndicator } from "@/components/notifications";
+import { HelpButton } from "@/components/help/help-button";
 
 interface WorkspaceHeaderProps {
   onToggleSchemaBrowser: () => void;
@@ -18,7 +18,7 @@ export function WorkspaceHeader({
   onToggleSidebar,
   rightContent,
 }: WorkspaceHeaderProps) {
-  const { selectedDatabase } = useDatabase();
+  const selectedDatabase = useDatabaseStore((state) => state.selectedDatabase);
 
   return (
     <header className="border-b border-border bg-card sticky top-0 z-20">
@@ -35,16 +35,18 @@ export function WorkspaceHeader({
         </Button>
 
         {/* Center - Active Database */}
-        <div className="flex-1 flex items-center gap-2 px-3 bg-muted rounded-md max-w-xs" data-testid="active-db-indicator">
+        <div
+          className="flex-1 flex items-center gap-2 px-3 bg-muted rounded-md max-w-xs"
+          data-testid="active-db-indicator"
+        >
           <Database className="w-4 h-4 text-muted-foreground flex-shrink-0" />
           <span className="text-sm text-foreground truncate">
-            {selectedDatabase?.name || 'No Database'}
+            {selectedDatabase?.name || "No Database"}
           </span>
           <span
-            className={`w-2 h-2 rounded-full flex-shrink-0 ${selectedDatabase?.status === 'connected'
-              ? 'bg-green-500'
-              : 'bg-red-500'
-              }`}
+            className={`w-2 h-2 rounded-full flex-shrink-0 ${
+              selectedDatabase?.status === "connected" ? "bg-green-500" : "bg-red-500"
+            }`}
           />
         </div>
 
@@ -69,5 +71,3 @@ export function WorkspaceHeader({
     </header>
   );
 }
-
-

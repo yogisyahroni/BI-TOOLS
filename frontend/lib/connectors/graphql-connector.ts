@@ -1,42 +1,47 @@
-import { BaseConnector, _ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
+import {
+  BaseConnector,
+  ConnectionConfig,
+  type SchemaInfo,
+  type QueryResult,
+} from "./base-connector";
 
 /**
  * GraphQL Connector Implementation
  * Supports any GraphQL API
- * 
+ *
  * Uses fetch for GraphQL requests
  */
 export class GraphQLConnector extends BaseConnector {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private schema: any = null;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private queryCache: Map<string, any[]> = new Map();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private schema: any = null;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private queryCache: Map<string, any[]> = new Map();
 
-    async testConnection(): Promise<{ success: boolean; error?: string }> {
-        try {
-            const apiUrl = this.config.apiUrl;
-            const authToken = this.config.authToken;
+  async testConnection(): Promise<{ success: boolean; error?: string }> {
+    try {
+      const apiUrl = this.config.apiUrl;
+      const authToken = this.config.authToken;
 
-            if (!apiUrl) {
-                return {
-                    success: false,
-                    error: 'GraphQL API URL is required',
-                };
-            }
+      if (!apiUrl) {
+        return {
+          success: false,
+          error: "GraphQL API URL is required",
+        };
+      }
 
-            // Build headers
-            const headers: Record<string, string> = {
-                'Content-Type': 'application/json',
-            };
+      // Build headers
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
 
-            if (authToken) {
-                headers['Authorization'] = `Bearer ${authToken}`;
-            }
+      if (authToken) {
+        headers["Authorization"] = `Bearer ${authToken}`;
+      }
 
-            // Test with introspection query
-            const introspectionQuery = `
+      // Test with introspection query
+      const introspectionQuery = `
                 query {
                     __schema {
                         queryType {
@@ -46,46 +51,46 @@ export class GraphQLConnector extends BaseConnector {
                 }
             `;
 
-            const response = await fetch(apiUrl, {
-                method: 'POST',
-                headers,
-                body: JSON.stringify({ query: introspectionQuery }),
-                signal: AbortSignal.timeout(10000),
-            });
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers,
+        body: JSON.stringify({ query: introspectionQuery }),
+        signal: AbortSignal.timeout(10000),
+      });
 
-            if (!response.ok) {
-                return {
-                    success: false,
-                    error: `GraphQL API returned ${response.status}: ${response.statusText}`,
-                };
-            }
+      if (!response.ok) {
+        return {
+          success: false,
+          error: `GraphQL API returned ${response.status}: ${response.statusText}`,
+        };
+      }
 
-            const result = await response.json();
+      const result = await response.json();
 
-            if (result.errors) {
-                return {
-                    success: false,
-                    error: `GraphQL errors: ${JSON.stringify(result.errors)}`,
-                };
-            }
+      if (result.errors) {
+        return {
+          success: false,
+          error: `GraphQL errors: ${JSON.stringify(result.errors)}`,
+        };
+      }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            this.schema = result.data;
-            return { success: true };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            return {
-                success: false,
-                error: `GraphQL connection failed: ${error.message}`,
-            };
-        }
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this.schema = result.data;
+      return { success: true };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return {
+        success: false,
+        error: `GraphQL connection failed: ${error.message}`,
+      };
     }
+  }
 
-    async fetchSchema(): Promise<SchemaInfo> {
-        const schemaInfo: SchemaInfo = { tables: [] };
+  async fetchSchema(): Promise<SchemaInfo> {
+    const schemaInfo: SchemaInfo = { tables: [] };
 
-        // Perform full introspection
-        const introspectionQuery = `
+    // Perform full introspection
+    const introspectionQuery = `
             query {
                 __schema {
                     types {
@@ -103,157 +108,159 @@ export class GraphQLConnector extends BaseConnector {
             }
         `;
 
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-        };
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
 
-        if (this.config.authToken) {
-            headers['Authorization'] = `Bearer ${this.config.authToken}`;
-        }
-
-        const response = await fetch(this.config.apiUrl!, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ query: introspectionQuery }),
-        });
-
-        const result = await response.json();
-        const types = result.data.__schema.types;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-        // Filter out built-in types
-        const userTypes = types.filter(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            (t: any) => !t.name.startsWith('__') && t.kind === 'OBJECT' && t.fields
-        );
-
-        for (const type of userTypes) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            const columns = (type.fields || []).map((field: any) => {
-                let sqlType = 'TEXT';
-                const graphqlType = field.type.name || field.type.kind;
-
-                if (graphqlType === 'Int') sqlType = 'INTEGER';
-                else if (graphqlType === 'Float') sqlType = 'REAL';
-                else if (graphqlType === 'Boolean') sqlType = 'BOOLEAN';
-                else if (graphqlType === 'ID') sqlType = 'TEXT';
-
-                return {
-                    name: field.name,
-                    type: sqlType,
-                    nullable: true,
-                    isPrimary: field.name === 'id',
-                    isForeign: false,
-                };
-            });
-
-            schemaInfo.tables.push({
-                name: type.name,
-                schema: 'graphql',
-                rowCount: 0, // Unknown without querying
-                columns,
-            });
-        }
-
-        return schemaInfo;
+    if (this.config.authToken) {
+      headers["Authorization"] = `Bearer ${this.config.authToken}`;
     }
 
-    async executeQuery(sql: string): Promise<QueryResult> {
-        const startTime = Date.now();
+    const response = await fetch(this.config.apiUrl!, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ query: introspectionQuery }),
+    });
 
-        // Parse SQL to extract table name
-        const tableMatch = sql.match(/FROM\s+(\w+)/i);
-        const tableName = tableMatch ? tableMatch[1] : null;
+    const result = await response.json();
+    const types = result.data.__schema.types;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-        if (!tableName) {
-            throw new Error('Could not extract table name from SQL');
-        }
+    // Filter out built-in types
+    const userTypes = types.filter(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (t: any) => !t.name.startsWith("__") && t.kind === "OBJECT" && t.fields,
+    );
 
-        // Build GraphQL query from SQL (simplified)
-        const graphqlQuery = this.config.extraConfig?.queries?.[tableName] || `
+    for (const type of userTypes) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const columns = (type.fields || []).map((field: any) => {
+        let sqlType = "TEXT";
+        const graphqlType = field.type.name || field.type.kind;
+
+        if (graphqlType === "Int") sqlType = "INTEGER";
+        else if (graphqlType === "Float") sqlType = "REAL";
+        else if (graphqlType === "Boolean") sqlType = "BOOLEAN";
+        else if (graphqlType === "ID") sqlType = "TEXT";
+
+        return {
+          name: field.name,
+          type: sqlType,
+          nullable: true,
+          isPrimary: field.name === "id",
+          isForeign: false,
+        };
+      });
+
+      schemaInfo.tables.push({
+        name: type.name,
+        schema: "graphql",
+        rowCount: 0, // Unknown without querying
+        columns,
+      });
+    }
+
+    return schemaInfo;
+  }
+
+  async executeQuery(sql: string): Promise<QueryResult> {
+    const startTime = Date.now();
+
+    // Parse SQL to extract table name
+    const tableMatch = sql.match(/FROM\s+(\w+)/i);
+    const tableName = tableMatch ? tableMatch[1] : null;
+
+    if (!tableName) {
+      throw new Error("Could not extract table name from SQL");
+    }
+
+    // Build GraphQL query from SQL (simplified)
+    const graphqlQuery =
+      this.config.extraConfig?.queries?.[tableName] ||
+      `
             query {
                 ${tableName} {
-                    ${this.config.extraConfig?.fields?.[tableName]?.join('\n') || 'id'}
+                    ${this.config.extraConfig?.fields?.[tableName]?.join("\n") || "id"}
                 }
             }
         `;
 
-        // Execute GraphQL query
-        const data = await this.executeGraphQL(graphqlQuery, tableName);
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // Execute GraphQL query
+    const data = await this.executeGraphQL(graphqlQuery, tableName);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-        // Use alasql for SQL filtering/aggregation
-        const alasql = await import('alasql');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        alasql.default.tables[tableName] = { data };
+    // Use alasql for SQL filtering/aggregation
+    const alasql = await import("alasql");
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    alasql.default.tables[tableName] = { data };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const result = alasql.default(sql) as any[];
-        const executionTime = Date.now() - startTime;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = alasql.default(sql) as any[];
+    const executionTime = Date.now() - startTime;
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const columns = (result as any[]).length > 0 ? Object.keys((result as any[])[0]) : [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const columns = (result as any[]).length > 0 ? Object.keys((result as any[])[0]) : [];
 
-        return {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            columns,
-            rows: result,
-            rowCount: result.length,
-            executionTime,
-        };
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      columns,
+      rows: result,
+      rowCount: result.length,
+      executionTime,
+    };
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private async executeGraphQL(query: string, dataKey?: string): Promise<any[]> {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (this.config.authToken) {
+      headers["Authorization"] = `Bearer ${this.config.authToken}`;
     }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private async executeGraphQL(query: string, dataKey?: string): Promise<any[]> {
-        const headers: Record<string, string> = {
-            'Content-Type': 'application/json',
-        };
+    const response = await fetch(this.config.apiUrl!, {
+      method: "POST",
+      headers,
+      body: JSON.stringify({ query }),
+    });
 
-        if (this.config.authToken) {
-            headers['Authorization'] = `Bearer ${this.config.authToken}`;
-        }
+    const result = await response.json();
 
-        const response = await fetch(this.config.apiUrl!, {
-            method: 'POST',
-            headers,
-            body: JSON.stringify({ query }),
-        });
-
-        const result = await response.json();
-
-        if (result.errors) {
-            throw new Error(`GraphQL errors: ${JSON.stringify(result.errors)}`);
-        }
-
-        // Extract data from response
-        const data = dataKey ? result.data[dataKey] : result.data;
-
-        if (Array.isArray(data)) {
-            return data;
-        } else if (typeof data === 'object') {
-            // If it's an object, extract the first array field
-            const firstArrayField = Object.values(data).find((v) => Array.isArray(v));
-            return firstArrayField || [data];
-        }
-
-        return [data];
+    if (result.errors) {
+      throw new Error(`GraphQL errors: ${JSON.stringify(result.errors)}`);
     }
 
-    async disconnect(): Promise<void> {
-        this.queryCache.clear();
+    // Extract data from response
+    const data = dataKey ? result.data[dataKey] : result.data;
+
+    if (Array.isArray(data)) {
+      return data;
+    } else if (typeof data === "object") {
+      // If it's an object, extract the first array field
+      const firstArrayField = Object.values(data).find((v) => Array.isArray(v));
+      return firstArrayField || [data];
     }
 
-    validateConfig(): { valid: boolean; errors: string[] } {
-        const errors: string[] = [];
+    return [data];
+  }
 
-        if (!this.config.apiUrl) {
-            errors.push('GraphQL API URL is required');
-        }
+  async disconnect(): Promise<void> {
+    this.queryCache.clear();
+  }
 
-        return {
-            valid: errors.length === 0,
-            errors: [...super.validateConfig().errors, ...errors],
-        };
+  validateConfig(): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    if (!this.config.apiUrl) {
+      errors.push("GraphQL API URL is required");
     }
+
+    return {
+      valid: errors.length === 0,
+      errors: [...super.validateConfig().errors, ...errors],
+    };
+  }
 }

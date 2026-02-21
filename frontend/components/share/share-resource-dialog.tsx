@@ -1,12 +1,12 @@
-'use client'
+"use client";
 
-import * as React from 'react'
+import * as React from "react";
 import {
   Share2,
   Link,
-  _Copy,
+  Copy,
   Check,
-  _X,
+  X,
   Mail,
   User,
   Lock,
@@ -17,11 +17,11 @@ import {
   Shield,
   Send,
   Calendar,
-} from 'lucide-react'
-import { format } from 'date-fns'
+} from "lucide-react";
+import { format } from "date-fns";
 
-import { cn } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -29,37 +29,25 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Switch } from '@/components/ui/switch'
-import { Textarea } from '@/components/ui/textarea'
-import { Badge } from '@/components/ui/badge'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import {
-  SharePermissionSelector,
-  PermissionBadge,
-} from './share-permission-selector'
-import {
-  createShare,
-  getSharesForResource,
-  revokeShare,
-  _updateShare,
-} from '@/lib/api/shares'
-import type {
-  Share,
-  ResourceType,
-  SharePermission,
-} from '@/types/share'
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { SharePermissionSelector, PermissionBadge } from "./share-permission-selector";
+import { createShare, getSharesForResource, revokeShare, updateShare } from "@/lib/api/shares";
+import type { Share, ResourceType, SharePermission } from "@/types/share";
 
 interface ShareResourceDialogProps {
-  resourceType: ResourceType
-  resourceId: string
-  resourceName: string
-  children?: React.ReactNode
+  resourceType: ResourceType;
+  resourceId: string;
+  resourceName: string;
+  children?: React.ReactNode;
 }
 
 export function ShareResourceDialog({
@@ -68,140 +56,143 @@ export function ShareResourceDialog({
   resourceName,
   children,
 }: ShareResourceDialogProps) {
-  const [open, setOpen] = React.useState(false)
-  const [shares, setShares] = React.useState<Share[]>([])
-  const [isLoading, setIsLoading] = React.useState(false)
-  const [isCreating, setIsCreating] = React.useState(false)
-  const [error, setError] = React.useState<string | null>(null)
-  const [copiedId, setCopiedId] = React.useState<string | null>(null)
+  const [open, setOpen] = React.useState(false);
+  const [shares, setShares] = React.useState<Share[]>([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isCreating, setIsCreating] = React.useState(false);
+  const [error, setError] = React.useState<string | null>(null);
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
 
   // Form state
-  const [recipientType, setRecipientType] = React.useState<'user' | 'email'>('email')
-  const [recipient, setRecipient] = React.useState('')
-  const [permission, setPermission] = React.useState<SharePermission>('view')
-  const [requirePassword, setRequirePassword] = React.useState(false)
-  const [password, setPassword] = React.useState('')
-  const [setExpiration, setSetExpiration] = React.useState(false)
-  const [expirationDate, setExpirationDate] = React.useState('')
-  const [message, setMessage] = React.useState('')
+  const [recipientType, setRecipientType] = React.useState<"user" | "email">("email");
+  const [recipient, setRecipient] = React.useState("");
+  const [permission, setPermission] = React.useState<SharePermission>("view");
+  const [requirePassword, setRequirePassword] = React.useState(false);
+  const [password, setPassword] = React.useState("");
+  const [setExpiration, setSetExpiration] = React.useState(false);
+  const [expirationDate, setExpirationDate] = React.useState("");
+  const [message, setMessage] = React.useState("");
 
   React.useEffect(() => {
     if (open) {
-      loadShares()
+      loadShares();
     }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
 
   const loadShares = async () => {
-    setIsLoading(true)
-    setError(null)
+    setIsLoading(true);
+    setError(null);
     try {
-      const data = await getSharesForResource(resourceType, resourceId)
-      setShares(data)
+      const data = await getSharesForResource(resourceType, resourceId);
+      setShares(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load shares')
+      setError(err instanceof Error ? err.message : "Failed to load shares");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleCreateShare = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!recipient.trim()) return
+    e.preventDefault();
+    if (!recipient.trim()) return;
 
-    setIsCreating(true)
-    setError(null)
+    setIsCreating(true);
+    setError(null);
 
     try {
       const request: {
-        resource_type: ResourceType
-        resource_id: string
-        permission: SharePermission
-        shared_with?: string
-        shared_email?: string
-        password?: string
-        expires_at?: string
-        message?: string
+        resource_type: ResourceType;
+        resource_id: string;
+        permission: SharePermission;
+        shared_with?: string;
+        shared_email?: string;
+        password?: string;
+        expires_at?: string;
+        message?: string;
       } = {
         resource_type: resourceType,
         resource_id: resourceId,
         permission,
-      }
+      };
 
-      if (recipientType === 'email') {
-        request.shared_email = recipient.trim()
+      if (recipientType === "email") {
+        request.shared_email = recipient.trim();
       } else {
-        request.shared_with = recipient.trim()
+        request.shared_with = recipient.trim();
       }
 
       if (requirePassword && password) {
-        request.password = password
+        request.password = password;
       }
 
       if (setExpiration && expirationDate) {
-        request.expires_at = new Date(expirationDate).toISOString()
+        request.expires_at = new Date(expirationDate).toISOString();
       }
 
       if (message.trim()) {
-        request.message = message.trim()
+        request.message = message.trim();
       }
 
-      await createShare(request)
+      await createShare(request);
 
       // Reset form
-      setRecipient('')
-      setPassword('')
-      setExpirationDate('')
-      setMessage('')
-      setRequirePassword(false)
-      setSetExpiration(false)
+      setRecipient("");
+      setPassword("");
+      setExpirationDate("");
+      setMessage("");
+      setRequirePassword(false);
+      setSetExpiration(false);
 
       // Reload shares
-      await loadShares()
+      await loadShares();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create share')
+      setError(err instanceof Error ? err.message : "Failed to create share");
     } finally {
-      setIsCreating(false)
+      setIsCreating(false);
     }
-  }
+  };
 
   const handleRevokeShare = async (shareId: string) => {
     try {
-      await revokeShare(shareId)
-      await loadShares()
+      await revokeShare(shareId);
+      await loadShares();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to revoke share')
+      setError(err instanceof Error ? err.message : "Failed to revoke share");
     }
-  }
+  };
 
   const handleCopyLink = async (shareId: string) => {
-    const shareUrl = `${window.location.origin}/shared/${shareId}`
+    const shareUrl = `${window.location.origin}/shared/${shareId}`;
     try {
-      await navigator.clipboard.writeText(shareUrl)
-      setCopiedId(shareId)
-      setTimeout(() => setCopiedId(null), 2000)
+      await navigator.clipboard.writeText(shareUrl);
+      setCopiedId(shareId);
+      setTimeout(() => setCopiedId(null), 2000);
     } catch {
       // Fallback
-      setCopiedId(shareId)
-      setTimeout(() => setCopiedId(null), 2000)
+      setCopiedId(shareId);
+      setTimeout(() => setCopiedId(null), 2000);
     }
-  }
+  };
 
   const getShareStatusBadge = (share: Share) => {
-    const statusConfig: Record<string, { label: string; variant: 'default' | 'secondary' | 'destructive' | 'outline' }> = {
-      active: { label: 'Active', variant: 'default' },
-      pending: { label: 'Pending', variant: 'secondary' },
-      expired: { label: 'Expired', variant: 'destructive' },
-      revoked: { label: 'Revoked', variant: 'outline' },
-    }
+    const statusConfig: Record<
+      string,
+      { label: string; variant: "default" | "secondary" | "destructive" | "outline" }
+    > = {
+      active: { label: "Active", variant: "default" },
+      pending: { label: "Pending", variant: "secondary" },
+      expired: { label: "Expired", variant: "destructive" },
+      revoked: { label: "Revoked", variant: "outline" },
+    };
 
-    const config = statusConfig[share.status] || { label: share.status, variant: 'default' }
-    return <Badge variant={config.variant}>{config.label}</Badge>
-  }
+    const config = statusConfig[share.status] || { label: share.status, variant: "default" };
+    return <Badge variant={config.variant}>{config.label}</Badge>;
+  };
 
-  const activeShares = shares.filter((s) => s.status === 'active' || s.status === 'pending')
-  const expiredShares = shares.filter((s) => s.status === 'expired' || s.status === 'revoked')
+  const activeShares = shares.filter((s) => s.status === "active" || s.status === "pending");
+  const expiredShares = shares.filter((s) => s.status === "expired" || s.status === "revoked");
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -217,10 +208,11 @@ export function ShareResourceDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Share2 className="h-5 w-5" />
-            Share {resourceType === 'dashboard' ? 'Dashboard' : 'Query'}
+            Share {resourceType === "dashboard" ? "Dashboard" : "Query"}
           </DialogTitle>
           <DialogDescription>
-            Share &quot;{resourceName}&quot; with others by inviting them or creating a shareable link.
+            Share &quot;{resourceName}&quot; with others by inviting them or creating a shareable
+            link.
           </DialogDescription>
         </DialogHeader>
 
@@ -242,9 +234,9 @@ export function ShareResourceDialog({
               <div className="flex gap-2">
                 <Button
                   type="button"
-                  variant={recipientType === 'email' ? 'default' : 'outline'}
+                  variant={recipientType === "email" ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setRecipientType('email')}
+                  onClick={() => setRecipientType("email")}
                   className="flex-1"
                 >
                   <Mail className="mr-2 h-4 w-4" />
@@ -252,9 +244,9 @@ export function ShareResourceDialog({
                 </Button>
                 <Button
                   type="button"
-                  variant={recipientType === 'user' ? 'default' : 'outline'}
+                  variant={recipientType === "user" ? "default" : "outline"}
                   size="sm"
-                  onClick={() => setRecipientType('user')}
+                  onClick={() => setRecipientType("user")}
                   className="flex-1"
                 >
                   <User className="mr-2 h-4 w-4" />
@@ -265,15 +257,13 @@ export function ShareResourceDialog({
               {/* Recipient Input */}
               <div className="space-y-2">
                 <Label htmlFor="recipient">
-                  {recipientType === 'email' ? 'Email Address' : 'User ID'}
+                  {recipientType === "email" ? "Email Address" : "User ID"}
                 </Label>
                 <Input
                   id="recipient"
-                  type={recipientType === 'email' ? 'email' : 'text'}
+                  type={recipientType === "email" ? "email" : "text"}
                   placeholder={
-                    recipientType === 'email'
-                      ? 'colleague@example.com'
-                      : 'Enter user ID'
+                    recipientType === "email" ? "colleague@example.com" : "Enter user ID"
                   }
                   value={recipient}
                   onChange={(e) => setRecipient(e.target.value)}
@@ -284,10 +274,7 @@ export function ShareResourceDialog({
               {/* Permission */}
               <div className="space-y-2">
                 <Label>Permission Level</Label>
-                <SharePermissionSelector
-                  value={permission}
-                  onChange={setPermission}
-                />
+                <SharePermissionSelector value={permission} onChange={setPermission} />
               </div>
 
               {/* Optional Settings */}
@@ -370,11 +357,7 @@ export function ShareResourceDialog({
                 </Alert>
               )}
 
-              <Button
-                type="submit"
-                className="w-full"
-                disabled={!recipient.trim() || isCreating}
-              >
+              <Button type="submit" className="w-full" disabled={!recipient.trim() || isCreating}>
                 {isCreating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -453,16 +436,16 @@ export function ShareResourceDialog({
         </Tabs>
       </DialogContent>
     </Dialog>
-  )
+  );
 }
 
 interface ShareItemProps {
-  share: Share
-  onRevoke: () => void
-  onCopy: () => void
-  copied: boolean
-  getStatusBadge: (share: Share) => React.ReactNode
-  disabled?: boolean
+  share: Share;
+  onRevoke: () => void;
+  onCopy: () => void;
+  copied: boolean;
+  getStatusBadge: (share: Share) => React.ReactNode;
+  disabled?: boolean;
 }
 
 function ShareItem({
@@ -475,22 +458,18 @@ function ShareItem({
 }: ShareItemProps) {
   const recipient = share.shared_with_user
     ? share.shared_with_user.username || share.shared_with_user.email
-    : share.shared_email || 'Unknown'
+    : share.shared_email || "Unknown";
 
   return (
     <div
       className={cn(
-        'flex items-center justify-between rounded-lg border p-3',
-        disabled && 'opacity-50'
+        "flex items-center justify-between rounded-lg border p-3",
+        disabled && "opacity-50",
       )}
     >
       <div className="flex items-center gap-3">
         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10">
-          {share.shared_email ? (
-            <Mail className="h-4 w-4" />
-          ) : (
-            <User className="h-4 w-4" />
-          )}
+          {share.shared_email ? <Mail className="h-4 w-4" /> : <User className="h-4 w-4" />}
         </div>
         <div>
           <p className="font-medium">{recipient}</p>
@@ -500,7 +479,7 @@ function ShareItem({
             {share.expires_at && (
               <span className="flex items-center gap-1">
                 <Clock className="h-3 w-3" />
-                Expires {format(new Date(share.expires_at), 'MMM d')}
+                Expires {format(new Date(share.expires_at), "MMM d")}
               </span>
             )}
           </div>
@@ -509,17 +488,8 @@ function ShareItem({
 
       {!disabled && (
         <div className="flex items-center gap-1">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onCopy}
-            title="Copy share link"
-          >
-            {copied ? (
-              <Check className="h-4 w-4 text-green-500" />
-            ) : (
-              <Link className="h-4 w-4" />
-            )}
+          <Button variant="ghost" size="icon" onClick={onCopy} title="Copy share link">
+            {copied ? <Check className="h-4 w-4 text-green-500" /> : <Link className="h-4 w-4" />}
           </Button>
           <Button
             variant="ghost"
@@ -533,5 +503,5 @@ function ShareItem({
         </div>
       )}
     </div>
-  )
+  );
 }

@@ -1,287 +1,284 @@
+"use client";
 
-'use client';
+export const dynamic = "force-dynamic";
 
-export const dynamic = 'force-dynamic';
-
-import { useState } from 'react';
-import { SidebarLayout } from '@/components/sidebar-layout';
-import { useSidebar } from '@/contexts/sidebar-context';
-import { ConnectionSelector } from '@/components/connection-selector';
-import { Button } from '@/components/ui/button';
-import { Menu, Terminal, Play, CheckCircle2, AlertCircle } from 'lucide-react';
-import { NLQueryInput } from '@/components/ai/nl-query-input';
-import { ConversationHistory, type HistoryItem } from '@/components/ai/conversation-history';
-import { ResultsTable } from '@/components/query-results/results-table';
-import { toast } from 'sonner';
-import { fetchWithAuth } from '@/lib/utils';
-import { v4 as uuidv4 } from 'uuid';
+import { useState } from "react";
+import { SidebarLayout } from "@/components/sidebar-layout";
+import { useSidebarStore } from "@/stores/useSidebarStore";
+import { ConnectionSelector } from "@/components/connection-selector";
+import { Button } from "@/components/ui/button";
+import { Menu, Terminal, Play, CheckCircle2, AlertCircle } from "lucide-react";
+import { NLQueryInput } from "@/components/ai/nl-query-input";
+import { ConversationHistory, type HistoryItem } from "@/components/ai/conversation-history";
+import { ResultsTable } from "@/components/query-results/results-table";
+import { toast } from "sonner";
+import { fetchWithAuth } from "@/lib/utils";
+import { v4 as uuidv4 } from "uuid";
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 // import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs'; // Verify if we use tabs here or not
-import { Save } from 'lucide-react';
-import { SaveQueryDialog } from '@/components/saved-queries/save-query-dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Verify if we use tabs here or not
+import { Save } from "lucide-react";
+import { SaveQueryDialog } from "@/components/saved-queries/save-query-dialog";
 
 // Using simple in-memory history for MVP, can be moved to local storage or DB later
 export default function AskPage() {
-    const { open: openSidebar } = useSidebar();
-    const [activeConnectionId, setActiveConnectionId] = useState<string>('');
+  const openSidebar = useSidebarStore((state) => state.open);
+  const [activeConnectionId, setActiveConnectionId] = useState<string>("");
 
-    const [history, setHistory] = useState<HistoryItem[]>([]);
-    const [currentQuery, setCurrentQuery] = useState<{
-        id: string;
-        prompt: string;
-        sql: string;
-        explanation?: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        results?: any;
-        error?: string;
-    } | null>(null);
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [currentQuery, setCurrentQuery] = useState<{
+    id: string;
+    prompt: string;
+    sql: string;
+    explanation?: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    results?: any;
+    error?: string;
+  } | null>(null);
 
-    const [isGenerating, setIsGenerating] = useState(false);
-    const [isExecuting, setIsExecuting] = useState(false);
-    const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isExecuting, setIsExecuting] = useState(false);
+  const [isSaveDialogOpen, setIsSaveDialogOpen] = useState(false);
 
-    // 1. Generate SQL
-    const handleGenerate = async (prompt: string, provider: string, model: string) => {
-        if (!activeConnectionId) {
-            toast.error('Please select a database connection first.');
-            return;
-        }
+  // 1. Generate SQL
+  const handleGenerate = async (prompt: string, provider: string, model: string) => {
+    if (!activeConnectionId) {
+      toast.error("Please select a database connection first.");
+      return;
+    }
 
-        setIsGenerating(true);
-        setCurrentQuery(null); // Clear previous
+    setIsGenerating(true);
+    setCurrentQuery(null); // Clear previous
 
-        try {
-            const res = await fetchWithAuth('/api/go/ai/generate-query', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    prompt,
-                    connectionId: activeConnectionId,
-                    provider,
-                    model
-                })
-            });
+    try {
+      const res = await fetchWithAuth("/api/go/ai/generate-query", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prompt,
+          connectionId: activeConnectionId,
+          provider,
+          model,
+        }),
+      });
 
-            const data = await res.json();
+      const data = await res.json();
 
-            if (!res.ok || !data.success) {
-                throw new Error(data.error || 'Failed to generate query');
-            }
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to generate query");
+      }
 
-            const newItem: HistoryItem = {
-                id: uuidv4(),
-                prompt,
-                timestamp: Date.now()
-            };
+      const newItem: HistoryItem = {
+        id: uuidv4(),
+        prompt,
+        timestamp: Date.now(),
+      };
 
-            setHistory(prev => [newItem, ...prev]);
+      setHistory((prev) => [newItem, ...prev]);
 
-            setCurrentQuery({
-                id: newItem.id,
-                prompt,
-                sql: data.data,
-                explanation: 'Generated by AI'
-            });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setCurrentQuery({
+        id: newItem.id,
+        prompt,
+        sql: data.data,
+        explanation: "Generated by AI",
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            toast.error(error.message);
-            setCurrentQuery({
-                id: 'error',
-                prompt,
-                sql: '',
-                error: error.message
-            });
-        } finally {
-            setIsGenerating(false);
-        }
-    };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error(error.message);
+      setCurrentQuery({
+        id: "error",
+        prompt,
+        sql: "",
+        error: error.message,
+      });
+    } finally {
+      setIsGenerating(false);
+    }
+  };
 
-    // 2. Execute SQL
-    const handleRunQuery = async () => {
-        if (!currentQuery?.sql || !activeConnectionId) return;
+  // 2. Execute SQL
+  const handleRunQuery = async () => {
+    if (!currentQuery?.sql || !activeConnectionId) return;
 
-        setIsExecuting(true);
-        try {
-            const res = await fetchWithAuth('/api/go/queries/execute', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sql: currentQuery.sql,
-                    connectionId: activeConnectionId
-                })
-            });
+    setIsExecuting(true);
+    try {
+      const res = await fetchWithAuth("/api/go/queries/execute", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          sql: currentQuery.sql,
+          connectionId: activeConnectionId,
+        }),
+      });
 
-            const data = await res.json();
+      const data = await res.json();
 
-            if (!res.ok) {
-                throw new Error(data.error || 'Execution failed');
-            }
+      if (!res.ok) {
+        throw new Error(data.error || "Execution failed");
+      }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            setCurrentQuery(prev => prev ? ({ ...prev, results: data }) : null);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      setCurrentQuery((prev) => (prev ? { ...prev, results: data } : null));
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            toast.error(error.message);
-            setCurrentQuery(prev => prev ? ({ ...prev, error: `Execution Error: ${error.message}` }) : null);
-        } finally {
-            setIsExecuting(false);
-        }
-    };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      toast.error(error.message);
+      setCurrentQuery((prev) =>
+        prev ? { ...prev, error: `Execution Error: ${error.message}` } : null,
+      );
+    } finally {
+      setIsExecuting(false);
+    }
+  };
 
-    const handleDeleteHistory = (id: string, e: React.MouseEvent) => {
-        e.stopPropagation();
-        setHistory(prev => prev.filter(item => item.id !== id));
-        if (currentQuery?.id === id) {
-            setCurrentQuery(null);
-        }
-    };
+  const handleDeleteHistory = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    setHistory((prev) => prev.filter((item) => item.id !== id));
+    if (currentQuery?.id === id) {
+      setCurrentQuery(null);
+    }
+  };
 
-    return (
-        <SidebarLayout>
-            <div className="flex flex-1 h-full overflow-hidden bg-background">
+  return (
+    <SidebarLayout>
+      <div className="flex flex-1 h-full overflow-hidden bg-background">
+        {/* Left Sidebar: History */}
+        <div className="w-64 border-r border-border bg-card hidden md:flex flex-col">
+          <div className="p-4 border-b border-border font-semibold text-sm">Query History</div>
+          <ConversationHistory
+            items={history}
+            selectedId={currentQuery?.id}
+            onSelect={(_id) => {
+              // In a real app, we would fetch the full conversation state here
+              // For now, we just highlight it, assuming state is local (which is lost on refresh)
+              toast.info("History selection not fully persisted in MVP");
+            }}
+            onDelete={handleDeleteHistory}
+          />
+        </div>
 
-                {/* Left Sidebar: History */}
-                <div className="w-64 border-r border-border bg-card hidden md:flex flex-col">
-                    <div className="p-4 border-b border-border font-semibold text-sm">
-                        Query History
-                    </div>
-                    <ConversationHistory
-                        items={history}
-                        selectedId={currentQuery?.id}
-                        onSelect={(_id) => {
-                            // In a real app, we would fetch the full conversation state here
-                            // For now, we just highlight it, assuming state is local (which is lost on refresh)
-                            toast.info('History selection not fully persisted in MVP');
-                        }}
-                        onDelete={handleDeleteHistory}
-                    />
-                </div>
-
-                {/* Main Content */}
-                <div className="flex-1 flex flex-col overflow-hidden">
-                    {/* Header */}
-                    <div className="border-b border-border bg-card px-6 py-4 flex-shrink-0 flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                            <Button variant="ghost" size="icon" className="md:hidden" onClick={() => openSidebar()}>
-                                <Menu className="w-5 h-5" />
-                            </Button>
-                            <div className="flex flex-col">
-                                <h1 className="text-xl font-bold">Ask AI</h1>
-                                <p className="text-xs text-muted-foreground">Natural Language to SQL Engine</p>
-                            </div>
-                        </div>
-                        <ConnectionSelector
-                            value={activeConnectionId}
-                            onValueChange={setActiveConnectionId}
-                        />
-                    </div>
-
-                    <div className="flex-1 overflow-y-auto p-6 scroll-smooth">
-                        <div className="max-w-4xl mx-auto flex flex-col gap-8">
-
-                            {/* Input Section */}
-                            <section className="flex flex-col gap-4">
-                                <NLQueryInput
-                                    onGenerate={handleGenerate}
-                                    isGenerating={isGenerating}
-                                />
-                            </section>
-
-                            {/* Result Section */}
-                            {currentQuery && (
-                                <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-
-                                    {/* SQL Viewer */}
-                                    <div className="border border-border rounded-lg overflow-hidden bg-muted/30">
-                                        <div className="bg-muted/50 px-4 py-2 border-b border-border flex items-center justify-between">
-                                            <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
-                                                <Terminal className="w-3 h-3" />
-                                                <span>Generated SQL</span>
-                                            </div>
-                                            <Button
-                                                size="sm"
-                                                className="h-7 text-xs gap-1"
-                                                onClick={handleRunQuery}
-                                                disabled={isExecuting || !currentQuery.sql}
-                                            >
-                                                {isExecuting ? <span className="animate-spin">⏳</span> : <Play className="w-3 h-3" />}
-                                                Run Query
-                                            </Button>
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                className="h-7 text-xs gap-1 ml-2"
-                                                onClick={() => setIsSaveDialogOpen(true)}
-                                                disabled={!currentQuery.sql}
-                                            >
-                                                <Save className="w-3 h-3" />
-                                                Save
-                                            </Button>
-                                        </div>
-
-                                        {currentQuery.error && !currentQuery.results ? (
-                                            <div className="p-4 text-xs text-destructive bg-destructive/10 font-mono">
-                                                {currentQuery.error}
-                                            </div>
-                                        ) : (
-                                            <div className="text-xs bg-muted/20 p-4 font-mono whitespace-pre-wrap overflow-auto">
-                                                <pre className="text-green-400">{currentQuery.sql}</pre>
-                                            </div>
-                                        )}
-                                    </div>
-
-                                    {/* Results Viewer */}
-                                    {currentQuery.results && (
-                                        <div className="flex flex-col gap-2">
-                                            <div className="flex items-center gap-2 text-sm font-semibold">
-                                                <CheckCircle2 className="w-4 h-4 text-green-500" />
-                                                <span>Results ({currentQuery.results.rowCount} rows)</span>
-                                            </div>
-                                            <div className="border border-border rounded-lg overflow-hidden h-[400px] bg-background relative">
-                                                <ResultsTable
-                                                    data={currentQuery.results.rows}
-                                                    columns={currentQuery.results.columns}
-                                                    rowCount={currentQuery.results.rowCount}
-                                                    executionTime={currentQuery.results.executionTime}
-                                                    isLoading={false}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
-                                    {/* Execution Error */}
-                                    {currentQuery.error && currentQuery.results === undefined && currentQuery.sql && (
-                                        <div className="flex items-center gap-2 p-4 text-sm text-destructive bg-destructive/10 rounded-lg border border-destructive/20">
-                                            <AlertCircle className="w-4 h-4" />
-                                            <span>{currentQuery.error}</span>
-                                        </div>
-                                    )}
-
-                                </div>
-                            )}
-
-                        </div>
-                    </div>
-                </div>
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Header */}
+          <div className="border-b border-border bg-card px-6 py-4 flex-shrink-0 flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="md:hidden"
+                onClick={() => openSidebar()}
+              >
+                <Menu className="w-5 h-5" />
+              </Button>
+              <div className="flex flex-col">
+                <h1 className="text-xl font-bold">Ask AI</h1>
+                <p className="text-xs text-muted-foreground">Natural Language to SQL Engine</p>
+              </div>
             </div>
+            <ConnectionSelector value={activeConnectionId} onValueChange={setActiveConnectionId} />
+          </div>
 
-            <SaveQueryDialog
-                open={isSaveDialogOpen}
-                onOpenChange={setIsSaveDialogOpen}
-                sql={currentQuery?.sql || ''}
-                connectionId={activeConnectionId}
-                aiPrompt={currentQuery?.prompt}
-                onSaveSuccess={(id) => {
-                    // Optional: redirect to saved query page or just toast
-                    console.warn('Saved query:', id);
-                }}
-            />
-        </SidebarLayout>
-    );
+          <div className="flex-1 overflow-y-auto p-6 scroll-smooth">
+            <div className="max-w-4xl mx-auto flex flex-col gap-8">
+              {/* Input Section */}
+              <section className="flex flex-col gap-4">
+                <NLQueryInput onGenerate={handleGenerate} isGenerating={isGenerating} />
+              </section>
+
+              {/* Result Section */}
+              {currentQuery && (
+                <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  {/* SQL Viewer */}
+                  <div className="border border-border rounded-lg overflow-hidden bg-muted/30">
+                    <div className="bg-muted/50 px-4 py-2 border-b border-border flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
+                        <Terminal className="w-3 h-3" />
+                        <span>Generated SQL</span>
+                      </div>
+                      <Button
+                        size="sm"
+                        className="h-7 text-xs gap-1"
+                        onClick={handleRunQuery}
+                        disabled={isExecuting || !currentQuery.sql}
+                      >
+                        {isExecuting ? (
+                          <span className="animate-spin">⏳</span>
+                        ) : (
+                          <Play className="w-3 h-3" />
+                        )}
+                        Run Query
+                      </Button>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="h-7 text-xs gap-1 ml-2"
+                        onClick={() => setIsSaveDialogOpen(true)}
+                        disabled={!currentQuery.sql}
+                      >
+                        <Save className="w-3 h-3" />
+                        Save
+                      </Button>
+                    </div>
+
+                    {currentQuery.error && !currentQuery.results ? (
+                      <div className="p-4 text-xs text-destructive bg-destructive/10 font-mono">
+                        {currentQuery.error}
+                      </div>
+                    ) : (
+                      <div className="text-xs bg-muted/20 p-4 font-mono whitespace-pre-wrap overflow-auto">
+                        <pre className="text-green-400">{currentQuery.sql}</pre>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Results Viewer */}
+                  {currentQuery.results && (
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center gap-2 text-sm font-semibold">
+                        <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        <span>Results ({currentQuery.results.rowCount} rows)</span>
+                      </div>
+                      <div className="border border-border rounded-lg overflow-hidden h-[400px] bg-background relative">
+                        <ResultsTable
+                          data={currentQuery.results.rows}
+                          columns={currentQuery.results.columns}
+                          rowCount={currentQuery.results.rowCount}
+                          executionTime={currentQuery.results.executionTime}
+                          isLoading={false}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Execution Error */}
+                  {currentQuery.error && currentQuery.results === undefined && currentQuery.sql && (
+                    <div className="flex items-center gap-2 p-4 text-sm text-destructive bg-destructive/10 rounded-lg border border-destructive/20">
+                      <AlertCircle className="w-4 h-4" />
+                      <span>{currentQuery.error}</span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <SaveQueryDialog
+        open={isSaveDialogOpen}
+        onOpenChange={setIsSaveDialogOpen}
+        sql={currentQuery?.sql || ""}
+        connectionId={activeConnectionId}
+        aiPrompt={currentQuery?.prompt}
+        onSaveSuccess={(id) => {
+          // Optional: redirect to saved query page or just toast
+          console.warn("Saved query:", id);
+        }}
+      />
+    </SidebarLayout>
+  );
 }

@@ -46,6 +46,7 @@ type HandlerContainer struct {
 	AIHandler                *handlers.AIHandler
 	StoryHandler             *handlers.StoryHandler // TASK-161
 	AIUsageHandler           *handlers.AIUsageHandler
+	PulseHandler             *handlers.PulseHandler // TASK-156
 	AlertHandler             *handlers.AlertHandler
 	AlertNotificationHandler *handlers.AlertNotificationHandler
 	AnalyticsHandler         *handlers.AnalyticsHandler

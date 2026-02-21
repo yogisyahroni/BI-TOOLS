@@ -63,10 +63,19 @@ Return ONLY valid JSON.
 	layout := datatypes.JSON(layoutJSON)
 	desc := "Auto-generated from prompt: " + text
 
+	parsedWorkspaceID, err := uuid.Parse(workspaceID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid workspace ID: %w", err)
+	}
+	parsedUserID, err := uuid.Parse(userID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid user ID: %w", err)
+	}
+
 	dashboard := &models.Dashboard{
-		ID:           uuid.New().String(),
-		CollectionID: workspaceID, // Mapping to CollectionID as per previous findings
-		UserID:       userID,
+		ID:           uuid.New(),
+		CollectionID: parsedWorkspaceID, // Mapping to CollectionID as per previous findings
+		UserID:       parsedUserID,
 		Name:         "AI Dashboard: " + text,
 		Description:  &desc,
 		Layout:       &layout,

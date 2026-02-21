@@ -5,6 +5,7 @@ import (
 	"insight-engine-backend/database"
 	"insight-engine-backend/handlers"
 	"insight-engine-backend/routes"
+	"insight-engine-backend/services"
 )
 
 // InitHandlers initializes all handlers
@@ -17,7 +18,7 @@ func InitHandlers(svc *ServiceContainer) *routes.HandlerContainer {
 	oauthHandler := handlers.NewOAuthHandler(svc.OAuthService)
 
 	visualQueryHandler := handlers.NewVisualQueryHandler(database.DB, svc.QueryBuilder, svc.QueryExecutor, svc.SchemaDiscovery, svc.QueryCache)
-	connectionHandler := handlers.NewConnectionHandler(svc.QueryExecutor, svc.SchemaDiscovery)
+	connectionHandler := handlers.NewConnectionHandler(svc.QueryExecutor, svc.SchemaDiscovery, svc.EmbeddingService)
 	queryHandler := handlers.NewQueryHandler(svc.QueryExecutor, svc.QueryCache)
 	queryAnalyzerHandler := handlers.NewQueryAnalyzerHandler(database.DB, svc.QueryExecutor)
 
@@ -47,6 +48,12 @@ func InitHandlers(svc *ServiceContainer) *routes.HandlerContainer {
 	frontendLogHandler := handlers.NewFrontendLogHandler(database.DB)
 	rateLimitHandler := handlers.NewRateLimitHandler(svc.RateLimiterService)
 	aiUsageHandler := handlers.NewAIUsageHandler(svc.UsageTrackerService)
+	if svc.PulseService == nil {
+		services.LogFatal("init_handlers", "PulseService is NIL in InitHandlers", nil)
+	} else {
+		services.LogInfo("init_handlers", "PulseService passed to handler", nil)
+	}
+	pulseHandler := handlers.NewPulseHandler(svc.PulseService) // TASK-156
 
 	alertHandler := handlers.NewAlertHandler(svc.AlertService)
 	alertNotificationHandler := handlers.NewAlertNotificationHandler(svc.AlertNotificationService)
@@ -79,36 +86,38 @@ func InitHandlers(svc *ServiceContainer) *routes.HandlerContainer {
 	formulaHandler := handlers.NewFormulaHandler(svc.FormulaEngine) // GAP-004
 
 	return &routes.HandlerContainer{
-		AIHandler:                aiHandler,
-		StoryHandler:             storyHandler, // TASK-161
-		AuthHandler:              authHandler,
-		OAuthHandler:             oauthHandler,
+		AIHandler:    aiHandler,
+		StoryHandler: storyHandler, // TASK-161
+		AuthHandler:  authHandler,
+		OAuthHandler: oauthHandler,
 
-		PermissionHandler:        permissionHandler,
-		FormulaHandler:           formulaHandler, // GAP-004
-		QueryHandler:             queryHandler,
-		VisualQueryHandler:       visualQueryHandler,
-		ConnectionHandler:        connectionHandler,
-		QueryAnalyzerHandler:     queryAnalyzerHandler,
-		MaterializedViewHandler:  materializedViewHandler,
-		EngineHandler:            engineHandler,
-		GeoJSONHandler:           geoJSONHandler,
-		DataGovernanceHandler:    dataGovernanceHandler,
-		SemanticLayerHandler:     semanticLayerHandler,
-		ModelingHandler:          modelingHandler,
-		DashboardHandler:         dashboardHandler,
-		DashboardCardHandler:     dashboardCardHandler,
-		NotificationHandler:      notificationHandler,
-		ActivityHandler:          activityHandler,
-		SchedulerHandler:         schedulerHandler,
-		WebSocketHandler:         wsHandler,
-		CommentHandler:           commentHandler,
-		ShareHandler:             shareHandler,
-		EmbedHandler:             embedHandler,
-		AuditHandler:             auditHandler,
-		FrontendLogHandler:       frontendLogHandler,
-		RateLimitHandler:         rateLimitHandler,
+		PermissionHandler:       permissionHandler,
+		FormulaHandler:          formulaHandler, // GAP-004
+		QueryHandler:            queryHandler,
+		VisualQueryHandler:      visualQueryHandler,
+		ConnectionHandler:       connectionHandler,
+		QueryAnalyzerHandler:    queryAnalyzerHandler,
+		MaterializedViewHandler: materializedViewHandler,
+		EngineHandler:           engineHandler,
+		GeoJSONHandler:          geoJSONHandler,
+		DataGovernanceHandler:   dataGovernanceHandler,
+		SemanticLayerHandler:    semanticLayerHandler,
+		ModelingHandler:         modelingHandler,
+		DashboardHandler:        dashboardHandler,
+		DashboardCardHandler:    dashboardCardHandler,
+		NotificationHandler:     notificationHandler,
+		ActivityHandler:         activityHandler,
+		SchedulerHandler:        schedulerHandler,
+		WebSocketHandler:        wsHandler,
+		CommentHandler:          commentHandler,
+		ShareHandler:            shareHandler,
+		EmbedHandler:            embedHandler,
+		AuditHandler:            auditHandler,
+		FrontendLogHandler:      frontendLogHandler,
+		RateLimitHandler:        rateLimitHandler,
+
 		AIUsageHandler:           aiUsageHandler,
+		PulseHandler:             pulseHandler, // TASK-156
 		AlertHandler:             alertHandler,
 		AlertNotificationHandler: alertNotificationHandler,
 		AnalyticsHandler:         analyticsHandler,

@@ -18,6 +18,8 @@ type Story struct {
 	Content     datatypes.JSON `json:"content"` // Stores the JSON representation of SlideDeck
 	ProviderID  string         `json:"provider_id"`
 	Prompt      string         `json:"prompt"`
+	IsPublic    bool           `gorm:"default:false" json:"is_public"`
+	ShareToken  string         `gorm:"index" json:"share_token,omitempty"`
 	CreatedAt   time.Time      `json:"created_at"`
 	UpdatedAt   time.Time      `json:"updated_at"`
 

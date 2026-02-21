@@ -1,48 +1,46 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useCallback } from 'react'
-import { _format } from 'date-fns'
-import { groupBy } from 'lodash'
-import { 
-  History, 
-  _X, 
-  GitCompare,
-  Loader2,
-  AlertCircle,
-  ChevronDown,
-  ChevronUp
-} from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { Badge } from '@/components/ui/badge'
-import { Separator } from '@/components/ui/separator'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { VersionCard } from './version-card'
-import { VersionDiff } from './version-diff'
-import { VersionRestoreDialog } from './version-restore-dialog'
-import type { 
-  DashboardVersion, 
-  QueryVersion, 
+import { useState, useEffect, useCallback } from "react";
+import { format } from "date-fns";
+import { groupBy } from "lodash";
+import { History, X, GitCompare, Loader2, AlertCircle, ChevronDown, ChevronUp } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { VersionCard } from "./version-card";
+import { VersionDiff } from "./version-diff";
+import { VersionRestoreDialog } from "./version-restore-dialog";
+import type {
+  DashboardVersion,
+  QueryVersion,
   VersionResourceType,
   VersionTimelineGroup,
   DashboardVersionDiff,
-  QueryVersionDiff
-} from '@/types/versions'
-import { 
-  getDashboardVersions, 
+  QueryVersionDiff,
+} from "@/types/versions";
+import {
+  getDashboardVersions,
   getQueryVersions,
   compareDashboardVersions,
   compareQueryVersions,
-  MAX_COMPARE_VERSIONS 
-} from '@/lib/api/versions'
+  MAX_COMPARE_VERSIONS,
+} from "@/lib/api/versions";
 
 interface VersionHistoryProps {
-  isOpen: boolean
-  onClose: () => void
-  resourceType: VersionResourceType
-  resourceId: string
-  resourceName: string
+  isOpen: boolean;
+  onClose: () => void;
+  resourceType: VersionResourceType;
+  resourceId: string;
+  resourceName: string;
 }
 
 export function VersionHistory({
@@ -52,165 +50,170 @@ export function VersionHistory({
   resourceId,
   resourceName,
 }: VersionHistoryProps) {
-  const [versions, setVersions] = useState<(DashboardVersion | QueryVersion)[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const [selectedVersions, setSelectedVersions] = useState<string[]>([])
-  const [expandedGroups, setExpandedGroups] = useState<string[]>(['Today'])
-  const [restoreVersion, setRestoreVersion] = useState<DashboardVersion | QueryVersion | null>(null)
-  const [_previewVersion, setPreviewVersion] = useState<DashboardVersion | QueryVersion | null>(null)
-  const [diffData, setDiffData] = useState<DashboardVersionDiff | QueryVersionDiff | null>(null)
-  const [isComparing, setIsComparing] = useState(false)
-  const [hasMore, setHasMore] = useState(false)
-  const [offset, setOffset] = useState(0)
+  const [versions, setVersions] = useState<(DashboardVersion | QueryVersion)[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedVersions, setSelectedVersions] = useState<string[]>([]);
+  const [expandedGroups, setExpandedGroups] = useState<string[]>(["Today"]);
+  const [restoreVersion, setRestoreVersion] = useState<DashboardVersion | QueryVersion | null>(
+    null,
+  );
+  const [_previewVersion, setPreviewVersion] = useState<DashboardVersion | QueryVersion | null>(
+    null,
+  );
+  const [diffData, setDiffData] = useState<DashboardVersionDiff | QueryVersionDiff | null>(null);
+  const [isComparing, setIsComparing] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [offset, setOffset] = useState(0);
 
-  const LIMIT = 20
+  const LIMIT = 20;
 
   // Fetch versions
-  const fetchVersions = useCallback(async (reset = false) => {
-    if (!resourceId) return
-    
-    setIsLoading(true)
-    setError(null)
+  const fetchVersions = useCallback(
+    async (reset = false) => {
+      if (!resourceId) return;
 
-    try {
-      const newOffset = reset ? 0 : offset
-      const filter = { limit: LIMIT, offset: newOffset, orderBy: 'date_desc' as const }
+      setIsLoading(true);
+      setError(null);
 
-      let response
-      if (resourceType === 'dashboard') {
-        response = await getDashboardVersions(resourceId, filter)
-      } else {
-        response = await getQueryVersions(resourceId, filter)
+      try {
+        const newOffset = reset ? 0 : offset;
+        const filter = { limit: LIMIT, offset: newOffset, orderBy: "date_desc" as const };
+
+        let response;
+        if (resourceType === "dashboard") {
+          response = await getDashboardVersions(resourceId, filter);
+        } else {
+          response = await getQueryVersions(resourceId, filter);
+        }
+
+        if (reset) {
+          setVersions(response.versions);
+        } else {
+          setVersions((prev) => [...prev, ...response.versions]);
+        }
+
+        setHasMore(response.total > newOffset + response.versions.length);
+        setOffset(newOffset + response.versions.length);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Failed to load versions");
+      } finally {
+        setIsLoading(false);
       }
-
-      if (reset) {
-        setVersions(response.versions)
-      } else {
-        setVersions(prev => [...prev, ...response.versions])
-      }
-
-      setHasMore(response.total > newOffset + response.versions.length)
-      setOffset(newOffset + response.versions.length)
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to load versions')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [resourceId, resourceType, offset])
+    },
+    [resourceId, resourceType, offset],
+  );
 
   // Initial load
   useEffect(() => {
     if (isOpen) {
-      fetchVersions(true)
+      fetchVersions(true);
     }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, resourceId, resourceType])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, resourceId, resourceType]);
 
   // Group versions by date
   const groupedVersions = groupBy(versions, (version) => {
-    const date = new Date(version.createdAt)
-    const today = new Date()
-    const yesterday = new Date(today)
-    yesterday.setDate(yesterday.getDate() - 1)
+    const date = new Date(version.createdAt);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
 
     if (date.toDateString() === today.toDateString()) {
-      return 'Today'
+      return "Today";
     } else if (date.toDateString() === yesterday.toDateString()) {
-      return 'Yesterday'
+      return "Yesterday";
     } else if (date > new Date(today.getTime() - 7 * 24 * 60 * 60 * 1000)) {
-      return 'Last Week'
+      return "Last Week";
     } else if (date > new Date(today.getTime() - 30 * 24 * 60 * 60 * 1000)) {
-      return 'Last Month'
+      return "Last Month";
     } else {
-      return 'Older'
+      return "Older";
     }
-  })
+  });
 
   const timelineGroups: VersionTimelineGroup[] = [
-    { label: 'Today', versions: groupedVersions['Today'] || [] },
-    { label: 'Yesterday', versions: groupedVersions['Yesterday'] || [] },
-    { label: 'Last Week', versions: groupedVersions['Last Week'] || [] },
-    { label: 'Last Month', versions: groupedVersions['Last Month'] || [] },
-    { label: 'Older', versions: groupedVersions['Older'] || [] },
-  ].filter(group => group.versions.length > 0)
+    { label: "Today", versions: groupedVersions["Today"] || [] },
+    { label: "Yesterday", versions: groupedVersions["Yesterday"] || [] },
+    { label: "Last Week", versions: groupedVersions["Last Week"] || [] },
+    { label: "Last Month", versions: groupedVersions["Last Month"] || [] },
+    { label: "Older", versions: groupedVersions["Older"] || [] },
+  ].filter((group) => group.versions.length > 0);
 
   // Handle version selection
   const handleSelectVersion = (id: string) => {
-    setSelectedVersions(prev => {
+    setSelectedVersions((prev) => {
       if (prev.includes(id)) {
-        return prev.filter(v => v !== id)
+        return prev.filter((v) => v !== id);
       }
       if (prev.length >= MAX_COMPARE_VERSIONS) {
-        return [...prev.slice(1), id]
+        return [...prev.slice(1), id];
       }
-      return [...prev, id]
-    })
-  }
+      return [...prev, id];
+    });
+  };
 
   // Handle compare
   const handleCompare = async () => {
     if (selectedVersions.length !== MAX_COMPARE_VERSIONS) {
-      return
+      return;
     }
 
-    setIsComparing(true)
-    setError(null)
+    setIsComparing(true);
+    setError(null);
 
     try {
-      let diff
-      if (resourceType === 'dashboard') {
-        diff = await compareDashboardVersions(selectedVersions[0], selectedVersions[1])
+      let diff;
+      if (resourceType === "dashboard") {
+        diff = await compareDashboardVersions(selectedVersions[0], selectedVersions[1]);
       } else {
-        diff = await compareQueryVersions(selectedVersions[0], selectedVersions[1])
+        diff = await compareQueryVersions(selectedVersions[0], selectedVersions[1]);
       }
-      setDiffData(diff)
+      setDiffData(diff);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to compare versions')
+      setError(err instanceof Error ? err.message : "Failed to compare versions");
     } finally {
-      setIsComparing(false)
+      setIsComparing(false);
     }
-  }
+  };
 
   // Toggle group expansion
   const toggleGroup = (label: string) => {
-    setExpandedGroups(prev => 
-      prev.includes(label) 
-        ? prev.filter(g => g !== label)
-        : [...prev, label]
-    )
-  }
+    setExpandedGroups((prev) =>
+      prev.includes(label) ? prev.filter((g) => g !== label) : [...prev, label],
+    );
+  };
 
   // Handle restore
   const handleRestore = (version: DashboardVersion | QueryVersion) => {
-    setRestoreVersion(version)
-  }
+    setRestoreVersion(version);
+  };
 
   // Handle preview
   const handlePreview = (version: DashboardVersion | QueryVersion) => {
-    setPreviewVersion(version)
-  }
+    setPreviewVersion(version);
+  };
 
   // Handle compare from card
   const handleCompareFromCard = (version: DashboardVersion | QueryVersion) => {
     if (selectedVersions.length === 0) {
-      setSelectedVersions([version.id])
+      setSelectedVersions([version.id]);
     } else if (selectedVersions.length === 1 && selectedVersions[0] !== version.id) {
-      setSelectedVersions([selectedVersions[0], version.id])
-      handleCompare()
+      setSelectedVersions([selectedVersions[0], version.id]);
+      handleCompare();
     } else {
-      setSelectedVersions([version.id])
+      setSelectedVersions([version.id]);
     }
-  }
+  };
 
   // Load more versions
   const loadMore = () => {
-    fetchVersions(false)
-  }
+    fetchVersions(false);
+  };
 
   // Find version by ID
-  const findVersion = (id: string) => versions.find(v => v.id === id)
+  const findVersion = (id: string) => versions.find((v) => v.id === id);
 
   return (
     <>
@@ -230,14 +233,10 @@ export function VersionHistory({
                   </Badge>
                 </DialogDescription>
               </div>
-              
+
               {/* Compare button */}
               {selectedVersions.length === MAX_COMPARE_VERSIONS && (
-                <Button 
-                  onClick={handleCompare}
-                  disabled={isComparing}
-                  size="sm"
-                >
+                <Button onClick={handleCompare} disabled={isComparing} size="sm">
                   {isComparing ? (
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
                   ) : (
@@ -254,7 +253,8 @@ export function VersionHistory({
             <Alert className="mt-2">
               <AlertCircle className="h-4 w-4" />
               <AlertDescription>
-                Select {MAX_COMPARE_VERSIONS - selectedVersions.length} more version{MAX_COMPARE_VERSIONS - selectedVersions.length > 1 ? 's' : ''} to compare
+                Select {MAX_COMPARE_VERSIONS - selectedVersions.length} more version
+                {MAX_COMPARE_VERSIONS - selectedVersions.length > 1 ? "s" : ""} to compare
               </AlertDescription>
             </Alert>
           )}
@@ -312,14 +312,8 @@ export function VersionHistory({
             {/* Load more */}
             {hasMore && (
               <div className="flex justify-center py-4">
-                <Button 
-                  variant="outline" 
-                  onClick={loadMore}
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                  ) : null}
+                <Button variant="outline" onClick={loadMore} disabled={isLoading}>
+                  {isLoading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
                   Load More
                 </Button>
               </div>
@@ -347,8 +341,8 @@ export function VersionHistory({
         resourceType={resourceType}
         resourceName={resourceName}
         onRestored={() => {
-          setRestoreVersion(null)
-          fetchVersions(true)
+          setRestoreVersion(null);
+          fetchVersions(true);
         }}
       />
 
@@ -359,11 +353,11 @@ export function VersionHistory({
           version1={findVersion(selectedVersions[0])}
           version2={findVersion(selectedVersions[1])}
           onClose={() => {
-            setDiffData(null)
-            setSelectedVersions([])
+            setDiffData(null);
+            setSelectedVersions([]);
           }}
         />
       )}
     </>
-  )
+  );
 }

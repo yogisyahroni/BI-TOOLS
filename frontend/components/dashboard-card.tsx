@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { ChartVisualization } from './chart-visualization';
-import { X, Settings, BarChart3, Maximize2, MoreVertical, Play, GripVertical } from 'lucide-react';
+import { useState, useMemo } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { ChartVisualization } from "./chart-visualization";
+import { X, Settings, BarChart3, Maximize2, MoreVertical, Play, GripVertical } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import type { VisualizationConfig, AggregationConfig } from '@/lib/types';
-import { useCrossFilter } from '@/hooks/use-cross-filter';
-import { useAggregation } from '@/hooks/use-aggregation';
+} from "@/components/ui/dropdown-menu";
+import type { VisualizationConfig, AggregationConfig } from "@/lib/types";
+import { useCrossFilter } from "@/hooks/use-cross-filter";
+import { useAggregation } from "@/hooks/use-aggregation";
 
 interface DashboardCardProps {
   id: string;
   title: string;
   queryId: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: Record<string, any>[];
   columns?: string[];
   visualizationConfig?: VisualizationConfig;
@@ -34,15 +34,15 @@ interface DashboardCardProps {
 export function DashboardCard({
   id,
   title,
-  _queryId,
+  queryId,
   data,
-  _columns,
+  columns,
   visualizationConfig,
   aggregationConfig,
   isEditMode,
   onRemove,
   onEdit,
-  onExecute
+  onExecute,
 }: DashboardCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -50,7 +50,7 @@ export function DashboardCard({
   // Aggregation Hook
   const { data: aggregationData, isLoading: isAggLoading } = useAggregation({
     data: data || [],
-    config: aggregationConfig
+    config: aggregationConfig,
   });
 
   // Determine effective data
@@ -68,27 +68,26 @@ export function DashboardCard({
   const _isLoading = isAggLoading;
 
   // Normalize config for ECharts (handle legacy Recharts config)
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const normalizedConfig = useMemo<Partial<VisualizationConfig>>(() => {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const raw = visualizationConfig as any;
     // ensure yAxis is array
-    const yAxisArray = Array.isArray(raw?.yAxis)
-      ? raw.yAxis
-      : (raw?.yAxis ? [raw.yAxis] : ['value']);
+    const yAxisArray = Array.isArray(raw?.yAxis) ? raw.yAxis : raw?.yAxis ? [raw.yAxis] : ["value"];
 
     return {
       ...visualizationConfig,
-      xAxis: raw?.xAxis || 'name',
-      type: raw?.chartType || raw?.type || 'bar',
-      yAxis: yAxisArray
+      xAxis: raw?.xAxis || "name",
+      type: raw?.chartType || raw?.type || "bar",
+      yAxis: yAxisArray,
     };
   }, [visualizationConfig]);
 
   return (
     <Card
-      className={`overflow-hidden transition-all duration-200 ${isHovered ? 'shadow-lg ring-2 ring-primary/20' : 'shadow-sm'
-        } ${isExpanded ? 'fixed inset-4 z-50' : ''}`}
+      className={`overflow-hidden transition-all duration-200 ${
+        isHovered ? "shadow-lg ring-2 ring-primary/20" : "shadow-sm"
+      } ${isExpanded ? "fixed inset-4 z-50" : ""}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -106,16 +105,14 @@ export function DashboardCard({
           <h3 className="font-medium text-foreground text-sm truncate">{title}</h3>
         </div>
 
-        <div className={`flex items-center gap-1 transition-opacity ${isHovered || isEditMode ? 'opacity-100' : 'opacity-0'
-          }`}>
+        <div
+          className={`flex items-center gap-1 transition-opacity ${
+            isHovered || isEditMode ? "opacity-100" : "opacity-0"
+          }`}
+        >
           {isEditMode ? (
             <>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="w-7 h-7"
-                onClick={() => onEdit?.(id)}
-              >
+              <Button variant="ghost" size="icon" className="w-7 h-7" onClick={() => onEdit?.(id)}>
                 <Settings className="w-3.5 h-3.5" />
               </Button>
               <Button
@@ -141,7 +138,7 @@ export function DashboardCard({
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => setIsExpanded(!isExpanded)}>
                   <Maximize2 className="w-4 h-4 mr-2" />
-                  {isExpanded ? 'Exit Fullscreen' : 'Fullscreen'}
+                  {isExpanded ? "Exit Fullscreen" : "Fullscreen"}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onEdit?.(id)}>
                   <Settings className="w-4 h-4 mr-2" />
@@ -154,12 +151,12 @@ export function DashboardCard({
       </div>
 
       {/* Card Content - Chart */}
-      <div className={`p-4 ${isExpanded ? 'flex-1' : 'h-64'}`}>
+      <div className={`p-4 ${isExpanded ? "flex-1" : "h-64"}`}>
         <ChartVisualization
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           config={normalizedConfig}
           data={chartData}
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           onDataClick={(params: any) => {
             // Drill-down / Cross-filter support
             if (params.name && normalizedConfig.xAxis) {
@@ -171,10 +168,7 @@ export function DashboardCard({
 
       {/* Expanded overlay backdrop */}
       {isExpanded && (
-        <div
-          className="fixed inset-0 bg-black/50 -z-10"
-          onClick={() => setIsExpanded(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 -z-10" onClick={() => setIsExpanded(false)} />
       )}
     </Card>
   );

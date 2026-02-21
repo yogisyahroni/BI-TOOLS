@@ -1,55 +1,60 @@
-import { BaseConnector, _ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
+import {
+  BaseConnector,
+  ConnectionConfig,
+  type SchemaInfo,
+  type QueryResult,
+} from "./base-connector";
 
 /**
  * Redshift Connector Implementation
  * AWS Data Warehouse
- * 
+ *
  * Uses pg (PostgreSQL protocol) since Redshift is PostgreSQL-compatible
  */
 export class RedshiftConnector extends BaseConnector {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private client: any; // pg.Client (lazy loaded)
+
+  async testConnection(): Promise<{ success: boolean; error?: string }> {
+    try {
+      const { Client } = await import("pg");
+
+      this.client = new Client({
+        host: this.config.host,
+        port: this.config.port || 5439, // Redshift default port
+        database: this.config.database,
+        user: this.config.username,
+        password: this.config.password,
+        ssl: this.config.ssl ? { rejectUnauthorized: false } : false,
+        connectionTimeoutMillis: 10000,
+      });
+
+      await this.client.connect();
+
+      // Test query
+      const _result = await this.client.query("SELECT version()");
+
+      return {
+        success: true,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private client: any; // pg.Client (lazy loaded)
+      };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return {
+        success: false,
+        error: `Redshift connection failed: ${error.message}`,
+      };
+    }
+  }
 
-    async testConnection(): Promise<{ success: boolean; error?: string }> {
-        try {
-            const { Client } = await import('pg');
-
-            this.client = new Client({
-                host: this.config.host,
-                port: this.config.port || 5439, // Redshift default port
-                database: this.config.database,
-                user: this.config.username,
-                password: this.config.password,
-                ssl: this.config.ssl ? { rejectUnauthorized: false } : false,
-                connectionTimeoutMillis: 10000,
-            });
-
-            await this.client.connect();
-
-            // Test query
-            const _result = await this.client.query('SELECT version()');
-
-            return {
-                success: true
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            return {
-                success: false,
-                error: `Redshift connection failed: ${error.message}`
-            };
-        }
+  async fetchSchema(): Promise<SchemaInfo> {
+    if (!this.client || !this.client._connected) {
+      throw new Error("Not connected. Call testConnection() first.");
     }
 
-    async fetchSchema(): Promise<SchemaInfo> {
-        if (!this.client || !this.client._connected) {
-            throw new Error('Not connected. Call testConnection() first.');
-        }
-
-        // Query Redshift's system tables (uses PG_CATALOG)
-        const tablesQuery = `
+    // Query Redshift's system tables (uses PG_CATALOG)
+    const tablesQuery = `
             SELECT 
                 t.table_schema,
                 t.table_name,
@@ -61,12 +66,12 @@ export class RedshiftConnector extends BaseConnector {
             ORDER BY t.table_schema, t.table_name;
         `;
 
-        const { rows: tables } = await this.client.query(tablesQuery);
+    const { rows: tables } = await this.client.query(tablesQuery);
 
-        const schemaInfo: SchemaInfo = { tables: [] };
+    const schemaInfo: SchemaInfo = { tables: [] };
 
-        for (const table of tables) {
-            const columnsQuery = `
+    for (const table of tables) {
+      const columnsQuery = `
                 SELECT 
                     column_name,
                     data_type,
@@ -77,82 +82,82 @@ export class RedshiftConnector extends BaseConnector {
                 ORDER BY ordinal_position;
             `;
 
-            const { rows: columns } = await this.client.query(columnsQuery, [
-                table.table_schema,
-                table.table_name,
-            ]);
+      const { rows: columns } = await this.client.query(columnsQuery, [
+        table.table_schema,
+        table.table_name,
+      ]);
 
-            schemaInfo.tables.push({
-                name: table.table_name,
+      schemaInfo.tables.push({
+        name: table.table_name,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                schema: table.table_schema,
-                rowCount: 0, // Expensive in Redshift, skip for now
+        schema: table.table_schema,
+        rowCount: 0, // Expensive in Redshift, skip for now
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                columns: columns.map((col: any) => ({
-                    name: col.column_name,
-                    type: col.data_type,
-                    nullable: col.is_nullable === 'YES',
-                    isPrimary: false, // Redshift has weak PK enforcement
-                    isForeign: false,
-                    description: undefined,
-                })),
-            });
-        }
-
-        return schemaInfo;
+        columns: columns.map((col: any) => ({
+          name: col.column_name,
+          type: col.data_type,
+          nullable: col.is_nullable === "YES",
+          isPrimary: false, // Redshift has weak PK enforcement
+          isForeign: false,
+          description: undefined,
+        })),
+      });
     }
 
-    async executeQuery(sql: string): Promise<QueryResult> {
-        const startTime = Date.now();
+    return schemaInfo;
+  }
 
-        if (!this.client || !this.client._connected) {
-            throw new Error('Not connected. Call testConnection() first.');
-        }
+  async executeQuery(sql: string): Promise<QueryResult> {
+    const startTime = Date.now();
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const result = await this.client.query(sql);
-        const executionTime = Date.now() - startTime;
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const columns = result.fields.map((f: any) => f.name);
-
-        return {
-            columns,
-            rows: result.rows,
-            rowCount: result.rowCount || result.rows.length,
-            executionTime,
-        };
+    if (!this.client || !this.client._connected) {
+      throw new Error("Not connected. Call testConnection() first.");
     }
 
-    async disconnect(): Promise<void> {
-        if (this.client) {
-            await this.client.end();
-            this.client = null;
-        }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const result = await this.client.query(sql);
+    const executionTime = Date.now() - startTime;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const columns = result.fields.map((f: any) => f.name);
+
+    return {
+      columns,
+      rows: result.rows,
+      rowCount: result.rowCount || result.rows.length,
+      executionTime,
+    };
+  }
+
+  async disconnect(): Promise<void> {
+    if (this.client) {
+      await this.client.end();
+      this.client = null;
+    }
+  }
+
+  validateConfig(): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    if (!this.config.host) {
+      errors.push("Host is required for Redshift");
     }
 
-    validateConfig(): { valid: boolean; errors: string[] } {
-        const errors: string[] = [];
-
-        if (!this.config.host) {
-            errors.push('Host is required for Redshift');
-        }
-
-        if (!this.config.database) {
-            errors.push('Database is required for Redshift');
-        }
-
-        if (!this.config.username) {
-            errors.push('Username is required for Redshift');
-        }
-
-        if (!this.config.password) {
-            errors.push('Password is required for Redshift');
-        }
-
-        return {
-            valid: errors.length === 0,
-            errors: [...super.validateConfig().errors, ...errors],
-        };
+    if (!this.config.database) {
+      errors.push("Database is required for Redshift");
     }
+
+    if (!this.config.username) {
+      errors.push("Username is required for Redshift");
+    }
+
+    if (!this.config.password) {
+      errors.push("Password is required for Redshift");
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors: [...super.validateConfig().errors, ...errors],
+    };
+  }
 }

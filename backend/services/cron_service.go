@@ -14,6 +14,12 @@ type CronService struct {
 	cron                   *cron.Cron
 	scheduledReportService *ScheduledReportService
 	alertService           *AlertService
+	pulseService           *PulseService
+}
+
+// SetPulseService injects the pulse service
+func (s *CronService) SetPulseService(pulseService *PulseService) {
+	s.pulseService = pulseService
 }
 
 // NewCronService creates a new cron service
@@ -141,6 +147,24 @@ func (s *CronService) Start() {
 	})
 	if err != nil {
 		LogError("cron_schedule", "Failed to schedule alert checking job", map[string]interface{}{"error": err})
+	}
+
+	// Pulse processing - runs every minute (TASK-156)
+	_, err = s.cron.AddFunc("* * * * *", func() {
+		LogInfo("cron_pulses", "Processing scheduled pulses", nil)
+		if s.pulseService != nil {
+			ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+			defer cancel()
+
+			if err := s.pulseService.ProcessDuePulses(ctx); err != nil {
+				LogError("cron_pulses", "Failed to process pulses", map[string]interface{}{"error": err})
+			} else {
+				LogInfo("cron_pulses", "Pulse processing completed", nil)
+			}
+		}
+	})
+	if err != nil {
+		LogError("cron_schedule", "Failed to schedule pulse processing job", map[string]interface{}{"error": err})
 	}
 
 	// Cleanup old report runs - runs daily at 3 AM

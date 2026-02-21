@@ -1,25 +1,20 @@
-'use client';
+"use client";
 
-import { useState, _useEffect } from 'react';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useState, useEffect } from "react";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Clock, Calendar, AlertCircle } from 'lucide-react';
-import type { ReportScheduleType, _DayOfWeek } from '@/types/scheduled-reports';
-import { SCHEDULE_TYPES, DAYS_OF_WEEK } from '@/types/scheduled-reports';
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Clock, Calendar, AlertCircle } from "lucide-react";
+import type { ReportScheduleType, DayOfWeek } from "@/types/scheduled-reports";
+import { SCHEDULE_TYPES, DAYS_OF_WEEK } from "@/types/scheduled-reports";
 
 interface SchedulePickerProps {
   scheduleType: ReportScheduleType;
@@ -42,26 +37,26 @@ interface SchedulePickerProps {
 
 export function SchedulePicker({
   scheduleType,
-  cronExpr = '0 9 * * *',
-  timeOfDay = '09:00',
+  cronExpr = "0 9 * * *",
+  timeOfDay = "09:00",
   dayOfWeek = 1,
   dayOfMonth = 1,
-  timezone = 'UTC',
+  timezone = "UTC",
   onChange,
   disabled = false,
   error,
 }: SchedulePickerProps) {
-  const [cronError, setCronError] = useState('');
+  const [cronError, setCronError] = useState("");
 
   // Validate cron expression
   const validateCron = (expression: string): boolean => {
     // Basic cron validation (5 fields: minute hour day month dayOfWeek)
     const parts = expression.trim().split(/\s+/);
     if (parts.length !== 5) {
-      setCronError('Cron expression must have 5 fields (minute hour day month dayOfWeek)');
+      setCronError("Cron expression must have 5 fields (minute hour day month dayOfWeek)");
       return false;
     }
-    setCronError('');
+    setCronError("");
     return true;
   };
 
@@ -127,27 +122,31 @@ export function SchedulePicker({
   // Generate human-readable description
   const getScheduleDescription = () => {
     switch (scheduleType) {
-      case 'daily':
+      case "daily":
         return `Every day at ${timeOfDay}`;
-      case 'weekly':
-        const dayName = DAYS_OF_WEEK.find(d => d.value === dayOfWeek)?.label || 'Monday';
+      case "weekly":
+        const dayName = DAYS_OF_WEEK.find((d) => d.value === dayOfWeek)?.label || "Monday";
         return `Every ${dayName} at ${timeOfDay}`;
-      case 'monthly':
+      case "monthly":
         return `On the ${dayOfMonth}${getDaySuffix(dayOfMonth)} of every month at ${timeOfDay}`;
-      case 'cron':
+      case "cron":
         return `Custom schedule: ${cronExpr}`;
       default:
-        return '';
+        return "";
     }
   };
 
   const getDaySuffix = (day: number): string => {
-    if (day > 3 && day < 21) return 'th';
+    if (day > 3 && day < 21) return "th";
     switch (day % 10) {
-      case 1: return 'st';
-      case 2: return 'nd';
-      case 3: return 'rd';
-      default: return 'th';
+      case 1:
+        return "st";
+      case 2:
+        return "nd";
+      case 3:
+        return "rd";
+      default:
+        return "th";
     }
   };
 
@@ -165,14 +164,12 @@ export function SchedulePicker({
               disabled={disabled}
               className={`p-4 rounded-lg border-2 text-left transition-all ${
                 scheduleType === type.value
-                  ? 'border-primary bg-primary/5'
-                  : 'border-muted hover:border-muted-foreground/20'
+                  ? "border-primary bg-primary/5"
+                  : "border-muted hover:border-muted-foreground/20"
               }`}
             >
               <div className="font-medium">{type.label}</div>
-              <div className="text-xs text-muted-foreground mt-1">
-                {type.description}
-              </div>
+              <div className="text-xs text-muted-foreground mt-1">{type.description}</div>
             </button>
           ))}
         </div>
@@ -188,7 +185,7 @@ export function SchedulePicker({
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Cron Expression */}
-          {scheduleType === 'cron' && (
+          {scheduleType === "cron" && (
             <div className="space-y-2">
               <Label htmlFor="cronExpr">Cron Expression *</Label>
               <Input
@@ -199,7 +196,8 @@ export function SchedulePicker({
                 disabled={disabled}
               />
               <p className="text-xs text-muted-foreground">
-                Format: minute hour day month dayOfWeek (e.g., &quot;0 9 * * *&quot; for daily at 9 AM)
+                Format: minute hour day month dayOfWeek (e.g., &quot;0 9 * * *&quot; for daily at 9
+                AM)
               </p>
               {cronError && (
                 <div className="flex items-center gap-2 text-sm text-destructive">
@@ -211,7 +209,7 @@ export function SchedulePicker({
           )}
 
           {/* Time of Day */}
-          {scheduleType !== 'cron' && (
+          {scheduleType !== "cron" && (
             <div className="space-y-2">
               <Label htmlFor="timeOfDay">Time of Day *</Label>
               <Input
@@ -225,7 +223,7 @@ export function SchedulePicker({
           )}
 
           {/* Day of Week */}
-          {scheduleType === 'weekly' && (
+          {scheduleType === "weekly" && (
             <div className="space-y-2">
               <Label>Day of Week *</Label>
               <Select
@@ -248,7 +246,7 @@ export function SchedulePicker({
           )}
 
           {/* Day of Month */}
-          {scheduleType === 'monthly' && (
+          {scheduleType === "monthly" && (
             <div className="space-y-2">
               <Label htmlFor="dayOfMonth">Day of Month *</Label>
               <Input
@@ -260,9 +258,7 @@ export function SchedulePicker({
                 onChange={(e) => handleDayOfMonthChange(e.target.value)}
                 disabled={disabled}
               />
-              <p className="text-xs text-muted-foreground">
-                Enter a day between 1 and 31
-              </p>
+              <p className="text-xs text-muted-foreground">Enter a day between 1 and 31</p>
             </div>
           )}
         </CardContent>
@@ -273,9 +269,7 @@ export function SchedulePicker({
         <Calendar className="w-5 h-5 text-muted-foreground" />
         <div className="flex-1">
           <div className="text-sm font-medium">Schedule Summary</div>
-          <div className="text-sm text-muted-foreground">
-            {getScheduleDescription()}
-          </div>
+          <div className="text-sm text-muted-foreground">{getScheduleDescription()}</div>
         </div>
         <Badge variant="outline" className="text-[10px] uppercase">
           {scheduleType}

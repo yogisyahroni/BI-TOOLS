@@ -4,21 +4,25 @@ import (
 	"fmt"
 	"insight-engine-backend/models"
 
+	"time"
+
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 // NotificationService handles notification operations
 type NotificationService struct {
-	db    *gorm.DB
-	wsHub *WebSocketHub
+	db           *gorm.DB
+	wsHub        *WebSocketHub
+	slackService *SlackService
 }
 
 // NewNotificationService creates a new notification service
-func NewNotificationService(db *gorm.DB, wsHub *WebSocketHub) *NotificationService {
+func NewNotificationService(db *gorm.DB, wsHub *WebSocketHub, slackService *SlackService) *NotificationService {
 	return &NotificationService{
-		db:    db,
-		wsHub: wsHub,
+		db:           db,
+		wsHub:        wsHub,
+		slackService: slackService,
 	}
 }
 
@@ -29,15 +33,15 @@ func (s *NotificationService) CreateNotification(notification *models.Notificati
 	}
 
 	// Push notification via WebSocket if user is connected
-	if s.wsHub.IsUserConnected(notification.UserID.String()) {
-		s.wsHub.BroadcastToUser(notification.UserID.String(), "notification", notification)
+	if s.wsHub.IsUserConnected(notification.UserID) {
+		s.wsHub.BroadcastToUser(notification.UserID, "notification", notification)
 	}
 
 	return nil
 }
 
 // SendNotification creates and sends a notification to a user
-func (s *NotificationService) SendNotification(userID uuid.UUID, title, message, notifType, link string, metadata map[string]interface{}) error {
+func (s *NotificationService) SendNotification(userID string, title, message, notifType, link string, metadata map[string]interface{}) error {
 	notification := &models.Notification{
 		UserID:  userID,
 		Title:   title,
@@ -52,11 +56,55 @@ func (s *NotificationService) SendNotification(userID uuid.UUID, title, message,
 		// notification.Metadata = metadata
 	}
 
-	return s.CreateNotification(notification)
+	// Persist and socket push
+	if err := s.CreateNotification(notification); err != nil {
+		return err
+	}
+
+	// Check if we should send to Slack based on type or metadata
+	// For now, we check if metadata has a "slack_channel" key or if it's a critical alert
+	if s.slackService != nil {
+		var slackChannel string
+		if metadata != nil {
+			if sc, ok := metadata["slack_channel"].(string); ok {
+				slackChannel = sc
+			}
+		}
+
+		// Also auto-send critical alerts to default channel if configured
+		if notifType == "alert_critical" || slackChannel != "" {
+			// Construct attachment
+			attachment := SlackAttachment{
+				Title:     title,
+				Text:      message,
+				TitleLink: link,
+				Ts:        time.Now().Unix(),
+				Footer:    "InsightEngine AI Notification",
+			}
+
+			// Set color based on type
+			if notifType == "alert_critical" {
+				attachment.Color = "#ff0000"
+			} else if notifType == "alert_warning" {
+				attachment.Color = "#ffcc00"
+			} else {
+				attachment.Color = "#36a64f"
+			}
+
+			// Run in background to not block main thread
+			go func() {
+				if err := s.slackService.SendNotification(slackChannel, "", []SlackAttachment{attachment}); err != nil {
+					fmt.Printf("Failed to send slack notification: %v\n", err)
+				}
+			}()
+		}
+	}
+
+	return nil
 }
 
 // GetUserNotifications retrieves notifications for a user with pagination
-func (s *NotificationService) GetUserNotifications(userID uuid.UUID, limit, offset int) ([]models.Notification, int64, error) {
+func (s *NotificationService) GetUserNotifications(userID string, limit, offset int) ([]models.Notification, int64, error) {
 	var notifications []models.Notification
 	var total int64
 
@@ -80,7 +128,7 @@ func (s *NotificationService) GetUserNotifications(userID uuid.UUID, limit, offs
 }
 
 // GetUnreadNotifications retrieves unread notifications for a user
-func (s *NotificationService) GetUnreadNotifications(userID uuid.UUID, limit int) ([]models.Notification, error) {
+func (s *NotificationService) GetUnreadNotifications(userID string, limit int) ([]models.Notification, error) {
 	var notifications []models.Notification
 
 	if err := s.db.Where("user_id = ? AND is_read = ?", userID, false).
@@ -94,7 +142,7 @@ func (s *NotificationService) GetUnreadNotifications(userID uuid.UUID, limit int
 }
 
 // GetUnreadCount returns the count of unread notifications for a user
-func (s *NotificationService) GetUnreadCount(userID uuid.UUID) (int64, error) {
+func (s *NotificationService) GetUnreadCount(userID string) (int64, error) {
 	var count int64
 
 	if err := s.db.Model(&models.Notification{}).
@@ -107,7 +155,7 @@ func (s *NotificationService) GetUnreadCount(userID uuid.UUID) (int64, error) {
 }
 
 // MarkAsRead marks a notification as read
-func (s *NotificationService) MarkAsRead(notificationID uuid.UUID, userID uuid.UUID) error {
+func (s *NotificationService) MarkAsRead(notificationID uuid.UUID, userID string) error {
 	result := s.db.Model(&models.Notification{}).
 		Where("id = ? AND user_id = ?", notificationID, userID).
 		Update("is_read", true)
@@ -124,7 +172,7 @@ func (s *NotificationService) MarkAsRead(notificationID uuid.UUID, userID uuid.U
 }
 
 // MarkAllAsRead marks all notifications as read for a user
-func (s *NotificationService) MarkAllAsRead(userID uuid.UUID) error {
+func (s *NotificationService) MarkAllAsRead(userID string) error {
 	if err := s.db.Model(&models.Notification{}).
 		Where("user_id = ? AND is_read = ?", userID, false).
 		Update("is_read", true).Error; err != nil {
@@ -135,7 +183,7 @@ func (s *NotificationService) MarkAllAsRead(userID uuid.UUID) error {
 }
 
 // DeleteNotification deletes a notification
-func (s *NotificationService) DeleteNotification(notificationID uuid.UUID, userID uuid.UUID) error {
+func (s *NotificationService) DeleteNotification(notificationID uuid.UUID, userID string) error {
 	result := s.db.Where("id = ? AND user_id = ?", notificationID, userID).
 		Delete(&models.Notification{})
 
@@ -151,7 +199,7 @@ func (s *NotificationService) DeleteNotification(notificationID uuid.UUID, userI
 }
 
 // DeleteReadNotifications deletes all read notifications for a user
-func (s *NotificationService) DeleteReadNotifications(userID uuid.UUID) error {
+func (s *NotificationService) DeleteReadNotifications(userID string) error {
 	if err := s.db.Where("user_id = ? AND is_read = ?", userID, true).
 		Delete(&models.Notification{}).Error; err != nil {
 		return fmt.Errorf("failed to delete read notifications: %w", err)
@@ -161,7 +209,7 @@ func (s *NotificationService) DeleteReadNotifications(userID uuid.UUID) error {
 }
 
 // GetNotificationsByType retrieves notifications by type for a user
-func (s *NotificationService) GetNotificationsByType(userID uuid.UUID, notifType string, limit, offset int) ([]models.Notification, error) {
+func (s *NotificationService) GetNotificationsByType(userID string, notifType string, limit, offset int) ([]models.Notification, error) {
 	var notifications []models.Notification
 
 	if err := s.db.Where("user_id = ? AND type = ?", userID, notifType).
@@ -181,10 +229,8 @@ func (s *NotificationService) BroadcastSystemNotification(title, message, notifT
 	connectedUsers := s.wsHub.GetConnectedUsers()
 
 	for _, userIDStr := range connectedUsers {
-		userID, err := uuid.Parse(userIDStr)
-		if err != nil {
-			continue
-		}
+		// userID is already string
+		userID := userIDStr
 
 		notification := &models.Notification{
 			UserID:  userID,

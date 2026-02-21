@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"insight-engine-backend/database"
 	"insight-engine-backend/models"
 	"insight-engine-backend/pkg/datatypes"
@@ -16,10 +17,11 @@ import (
 type ConnectionHandler struct {
 	queryExecutor     services.QueryExecutorInterface
 	schemaDiscovery   *services.SchemaDiscovery
+	embeddingService  *services.EmbeddingService
 	encryptionService *services.EncryptionService
 }
 
-func NewConnectionHandler(qe services.QueryExecutorInterface, sd *services.SchemaDiscovery) *ConnectionHandler {
+func NewConnectionHandler(qe services.QueryExecutorInterface, sd *services.SchemaDiscovery, es *services.EmbeddingService) *ConnectionHandler {
 	// Initialize encryption service (fail gracefully if not configured)
 	encryptionService, err := services.NewEncryptionService()
 	if err != nil {
@@ -31,6 +33,7 @@ func NewConnectionHandler(qe services.QueryExecutorInterface, sd *services.Schem
 	return &ConnectionHandler{
 		queryExecutor:     qe,
 		schemaDiscovery:   sd,
+		embeddingService:  es,
 		encryptionService: encryptionService,
 	}
 }
@@ -505,5 +508,163 @@ func (h *ConnectionHandler) GetConnectionSchema(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"success": true,
 		"data":    schema,
+	})
+}
+
+// SyncConnectionEmbeddings generates and saves vector embeddings for the connection's schema
+// @Summary Sync connection schema embeddings
+// @Description Discovers the schema and generates embeddings for RAG optimizations.
+// @Tags Connection
+// @Accept json
+// @Produce json
+// @Security BearerAuth
+// @Param id path string true "Connection ID"
+// @Success 200 {object} map[string]interface{}
+// @Failure 404 {object} map[string]interface{}
+// @Failure 500 {object} map[string]interface{}
+// @Router /connection/{id}/sync-embeddings [post]
+func (h *ConnectionHandler) SyncConnectionEmbeddings(c *fiber.Ctx) error {
+	connID := c.Params("id")
+	userID, _ := c.Locals("userId").(string)
+
+	var conn models.Connection
+	if err := database.DB.Where("id = ? AND user_id = ?", connID, userID).First(&conn).Error; err != nil {
+		return c.Status(404).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Connection not found",
+		})
+	}
+
+	if h.embeddingService == nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Embedding service is not configured",
+		})
+	}
+
+	// Decrypt password
+	if h.encryptionService != nil && conn.Password != nil && *conn.Password != "" {
+		decryptedPassword, err := h.encryptionService.Decrypt(*conn.Password)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": "Failed to decrypt password",
+			})
+		}
+		conn.Password = &decryptedPassword
+	}
+
+	// Discover schema
+	ctx := c.Context()
+	schema, err := h.schemaDiscovery.DiscoverSchema(ctx, &conn)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Failed to discover schema",
+			"error":   err.Error(),
+		})
+	}
+
+	// Prepare data for embeddings
+	var texts []string
+	var metadata []map[string]string
+
+	for _, table := range schema {
+		schemaName := table.Schema
+		// Create a rich text description of the table for the LLM
+		var b strings.Builder
+		b.WriteString(table.Name)
+		b.WriteString(" (")
+
+		colDescriptions := []string{}
+		for _, col := range table.Columns {
+			colDesc := col.Name + " " + col.Type
+			if col.IsPrimaryKey {
+				colDesc += " PK"
+			}
+			if col.IsForeignKey {
+				colDesc += " FK"
+			}
+			colDescriptions = append(colDescriptions, colDesc)
+
+			// Optionally, embed individual important columns if needed, but table-level is best for now
+		}
+		b.WriteString(strings.Join(colDescriptions, ", "))
+		b.WriteString(")")
+
+		description := "Table containing " + table.Name + " data."
+
+		texts = append(texts, b.String())
+		metadata = append(metadata, map[string]string{
+			"schema_name": schemaName,
+			"table_name":  table.Name,
+			"description": description,
+		})
+	}
+
+	if len(texts) == 0 {
+		return c.JSON(fiber.Map{
+			"status":  "success",
+			"message": "No tables found to vectorize",
+		})
+	}
+
+	// Generate Embeddings
+	embeddings, err := h.embeddingService.GenerateEmbeddings(ctx, userID, "", texts)
+	if err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Failed to generate embeddings",
+			"error":   err.Error(),
+		})
+	}
+
+	if len(embeddings) != len(texts) {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Embedding count mismatch",
+		})
+	}
+
+	// Save to Database (using raw SQL for vector type compatibility)
+	// First, delete existing embeddings for this connection to avoid duplicates
+	if err := database.DB.Exec("DELETE FROM schema_embeddings WHERE connection_id = ?", conn.ID).Error; err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Failed to clear old embeddings",
+			"error":   err.Error(),
+		})
+	}
+
+	// Bulk insert
+	for i, emb := range embeddings {
+		meta := metadata[i]
+
+		// Format float slice as postgres vector string: "[1.1, 2.2, ...]"
+		var strEmbed strings.Builder
+		strEmbed.WriteString("[")
+		for j, val := range emb {
+			if j > 0 {
+				strEmbed.WriteString(",")
+			}
+			// Use simple float formatting
+			strEmbed.WriteString(fmt.Sprintf("%f", val))
+		}
+		strEmbed.WriteString("]")
+
+		err = database.DB.Exec(`
+			INSERT INTO schema_embeddings (connection_id, schema_name, table_name, description, embedding)
+			VALUES (?, ?, ?, ?, ?::vector)
+		`, conn.ID, meta["schema_name"], meta["table_name"], meta["description"], strEmbed.String()).Error
+
+		if err != nil {
+			// Log error but try to continue
+			continue
+		}
+	}
+
+	return c.JSON(fiber.Map{
+		"success": true,
+		"message": fmt.Sprintf("Successfully generated and saved embeddings for %d tables", len(texts)),
 	})
 }

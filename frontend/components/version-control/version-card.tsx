@@ -1,40 +1,40 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { formatDistanceToNow } from 'date-fns'
-import { 
-  History, 
-  RotateCcw, 
-  Eye, 
-  GitCompare, 
+import { useState } from "react";
+import { formatDistanceToNow } from "date-fns";
+import {
+  History,
+  RotateCcw,
+  Eye,
+  GitCompare,
   Trash2,
   Clock,
-  _User,
-  ChevronRight
-} from 'lucide-react'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+  User,
+  ChevronRight,
+} from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
-import type { DashboardVersion, QueryVersion } from '@/types/versions'
+} from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import type { DashboardVersion, QueryVersion } from "@/types/versions";
 
 interface VersionCardProps {
-  version: DashboardVersion | QueryVersion
-  isSelected: boolean
-  onSelect: (id: string) => void
-  onRestore: (version: DashboardVersion | QueryVersion) => void
-  onPreview: (version: DashboardVersion | QueryVersion) => void
-  onCompare: (version: DashboardVersion | QueryVersion) => void
-  onDelete?: (version: DashboardVersion | QueryVersion) => void
-  disabled?: boolean
+  version: DashboardVersion | QueryVersion;
+  isSelected: boolean;
+  onSelect: (id: string) => void;
+  onRestore: (version: DashboardVersion | QueryVersion) => void;
+  onPreview: (version: DashboardVersion | QueryVersion) => void;
+  onCompare: (version: DashboardVersion | QueryVersion) => void;
+  onDelete?: (version: DashboardVersion | QueryVersion) => void;
+  disabled?: boolean;
 }
 
 export function VersionCard({
@@ -47,28 +47,28 @@ export function VersionCard({
   onDelete,
   disabled = false,
 }: VersionCardProps) {
-  const [isHovered, setIsHovered] = useState(false)
-  
-  const createdByUser = version.createdByUser
-  const createdAt = new Date(version.createdAt)
-  const timeAgo = formatDistanceToNow(createdAt, { addSuffix: true })
-  
+  const [isHovered, setIsHovered] = useState(false);
+
+  const createdByUser = version.createdByUser;
+  const createdAt = new Date(version.createdAt);
+  const timeAgo = formatDistanceToNow(createdAt, { addSuffix: true });
+
   // Get initials for avatar
   const getInitials = (name: string) => {
     return name
-      .split(' ')
-      .map(n => n[0])
-      .join('')
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
       .toUpperCase()
-      .slice(0, 2)
-  }
+      .slice(0, 2);
+  };
 
   return (
     <div
       className={`
         relative group rounded-lg border p-4 transition-all duration-200
-        ${isSelected ? 'border-primary bg-primary/5' : 'border-border bg-card hover:border-muted-foreground/20'}
-        ${disabled ? 'opacity-50 pointer-events-none' : ''}
+        ${isSelected ? "border-primary bg-primary/5" : "border-border bg-card hover:border-muted-foreground/20"}
+        ${disabled ? "opacity-50 pointer-events-none" : ""}
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -97,7 +97,7 @@ export function VersionCard({
                 </Badge>
               )}
             </div>
-            
+
             {/* Actions dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -115,7 +115,7 @@ export function VersionCard({
                   Compare
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem 
+                <DropdownMenuItem
                   onClick={() => onRestore(version)}
                   className="text-destructive focus:text-destructive"
                 >
@@ -125,7 +125,7 @@ export function VersionCard({
                 {onDelete && (
                   <>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem 
+                    <DropdownMenuItem
                       onClick={() => onDelete(version)}
                       className="text-destructive focus:text-destructive"
                     >
@@ -140,9 +140,7 @@ export function VersionCard({
 
           {/* Change summary */}
           {version.changeSummary && (
-            <p className="text-sm text-muted-foreground mt-1">
-              {version.changeSummary}
-            </p>
+            <p className="text-sm text-muted-foreground mt-1">{version.changeSummary}</p>
           )}
 
           {/* Metadata */}
@@ -152,12 +150,10 @@ export function VersionCard({
               <Avatar className="h-6 w-6">
                 <AvatarImage src={createdByUser?.avatar || createdByUser?.image} />
                 <AvatarFallback className="text-xs">
-                  {createdByUser?.name ? getInitials(createdByUser.name) : 'U'}
+                  {createdByUser?.name ? getInitials(createdByUser.name) : "U"}
                 </AvatarFallback>
               </Avatar>
-              <span className="truncate max-w-[120px]">
-                {createdByUser?.name || 'Unknown'}
-              </span>
+              <span className="truncate max-w-[120px]">{createdByUser?.name || "Unknown"}</span>
             </div>
 
             {/* Timestamp */}
@@ -235,5 +231,5 @@ export function VersionCard({
         </div>
       )}
     </div>
-  )
+  );
 }

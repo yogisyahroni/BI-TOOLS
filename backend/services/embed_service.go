@@ -123,7 +123,7 @@ func (s *EmbedService) ValidateEmbedToken(tokenString string) (*models.Dashboard
 			if len(hiddenMap) > 0 {
 				filteredCards := []models.DashboardCard{} // Assuming models.DashboardCard is the type
 				for _, card := range dashboard.Cards {
-					if !hiddenMap[card.ID] {
+					if !hiddenMap[card.ID.String()] { // Use card.ID.String() for map key
 						filteredCards = append(filteredCards, card)
 					}
 				}

@@ -1,0 +1,312 @@
+.next/types/app/public/present/[token]/page.ts(34,29): error TS2344: Type '{ params: { token: string; }; }' does not satisfy the constraint 'PageProps'.
+  Types of property 'params' are incompatible.
+    Type '{ token: string; }' is missing the following properties from type 'Promise<any>': then, catch, finally, [Symbol.toStringTag]
+app/(authenticated)/admin/page.tsx(195,37): error TS2322: Type '"default" | "destructive" | "warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+  Type '"warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+app/(authenticated)/admin/page.tsx(286,45): error TS2322: Type '"default" | "destructive" | "warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+  Type '"warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+app/(authenticated)/admin/system/page.tsx(60,20): error TS2322: Type '"default" | "destructive" | "outline" | "secondary" | "warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+  Type '"warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+app/(authenticated)/admin/system/page.tsx(95,51): error TS2339: Property 'lastActive' does not exist on type 'SystemHealth'.
+app/(authenticated)/admin/system/page.tsx(95,80): error TS2339: Property 'lastActive' does not exist on type 'SystemHealth'.
+app/(authenticated)/admin/system/page.tsx(108,64): error TS2339: Property 'heapUsed' does not exist on type 'MemoryMetrics'.
+app/(authenticated)/admin/system/page.tsx(111,67): error TS2339: Property 'heapTotal' does not exist on type 'MemoryMetrics'.
+app/(authenticated)/admin/system/page.tsx(122,57): error TS2339: Property 'uptime' does not exist on type 'SystemMetrics'.
+app/(authenticated)/admin/system/page.tsx(122,95): error TS2339: Property 'uptime' does not exist on type 'SystemMetrics'.
+app/(authenticated)/admin/users/page.tsx(337,73): error TS2339: Property 'newUsersLastMonth' does not exist on type 'UserStats'.
+app/admin/pulses/page.tsx(24,17): error TS2345: Argument of type 'Pulse[]' is not assignable to parameter of type 'SetStateAction<Pulse[]>'.
+  Type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/services/pulse-service").Pulse[]' is not assignable to type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/types/pulses").Pulse[]'.
+    Type 'Pulse' is missing the following properties from type 'Pulse': dashboardId, schedule, config, isActive, and 4 more.
+app/admin/roles/page.tsx(595,46): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+app/admin/roles/page.tsx(615,36): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+app/admin/roles/page.tsx(636,38): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+app/api/auth/webauthn/authenticate/route.ts(8,45): error TS2307: Cannot find module '@simplewebauthn/types' or its corresponding type declarations.
+app/api/auth/webauthn/register/route.ts(11,45): error TS2307: Cannot find module '@simplewebauthn/types' or its corresponding type declarations.
+app/api/auth/webauthn/register/route.ts(88,21): error TS2339: Property 'credentialID' does not exist on type '{ fmt: AttestationFormat; aaguid: string; credential: WebAuthnCredential; credentialType: "public-key"; attestationObject: Uint8Array<ArrayBuffer>; ... 5 more ...; authenticatorExtensionResults?: unknown; }'.
+app/api/auth/webauthn/register/route.ts(88,35): error TS2339: Property 'credentialPublicKey' does not exist on type '{ fmt: AttestationFormat; aaguid: string; credential: WebAuthnCredential; credentialType: "public-key"; attestationObject: Uint8Array<ArrayBuffer>; ... 5 more ...; authenticatorExtensionResults?: unknown; }'.
+app/api/auth/webauthn/register/route.ts(88,56): error TS2339: Property 'counter' does not exist on type '{ fmt: AttestationFormat; aaguid: string; credential: WebAuthnCredential; credentialType: "public-key"; attestationObject: Uint8Array<ArrayBuffer>; ... 5 more ...; authenticatorExtensionResults?: unknown; }'.
+app/auth/register/page.tsx(213,29): error TS2322: Type '{ onChange: ChangeHandler; onBlur: ChangeHandler; ref: RefCallBack; name: "password"; min?: string | number | undefined; max?: string | number | undefined; ... 10 more ...; value: string; }' is not assignable to type 'IntrinsicAttributes & PasswordInputProps & RefAttributes<HTMLInputElement>'.
+  Property 'strength' does not exist on type 'IntrinsicAttributes & PasswordInputProps & RefAttributes<HTMLInputElement>'.
+app/docs/layout.tsx(101,43): error TS2339: Property 'icon' does not exist on type '{ title: string; href: string; } | { title: string; href: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }'.
+  Property 'icon' does not exist on type '{ title: string; href: string; }'.
+app/docs/layout.tsx(101,57): error TS2339: Property 'icon' does not exist on type '{ title: string; href: string; } | { title: string; href: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }'.
+  Property 'icon' does not exist on type '{ title: string; href: string; }'.
+app/explorer/page.tsx(89,20): error TS2345: Argument of type '(prev: Partial<VisualizationConfig>) => { annotations: (Record<string, unknown> | Annotation)[]; type?: VisualizationType | undefined; ... 21 more ...; tooltipTemplate?: string | undefined; }' is not assignable to parameter of type 'SetStateAction<Partial<VisualizationConfig>>'.
+  Type '(prev: Partial<VisualizationConfig>) => { annotations: (Record<string, unknown> | Annotation)[]; type?: VisualizationType | undefined; ... 21 more ...; tooltipTemplate?: string | undefined; }' is not assignable to type '(prevState: Partial<VisualizationConfig>) => Partial<VisualizationConfig>'.
+    Call signature return types '{ annotations: (Record<string, unknown> | Annotation)[]; type?: VisualizationType | undefined; xAxis?: string | undefined; yAxis?: string[] | undefined; ... 19 more ...; tooltipTemplate?: string | undefined; }' and 'Partial<VisualizationConfig>' are incompatible.
+      The types of 'annotations' are incompatible between these types.
+        Type '(Record<string, unknown> | Annotation)[]' is not assignable to type 'Annotation[]'.
+          Type 'Record<string, unknown> | Annotation' is not assignable to type 'Annotation'.
+            Type 'Record<string, unknown>' is missing the following properties from type 'Annotation': id, label, xValue, yValue
+app/metadata/page.tsx(301,31): error TS2322: Type 'string | number | undefined' is not assignable to type 'number | undefined'.
+  Type 'string' is not assignable to type 'number'.
+app/stories/page.tsx(17,11): error TS2322: Type '{ isCollapsed: boolean; onToggle: () => void; }' is not assignable to type 'IntrinsicAttributes & SidebarProps'.
+  Property 'onToggle' does not exist on type 'IntrinsicAttributes & SidebarProps'.
+app/workspace/[workspaceId]/pipelines/[id]/page.tsx(69,38): error TS2322: Type '{ executions: { status: string; error: string | null; id: string; durationMs: number | null; startedAt: Date; pipelineId: string; completedAt: Date | null; rowsProcessed: number; logs: JsonValue; }[]; }' is not assignable to type 'IntrinsicAttributes & PipelineHistoryProps'.
+  Property 'executions' does not exist on type 'IntrinsicAttributes & PipelineHistoryProps'.
+app/workspace/[workspaceId]/pipelines/dashboard/page.tsx(144,37): error TS2322: Type '{ id: string; pipelineName: string; startedAt: string; error: string | number | true | JsonObject | JsonArray; }[]' is not assignable to type 'Failure[]'.
+  Type '{ id: string; pipelineName: string; startedAt: string; error: string | number | true | JsonObject | JsonArray; }' is not assignable to type 'Failure'.
+    Types of property 'error' are incompatible.
+      Type 'string | number | true | JsonObject | JsonArray' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+components/ai/ai-chat-assistant.tsx(305,104): error TS2339: Property 'inline' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
+components/ai/ai-chat-assistant.tsx(310,81): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: SyntaxHighlighterProps): SyntaxHighlighter', gave the following error.
+    Type 'CSSProperties | { [key: string]: CSSProperties; }' is not assignable to type '{ [key: string]: CSSProperties; } | undefined'.
+      Type 'CSSProperties' is not assignable to type '{ [key: string]: CSSProperties; }'.
+        Index signature for type 'string' is missing in type 'Properties<string | number, string & {}>'.
+  Overload 2 of 2, '(props: SyntaxHighlighterProps, context: any): SyntaxHighlighter', gave the following error.
+    Type 'CSSProperties | { [key: string]: CSSProperties; }' is not assignable to type '{ [key: string]: CSSProperties; } | undefined'.
+      Type 'CSSProperties' is not assignable to type '{ [key: string]: CSSProperties; }'.
+        Index signature for type 'string' is missing in type 'Properties<string | number, string & {}>'.
+components/ai/ai-chat.tsx(294,92): error TS2339: Property 'inline' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
+components/collaboration/comment-input.tsx(40,17): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+components/collections-sidebar.tsx(41,13): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+components/collections-sidebar.tsx(110,42): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+components/dashboard-card.tsx(52,5): error TS2353: Object literal may only specify known properties, and 'data' does not exist in type 'UseAggregationOptions'.
+components/dashboard/add-to-dashboard-dialog.tsx(109,17): error TS2322: Type '(DashboardCard | { id: string; dashboardId: string; queryId: string; position: { x: number; y: number; w: number; h: number; }; visualizationConfig: { type: VisualizationType; ... 22 more ...; tooltipTemplate?: string | undefined; }; })[]' is not assignable to type 'DashboardCard[]'.
+  Type 'DashboardCard | { id: string; dashboardId: string; queryId: string; position: { x: number; y: number; w: number; h: number; }; visualizationConfig: { type: VisualizationType; ... 22 more ...; tooltipTemplate?: string | undefined; }; }' is not assignable to type 'DashboardCard'.
+    Type '{ id: string; dashboardId: string; queryId: string; position: { x: number; y: number; w: number; h: number; }; visualizationConfig: { type: VisualizationType; xAxis: string; yAxis: string[]; ... 20 more ...; tooltipTemplate?: string | undefined; }; }' is missing the following properties from type 'DashboardCard': type, title
+components/dashboard/dashboard-grid.tsx(102,14): error TS2578: Unused '@ts-expect-error' directive.
+components/dashboard/dashboard-grid.tsx(112,17): error TS2578: Unused '@ts-expect-error' directive.
+components/forecast-chart.tsx(5,32): error TS2307: Cannot find module '@/components/echarts-wrapper' or its corresponding type declarations.
+components/notifications/scheduler-manager.tsx(126,32): error TS2345: Argument of type 'string' is not assignable to parameter of type 'void'.
+components/notifications/scheduler-manager.tsx(129,33): error TS2345: Argument of type 'string' is not assignable to parameter of type 'void'.
+components/pulse/pulse-dialog.tsx(120,40): error TS2345: Argument of type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/types/pulses").CreatePulseRequest' is not assignable to parameter of type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/services/pulse-service").CreatePulseRequest'.
+  Type 'CreatePulseRequest' is missing the following properties from type 'CreatePulseRequest': dashboard_id, schedule_interval, channel
+components/query-builder/data-blend-builder.tsx(253,18): error TS2345: Argument of type 'Node[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'Node[]' is not assignable to type 'never[]'.
+    Type 'Node' is not assignable to type 'never'.
+components/query-builder/data-blend-builder.tsx(270,18): error TS2345: Argument of type 'Edge[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'Edge[]' is not assignable to type 'never[]'.
+    Type 'Edge' is not assignable to type 'never'.
+components/query-builder/visual-query-workspace.tsx(370,25): error TS2322: Type 'TableSelection[]' is not assignable to type 'TableSchema[]'.
+  Property 'columns' is missing in type 'TableSelection' but required in type 'TableSchema'.
+components/query-results/spreadsheet-view.backup.tsx(48,39): error TS2322: Type '"exportFile"' is not assignable to type 'PredefinedMenuItemKey'.
+components/query-results/spreadsheet-view.tsx(48,39): error TS2322: Type '"exportFile"' is not assignable to type 'PredefinedMenuItemKey'.
+components/reports/report-schedule-form.tsx(40,3): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_SCHEDULE_TYPES'. Did you mean 'SCHEDULE_TYPES'?
+components/reports/report-schedule-form.tsx(41,3): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_DAYS_OF_WEEK'. Did you mean 'DAYS_OF_WEEK'?
+components/semantic/ai-chat-interface.tsx(222,41): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+components/semantic/ai-chat-interface.tsx(222,46): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/semantic/ai-chat-interface.tsx(288,70): error TS7006: Parameter 'm' implicitly has an 'any' type.
+components/semantic/ai-chat-interface.tsx(288,93): error TS2339: Property 'id' does not exist on type '{}'.
+components/semantic/ai-chat-interface.tsx(291,47): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/ai-chat-interface.tsx(292,49): error TS2339: Property 'createdAt' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(56,21): error TS2345: Argument of type '{ type: "chart" | "data" | "query"; prompt: string; context: Record<string, any>; }' is not assignable to parameter of type 'void'.
+components/semantic/data-explainer.tsx(64,27): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(67,61): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(163,13): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/semantic/data-explainer.tsx(230,46): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(232,42): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(234,51): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(245,50): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(268,34): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(270,82): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/formula-autocomplete-dropdown.tsx(131,41): error TS2322: Type '(el: HTMLDivElement | null) => HTMLDivElement | null' is not assignable to type 'Ref<HTMLDivElement> | undefined'.
+  Type '(el: HTMLDivElement | null) => HTMLDivElement | null' is not assignable to type '(instance: HTMLDivElement | null) => void | (() => VoidOrUndefinedOnly)'.
+    Type 'HTMLDivElement | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+      Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+components/semantic/formula-editor-ai.tsx(64,25): error TS2345: Argument of type '{ description: string; availableColumns: string[]; }' is not assignable to parameter of type 'void'.
+components/semantic/formula-editor-ai.tsx(69,53): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(70,49): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(92,32): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(95,66): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(151,13): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/semantic/formula-editor-ai.tsx(254,47): error TS2339: Property 'isValid' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(272,51): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(274,47): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(276,56): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(287,50): error TS2339: Property 'isValid' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(293,51): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(315,39): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(317,87): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(322,39): error TS2339: Property 'isValid' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(56,19): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(57,38): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(67,25): error TS2345: Argument of type '{ prompt: string; dataSourceId: string | undefined; context: {}; }' is not assignable to parameter of type 'void'.
+components/semantic/formula-editor.tsx(218,25): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/semantic/formula-editor.tsx(289,39): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(291,47): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(294,39): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(294,66): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(296,48): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/query-builder-ai.tsx(58,13): error TS2353: Object literal may only specify known properties, and 'prompt' does not exist in type 'SemanticQueryRequest'.
+components/semantic/query-builder-ai.tsx(62,49): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(63,45): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(68,30): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(71,64): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(81,30): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(84,77): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(193,45): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(211,49): error TS2339: Property 'tokensUsed' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(213,45): error TS2339: Property 'cost' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(215,54): error TS2339: Property 'cost' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(226,48): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(232,49): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(254,37): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(256,85): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(261,37): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder.tsx(34,13): error TS2339: Property 'mutate' does not exist on type '{ generateQuery: UseMutateFunction<SemanticQueryResponse, Error, SemanticQueryRequest, unknown>; generateQueryAsync: UseMutateAsyncFunction<...>; isGenerating: boolean; generatedQuery: SemanticQueryResponse | undefined; error: Error | null; }'.
+components/semantic/query-builder.tsx(34,36): error TS2339: Property 'isPending' does not exist on type '{ generateQuery: UseMutateFunction<SemanticQueryResponse, Error, SemanticQueryRequest, unknown>; generateQueryAsync: UseMutateAsyncFunction<...>; isGenerating: boolean; generatedQuery: SemanticQueryResponse | undefined; error: Error | null; }'.
+components/semantic/query-builder.tsx(34,47): error TS2339: Property 'data' does not exist on type '{ generateQuery: UseMutateFunction<SemanticQueryResponse, Error, SemanticQueryRequest, unknown>; generateQueryAsync: UseMutateAsyncFunction<...>; isGenerating: boolean; generatedQuery: SemanticQueryResponse | undefined; error: Error | null; }'.
+components/semantic/semantic-history.tsx(180,38): error TS7006: Parameter 'request' implicitly has an 'any' type.
+components/ui/button.test.tsx(4,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(5,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(8,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(9,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(10,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(13,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(16,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(17,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(20,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(23,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(24,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(27,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(30,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(33,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(36,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(37,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(40,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(42,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(45,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(48,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(51,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(52,25): error TS2304: Cannot find name 'vi'.
+components/ui/button.test.tsx(56,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(59,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(66,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(67,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(68,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(71,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(74,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(75,5): error TS2304: Cannot find name 'expect'.
+components/version-control/version-diff.tsx(26,10): error TS2305: Module '"@/lib/utils"' has no exported member 'Utils'.
+components/version-control/version-history.tsx(5,25): error TS7016: Could not find a declaration file for module 'lodash'. 'E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+components/version-control/version-history.tsx(37,3): error TS2305: Module '"@/lib/api/versions"' has no exported member 'MAX_COMPARE_VERSIONS'.
+components/version-control/version-history.tsx(112,46): error TS7006: Parameter 'version' implicitly has an 'any' type.
+components/visual-query/TableSelector.tsx(44,34): error TS2339: Property 'tables' does not exist on type 'ConnectionSchema'.
+components/visualizations/chart-formatting.tsx(17,5): error TS2724: '"@/lib/chart-palettes"' has no exported member named '_ALL_PALETTES'. Did you mean 'ALL_PALETTES'?
+components/visualizations/chart-formatting.tsx(24,5): error TS2724: '"@/lib/chart-templates"' has no exported member named '_ALL_CHART_TEMPLATES'. Did you mean 'ALL_CHART_TEMPLATES'?
+components/visualizations/choropleth-map.tsx(18,5): error TS2724: '"./map-utils"' has no exported member named '_DEFAULT_COLOR_SCALES'. Did you mean 'DEFAULT_COLOR_SCALES'?
+components/visualizations/choropleth-map.tsx(273,29): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>, context?: any): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type 'GeoJSONFeatureCollection' is not assignable to type 'GeoJsonObject'.
+      Types of property 'bbox' are incompatible.
+        Type 'number[] | undefined' is not assignable to type 'BBox | undefined'.
+          Type 'number[]' is not assignable to type 'BBox | undefined'.
+            Type 'number[]' is not assignable to type '[number, number, number, number] | [number, number, number, number, number, number]'.
+              Type 'number[]' is not assignable to type '[number, number, number, number, number, number]'.
+                Target requires 6 element(s) but source may have fewer.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type 'GeoJSONFeatureCollection' is not assignable to type 'GeoJsonObject'.
+      Types of property 'bbox' are incompatible.
+        Type 'number[] | undefined' is not assignable to type 'BBox | undefined'.
+          Type 'number[]' is not assignable to type 'BBox | undefined'.
+            Type 'number[]' is not assignable to type '[number, number, number, number] | [number, number, number, number, number, number]'.
+              Type 'number[]' is not assignable to type '[number, number, number, number, number, number]'.
+                Target requires 6 element(s) but source may have fewer.
+components/visualizations/choropleth-map.tsx(300,18): error TS2769: No overload matches this call.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type 'GeoJSONFeatureCollection' is not assignable to type 'GeoJsonObject'.
+      Types of property 'bbox' are incompatible.
+        Type 'number[] | undefined' is not assignable to type 'BBox | undefined'.
+          Type 'number[]' is not assignable to type 'BBox | undefined'.
+            Type 'number[]' is not assignable to type '[number, number, number, number] | [number, number, number, number, number, number]'.
+              Type 'number[]' is not assignable to type '[number, number, number, number, number, number]'.
+                Target requires 6 element(s) but source may have fewer.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type '(feature: GeoJSONFeature) => { fillColor: string; fillOpacity: number; color: string; weight: number; opacity: number; }' is not assignable to type 'PathOptions | StyleFunction<any> | undefined'.
+      Type '(feature: GeoJSONFeature) => { fillColor: string; fillOpacity: number; color: string; weight: number; opacity: number; }' is not assignable to type 'StyleFunction<any>'.
+        Types of parameters 'feature' and 'feature' are incompatible.
+          Type 'Feature<Geometry, any> | undefined' is not assignable to type 'GeoJSONFeature'.
+            Type 'undefined' is not assignable to type 'GeoJSONFeature'.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type '(feature: GeoJSONFeature, layer: any) => void' is not assignable to type '(feature: Feature<Geometry, any>, layer: Layer) => void'.
+      Types of parameters 'feature' and 'feature' are incompatible.
+        Type 'Feature<Geometry, any>' is not assignable to type 'GeoJSONFeature'.
+          Types of property 'geometry' are incompatible.
+            Type 'Geometry' is not assignable to type '{ type: string; coordinates: any; }'.
+              Property 'coordinates' is missing in type 'GeometryCollection<Geometry>' but required in type '{ type: string; coordinates: any; }'.
+components/visualizations/donut-chart.tsx(85,29): error TS2322: Type '({ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; } | { type: "text"; left: string; top: string; style: { text: string; fontSize: number; fill: string; textAlign: "center"; }; })[] | undefined' is not assignable to type 'GraphicComponentLooseOption | GraphicComponentLooseOption[] | undefined'.
+  Type '({ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; } | { type: "text"; left: string; top: string; style: { text: string; fontSize: number; fill: string; textAlign: "center"; }; })[]' is not assignable to type 'GraphicComponentLooseOption | GraphicComponentLooseOption[] | undefined'.
+    Type '({ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; } | { type: "text"; left: string; top: string; style: { text: string; fontSize: number; fill: string; textAlign: "center"; }; })[]' is not assignable to type 'GraphicComponentLooseOption[]'.
+      Type '{ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; }' is not assignable to type 'GraphicComponentLooseOption'.
+        Types of property 'style' are incompatible.
+          Object literal may only specify known properties, and 'textAlign' does not exist in type '(PathStyleProps & TransitionOptionMixin<PathStyleProps>) | (TextStyleProps & TransitionOptionMixin<TextStyleProps>)'.
+components/visualizations/forecast-chart.tsx(44,15): error TS7034: Variable 'combined' implicitly has type 'any[]' in some locations where its type cannot be determined.
+components/visualizations/forecast-chart.tsx(80,16): error TS7005: Variable 'combined' implicitly has an 'any[]' type.
+components/visualizations/sankey-chart.tsx(78,21): error TS2322: Type '{ type: "sankey"; layout: string; layoutIterations: number; orient: "horizontal" | "vertical"; emphasis: { focus: "adjacency"; }; nodeWidth: number; nodeGap: number; data: { name: string; value: number | undefined; itemStyle: { ...; } | undefined; label: { ...; } | undefined; }[]; links: { ...; }[]; lineStyle: { ......' is not assignable to type 'SeriesOption | SeriesOption[] | undefined'.
+  Type '{ type: "sankey"; layout: string; layoutIterations: number; orient: "horizontal" | "vertical"; emphasis: { focus: "adjacency"; }; nodeWidth: number; nodeGap: number; data: { name: string; value: number | undefined; itemStyle: { ...; } | undefined; label: { ...; } | undefined; }[]; links: { ...; }[]; lineStyle: { ......' is not assignable to type 'MapSeriesOption$1 | CustomSeriesOption | LineSeriesOption$1 | BarSeriesOption | PieSeriesOption$1 | ... 18 more ... | SeriesOption[]'.
+    Type '{ type: "sankey"; layout: string; layoutIterations: number; orient: "horizontal" | "vertical"; emphasis: { focus: "adjacency"; }; nodeWidth: number; nodeGap: number; data: { name: string; value: number | undefined; itemStyle: { ...; } | undefined; label: { ...; } | undefined; }[]; links: { ...; }[]; lineStyle: { ......' is not assignable to type 'SeriesOption[]'.
+      Object literal may only specify known properties, and 'layout' does not exist in type 'SankeySeriesOption$1'.
+components/visualizations/small-multiples.tsx(59,25): error TS2353: Object literal may only specify known properties, and 'showLegend' does not exist in type 'VisualizationConfig'.
+components/visualizations/stream-graph.tsx(80,9): error TS2322: Type '{ type: "themeRiver"; data: (string | number)[][]; emphasis: { itemStyle: { shadowBlur: number; shadowColor: string; }; }; label: { show: true; fontSize: number; color: string; }; itemStyle: { borderWidth: number; }; color: string[]; }[]' is not assignable to type 'SeriesOption | SeriesOption[] | undefined'.
+  Type '{ type: "themeRiver"; data: (string | number)[][]; emphasis: { itemStyle: { shadowBlur: number; shadowColor: string; }; }; label: { show: true; fontSize: number; color: string; }; itemStyle: { borderWidth: number; }; color: string[]; }[]' is not assignable to type 'MapSeriesOption$1 | LineSeriesOption$1 | TreeSeriesOption$1 | CustomSeriesOption | BarSeriesOption | ... 18 more ... | SeriesOption[]'.
+    Type '{ type: "themeRiver"; data: (string | number)[][]; emphasis: { itemStyle: { shadowBlur: number; shadowColor: string; }; }; label: { show: true; fontSize: number; color: string; }; itemStyle: { borderWidth: number; }; color: string[]; }' is not assignable to type 'SeriesOption'.
+      Types of property 'data' are incompatible.
+        Type '(string | number)[][]' is not assignable to type 'ThemerRiverDataItem[]'.
+          Type '(string | number)[]' is not assignable to type 'ThemerRiverDataItem'.
+            Target requires 3 element(s) but source may have fewer.
+components/visualizations/treemap-enhanced.tsx(76,21): error TS2322: Type '{ type: "treemap"; data: { itemStyle: { color?: string | undefined; borderColor?: string | undefined; }; name: string; value: number; children?: TreemapEnhancedNode[] | undefined; }[]; ... 8 more ...; levels: ({ ...; } | { ...; })[]; }[]' is not assignable to type 'SeriesOption | SeriesOption[] | undefined'.
+  Type '{ type: "treemap"; data: { itemStyle: { color?: string | undefined; borderColor?: string | undefined; }; name: string; value: number; children?: TreemapEnhancedNode[] | undefined; }[]; ... 8 more ...; levels: ({ ...; } | { ...; })[]; }[]' is not assignable to type 'MapSeriesOption$1 | CustomSeriesOption | LineSeriesOption$1 | BarSeriesOption | PieSeriesOption$1 | ... 18 more ... | SeriesOption[]'.
+    Type '{ type: "treemap"; data: { itemStyle: { color?: string; borderColor?: string; }; name: string; value: number; children?: TreemapEnhancedNode[]; }[]; leafDepth: number; roam: false; nodeClick: "zoomToNode"; ... 5 more ...; levels: ({ ...; } | { ...; })[]; }' is not assignable to type 'SeriesOption'.
+      Types of property 'breadcrumb' are incompatible.
+        Object literal may only specify known properties, and 'textStyle' does not exist in type 'BoxLayoutOptionMixin & { show?: boolean | undefined; height?: number | undefined; emptyItemWidth?: number | undefined; itemStyle?: BreadcrumbItemStyleOption | undefined; emphasis?: { ...; } | undefined; }'.
+contexts/workspace-context.tsx(55,29): error TS2345: Argument of type 'Workspace' is not assignable to parameter of type 'SetStateAction<Workspace | null>'.
+  Type 'Workspace' is missing the following properties from type 'Workspace': slug, plan, role
+contexts/workspace-context.tsx(65,31): error TS2345: Argument of type 'Workspace' is not assignable to parameter of type 'SetStateAction<Workspace | null>'.
+  Type 'Workspace' is missing the following properties from type 'Workspace': slug, plan, role
+hooks/use-analyze-query.ts(7,52): error TS2339: Property 'analyzeQuery' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-estimate-cost.ts(25,25): error TS2339: Property 'estimateCost' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-estimate-cost.ts(32,25): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<EstimateCostResponse | null>'.
+hooks/use-formula-autocomplete.ts(17,25): error TS2339: Property 'formulaAutocomplete' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-formula-autocomplete.ts(23,28): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<AutocompleteResponse | null>'.
+hooks/use-scheduler.ts(96,34): error TS2339: Property 'pauseJob' does not exist on type '{ listJobs: () => Promise<SchedulerJob[]>; createJob: (job: CreateSchedulerJobInput) => Promise<SchedulerJob>; updateJob: (id: string, job: UpdateSchedulerJobInput) => Promise<...>; deleteJob: (id: string) => Promise<...>; triggerJob: (id: string) => Promise<...>; getJobHistory: (id: string) => Promise<...>; }'.
+hooks/use-scheduler.ts(104,35): error TS2367: This comparison appears to be unintentional because the types 'string' and 'void' have no overlap.
+hooks/use-scheduler.ts(125,34): error TS2339: Property 'resumeJob' does not exist on type '{ listJobs: () => Promise<SchedulerJob[]>; createJob: (job: CreateSchedulerJobInput) => Promise<SchedulerJob>; updateJob: (id: string, job: UpdateSchedulerJobInput) => Promise<...>; deleteJob: (id: string) => Promise<...>; triggerJob: (id: string) => Promise<...>; getJobHistory: (id: string) => Promise<...>; }'.
+hooks/use-scheduler.ts(133,35): error TS2367: This comparison appears to be unintentional because the types 'string' and 'void' have no overlap.
+hooks/use-scheduler.ts(187,37): error TS2339: Property 'getJob' does not exist on type '{ listJobs: () => Promise<SchedulerJob[]>; createJob: (job: CreateSchedulerJobInput) => Promise<SchedulerJob>; updateJob: (id: string, job: UpdateSchedulerJobInput) => Promise<...>; deleteJob: (id: string) => Promise<...>; triggerJob: (id: string) => Promise<...>; getJobHistory: (id: string) => Promise<...>; }'.
+hooks/use-semantic.ts(21,33): error TS2339: Property 'explainData' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(26,17): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(28,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(60,23): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+hooks/use-semantic.ts(60,39): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+hooks/use-semantic.ts(62,39): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+hooks/use-semantic.ts(89,33): error TS2339: Property 'generateFormula' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(94,18): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(94,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(96,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(125,33): error TS2339: Property 'chat' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(130,17): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(132,57): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(136,17): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(138,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(155,31): error TS2339: Property 'chatStream' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(155,49): error TS7006: Parameter 'chunk' implicitly has an 'any' type.
+hooks/use-semantic.ts(200,36): error TS2339: Property 'getRequests' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(213,36): error TS2339: Property 'getRequest' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(227,25): error TS2339: Property 'getRequests' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(233,38): error TS7006: Parameter 'req' implicitly has an 'any' type.
+lib/connectors/connection-pool.ts(77,42): error TS2339: Property 'disconnect' does not exist on type 'BaseConnector'.
+lib/connectors/connection-pool.ts(96,34): error TS2339: Property 'disconnect' does not exist on type 'BaseConnector'.
+lib/queue/reporting-worker.ts(23,32): error TS2339: Property 'reportSchedule' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/queue/reporting-worker.ts(50,54): error TS2322: Type '"new"' is not assignable to type 'boolean | "shell" | undefined'.
+lib/queue/reporting-worker.ts(80,22): error TS2339: Property 'reportSchedule' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/repositories/dashboard-repo.ts(61,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/repositories/dashboard-repo.ts(76,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/repositories/settings-repo.ts(8,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/repositories/settings-repo.ts(24,13): error TS2578: Unused '@ts-expect-error' directive.
+types/scheduled-reports.ts(151,18): error TS2430: Interface 'ScheduledReportResponse' incorrectly extends interface 'ScheduledReport'.
+  Types of property 'recipients' are incompatible.
+    Type 'RecipientResponse[]' is not assignable to type 'ScheduledReportRecipient[]'.
+      Type 'RecipientResponse' is missing the following properties from type 'ScheduledReportRecipient': reportId, createdAt
+vitest.setup.ts(4,1): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(6,15): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(7,18): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(8,19): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(9,15): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(10,18): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(11,18): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(19,1): error TS2304: Cannot find name 'vi'.

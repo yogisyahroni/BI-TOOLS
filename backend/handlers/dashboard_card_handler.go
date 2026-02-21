@@ -8,6 +8,7 @@ import (
 	"gorm.io/datatypes"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 // DashboardCardHandler handles dashboard card operations
@@ -101,9 +102,25 @@ func (h *DashboardCardHandler) AddCard(c *fiber.Ctx) error {
 		cardType = *req.Type
 	}
 
+	parsedDashboardID, err := uuid.Parse(dashboardID)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{
+			"status":  "error",
+			"message": "Invalid dashboard ID",
+			"error":   err.Error(),
+		})
+	}
+
+	var parsedQueryID *uuid.UUID
+	if req.QueryID != nil && *req.QueryID != "" {
+		if pid, err := uuid.Parse(*req.QueryID); err == nil {
+			parsedQueryID = &pid
+		}
+	}
+
 	card := models.DashboardCard{
-		DashboardID:         dashboardID,
-		QueryID:             req.QueryID,
+		DashboardID:         parsedDashboardID,
+		QueryID:             parsedQueryID,
 		Title:               req.Title,
 		Type:                cardType,
 		TextContent:         req.TextContent,
@@ -157,11 +174,9 @@ func (h *DashboardCardHandler) UpdateCardPositions(c *fiber.Ctx) error {
 		})
 	}
 
-	if req.Cards == nil || len(req.Cards) == 0 {
-		return c.Status(400).JSON(fiber.Map{
-			"success": false,
-			"error":   "Cards array is required",
-		})
+	// Check if cards are empty
+	if len(req.Cards) == 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "No cards provided"})
 	}
 
 	// Update each card's position

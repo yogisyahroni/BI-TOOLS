@@ -8,7 +8,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
@@ -330,7 +329,7 @@ func (s *QueryVersionService) RestoreVersion(versionID string, userID string) (*
 	// Send notification
 	if s.notificationSvc != nil {
 		s.notificationSvc.SendNotification(
-			uuid.MustParse(userID),
+			userID,
 			"Query Restored",
 			fmt.Sprintf("Query '%s' was restored to version %d", query.Name, version.Version),
 			"success",

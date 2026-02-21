@@ -1,44 +1,41 @@
-'use client';
+"use client";
 
-import { useUser } from '@/contexts/user-context';
-import { ActivityFeed } from './activity-feed';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Users, History, Settings } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUserStore } from "@/stores/useUserStore";
+import { ActivityFeed } from "./activity-feed";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Users, History, Settings } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface CollaborationSidebarProps {
   queryId?: string;
   dashboardId?: string;
 }
 
-export function CollaborationSidebar({
-  _queryId,
-  _dashboardId,
-}: CollaborationSidebarProps) {
-  const { user } = useUser();
+export function CollaborationSidebar({ queryId, dashboardId }: CollaborationSidebarProps) {
+  const user = useUserStore((state) => state.user);
 
   const TEAM_MEMBERS = [
     {
-      id: '1',
-      name: 'John Doe',
-      email: 'john@example.com',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=john',
-      status: 'online',
+      id: "1",
+      name: "John Doe",
+      email: "john@example.com",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=john",
+      status: "online",
     },
     {
-      id: '2',
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=jane',
-      status: 'offline',
+      id: "2",
+      name: "Jane Smith",
+      email: "jane@example.com",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=jane",
+      status: "offline",
     },
     {
-      id: '3',
-      name: 'Bob Wilson',
-      email: 'bob@example.com',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=bob',
-      status: 'online',
+      id: "3",
+      name: "Bob Wilson",
+      email: "bob@example.com",
+      avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=bob",
+      status: "online",
     },
   ];
 
@@ -69,21 +66,15 @@ export function CollaborationSidebar({
             {/* Current User */}
             {user && (
               <div className="mb-4 pb-4 border-b border-border">
-                <p className="text-xs font-medium text-muted-foreground mb-2">
-                  YOU
-                </p>
+                <p className="text-xs font-medium text-muted-foreground mb-2">YOU</p>
                 <div className="flex items-center gap-3 p-2 rounded-lg bg-primary/10">
                   <Avatar className="w-8 h-8">
                     <AvatarImage src={user.avatar || "/placeholder.svg"} alt={user.name} />
                     <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground truncate">
-                      {user.name}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate">
-                      {user.email}
-                    </p>
+                    <p className="text-sm font-medium text-foreground truncate">{user.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                   </div>
                   <div className="w-2 h-2 rounded-full bg-green-500 flex-shrink-0" />
                 </div>
@@ -104,16 +95,15 @@ export function CollaborationSidebar({
                     <div className="flex items-center gap-2 flex-1 min-w-0">
                       <div className="relative flex-shrink-0">
                         <Avatar className="w-8 h-8">
-                          <AvatarImage src={member.avatar || "/placeholder.svg"} alt={member.name} />
-                          <AvatarFallback>
-                            {member.name.charAt(0)}
-                          </AvatarFallback>
+                          <AvatarImage
+                            src={member.avatar || "/placeholder.svg"}
+                            alt={member.name}
+                          />
+                          <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div
                           className={`absolute bottom-0 right-0 w-2 h-2 rounded-full ${
-                            member.status === 'online'
-                              ? 'bg-green-500'
-                              : 'bg-gray-400'
+                            member.status === "online" ? "bg-green-500" : "bg-gray-400"
                           }`}
                         />
                       </div>
@@ -121,9 +111,7 @@ export function CollaborationSidebar({
                         <p className="text-sm font-medium text-foreground truncate">
                           {member.name}
                         </p>
-                        <p className="text-xs text-muted-foreground truncate">
-                          {member.email}
-                        </p>
+                        <p className="text-xs text-muted-foreground truncate">{member.email}</p>
                       </div>
                     </div>
                     <Button

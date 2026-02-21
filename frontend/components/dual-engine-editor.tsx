@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useRef, useEffect, type KeyboardEvent } from 'react';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Label } from '@/components/ui/label';
+import { useState, useCallback, useRef, useEffect, type KeyboardEvent } from "react";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
@@ -13,50 +13,50 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import {
-  _DropdownMenu,
-  _DropdownMenuContent,
-  _DropdownMenuItem,
-  _DropdownMenuSeparator,
-  _DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
-  _Send,
+  Send,
   Code,
   Sparkles,
   Search,
   Play,
   Save,
   Wand2,
-  _ChevronDown,
-  _History,
+  ChevronDown,
+  History,
   Variable,
   AlertCircle,
   Loader2,
-} from 'lucide-react';
-import { useQueryExecution } from '@/hooks/use-query-execution';
-import { useSavedQueries } from '@/hooks/use-saved-queries';
-import { useAIQuery } from '@/hooks/use-ai-query';
-import { useQueryHistory } from '@/hooks/use-query-history';
+} from "lucide-react";
+import { useQueryExecution } from "@/hooks/use-query-execution";
+import { useSavedQueries } from "@/hooks/use-saved-queries";
+import { useAIQuery } from "@/hooks/use-ai-query";
+import { useQueryHistory } from "@/hooks/use-query-history";
 import {
   formatSQL,
   validateSQL,
   extractQueryVariables,
   replaceQueryVariables,
-} from '@/lib/sql-utils';
+} from "@/lib/sql-utils";
 
-import { MonacoSqlEditor } from '@/components/query-editor/monaco-sql-editor';
-import { HistoryDialog } from '@/components/query-history/history-dialog';
+import { MonacoSqlEditor } from "@/components/query-editor/monaco-sql-editor";
+import { HistoryDialog } from "@/components/query-history/history-dialog";
 
-import { AIModelSelector } from '@/components/ai-model-selector';
-import { DEFAULT_AI_MODEL, type AIModel } from '@/lib/ai/registry';
+import { AIModelSelector } from "@/components/ai-model-selector";
+import { DEFAULT_AI_MODEL, type AIModel } from "@/lib/ai/registry";
 
 interface DualEngineEditorProps {
   onSchemaClick: () => void;
   onResultsUpdate?: (results: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     data: any[];
     columns: string[];
     rowCount: number;
@@ -70,26 +70,26 @@ interface DualEngineEditorProps {
       name: string;
       columns: Array<{ name: string; type: string }>;
     }>;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSaveSuccess?: (query: any) => void;
-  mode?: 'default' | 'modal';
+  mode?: "default" | "modal";
 }
 
 export function DualEngineEditor({
   onSchemaClick,
   onResultsUpdate,
-  connectionId = 'db1',
+  connectionId = "db1",
   schema,
   onSaveSuccess,
-  mode = 'default',
+  mode = "default",
 }: DualEngineEditorProps) {
-  const [activeTab, setActiveTab] = useState('ai');
-  const [sqlQuery, setSqlQuery] = useState('SELECT * FROM orders LIMIT 10');
-  const [aiPrompt, setAiPrompt] = useState('');
+  const [activeTab, setActiveTab] = useState("ai");
+  const [sqlQuery, setSqlQuery] = useState("SELECT * FROM orders LIMIT 10");
+  const [aiPrompt, setAiPrompt] = useState("");
   const [selectedModel, setSelectedModel] = useState<AIModel>(DEFAULT_AI_MODEL);
-  const [queryName, setQueryName] = useState('');
+  const [queryName, setQueryName] = useState("");
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [showVariablesDialog, setShowVariablesDialog] = useState(false);
   const [queryVariables, setQueryVariables] = useState<Record<string, string>>({});
@@ -97,7 +97,8 @@ export function DualEngineEditor({
 
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { execute, isExecuting, error, data, _columns, rowCount, executionTime } = useQueryExecution();
+  const { execute, isExecuting, error, data, columns, rowCount, executionTime } =
+    useQueryExecution();
   const { saveQuery } = useSavedQueries();
   const { generateSQL, isGenerating, lastResult: aiResult } = useAIQuery({ connectionId, schema });
   const { addToHistory, getRecentQueries } = useQueryHistory();
@@ -122,11 +123,11 @@ export function DualEngineEditor({
 
     const result = await generateSQL(aiPrompt, {
       modelId: selectedModel.id,
-      providerId: selectedModel.providerId
+      providerId: selectedModel.providerId,
     });
     if (result) {
       setSqlQuery(result.sql);
-      setActiveTab('sql');
+      setActiveTab("sql");
     }
   }, [aiPrompt, generateSQL, selectedModel]);
 
@@ -156,15 +157,26 @@ export function DualEngineEditor({
     addToHistory(
       queryToExecute,
       connectionId,
-      result.success ? 'success' : 'error',
+      result.success ? "success" : "error",
       result.executionTime || 0,
       result.rowCount || 0,
       result.error || undefined,
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      aiPrompt || undefined
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      aiPrompt || undefined,
     );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sqlQuery, connectionId, detectedVariables, queryVariables, execute, addToHistory, executionTime, rowCount, error, aiPrompt]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    sqlQuery,
+    connectionId,
+    detectedVariables,
+    queryVariables,
+    execute,
+    addToHistory,
+    executionTime,
+    rowCount,
+    error,
+    aiPrompt,
+  ]);
 
   // Handle format SQL
   const handleFormat = useCallback(() => {
@@ -172,76 +184,82 @@ export function DualEngineEditor({
   }, [sqlQuery]);
 
   // Handle keyboard shortcuts
-  const _handleKeyDown = useCallback((e: KeyboardEvent<HTMLTextAreaElement>) => {
-    // Ctrl+Enter or Cmd+Enter to execute
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-      e.preventDefault();
-      handleExecute();
-    }
+  const _handleKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLTextAreaElement>) => {
+      // Ctrl+Enter or Cmd+Enter to execute
+      if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
+        e.preventDefault();
+        handleExecute();
+      }
 
-    // Ctrl+Shift+F to format
-    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'F') {
-      e.preventDefault();
-      handleFormat();
-    }
+      // Ctrl+Shift+F to format
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === "F") {
+        e.preventDefault();
+        handleFormat();
+      }
 
-    // Tab for indentation
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const start = e.currentTarget.selectionStart;
-      const end = e.currentTarget.selectionEnd;
-      const value = e.currentTarget.value;
-      setSqlQuery(value.substring(0, start) + '  ' + value.substring(end));
+      // Tab for indentation
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const start = e.currentTarget.selectionStart;
+        const end = e.currentTarget.selectionEnd;
+        const value = e.currentTarget.value;
+        setSqlQuery(value.substring(0, start) + "  " + value.substring(end));
 
-      // Set cursor position after the inserted spaces
-      setTimeout(() => {
-        if (textareaRef.current) {
-          textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 2;
-        }
-      }, 0);
-    }
-  }, [handleExecute, handleFormat]);
+        // Set cursor position after the inserted spaces
+        setTimeout(() => {
+          if (textareaRef.current) {
+            textareaRef.current.selectionStart = textareaRef.current.selectionEnd = start + 2;
+          }
+        }, 0);
+      }
+    },
+    [handleExecute, handleFormat],
+  );
 
   // Auto-complete suggestions
-  const _getAutoCompleteSuggestions = useCallback((cursorPosition: number): string[] => {
-    if (!schema) return [];
+  const _getAutoCompleteSuggestions = useCallback(
+    (cursorPosition: number): string[] => {
+      if (!schema) return [];
 
-    const textBeforeCursor = sqlQuery.substring(0, cursorPosition);
-    const lastWord = textBeforeCursor.split(/\s+/).pop()?.toLowerCase() || '';
+      const textBeforeCursor = sqlQuery.substring(0, cursorPosition);
+      const lastWord = textBeforeCursor.split(/\s+/).pop()?.toLowerCase() || "";
 
-    // After FROM or JOIN, suggest table names
-    if (/(?:from|join)\s*$/i.test(textBeforeCursor)) {
-      return schema.tables.map((t) => t.name);
-    }
-
-    // After table name and dot, suggest column names
-    const tableMatch = textBeforeCursor.match(/(\w+)\.\s*$/);
-    if (tableMatch) {
-      const tableName = tableMatch[1];
-      const table = schema.tables.find((t) => t.name.toLowerCase() === tableName.toLowerCase());
-      if (table) {
-        return table.columns.map((c) => c.name);
+      // After FROM or JOIN, suggest table names
+      if (/(?:from|join)\s*$/i.test(textBeforeCursor)) {
+        return schema.tables.map((t) => t.name);
       }
-    }
 
-    // Partial match for table/column names
-    if (lastWord.length >= 2) {
-      const suggestions: string[] = [];
-      schema.tables.forEach((table) => {
-        if (table.name.toLowerCase().includes(lastWord)) {
-          suggestions.push(table.name);
+      // After table name and dot, suggest column names
+      const tableMatch = textBeforeCursor.match(/(\w+)\.\s*$/);
+      if (tableMatch) {
+        const tableName = tableMatch[1];
+        const table = schema.tables.find((t) => t.name.toLowerCase() === tableName.toLowerCase());
+        if (table) {
+          return table.columns.map((c) => c.name);
         }
-        table.columns.forEach((col) => {
-          if (col.name.toLowerCase().includes(lastWord)) {
-            suggestions.push(`${table.name}.${col.name}`);
-          }
-        });
-      });
-      return suggestions.slice(0, 10);
-    }
+      }
 
-    return [];
-  }, [schema, sqlQuery]);
+      // Partial match for table/column names
+      if (lastWord.length >= 2) {
+        const suggestions: string[] = [];
+        schema.tables.forEach((table) => {
+          if (table.name.toLowerCase().includes(lastWord)) {
+            suggestions.push(table.name);
+          }
+          table.columns.forEach((col) => {
+            if (col.name.toLowerCase().includes(lastWord)) {
+              suggestions.push(`${table.name}.${col.name}`);
+            }
+          });
+        });
+        return suggestions.slice(0, 10);
+      }
+
+      return [];
+    },
+    [schema, sqlQuery],
+  );
 
   return (
     <div className="bg-card">
@@ -259,10 +277,17 @@ export function DualEngineEditor({
           </TabsList>
 
           {/* Keyboard shortcuts hint */}
-          {mode !== 'modal' && (
+          {mode !== "modal" && (
             <div className="text-xs text-muted-foreground hidden lg:flex items-center gap-3">
-              <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Ctrl</kbd>+<kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Enter</kbd> Execute</span>
-              <span><kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Ctrl</kbd>+<kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Shift</kbd>+<kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">F</kbd> Format</span>
+              <span>
+                <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Ctrl</kbd>+
+                <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Enter</kbd> Execute
+              </span>
+              <span>
+                <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Ctrl</kbd>+
+                <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">Shift</kbd>+
+                <kbd className="px-1.5 py-0.5 bg-muted rounded text-xs">F</kbd> Format
+              </span>
             </div>
           )}
         </div>
@@ -270,9 +295,7 @@ export function DualEngineEditor({
         {/* AI Prompt Tab */}
         <TabsContent value="ai" className="m-0 p-6 space-y-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-foreground">
-              Ask in Natural Language
-            </label>
+            <label className="text-sm font-medium text-foreground">Ask in Natural Language</label>
             <div className="flex flex-col sm:flex-row gap-2">
               <Input
                 placeholder="e.g., Show me top 5 customers by total sales last month"
@@ -281,17 +304,14 @@ export function DualEngineEditor({
                 className="flex-1"
                 data-testid="ai-prompt-input"
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
+                  if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     handleAIGenerate();
                   }
                 }}
               />
               <div className="flex gap-2">
-                <AIModelSelector
-                  selectedModel={selectedModel}
-                  onSelect={setSelectedModel}
-                />
+                <AIModelSelector selectedModel={selectedModel} onSelect={setSelectedModel} />
                 <Button
                   className="gap-2"
                   disabled={isGenerating || !aiPrompt.trim()}
@@ -320,7 +340,10 @@ export function DualEngineEditor({
 
           {/* AI Generated Result Preview */}
           {aiResult && (
-            <div className="p-4 rounded-lg bg-muted border border-border space-y-2" data-testid="ai-result-preview">
+            <div
+              className="p-4 rounded-lg bg-muted border border-border space-y-2"
+              data-testid="ai-result-preview"
+            >
               <div className="flex items-center justify-between">
                 <span className="text-sm font-medium text-foreground">Generated SQL</span>
                 <Badge variant="secondary" className="text-xs">
@@ -338,15 +361,13 @@ export function DualEngineEditor({
         <TabsContent value="sql" className="m-0 p-6 space-y-4">
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm font-medium text-foreground">
-                SQL Query
-              </label>
+              <label className="text-sm font-medium text-foreground">SQL Query</label>
 
               {/* Query History Dialog */}
               <HistoryDialog
                 onSelectQuery={(sql) => {
                   setSqlQuery(sql);
-                  setActiveTab('sql');
+                  setActiveTab("sql");
                 }}
               />
             </div>
@@ -378,7 +399,7 @@ export function DualEngineEditor({
                   onClick={() => setShowVariablesDialog(true)}
                 >
                   <Variable className="w-3 h-3" />
-                  {detectedVariables.length} variable{detectedVariables.length > 1 ? 's' : ''}
+                  {detectedVariables.length} variable{detectedVariables.length > 1 ? "s" : ""}
                 </Button>
               )}
             </div>
@@ -397,7 +418,7 @@ export function DualEngineEditor({
               ) : (
                 <Play className="w-4 h-4" />
               )}
-              {isExecuting ? 'Executing...' : 'Run Query'}
+              {isExecuting ? "Executing..." : "Run Query"}
             </Button>
 
             <Button variant="outline" size="sm" onClick={handleFormat}>
@@ -442,9 +463,7 @@ export function DualEngineEditor({
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle>Save Query</DialogTitle>
-            <DialogDescription>
-              Save this query for future use
-            </DialogDescription>
+            <DialogDescription>Save this query for future use</DialogDescription>
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
@@ -462,7 +481,7 @@ export function DualEngineEditor({
               variant="outline"
               onClick={() => {
                 setShowSaveDialog(false);
-                setQueryName('');
+                setQueryName("");
               }}
             >
               Cancel
@@ -474,9 +493,9 @@ export function DualEngineEditor({
                     name: queryName,
                     sql: sqlQuery,
                     connectionId,
-                    collectionId: 'default',
+                    collectionId: "default",
                     aiPrompt: aiPrompt || undefined,
-                    userId: 'current_user',
+                    userId: "current_user",
                     tags: [],
                   });
 
@@ -485,7 +504,7 @@ export function DualEngineEditor({
                   }
 
                   setShowSaveDialog(false);
-                  setQueryName('');
+                  setQueryName("");
                 }
               }}
               disabled={!queryName.trim()}
@@ -509,14 +528,12 @@ export function DualEngineEditor({
             {detectedVariables.map((varName) => (
               <div key={varName} className="space-y-2">
                 <Label htmlFor={varName} className="flex items-center gap-2">
-                  <code className="text-xs bg-muted px-1.5 py-0.5 rounded">
-                    {`{{${varName}}}`}
-                  </code>
+                  <code className="text-xs bg-muted px-1.5 py-0.5 rounded">{`{{${varName}}}`}</code>
                 </Label>
                 <Input
                   id={varName}
                   placeholder={`Enter value for ${varName}...`}
-                  value={queryVariables[varName] || ''}
+                  value={queryVariables[varName] || ""}
                   onChange={(e) =>
                     setQueryVariables((prev) => ({
                       ...prev,
@@ -528,15 +545,10 @@ export function DualEngineEditor({
             ))}
           </div>
           <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setShowVariablesDialog(false)}
-            >
+            <Button variant="outline" onClick={() => setShowVariablesDialog(false)}>
               Cancel
             </Button>
-            <Button onClick={() => setShowVariablesDialog(false)}>
-              Apply Variables
-            </Button>
+            <Button onClick={() => setShowVariablesDialog(false)}>Apply Variables</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

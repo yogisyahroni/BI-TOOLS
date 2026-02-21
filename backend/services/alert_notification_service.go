@@ -353,10 +353,7 @@ func (s *AlertNotificationService) sendInAppNotification(alert *models.Alert, hi
 		return fmt.Errorf("notification service not configured")
 	}
 
-	userID, err := uuid.Parse(alert.UserID)
-	if err != nil {
-		return fmt.Errorf("invalid user ID: %w", err)
-	}
+	userID := alert.UserID
 
 	title := fmt.Sprintf("Alert: %s", alert.Name)
 	message := fmt.Sprintf("%s %s %s (value: %.2f)", alert.Column, alert.Operator, formatThreshold(alert.Threshold), result.Value)

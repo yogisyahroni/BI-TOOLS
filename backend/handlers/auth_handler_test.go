@@ -34,8 +34,35 @@ func setupAuthTestDB() {
 		sqlDB.SetMaxOpenConns(1)
 	}
 
-	// Migrate schemas
-	database.DB.AutoMigrate(&models.User{})
+	// Manually create users table to avoid SQLite error with uuid_generate_v4()
+	database.DB.Exec(`CREATE TABLE IF NOT EXISTS users (
+		id TEXT PRIMARY KEY,
+		email TEXT NOT NULL UNIQUE,
+		username TEXT UNIQUE,
+		name TEXT,
+		password TEXT,
+		role TEXT DEFAULT 'user',
+		email_verified NUMERIC DEFAULT 0,
+		email_verified_at TIMESTAMP,
+		email_verification_token TEXT,
+		email_verification_expires TIMESTAMP,
+		password_reset_token TEXT,
+		password_reset_expires TIMESTAMP,
+		provider TEXT,
+		provider_id TEXT,
+		created_at DATETIME,
+		updated_at DATETIME,
+		status TEXT DEFAULT 'active',
+		deactivated_at TIMESTAMP,
+		deactivated_by TEXT,
+		deactivation_reason TEXT,
+		impersonation_token TEXT,
+		impersonation_expires TIMESTAMP,
+		impersonated_by TEXT
+	)`)
+
+	// Migrate schemas (skip User struct to avoid syntax error)
+	// database.DB.AutoMigrate(&models.User{})
 }
 
 // setupAuthTestApp creates a Fiber app with auth routes for testing

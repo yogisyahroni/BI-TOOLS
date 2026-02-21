@@ -14,7 +14,7 @@ import (
 func TestGetConnections_Success(t *testing.T) {
 	db := SetupTestDB()
 	app := fiber.New()
-	handler := NewConnectionHandler(nil, nil)
+	handler := NewConnectionHandler(nil, nil, nil)
 
 	app.Get("/connection", func(c *fiber.Ctx) error {
 		c.Locals("userId", "user-123") // Mock Auth Middleware
@@ -52,7 +52,7 @@ func TestGetConnections_Success(t *testing.T) {
 func TestGetConnection_Success(t *testing.T) {
 	db := SetupTestDB()
 	app := fiber.New()
-	handler := NewConnectionHandler(nil, nil)
+	handler := NewConnectionHandler(nil, nil, nil)
 
 	app.Get("/connection/:id", func(c *fiber.Ctx) error {
 		c.Locals("userId", "user-123")
@@ -75,7 +75,7 @@ func TestGetConnection_Success(t *testing.T) {
 func TestGetConnection_NotFound(t *testing.T) {
 	SetupTestDB() // Ensure fresh DB
 	app := fiber.New()
-	handler := NewConnectionHandler(nil, nil)
+	handler := NewConnectionHandler(nil, nil, nil)
 
 	app.Get("/connection/:id", func(c *fiber.Ctx) error {
 		c.Locals("userId", "user-123")
@@ -95,7 +95,7 @@ func TestTestConnection_Success(t *testing.T) {
 	mockExecutor := new(MockQueryExecutor)
 
 	// Create handler with mock executor
-	handler := NewConnectionHandler(mockExecutor, nil)
+	handler := NewConnectionHandler(mockExecutor, nil, nil)
 
 	app.Post("/connection/:id/test", func(c *fiber.Ctx) error {
 		c.Locals("userId", "user-123")
@@ -127,7 +127,7 @@ func TestTestConnection_MockBackdoor(t *testing.T) {
 	db := SetupTestDB()
 	app := fiber.New()
 	mockExecutor := new(MockQueryExecutor)
-	handler := NewConnectionHandler(mockExecutor, nil)
+	handler := NewConnectionHandler(mockExecutor, nil, nil)
 
 	app.Post("/connection/:id/test", func(c *fiber.Ctx) error {
 		c.Locals("userId", "user-123")

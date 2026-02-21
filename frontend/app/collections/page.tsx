@@ -1,270 +1,272 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { useState } from 'react';
-import { fetchWithAuth } from '@/lib/utils';
-import { useCollections } from '@/hooks/use-collections';
-import { CollectionSidebar } from '@/components/collection-sidebar';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Plus, Folder, Search, LayoutGrid, List } from 'lucide-react';
+import { useState } from "react";
+import { fetchWithAuth } from "@/lib/utils";
+import { useCollections } from "@/hooks/use-collections";
+import { CollectionSidebar } from "@/components/collection-sidebar";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Plus, Folder, Search, LayoutGrid, List } from "lucide-react";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogFooter,
-} from '@/components/ui/dialog';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 import {
-    _DropdownMenu,
-    _DropdownMenuContent,
-    _DropdownMenuItem,
-    _DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu';
-import { Label } from '@/components/ui/label';
-import { MoveToCollectionDialog } from '@/components/move-collection-dialog';
-import { _MoreHorizontal } from 'lucide-react';
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Label } from "@/components/ui/label";
+import { MoveToCollectionDialog } from "@/components/move-collection-dialog";
+import { MoreHorizontal } from "lucide-react";
 
 export default function CollectionsPage() {
-    const {
-        collections,
-        isLoading,
-        createCollection,
-        getCollectionTree
-    } = useCollections();
+  const { collections, isLoading, createCollection, getCollectionTree } = useCollections();
 
-    const [selectedCollectionId, setSelectedCollectionId] = useState<string | undefined>();
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const [newCollectionName, setNewCollectionName] = useState('');
-    const [parentCollectionId, setParentCollectionId] = useState<string | undefined>();
+  const [selectedCollectionId, setSelectedCollectionId] = useState<string | undefined>();
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [newCollectionName, setNewCollectionName] = useState("");
+  const [parentCollectionId, setParentCollectionId] = useState<string | undefined>();
 
-    // Move Dialog State
-    const [moveOpen, setMoveOpen] = useState(false);
-    const [moveItem, setMoveItem] = useState<{ id: string, type: 'dashboard' | 'query' } | null>(null);
+  // Move Dialog State
+  const [moveOpen, setMoveOpen] = useState(false);
+  const [moveItem, setMoveItem] = useState<{ id: string; type: "dashboard" | "query" } | null>(
+    null,
+  );
 
-    const handleMoveItem = async (targetCollectionId: string) => {
-        if (!moveItem) return;
+  const handleMoveItem = async (targetCollectionId: string) => {
+    if (!moveItem) return;
 
-        const endpoint = moveItem.type === 'dashboard'
-            ? `/api/go/dashboards/${moveItem.id}`
-            : `/api/go/queries/saved/${moveItem.id}`;
+    const endpoint =
+      moveItem.type === "dashboard"
+        ? `/api/go/dashboards/${moveItem.id}`
+        : `/api/go/queries/saved/${moveItem.id}`;
 
-        await fetchWithAuth(endpoint, {
-            method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ collectionId: targetCollectionId === 'root' ? null : targetCollectionId })
-        });
+    await fetchWithAuth(endpoint, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        collectionId: targetCollectionId === "root" ? null : targetCollectionId,
+      }),
+    });
 
-        // Refresh collections
-        window.location.reload(); // Simple reload to refresh state for now
-    };
+    // Refresh collections
+    window.location.reload(); // Simple reload to refresh state for now
+  };
 
-    const _openMoveDialog = (e: React.MouseEvent, id: string, type: 'dashboard' | 'query') => {
-        e.stopPropagation();
-        setMoveItem({ id, type });
-        setMoveOpen(true);
-    };
+  const _openMoveDialog = (e: React.MouseEvent, id: string, type: "dashboard" | "query") => {
+    e.stopPropagation();
+    setMoveItem({ id, type });
+    setMoveOpen(true);
+  };
 
-    const tree = getCollectionTree();
+  const tree = getCollectionTree();
 
-    const handleCreate = async () => {
-        if (!newCollectionName.trim()) return;
+  const handleCreate = async () => {
+    if (!newCollectionName.trim()) return;
 
-        await createCollection({
-            name: newCollectionName,
-            description: `Collection created from ${selectedCollection?.name || 'root'}`,
-        });
+    await createCollection({
+      name: newCollectionName,
+      description: `Collection created from ${selectedCollection?.name || "root"}`,
+    });
 
-        setIsCreateOpen(false);
-        setNewCollectionName('');
-        setParentCollectionId(undefined);
-    };
+    setIsCreateOpen(false);
+    setNewCollectionName("");
+    setParentCollectionId(undefined);
+  };
 
-    const openCreateDialog = (parentId?: string) => {
-        setParentCollectionId(parentId);
-        setNewCollectionName('');
-        setIsCreateOpen(true);
-    };
+  const openCreateDialog = (parentId?: string) => {
+    setParentCollectionId(parentId);
+    setNewCollectionName("");
+    setIsCreateOpen(true);
+  };
 
-    // Filter content based on selection
-    const selectedCollection = collections.find(c => c.id === selectedCollectionId);
-    // Backend doesn't support parent-child relationships, so show all collections
-    const subCollections: typeof collections = [];
+  // Filter content based on selection
+  const selectedCollection = collections.find((c) => c.id === selectedCollectionId);
+  // Backend doesn't support parent-child relationships, so show all collections
+  const subCollections: typeof collections = [];
 
-    // In a real app, we would also filter Dashboards and Queries here
-    // const dashboards = ...
-    // const queries = ...
+  // In a real app, we would also filter Dashboards and Queries here
+  // const dashboards = ...
+  // const queries = ...
 
-    return (
-        <div className="flex h-screen bg-background text-foreground overflow-hidden">
-            {/* Sidebar */}
-            <CollectionSidebar
-                tree={tree}
-                activeId={selectedCollectionId}
-                onSelect={setSelectedCollectionId}
-                onAddRoot={() => openCreateDialog(undefined)}
-                onAddSub={(id) => openCreateDialog(id)}
-            />
+  return (
+    <div className="flex h-screen bg-background text-foreground overflow-hidden">
+      {/* Sidebar */}
+      <CollectionSidebar
+        tree={tree}
+        activeId={selectedCollectionId}
+        onSelect={setSelectedCollectionId}
+        onAddRoot={() => openCreateDialog(undefined)}
+        onAddSub={(id) => openCreateDialog(id)}
+      />
 
-            {/* Main Content */}
-            <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
-                <header className="border-b h-16 flex items-center justify-between px-6 bg-card shrink-0">
-                    <div className="flex items-center gap-4">
-                        <h1 className="text-xl font-semibold flex items-center gap-2">
-                            <Folder className="h-5 w-5 text-primary" />
-                            {selectedCollection ? selectedCollection.name : 'All Collections'}
-                        </h1>
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <div className="relative w-64">
-                            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                            <Input
-                                type="search"
-                                placeholder="Search..."
-                                className="w-full bg-background pl-9 h-9"
-                            />
-                        </div>
-                        <Button onClick={() => openCreateDialog(selectedCollectionId)}>
-                            <Plus className="h-4 w-4 mr-2" />
-                            New Collection
-                        </Button>
-                    </div>
-                </header>
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col min-w-0 overflow-hidden">
+        <header className="border-b h-16 flex items-center justify-between px-6 bg-card shrink-0">
+          <div className="flex items-center gap-4">
+            <h1 className="text-xl font-semibold flex items-center gap-2">
+              <Folder className="h-5 w-5 text-primary" />
+              {selectedCollection ? selectedCollection.name : "All Collections"}
+            </h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <div className="relative w-64">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search..."
+                className="w-full bg-background pl-9 h-9"
+              />
+            </div>
+            <Button onClick={() => openCreateDialog(selectedCollectionId)}>
+              <Plus className="h-4 w-4 mr-2" />
+              New Collection
+            </Button>
+          </div>
+        </header>
 
-                <div className="flex-1 overflow-y-auto p-6">
-                    {isLoading ? (
-                        <div className="space-y-8 animate-pulse">
-                            <div className="space-y-4">
-                                <div className="h-4 w-32 bg-muted rounded" />
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                    {[1, 2, 3, 4].map(i => (
-                                        <div key={i} className="h-24 bg-muted rounded-lg border border-border/50" />
-                                    ))}
-                                </div>
-                            </div>
-                            <div className="space-y-4">
-                                <div className="h-4 w-32 bg-muted rounded" />
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                    {[1, 2, 3].map(i => (
-                                        <div key={i} className="h-24 bg-muted rounded-lg border border-border/50" />
-                                    ))}
-                                </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <>
-                            {/* Sub-collections Grid */}
-                            {subCollections.length > 0 && (
-                                <div className="mb-8">
-                                    <h2 className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
-                                        Folders
-                                    </h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                        {subCollections.map(collection => (
-                                            <div
-                                                key={collection.id}
-                                                className="group p-4 border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all cursor-pointer flex items-center gap-3"
-                                                onClick={() => setSelectedCollectionId(collection.id)}
-                                            >
-                                                <Folder className="h-8 w-8 text-blue-500 fill-blue-500/20" />
-                                                <div className="min-w-0 flex-1">
-                                                    <h3 className="font-medium truncate">{collection.name}</h3>
-                                                    <p className="text-xs text-muted-foreground truncate">
-                                                        {collection.description || 'No description'}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-
-
-                            {/* Collection Items Section */}
-                            {selectedCollection?.items && selectedCollection.items.length > 0 && (
-                                <div className="mb-8">
-                                    <h2 className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
-                                        Items
-                                    </h2>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                                        {selectedCollection.items.map(item => (
-                                            <div
-                                                key={item.id}
-                                                className="group p-4 border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all cursor-pointer flex items-center gap-3 relative"
-                                            >
-                                                {item.itemType === 'pipeline' ? (
-                                                    <LayoutGrid className="h-8 w-8 text-blue-500 fill-blue-500/20" />
-                                                ) : (
-                                                    <List className="h-8 w-8 text-green-500 fill-green-500/20" />
-                                                )}
-                                                <div className="min-w-0 flex-1">
-                                                    <h3 className="font-medium truncate">{item.itemType}</h3>
-                                                    <p className="text-xs text-muted-foreground truncate">
-                                                        ID: {item.itemId}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* Empty State */}
-                            {(!subCollections.length &&
-                                (!selectedCollection?.items?.length)) && (
-                                    <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg">
-                                        <Folder className="h-12 w-12 text-muted-foreground/30 mb-4" />
-                                        <h3 className="text-lg font-medium text-muted-foreground">Empty Collection</h3>
-                                        <p className="text-sm text-muted-foreground mb-4">
-                                            This folder is empty. Create a sub-folder or add items.
-                                        </p>
-                                        <Button variant="outline" onClick={() => openCreateDialog(selectedCollectionId)}>
-                                            Create Folder
-                                        </Button>
-                                    </div>
-                                )}
-                        </>
-                    )}
+        <div className="flex-1 overflow-y-auto p-6">
+          {isLoading ? (
+            <div className="space-y-8 animate-pulse">
+              <div className="space-y-4">
+                <div className="h-4 w-32 bg-muted rounded" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="h-24 bg-muted rounded-lg border border-border/50" />
+                  ))}
                 </div>
-            </main>
-
-            {/* Create Collection Dialog */}
-            <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>
-                            {parentCollectionId ? 'New Sub-Collection' : 'New Collection'}
-                        </DialogTitle>
-                    </DialogHeader>
-                    <div className="space-y-4 py-4">
-                        <div className="space-y-2">
-                            <Label>Name</Label>
-                            <Input
-                                value={newCollectionName}
-                                onChange={e => setNewCollectionName(e.target.value)}
-                                placeholder="e.g., Marketing, Sales, Q1 Reports"
-                                autoFocus
-                            />
+              </div>
+              <div className="space-y-4">
+                <div className="h-4 w-32 bg-muted rounded" />
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                  {[1, 2, 3].map((i) => (
+                    <div key={i} className="h-24 bg-muted rounded-lg border border-border/50" />
+                  ))}
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              {/* Sub-collections Grid */}
+              {subCollections.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
+                    Folders
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {subCollections.map((collection) => (
+                      <div
+                        key={collection.id}
+                        className="group p-4 border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all cursor-pointer flex items-center gap-3"
+                        onClick={() => setSelectedCollectionId(collection.id)}
+                      >
+                        <Folder className="h-8 w-8 text-blue-500 fill-blue-500/20" />
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-medium truncate">{collection.name}</h3>
+                          <p className="text-xs text-muted-foreground truncate">
+                            {collection.description || "No description"}
+                          </p>
                         </div>
-                    </div>
-                    <DialogFooter>
-                        <Button variant="outline" onClick={() => setIsCreateOpen(false)}>Cancel</Button>
-                        <Button onClick={handleCreate} disabled={!newCollectionName}>Create</Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
+              {/* Collection Items Section */}
+              {selectedCollection?.items && selectedCollection.items.length > 0 && (
+                <div className="mb-8">
+                  <h2 className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
+                    Items
+                  </h2>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                    {selectedCollection.items.map((item) => (
+                      <div
+                        key={item.id}
+                        className="group p-4 border rounded-lg hover:border-primary/50 hover:bg-muted/50 transition-all cursor-pointer flex items-center gap-3 relative"
+                      >
+                        {item.itemType === "pipeline" ? (
+                          <LayoutGrid className="h-8 w-8 text-blue-500 fill-blue-500/20" />
+                        ) : (
+                          <List className="h-8 w-8 text-green-500 fill-green-500/20" />
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <h3 className="font-medium truncate">{item.itemType}</h3>
+                          <p className="text-xs text-muted-foreground truncate">
+                            ID: {item.itemId}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-            <MoveToCollectionDialog
-                open={moveOpen}
-                onOpenChange={setMoveOpen}
-                collections={collections}
-                currentCollectionId={selectedCollectionId}
-                onMove={handleMoveItem}
-                title={moveItem ? `Move ${moveItem.type === 'dashboard' ? 'Dashboard' : 'Query'}` : 'Move Item'}
-            />
+              {/* Empty State */}
+              {!subCollections.length && !selectedCollection?.items?.length && (
+                <div className="flex flex-col items-center justify-center h-64 border-2 border-dashed rounded-lg">
+                  <Folder className="h-12 w-12 text-muted-foreground/30 mb-4" />
+                  <h3 className="text-lg font-medium text-muted-foreground">Empty Collection</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    This folder is empty. Create a sub-folder or add items.
+                  </p>
+                  <Button variant="outline" onClick={() => openCreateDialog(selectedCollectionId)}>
+                    Create Folder
+                  </Button>
+                </div>
+              )}
+            </>
+          )}
         </div>
-    );
+      </main>
+
+      {/* Create Collection Dialog */}
+      <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {parentCollectionId ? "New Sub-Collection" : "New Collection"}
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label>Name</Label>
+              <Input
+                value={newCollectionName}
+                onChange={(e) => setNewCollectionName(e.target.value)}
+                placeholder="e.g., Marketing, Sales, Q1 Reports"
+                autoFocus
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setIsCreateOpen(false)}>
+              Cancel
+            </Button>
+            <Button onClick={handleCreate} disabled={!newCollectionName}>
+              Create
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <MoveToCollectionDialog
+        open={moveOpen}
+        onOpenChange={setMoveOpen}
+        collections={collections}
+        currentCollectionId={selectedCollectionId}
+        onMove={handleMoveItem}
+        title={
+          moveItem ? `Move ${moveItem.type === "dashboard" ? "Dashboard" : "Query"}` : "Move Item"
+        }
+      />
+    </div>
+  );
 }

@@ -1,0 +1,18 @@
+1. Logging in...
+   Success! Token obtained.
+2. Creating Collection...
+   Success! Collection ID: c5f6ac25-6f06-4f25-b6e0-bc5213d1ae19
+3. Creating Dashboard...
+E:\antigraviti google\inside engine\insight-engine-a
+i-ui\backend\verify_pulse.ps1 : Create Dashboard 
+Failed: The remote server returned an error: (500) 
+Internal Server Error.
+At E:\antigraviti google\inside engine\insight-engin
+e-ai-ui\backend\verify_pulse.ps1:52 char:5
++     Write-Error $err
++     ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:) [Wr 
+   ite-Error], WriteErrorException
+    + FullyQualifiedErrorId : Microsoft.PowerShell. 
+   Commands.WriteErrorException,verify_pulse.ps1
+ 

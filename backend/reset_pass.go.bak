@@ -1,0 +1,45 @@
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"insight-engine-backend/database"
+	"insight-engine-backend/models"
+
+	"github.com/joho/godotenv"
+	"golang.org/x/crypto/bcrypt"
+)
+
+func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
+	database.Connect()
+
+	oldEmail := "yogisyahroni766.ysr@gmai.com"
+	newEmail := "yogisyahroni766.ysr@gmail.com"
+	newPassword := "namakamu766!!"
+
+	bytes, err := bcrypt.GenerateFromPassword([]byte(newPassword), 14)
+	if err != nil {
+		log.Fatalf("Error hashing password: %v", err)
+	}
+	hash := string(bytes)
+
+	result := database.DB.Model(&models.User{}).Where("email = ? OR email = ?", oldEmail, newEmail).Updates(map[string]interface{}{
+		"email":          newEmail,
+		"password":       hash,
+		"email_verified": true,
+	})
+
+	if result.Error != nil {
+		log.Fatalf("Error updating user: %v", result.Error)
+	}
+
+	if result.RowsAffected == 0 {
+		fmt.Println("User not found.")
+	} else {
+		fmt.Println("Password and Email reset successfully.")
+	}
+}

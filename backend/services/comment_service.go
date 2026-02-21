@@ -96,7 +96,7 @@ func (s *CommentService) CreateComment(userID string, req *models.CommentCreateR
 			})
 		} else {
 			for _, user := range mentionedUsers {
-				mentionedUserIDs = append(mentionedUserIDs, user.ID)
+				mentionedUserIDs = append(mentionedUserIDs, user.ID.String())
 			}
 		}
 	}
@@ -268,7 +268,7 @@ func (s *CommentService) UpdateComment(commentID, userID string, content string)
 			})
 		} else {
 			for _, user := range mentionedUsers {
-				mentionedUserIDs = append(mentionedUserIDs, user.ID)
+				mentionedUserIDs = append(mentionedUserIDs, user.ID.String())
 			}
 		}
 	}
@@ -530,7 +530,7 @@ func (s *CommentService) CreateAnnotation(userID string, req *models.AnnotationC
 			})
 		} else {
 			for _, user := range mentionedUsers {
-				mentionedUserIDs = append(mentionedUserIDs, user.ID)
+				mentionedUserIDs = append(mentionedUserIDs, user.ID.String())
 			}
 		}
 	}
@@ -657,8 +657,25 @@ func (s *CommentService) UpdateAnnotation(annotationID, userID string, req *mode
 		return nil, fmt.Errorf("failed to fetch associated comment: %w", err)
 	}
 
+	// Find the card to get its dashboard ID
+	var card models.DashboardCard
+	if err := s.db.Where("id = ?", annotation.ChartID).First(&card).Error; err != nil {
+		return nil, fmt.Errorf("failed to fetch associated card: %w", err)
+	}
+
+	// Find the dashboard to check its owner
+	var dashboard models.Dashboard
+	if err := s.db.Where("id = ?", card.DashboardID).First(&dashboard).Error; err != nil {
+		return nil, fmt.Errorf("failed to fetch associated dashboard: %w", err)
+	}
+
 	// Check ownership
 	canUpdate := comment.UserID == userID
+	// Check ownership via dashboard
+	if dashboard.UserID.String() == userID {
+		canUpdate = true
+	}
+
 	if !canUpdate {
 		isAdmin, err := s.isUserAdmin(userID)
 		if err != nil || !isAdmin {
@@ -782,18 +799,13 @@ func (s *CommentService) createMentionNotifications(comment *models.Comment, men
 			continue
 		}
 
-		mentionedUUID, err := uuid.Parse(mentionedUserID)
-		if err != nil {
-			continue
-		}
-
 		notifType := "mention"
 		if comment.IsReply() {
 			notifType = "mention_reply"
 		}
 
-		err = s.notificationSvc.SendNotification(
-			mentionedUUID,
+		err := s.notificationSvc.SendNotification(
+			mentionedUserID,
 			fmt.Sprintf("%s mentioned you", author.Name),
 			fmt.Sprintf("%s mentioned you in a comment on %s", author.Name, comment.EntityType),
 			notifType,
@@ -912,7 +924,7 @@ func (s *CommentService) canResolveComment(userID string, comment *models.Commen
 		if err := s.db.Where("id = ?", comment.EntityID).First(&dashboard).Error; err != nil {
 			return false, err
 		}
-		if dashboard.UserID == userID {
+		if dashboard.UserID.String() == userID {
 			return true, nil
 		}
 	case models.EntityTypeQuery:

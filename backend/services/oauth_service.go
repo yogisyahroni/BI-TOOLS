@@ -132,7 +132,7 @@ func (s *OAuthService) HandleCallback(ctx context.Context, providerName, code st
 	}
 
 	// Generate JWT token
-	jwtToken, err := GenerateJWT(user.ID, user.Email)
+	jwtToken, err := GenerateJWT(user.ID.String(), user.Email) // FIX: Use .String()
 	if err != nil {
 		LogError("oauth_jwt_generation_failed", err.Error(), map[string]interface{}{
 			"user_id": user.ID,
@@ -199,7 +199,7 @@ func (s *OAuthService) FindOrCreateUser(userInfo *providers.ProviderUserInfo) (*
 
 	// Create new user
 	user = models.User{
-		ID:            uuid.New().String(),
+		ID:            uuid.New(),
 		Email:         userInfo.Email,
 		Username:      generateUsernameFromEmail(userInfo.Email),
 		Name:          userInfo.Name,

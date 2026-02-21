@@ -366,6 +366,22 @@ func (h *QueryHandler) RunQuery(c *fiber.Ctx) error {
 		_ = h.queryCache.SetCachedResult(ctx, cacheKey, result, tags)
 	}
 
+	// Check if Arrow format is requested
+	format := c.Query("format")
+	if format == "arrow" {
+		serializer := services.NewArrowSerializer()
+		buf, err := serializer.ToIPCStream(result.Columns, result.Rows)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": "Failed to serialize Arrow IPC stream",
+				"error":   err.Error(),
+			})
+		}
+		c.Set("Content-Type", "application/vnd.apache.arrow.stream")
+		return c.Send(buf)
+	}
+
 	return c.JSON(fiber.Map{
 		"success": true,
 		"data":    result,
@@ -463,6 +479,22 @@ func (h *QueryHandler) ExecuteAdHocQuery(c *fiber.Ctx) error {
 		// Ad-hoc queries don't have a saved query ID, so we just tag by connection and user
 		tags := h.queryCache.GenerateTags("adhoc", conn.ID, userID)
 		_ = h.queryCache.SetCachedResult(ctx, cacheKey, result, tags)
+	}
+
+	// Check if Arrow format is requested
+	format := c.Query("format")
+	if format == "arrow" {
+		serializer := services.NewArrowSerializer()
+		buf, err := serializer.ToIPCStream(result.Columns, result.Rows)
+		if err != nil {
+			return c.Status(500).JSON(fiber.Map{
+				"status":  "error",
+				"message": "Failed to serialize Arrow IPC stream",
+				"error":   err.Error(),
+			})
+		}
+		c.Set("Content-Type", "application/vnd.apache.arrow.stream")
+		return c.Send(buf)
 	}
 
 	return c.JSON(fiber.Map{

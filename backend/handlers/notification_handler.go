@@ -29,13 +29,17 @@ func (h *NotificationHandler) GetNotifications(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
 	}
 	userIDStr, ok := userIDVal.(string)
-	if !ok {
+	if !ok || userIDStr == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
+
+	// Handle 'embed-user' case
+	if userIDStr == "embed-user" {
+		return c.JSON(fiber.Map{
+			"notifications": []models.Notification{},
+			"total":         0,
+			"limit":         20,
+			"offset":        0,
 		})
 	}
 
@@ -44,7 +48,7 @@ func (h *NotificationHandler) GetNotifications(c *fiber.Ctx) error {
 	offset, _ := strconv.Atoi(c.Query("offset", "0"))
 
 	// Get notifications
-	notifications, total, err := h.notificationService.GetUserNotifications(userID, limit, offset)
+	notifications, total, err := h.notificationService.GetUserNotifications(userIDStr, limit, offset)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to get notifications",
@@ -67,19 +71,20 @@ func (h *NotificationHandler) GetUnreadNotifications(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
 	}
 	userIDStr, ok := userIDVal.(string)
-	if !ok {
+	if !ok || userIDStr == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
+
+	// Handle 'embed-user' case
+	if userIDStr == "embed-user" {
+		return c.JSON(fiber.Map{
+			"notifications": []models.Notification{},
 		})
 	}
 
 	limit, _ := strconv.Atoi(c.Query("limit", "10"))
 
-	notifications, err := h.notificationService.GetUnreadNotifications(userID, limit)
+	notifications, err := h.notificationService.GetUnreadNotifications(userIDStr, limit)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to get unread notifications",
@@ -99,17 +104,18 @@ func (h *NotificationHandler) GetUnreadCount(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Unauthorized"})
 	}
 	userIDStr, ok := userIDVal.(string)
-	if !ok {
+	if !ok || userIDStr == "" {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
+
+	// Handle 'embed-user' case
+	if userIDStr == "embed-user" {
+		return c.JSON(fiber.Map{
+			"count": 0,
 		})
 	}
 
-	count, err := h.notificationService.GetUnreadCount(userID)
+	count, err := h.notificationService.GetUnreadCount(userIDStr)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to get unread count",
@@ -132,13 +138,6 @@ func (h *NotificationHandler) MarkAsRead(c *fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
-
 	notificationID, err := uuid.Parse(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -146,7 +145,7 @@ func (h *NotificationHandler) MarkAsRead(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := h.notificationService.MarkAsRead(notificationID, userID); err != nil {
+	if err := h.notificationService.MarkAsRead(notificationID, userIDStr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -168,14 +167,7 @@ func (h *NotificationHandler) MarkAllAsRead(c *fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
-
-	if err := h.notificationService.MarkAllAsRead(userID); err != nil {
+	if err := h.notificationService.MarkAllAsRead(userIDStr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to mark all as read",
 		})
@@ -197,13 +189,6 @@ func (h *NotificationHandler) DeleteNotification(c *fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
-
 	notificationID, err := uuid.Parse(c.Params("id"))
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
@@ -211,7 +196,7 @@ func (h *NotificationHandler) DeleteNotification(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := h.notificationService.DeleteNotification(notificationID, userID); err != nil {
+	if err := h.notificationService.DeleteNotification(notificationID, userIDStr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -233,14 +218,7 @@ func (h *NotificationHandler) DeleteReadNotifications(c *fiber.Ctx) error {
 	if !ok {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"error": "Invalid user session"})
 	}
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
-
-	if err := h.notificationService.DeleteReadNotifications(userID); err != nil {
+	if err := h.notificationService.DeleteReadNotifications(userIDStr); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to delete read notifications",
 		})
@@ -276,20 +254,13 @@ func (h *NotificationHandler) CreateNotification(c *fiber.Ctx) error {
 		})
 	}
 
-	userID, err := uuid.Parse(input.UserID)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
-
 	// Default type to info if not provided
 	if input.Type == "" {
 		input.Type = "info"
 	}
 
 	notification := &models.Notification{
-		UserID:  userID,
+		UserID:  input.UserID,
 		Title:   input.Title,
 		Message: input.Message,
 		Type:    input.Type,

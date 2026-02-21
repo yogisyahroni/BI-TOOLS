@@ -120,7 +120,7 @@ func (h *AdminUserHandler) ListUsers(c *fiber.Ctx) error {
 	userList := make([]UserListResponse, len(users))
 	for i, u := range users {
 		userList[i] = UserListResponse{
-			ID:            u.ID,
+			ID:            u.ID.String(),
 			Email:         u.Email,
 			Name:          u.Name,
 			Username:      u.Username,
@@ -220,10 +220,11 @@ func (h *AdminUserHandler) ActivateUser(c *fiber.Ctx) error {
 	// Log audit
 	if h.auditService != nil {
 		userIDPtr := uint(0)
-		if id, err := strconv.ParseUint(currentUser.ID, 10, 32); err == nil {
+		// Logic disabled: UserID is now UUID, cannot fit in uint audit log
+		/*if id, err := strconv.ParseUint(currentUser.ID.String(), 10, 32); err == nil {
 			temp := uint(id)
 			userIDPtr = temp
-		}
+		}*/
 		h.auditService.Log(&models.AuditLogEntry{
 			UserID:       &userIDPtr,
 			Username:     currentUser.Email,
@@ -307,10 +308,11 @@ func (h *AdminUserHandler) DeactivateUser(c *fiber.Ctx) error {
 	// Log audit
 	if h.auditService != nil {
 		userIDPtr := uint(0)
-		if id, err := strconv.ParseUint(currentUser.ID, 10, 32); err == nil {
+		// Logic disabled: UserID is now UUID
+		/*if id, err := strconv.ParseUint(currentUser.ID.String(), 10, 32); err == nil {
 			temp := uint(id)
 			userIDPtr = temp
-		}
+		}*/
 		h.auditService.Log(&models.AuditLogEntry{
 			UserID:       &userIDPtr,
 			Username:     currentUser.Email,
@@ -395,10 +397,10 @@ func (h *AdminUserHandler) UpdateUserRole(c *fiber.Ctx) error {
 	// Log audit
 	if h.auditService != nil {
 		userIDPtr := uint(0)
-		if id, err := strconv.ParseUint(currentUser.ID, 10, 32); err == nil {
+		/*if id, err := strconv.ParseUint(currentUser.ID.String(), 10, 32); err == nil {
 			temp := uint(id)
 			userIDPtr = temp
-		}
+		}*/
 		h.auditService.Log(&models.AuditLogEntry{
 			UserID:       &userIDPtr,
 			Username:     currentUser.Email,
@@ -460,7 +462,7 @@ func (h *AdminUserHandler) ImpersonateUser(c *fiber.Ctx) error {
 	}
 
 	// Generate impersonation token (JWT)
-	token, err := services.GenerateJWT(user.ID, user.Email)
+	token, err := services.GenerateJWT(user.ID.String(), user.Email)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to generate token",
@@ -483,10 +485,11 @@ func (h *AdminUserHandler) ImpersonateUser(c *fiber.Ctx) error {
 	// Log audit
 	if h.auditService != nil {
 		userIDPtr := uint(0)
-		if id, err := strconv.ParseUint(currentUser.ID, 10, 32); err == nil {
+		// Logic disabled: UserID is now UUID
+		/*if id, err := strconv.ParseUint(currentUser.ID.String(), 10, 32); err == nil {
 			temp := uint(id)
 			userIDPtr = temp
-		}
+		}*/
 		h.auditService.Log(&models.AuditLogEntry{
 			UserID:       &userIDPtr,
 			Username:     currentUser.Email,

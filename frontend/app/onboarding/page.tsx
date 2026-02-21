@@ -1,53 +1,81 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // ... imports
-import { useState, useEffect } from 'react';
-import { fetchWithAuth } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { _Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Database, Brain, Lock, ArrowRight, Check, Sparkles, Loader2, RefreshCw } from 'lucide-react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useConnections } from '@/hooks/use-connections';
-import { toast } from 'sonner';
+import { useState, useEffect } from "react";
+import { fetchWithAuth } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import {
+  Database,
+  Brain,
+  Lock,
+  ArrowRight,
+  Check,
+  Sparkles,
+  Loader2,
+  RefreshCw,
+} from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useConnections } from "@/hooks/use-connections";
+import { toast } from "sonner";
 
 export default function OnboardingPage() {
   const _router = useRouter();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    dbHost: '',
-    dbName: '',
-    dbUser: '',
-    dbPassword: '',
-    dbPort: '5432',
-    dbType: 'postgres',
-    aiProvider: 'openai',
-    aiKey: '',
+    dbHost: "",
+    dbName: "",
+    dbUser: "",
+    dbPassword: "",
+    dbPort: "5432",
+    dbType: "postgres",
+    aiProvider: "openai",
+    aiKey: "",
   });
 
-  const { createConnection, testConnection, _activeConnection, fetchSchema, schema, _selectConnection } = useConnections();
+  const {
+    createConnection,
+    testConnection,
+    activeConnection,
+    fetchSchema,
+    schema,
+    selectConnection,
+  } = useConnections();
 
-  const [testingStatus, setTestingStatus] = useState<'idle' | 'testing' | 'success' | 'error'>('idle');
-  const [testMessage, setTestMessage] = useState('');
+  const [testingStatus, setTestingStatus] = useState<"idle" | "testing" | "success" | "error">(
+    "idle",
+  );
+  const [testMessage, setTestMessage] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [createdConnectionId, setCreatedConnectionId] = useState<string | null>(null);
 
   // Load existing settings on mount
   useEffect(() => {
-    fetchWithAuth('/api/settings?key=ai_config')
-      .then(res => res.json())
-      .then(data => {
+    fetchWithAuth("/api/settings?key=ai_config")
+      .then((res) => res.json())
+      .then((data) => {
         if (data.success && data.data) {
-          setFormData(prev => ({ ...prev, aiProvider: data.data.provider, aiKey: data.data.apiKey }));
+          setFormData((prev) => ({
+            ...prev,
+            aiProvider: data.data.provider,
+            aiKey: data.data.apiKey,
+          }));
         }
       });
   }, []);
@@ -55,37 +83,36 @@ export default function OnboardingPage() {
   // Fetch schema when entering Step 3
   useEffect(() => {
     if (step === 3 && createdConnectionId && !schema) {
-      console.warn('Fetching schema for connection:', createdConnectionId);
+      console.warn("Fetching schema for connection:", createdConnectionId);
       // Ensure we call fetch with the ID
-      fetchSchema(createdConnectionId).then(res => {
+      fetchSchema(createdConnectionId).then((res) => {
         if (!res.success) {
           toast.error("Failed to fetch schema: " + res.error);
         }
       });
     }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step, createdConnectionId]);
 
-
   const handleTestConnection = async () => {
-    setTestingStatus('testing');
-    setTestMessage('');
+    setTestingStatus("testing");
+    setTestMessage("");
 
-    // We need to create a temporary connection object to test, 
-    // or if the API supports testing raw params. 
+    // We need to create a temporary connection object to test,
+    // or if the API supports testing raw params.
     // Since useConnections.testConnection takes an ID, we might need to "create" it first?
     // Actually, widespread pattern is usually test before create.
     // Use the /api/connections/test endpoint directly if available, or create a temp connection.
     // Looking at useConnections, `testConnection` takes `id`.
-    // Let's CREATE the connection first, but maybe mark it as inactive? 
+    // Let's CREATE the connection first, but maybe mark it as inactive?
     // Or just create it. The user intends to connect.
 
     // Strategy: Create connection -> Test it. If fail, user edits and updates.
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const payload: any = {
         name: `${formData.dbName} (Onboarding)`,
         type: formData.dbType,
@@ -94,7 +121,7 @@ export default function OnboardingPage() {
         database: formData.dbName,
         username: formData.dbUser,
         password: formData.dbPassword,
-        userId: 'user_123' // Consistent with backend default
+        userId: "user_123", // Consistent with backend default
       };
 
       let connectionId = createdConnectionId;
@@ -114,22 +141,22 @@ export default function OnboardingPage() {
       if (connectionId) {
         const testRes = await testConnection(connectionId);
         if (testRes.success) {
-          setTestingStatus('success');
-          setTestMessage('Connection successful!');
-          toast.success('Connection successful!');
+          setTestingStatus("success");
+          setTestMessage("Connection successful!");
+          toast.success("Connection successful!");
         } else {
-          setTestingStatus('error');
+          setTestingStatus("error");
           setTestMessage(testRes.message);
-          toast.error('Connection failed: ' + testRes.message);
+          toast.error("Connection failed: " + testRes.message);
         }
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       }
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (e: any) {
-      setTestingStatus('error');
+      setTestingStatus("error");
       setTestMessage(e.message);
-      toast.error('Error: ' + e.message);
+      toast.error("Error: " + e.message);
     }
   };
 
@@ -137,20 +164,20 @@ export default function OnboardingPage() {
     setIsSaving(true);
     try {
       // Save Settings
-      await fetchWithAuth('/api/settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      await fetchWithAuth("/api/settings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          key: 'ai_config',
+          key: "ai_config",
           value: {
             provider: formData.aiProvider,
-            apiKey: formData.aiKey
-          }
-        })
+            apiKey: formData.aiKey,
+          },
+        }),
       });
       setStep(3);
     } catch (_e) {
-      toast.error('Failed to save AI settings');
+      toast.error("Failed to save AI settings");
     } finally {
       setIsSaving(false);
     }
@@ -167,7 +194,9 @@ export default function OnboardingPage() {
             </div>
             <h1 className="text-2xl font-bold text-foreground">InsightEngine AI</h1>
           </div>
-          <p className="text-sm text-muted-foreground">Setup your Business Intelligence workspace</p>
+          <p className="text-sm text-muted-foreground">
+            Setup your Business Intelligence workspace
+          </p>
         </div>
       </header>
 
@@ -176,16 +205,32 @@ export default function OnboardingPage() {
         {/* Progress */}
         <div className="mb-12">
           <div className="flex items-center gap-2 mb-4">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= 1 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>1</div>
-            <div className={`flex-1 h-1 transition-colors ${step >= 2 ? 'bg-primary' : 'bg-muted'}`} />
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= 2 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>2</div>
-            <div className={`flex-1 h-1 transition-colors ${step >= 3 ? 'bg-primary' : 'bg-muted'}`} />
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= 3 ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'}`}>3</div>
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= 1 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+            >
+              1
+            </div>
+            <div
+              className={`flex-1 h-1 transition-colors ${step >= 2 ? "bg-primary" : "bg-muted"}`}
+            />
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= 2 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+            >
+              2
+            </div>
+            <div
+              className={`flex-1 h-1 transition-colors ${step >= 3 ? "bg-primary" : "bg-muted"}`}
+            />
+            <div
+              className={`w-8 h-8 rounded-full flex items-center justify-center font-bold transition-colors ${step >= 3 ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground"}`}
+            >
+              3
+            </div>
           </div>
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span className={step === 1 ? 'text-primary font-semibold' : ''}>Database</span>
-            <span className={step === 2 ? 'text-primary font-semibold' : ''}>AI Setup</span>
-            <span className={step === 3 ? 'text-primary font-semibold' : ''}>Metadata</span>
+            <span className={step === 1 ? "text-primary font-semibold" : ""}>Database</span>
+            <span className={step === 2 ? "text-primary font-semibold" : ""}>AI Setup</span>
+            <span className={step === 3 ? "text-primary font-semibold" : ""}>Metadata</span>
           </div>
         </div>
 
@@ -197,13 +242,17 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold text-foreground">Connect Your Database</h2>
             </div>
             <p className="text-muted-foreground mb-8">
-              InsightEngine AI needs access to your database to analyze data. We support PostgreSQL, MySQL, BigQuery, and more.
+              InsightEngine AI needs access to your database to analyze data. We support PostgreSQL,
+              MySQL, BigQuery, and more.
             </p>
 
             <div className="space-y-6">
               <div className="space-y-2">
                 <Label className="text-sm font-semibold">Database Type</Label>
-                <Select value={formData.dbType} onValueChange={(val) => setFormData({ ...formData, dbType: val })}>
+                <Select
+                  value={formData.dbType}
+                  onValueChange={(val) => setFormData({ ...formData, dbType: val })}
+                >
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
@@ -266,11 +315,12 @@ export default function OnboardingPage() {
               <Alert className="border-primary/30 bg-primary/5">
                 <Lock className="h-4 w-4" />
                 <AlertDescription>
-                  Your database credentials are encrypted and stored securely. We recommend using a read-only service account.
+                  Your database credentials are encrypted and stored securely. We recommend using a
+                  read-only service account.
                 </AlertDescription>
               </Alert>
 
-              {testingStatus === 'error' && (
+              {testingStatus === "error" && (
                 <Alert variant="destructive">
                   <AlertDescription>{testMessage}</AlertDescription>
                 </Alert>
@@ -280,21 +330,21 @@ export default function OnboardingPage() {
                 <Button
                   variant="outline"
                   onClick={handleTestConnection}
-                  disabled={testingStatus === 'testing'}
+                  disabled={testingStatus === "testing"}
                   className="gap-2"
                 >
-                  {testingStatus === 'testing' ? (
+                  {testingStatus === "testing" ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
-                  ) : testingStatus === 'success' ? (
+                  ) : testingStatus === "success" ? (
                     <Check className="w-4 h-4" />
                   ) : (
                     <RefreshCw className="w-4 h-4" />
                   )}
-                  {testingStatus === 'success' ? 'Connected' : 'Test Connection'}
+                  {testingStatus === "success" ? "Connected" : "Test Connection"}
                 </Button>
                 <Button
                   onClick={() => setStep(2)}
-                  disabled={testingStatus !== 'success'}
+                  disabled={testingStatus !== "success"}
                   className="gap-2 ml-auto"
                 >
                   Continue
@@ -313,10 +363,15 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold text-foreground">Configure AI Provider</h2>
             </div>
             <p className="text-muted-foreground mb-8">
-              Choose your preferred AI provider for natural language query generation and intelligent recommendations.
+              Choose your preferred AI provider for natural language query generation and
+              intelligent recommendations.
             </p>
 
-            <Tabs value={formData.aiProvider} onValueChange={(value) => setFormData({ ...formData, aiProvider: value })} className="space-y-6">
+            <Tabs
+              value={formData.aiProvider}
+              onValueChange={(value) => setFormData({ ...formData, aiProvider: value })}
+              className="space-y-6"
+            >
               <TabsList className="grid grid-cols-4 w-full bg-muted">
                 <TabsTrigger value="openai">OpenAI</TabsTrigger>
                 <TabsTrigger value="gemini">Gemini</TabsTrigger>
@@ -342,7 +397,8 @@ export default function OnboardingPage() {
                 <Alert className="border-primary/30 bg-primary/5">
                   <Sparkles className="h-4 w-4" />
                   <AlertDescription>
-                    Using {formData.aiProvider === 'openai' ? 'GPT-4' : 'latest model'} for optimal SQL generation accuracy.
+                    Using {formData.aiProvider === "openai" ? "GPT-4" : "latest model"} for optimal
+                    SQL generation accuracy.
                   </AlertDescription>
                 </Alert>
               </TabsContent>
@@ -373,7 +429,8 @@ export default function OnboardingPage() {
               <h2 className="text-2xl font-bold text-foreground">Setup Metadata (Kamus Data)</h2>
             </div>
             <p className="text-muted-foreground mb-8">
-              InsightEngine AI will analyze your database to automatically generate human-friendly descriptions.
+              InsightEngine AI will analyze your database to automatically generate human-friendly
+              descriptions.
             </p>
 
             <div className="space-y-6">
@@ -382,7 +439,7 @@ export default function OnboardingPage() {
                   <div>
                     <p className="font-semibold text-foreground">Scanning database schema...</p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {schema ? `Found ${schema.tables.length} tables` : 'Analyzing tables...'}
+                      {schema ? `Found ${schema.tables.length} tables` : "Analyzing tables..."}
                     </p>
                   </div>
                   <div className="text-2xl animate-pulse">✨</div>
@@ -397,23 +454,33 @@ export default function OnboardingPage() {
               <Alert className="border-primary/30 bg-primary/5">
                 <Sparkles className="h-4 w-4" />
                 <AlertDescription>
-                  AI will auto-generate aliases and descriptions. You can edit them in the Metadata Editor after setup.
+                  AI will auto-generate aliases and descriptions. You can edit them in the Metadata
+                  Editor after setup.
                 </AlertDescription>
               </Alert>
 
               <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">Preview - Auto-Generated Metadata</p>
+                <p className="text-sm font-semibold text-foreground">
+                  Preview - Auto-Generated Metadata
+                </p>
                 <div className="space-y-2 max-h-48 overflow-y-auto">
-                  {schema?.tables.map(table => (
-                    <div key={table.name} className="p-3 bg-muted rounded flex justify-between items-center">
+                  {schema?.tables.map((table) => (
+                    <div
+                      key={table.name}
+                      className="p-3 bg-muted rounded flex justify-between items-center"
+                    >
                       <div>
-                        <div className="text-xs font-mono text-muted-foreground mb-1">{table.name}</div>
+                        <div className="text-xs font-mono text-muted-foreground mb-1">
+                          {table.name}
+                        </div>
                         <p className="text-sm text-foreground">{table.rowCount} rows</p>
                       </div>
                       <Badge variant="outline">{table.columns.length} cols</Badge>
                     </div>
                   ))}
-                  {!schema && <p className="text-sm text-muted-foreground">Loading schema preview...</p>}
+                  {!schema && (
+                    <p className="text-sm text-muted-foreground">Loading schema preview...</p>
+                  )}
                 </div>
               </div>
 

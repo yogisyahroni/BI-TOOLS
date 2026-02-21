@@ -62,7 +62,7 @@ func (h *PermissionHandler) GetPermissionsByResource(c *fiber.Ctx) error {
 
 // CheckUserPermission handles POST /api/permissions/check
 type CheckPermissionRequest struct {
-	UserID         uint   `json:"user_id" validate:"required"`
+	UserID         string `json:"user_id" validate:"required,uuid"`
 	PermissionName string `json:"permission_name" validate:"required"`
 }
 
@@ -80,7 +80,7 @@ func (h *PermissionHandler) CheckUserPermission(c *fiber.Ctx) error {
 		})
 	}
 
-	hasPermission, err := h.permissionService.CheckPermission(strconv.FormatUint(uint64(req.UserID), 10), req.PermissionName)
+	hasPermission, err := h.permissionService.CheckPermission(req.UserID, req.PermissionName)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to check permission",
@@ -96,14 +96,10 @@ func (h *PermissionHandler) CheckUserPermission(c *fiber.Ctx) error {
 
 // GetUserPermissions handles GET /api/users/:id/permissions
 func (h *PermissionHandler) GetUserPermissions(c *fiber.Ctx) error {
-	userID, err := strconv.ParseUint(c.Params("id"), 10, 32)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
+	userID := c.Params("id")
+	// Optional: validate UUID format here if needed
 
-	permissions, err := h.permissionService.GetUserPermissions(strconv.FormatUint(userID, 10))
+	permissions, err := h.permissionService.GetUserPermissions(userID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to fetch user permissions",
@@ -291,14 +287,9 @@ func (h *PermissionHandler) AssignPermissionsToRole(c *fiber.Ctx) error {
 
 // GetUserRoles handles GET /api/users/:id/roles
 func (h *PermissionHandler) GetUserRoles(c *fiber.Ctx) error {
-	userID, err := strconv.ParseUint(c.Params("id"), 10, 32)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
+	userID := c.Params("id")
 
-	roles, err := h.permissionService.GetUserRoles(strconv.FormatUint(userID, 10))
+	roles, err := h.permissionService.GetUserRoles(userID)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to fetch user roles",
@@ -319,12 +310,7 @@ type AssignRoleRequest struct {
 
 // AssignRoleToUser handles POST /api/users/:id/roles
 func (h *PermissionHandler) AssignRoleToUser(c *fiber.Ctx) error {
-	userID, err := strconv.ParseUint(c.Params("id"), 10, 32)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
+	userID := c.Params("id")
 
 	var req AssignRoleRequest
 	if err := c.BodyParser(&req); err != nil {
@@ -342,7 +328,7 @@ func (h *PermissionHandler) AssignRoleToUser(c *fiber.Ctx) error {
 	// Get current user ID from context (who is assigning the role)
 	assignedByUserID := c.Locals("userID").(string)
 
-	if err := h.permissionService.AssignRoleToUser(strconv.FormatUint(userID, 10), req.RoleID, assignedByUserID); err != nil {
+	if err := h.permissionService.AssignRoleToUser(userID, req.RoleID, assignedByUserID); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})
@@ -355,12 +341,7 @@ func (h *PermissionHandler) AssignRoleToUser(c *fiber.Ctx) error {
 
 // RemoveRoleFromUser handles DELETE /api/users/:id/roles/:roleId
 func (h *PermissionHandler) RemoveRoleFromUser(c *fiber.Ctx) error {
-	userID, err := strconv.ParseUint(c.Params("id"), 10, 32)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
+	userID := c.Params("id")
 
 	roleID, err := strconv.ParseUint(c.Params("roleId"), 10, 32)
 	if err != nil {
@@ -369,7 +350,7 @@ func (h *PermissionHandler) RemoveRoleFromUser(c *fiber.Ctx) error {
 		})
 	}
 
-	if err := h.permissionService.RemoveRoleFromUser(strconv.FormatUint(userID, 10), uint(roleID)); err != nil {
+	if err := h.permissionService.RemoveRoleFromUser(userID, uint(roleID)); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"error": err.Error(),
 		})

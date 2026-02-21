@@ -1,46 +1,48 @@
-'use client';
+"use client";
 
-import React, { useMemo, useState, useCallback } from 'react';
-import dynamic from 'next/dynamic';
-import { buildEChartsOptions } from '@/lib/visualizations/echarts-options';
+import React, { useMemo, useState, useCallback } from "react";
+import dynamic from "next/dynamic";
+import { buildEChartsOptions } from "@/lib/visualizations/echarts-options";
 
-const EChartsWrapper = dynamic(() => import('./visualizations/echarts-wrapper').then(mod => mod.EChartsWrapper), {
-  ssr: false,
-  loading: () => <div className="h-full w-full flex items-center justify-center bg-muted/20 animate-pulse rounded-lg"><span className="text-muted-foreground text-xs">Loading Chart Engine...</span></div>
-});
-import { useTheme } from 'next-themes';
-import { AlertCircle } from 'lucide-react';
-import { type VisualizationConfig } from '@/lib/types';
-import { useWorkspaceTheme } from '@/components/theme/theme-provider';
+const EChartsWrapper = dynamic(
+  () => import("./visualizations/echarts-wrapper").then((mod) => mod.EChartsWrapper),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="h-full w-full flex items-center justify-center bg-muted/20 animate-pulse rounded-lg">
+        <span className="text-muted-foreground text-xs">Loading Chart Engine...</span>
+      </div>
+    ),
+  },
+);
+import { useTheme } from "next-themes";
+import { AlertCircle } from "lucide-react";
+import { type VisualizationConfig } from "@/lib/types";
+import { useWorkspaceTheme } from "@/components/theme/theme-provider";
 
 // Import specialized components
-import { MetricCard } from './metric-card';
-import { ProgressBar } from './progress-bar';
-import { GaugeChart } from './gauge-chart';
-import { _SmallMultiples } from './visualizations/small-multiples';
+import { MetricCard } from "./metric-card";
+import { ProgressBar } from "./progress-bar";
+import { GaugeChart } from "./gauge-chart";
+import { SmallMultiples } from "./visualizations/small-multiples";
 
 // Import annotation components
-import { ChartAnnotations } from './charts/chart-annotations';
-import { AnnotationToolbar } from './charts/annotation-toolbar';
-import { CommentInput } from './comments/comment-input';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { ChartAnnotations } from "./charts/chart-annotations";
+import { AnnotationToolbar } from "./charts/annotation-toolbar";
+import { CommentInput } from "./comments/comment-input";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
-import type { Comment, CreateAnnotationRequest, AnnotationPosition } from '@/types/comments';
-import { type FilterCriteria } from '@/lib/cross-filter-context';
+import type { Comment, CreateAnnotationRequest, AnnotationPosition } from "@/types/comments";
+import { type FilterCriteria } from "@/lib/cross-filter-context";
 
 interface ChartVisualizationProps {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: Record<string, any>[];
   config: Partial<VisualizationConfig>;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isLoading?: boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onDataClick?: (params: any) => void;
 
   // Annotation props (optional)
@@ -68,15 +70,15 @@ export function ChartVisualization({
   onCreateAnnotation,
   onUpdateAnnotation,
   onDeleteAnnotation,
-  activeFilters = []
+  activeFilters = [],
 }: ChartVisualizationProps) {
   const { theme } = useTheme();
   const { theme: workspaceTheme } = useWorkspaceTheme();
 
   // Annotation state
   const [isAnnotationMode, setIsAnnotationMode] = useState(false);
-  const [annotationType, setAnnotationType] = useState<'point' | 'range' | 'text'>('point');
-  const [annotationColor, setAnnotationColor] = useState('#F59E0B');
+  const [annotationType, setAnnotationType] = useState<"point" | "range" | "text">("point");
+  const [annotationColor, setAnnotationColor] = useState("#F59E0B");
   const [selectedAnnotationId, setSelectedAnnotationId] = useState<string | null>(null);
   const [pendingAnnotation, setPendingAnnotation] = useState<{
     position: AnnotationPosition;
@@ -85,21 +87,24 @@ export function ChartVisualization({
   } | null>(null);
   const [showAnnotationDialog, setShowAnnotationDialog] = useState(false);
   const [editingComment, setEditingComment] = useState<Comment | null>(null);
-  const [editContent, setEditContent] = useState('');
+  const [editContent, setEditContent] = useState("");
 
   // Calculate annotation count
   const annotationCount = useMemo(() => {
     if (!chartId) return 0;
-    return comments.filter(c => c.annotation && c.annotation.chartId === chartId).length;
+    return comments.filter((c) => c.annotation && c.annotation.chartId === chartId).length;
   }, [comments, chartId]);
 
   // Strict Config with defaults
   const strictConfig = useMemo(() => {
     return {
-      type: 'bar',
-      xAxis: '',
+      type: "bar",
+      xAxis: "",
       yAxis: [],
-      colors: config.colors && config.colors.length > 0 ? config.colors : (workspaceTheme?.chartPalette || []),
+      colors:
+        config.colors && config.colors.length > 0
+          ? config.colors
+          : workspaceTheme?.chartPalette || [],
       ...config,
     } as VisualizationConfig;
   }, [config, workspaceTheme]);
@@ -107,11 +112,11 @@ export function ChartVisualization({
   // Validate Config
   const isValid = useMemo(() => {
     // Metric only needs yAxis (value)
-    if (strictConfig.type === 'metric') {
+    if (strictConfig.type === "metric") {
       return strictConfig.yAxis && strictConfig.yAxis.length > 0;
     }
     // Gauge/Progress need yAxis (value)
-    if (['gauge', 'progress'].includes(strictConfig.type)) {
+    if (["gauge", "progress"].includes(strictConfig.type)) {
       return strictConfig.yAxis && strictConfig.yAxis.length > 0;
     }
 
@@ -127,32 +132,38 @@ export function ChartVisualization({
   }, [strictConfig, data]);
 
   // Handle annotation click
-  const handleAnnotationClick = useCallback((position: AnnotationPosition, xValue?: number, yValue?: number) => {
-    if (!isAnnotationMode) return;
+  const handleAnnotationClick = useCallback(
+    (position: AnnotationPosition, xValue?: number, yValue?: number) => {
+      if (!isAnnotationMode) return;
 
-    setPendingAnnotation({ position, xValue, yValue });
-    setShowAnnotationDialog(true);
-    setEditingComment(null);
-    setEditContent('');
-  }, [isAnnotationMode]);
+      setPendingAnnotation({ position, xValue, yValue });
+      setShowAnnotationDialog(true);
+      setEditingComment(null);
+      setEditContent("");
+    },
+    [isAnnotationMode],
+  );
 
   // Handle annotation submit
-  const handleAnnotationSubmit = useCallback(async (data: { content: string }) => {
-    if (!pendingAnnotation || !chartId || !onCreateAnnotation) return;
+  const handleAnnotationSubmit = useCallback(
+    async (data: { content: string }) => {
+      if (!pendingAnnotation || !chartId || !onCreateAnnotation) return;
 
-    await onCreateAnnotation({
-      chartId,
-      content: data.content,
-      position: pendingAnnotation.position,
-      type: annotationType,
-      color: annotationColor,
-      xValue: pendingAnnotation.xValue,
-      yValue: pendingAnnotation.yValue,
-    });
+      await onCreateAnnotation({
+        chartId,
+        content: data.content,
+        position: pendingAnnotation.position,
+        type: annotationType,
+        color: annotationColor,
+        xValue: pendingAnnotation.xValue,
+        yValue: pendingAnnotation.yValue,
+      });
 
-    setShowAnnotationDialog(false);
-    setPendingAnnotation(null);
-  }, [pendingAnnotation, chartId, annotationType, annotationColor, onCreateAnnotation]);
+      setShowAnnotationDialog(false);
+      setPendingAnnotation(null);
+    },
+    [pendingAnnotation, chartId, annotationType, annotationColor, onCreateAnnotation],
+  );
 
   // Handle edit annotation
   const handleEditAnnotation = useCallback((comment: Comment) => {
@@ -169,7 +180,7 @@ export function ChartVisualization({
       chartId: editingComment.annotation.chartId,
       content: editContent,
       position: editingComment.annotation.position,
-      type: editingComment.annotation.type as 'point' | 'range' | 'text',
+      type: editingComment.annotation.type as "point" | "range" | "text",
       color: editingComment.annotation.color,
       xValue: editingComment.annotation.xValue || undefined,
       yValue: editingComment.annotation.yValue || undefined,
@@ -177,15 +188,18 @@ export function ChartVisualization({
 
     setShowAnnotationDialog(false);
     setEditingComment(null);
-    setEditContent('');
+    setEditContent("");
   }, [editingComment, editContent, onUpdateAnnotation]);
 
   // Handle delete annotation
-  const handleDeleteAnnotation = useCallback(async (annotationId: string) => {
-    if (!onDeleteAnnotation) return;
-    await onDeleteAnnotation(annotationId);
-    setSelectedAnnotationId(null);
-  }, [onDeleteAnnotation]);
+  const handleDeleteAnnotation = useCallback(
+    async (annotationId: string) => {
+      if (!onDeleteAnnotation) return;
+      await onDeleteAnnotation(annotationId);
+      setSelectedAnnotationId(null);
+    },
+    [onDeleteAnnotation],
+  );
 
   // ---- Render Logic based on Type ----
 
@@ -219,7 +233,7 @@ export function ChartVisualization({
   }
 
   // 1. Metric Card Render
-  if (strictConfig.type === 'metric') {
+  if (strictConfig.type === "metric") {
     const valueCol = strictConfig.yAxis[0];
     const value = data[0]?.[valueCol]; // Take first row
     const previousValue = data.length > 1 ? data[1]?.[valueCol] : undefined;
@@ -229,9 +243,13 @@ export function ChartVisualization({
         <div className="w-full max-w-sm">
           <MetricCard
             title={strictConfig.title || valueCol}
-            value={typeof value === 'number' ? value : String(value)}
-            previousValue={strictConfig.showTrend && typeof previousValue === 'number' ? previousValue : undefined}
-            trendLabel={strictConfig.showTrend ? 'vs previous' : undefined}
+            value={typeof value === "number" ? value : String(value)}
+            previousValue={
+              strictConfig.showTrend && typeof previousValue === "number"
+                ? previousValue
+                : undefined
+            }
+            trendLabel={strictConfig.showTrend ? "vs previous" : undefined}
             size="lg"
           />
         </div>
@@ -240,7 +258,7 @@ export function ChartVisualization({
   }
 
   // 2. Gauge Chart Render
-  if (strictConfig.type === 'gauge') {
+  if (strictConfig.type === "gauge") {
     const valueCol = strictConfig.yAxis[0];
     const value = Number(data[0]?.[valueCol] || 0);
 
@@ -258,7 +276,7 @@ export function ChartVisualization({
   }
 
   // 3. Progress Bar Render
-  if (strictConfig.type === 'progress') {
+  if (strictConfig.type === "progress") {
     const valueCol = strictConfig.yAxis[0];
     const value = Number(data[0]?.[valueCol] || 0);
 
@@ -281,19 +299,21 @@ export function ChartVisualization({
   const options = buildEChartsOptions(data, strictConfig, theme, activeFilters, chartId);
 
   const chartContent = (
-    <div className={`h-full w-full min-h-[400px] border border-border rounded-lg bg-card p-4 shadow-sm overflow-hidden relative ${isAnnotationMode ? 'ring-2 ring-primary ring-offset-2' : ''}`}>
+    <div
+      className={`h-full w-full min-h-[400px] border border-border rounded-lg bg-card p-4 shadow-sm overflow-hidden relative ${isAnnotationMode ? "ring-2 ring-primary ring-offset-2" : ""}`}
+    >
       <EChartsWrapper
         options={options}
         isLoading={isLoading}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         className="h-full w-full"
         onEvents={{
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           click: (params: any) => {
             if (!isAnnotationMode && onDataClick) {
               onDataClick(params);
             }
-          }
+          },
         }}
       />
     </div>
@@ -341,9 +361,7 @@ export function ChartVisualization({
       <Dialog open={showAnnotationDialog} onOpenChange={setShowAnnotationDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>
-              {editingComment ? 'Edit Annotation' : 'Add Chart Annotation'}
-            </DialogTitle>
+            <DialogTitle>{editingComment ? "Edit Annotation" : "Add Chart Annotation"}</DialogTitle>
           </DialogHeader>
 
           {editingComment ? (
@@ -360,7 +378,7 @@ export function ChartVisualization({
                   onClick={() => {
                     setShowAnnotationDialog(false);
                     setEditingComment(null);
-                    setEditContent('');
+                    setEditContent("");
                   }}
                   className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
                 >
@@ -381,9 +399,9 @@ export function ChartVisualization({
                 await handleAnnotationSubmit({ content: data.content });
               }}
               entityType="chart"
-              entityId={chartId || ''}
+              entityId={chartId || ""}
               placeholder="Add a comment about this data point..."
-              currentUserId={currentUserId || ''}
+              currentUserId={currentUserId || ""}
               onCancel={() => {
                 setShowAnnotationDialog(false);
                 setPendingAnnotation(null);

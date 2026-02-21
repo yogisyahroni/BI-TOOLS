@@ -38,7 +38,7 @@ func (s *VersionService) CreateVersion(dashboardID string, userID string, req *m
 	}
 
 	// Check permissions - only owner or admin can create versions
-	if dashboard.UserID != userID {
+	if dashboard.UserID.String() != userID {
 		canCreate, err := s.canCreateVersion(userID, dashboardID)
 		if err != nil {
 			return nil, fmt.Errorf("failed to check permissions: %w", err)
@@ -154,7 +154,7 @@ func (s *VersionService) GetVersions(dashboardID string, userID string, filter *
 	}
 
 	// Check if user can view versions
-	if dashboard.UserID != userID {
+	if dashboard.UserID.String() != userID {
 		canView, err := s.canViewVersions(userID, dashboardID)
 		if err != nil {
 			return nil, 0, fmt.Errorf("failed to check permissions: %w", err)
@@ -227,8 +227,8 @@ func (s *VersionService) GetVersion(versionID string, userID string) (*models.Da
 	}
 
 	// Check permissions
-	if version.Dashboard != nil && version.Dashboard.UserID != userID {
-		canView, err := s.canViewVersions(userID, version.DashboardID)
+	if version.Dashboard != nil && version.Dashboard.UserID.String() != userID {
+		canView, err := s.canViewVersions(userID, version.DashboardID.String())
 		if err != nil {
 			return nil, fmt.Errorf("failed to check permissions: %w", err)
 		}
@@ -249,7 +249,7 @@ func (s *VersionService) RestoreVersion(versionID string, userID string) (*model
 	}
 
 	// Check if user can restore
-	canRestore, err := s.canRestoreVersion(userID, version.DashboardID)
+	canRestore, err := s.canRestoreVersion(userID, version.DashboardID.String())
 	if err != nil {
 		return nil, fmt.Errorf("failed to check permissions: %w", err)
 	}
@@ -297,10 +297,15 @@ func (s *VersionService) RestoreVersion(versionID string, userID string) (*model
 		}
 
 		if cardData.ID != "" {
-			card.ID = cardData.ID
+			if parsedID, err := uuid.Parse(cardData.ID); err == nil {
+				card.ID = parsedID
+			}
 		}
+		// Fix: Parse QueryID from *string to *uuid.UUID
 		if cardData.QueryID != nil {
-			card.QueryID = cardData.QueryID
+			if parsedQueryID, err := uuid.Parse(*cardData.QueryID); err == nil {
+				card.QueryID = &parsedQueryID
+			}
 		}
 		if cardData.Title != nil {
 			card.Title = cardData.Title
@@ -332,7 +337,8 @@ func (s *VersionService) RestoreVersion(versionID string, userID string) (*model
 			"restored_from_version_id": version.ID,
 		},
 	}
-	if _, err := s.CreateVersion(dashboard.ID, userID, restoreReq); err != nil {
+	// Fixed: dashboard.ID is UUID, need string
+	if _, err := s.CreateVersion(dashboard.ID.String(), userID, restoreReq); err != nil {
 		LogError("restore_version_create_error", "Failed to create restore version", map[string]interface{}{
 			"error": err.Error(),
 		})
@@ -348,7 +354,7 @@ func (s *VersionService) RestoreVersion(versionID string, userID string) (*model
 	// Send notification
 	if s.notificationSvc != nil {
 		s.notificationSvc.SendNotification(
-			uuid.MustParse(userID),
+			userID,
 			"Dashboard Restored",
 			fmt.Sprintf("Dashboard '%s' was restored to version %d", dashboard.Name, version.Version),
 			"success",
@@ -364,7 +370,7 @@ func (s *VersionService) RestoreVersion(versionID string, userID string) (*model
 	return &models.DashboardVersionRestoreResponse{
 		Success:           true,
 		Message:           "Dashboard restored successfully",
-		DashboardID:       dashboard.ID,
+		DashboardID:       dashboard.ID.String(),
 		RestoredToVersion: version.Version,
 	}, nil
 }
@@ -435,7 +441,7 @@ func (s *VersionService) DeleteVersion(versionID string, userID string) error {
 	}
 
 	// Check if user can delete
-	canDelete, err := s.canDeleteVersion(userID, version.DashboardID)
+	canDelete, err := s.canDeleteVersion(userID, version.DashboardID.String())
 	if err != nil {
 		return fmt.Errorf("failed to check permissions: %w", err)
 	}

@@ -2,6 +2,8 @@ package models
 
 import (
 	"time"
+
+	"github.com/google/uuid"
 )
 
 // User status constants
@@ -13,7 +15,7 @@ const (
 
 // User represents a system user
 type User struct {
-	ID                       string     `gorm:"primaryKey;type:text" json:"id"`
+	ID                       uuid.UUID  `gorm:"type:uuid;primaryKey;default:uuid_generate_v4()" json:"id"`
 	Email                    string     `gorm:"uniqueIndex;not null" json:"email"`
 	Username                 string     `gorm:"uniqueIndex;type:text" json:"username"`
 	Name                     string     `gorm:"type:text" json:"name"`

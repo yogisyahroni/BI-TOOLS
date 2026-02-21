@@ -1,7 +1,7 @@
 package middleware
 
 import (
-    "context"
+	"context"
 	"fmt"
 	"insight-engine-backend/services"
 	"os"
@@ -108,26 +108,26 @@ func AuthMiddleware(c *fiber.Ctx) error {
 	if sub, ok := claims["sub"].(string); ok {
 		c.Locals("userID", sub)
 		c.Locals("userId", sub)
-        
-        // Inject into UserContext
-        ctx := c.UserContext()
-        if ctx == nil {
-            ctx = c.Context()
-        }
-        ctx = context.WithValue(ctx, "userID", sub)
-        c.SetUserContext(ctx)
+
+		// Inject into UserContext
+		ctx := c.UserContext()
+		if ctx == nil {
+			ctx = c.Context()
+		}
+		ctx = context.WithValue(ctx, "userID", sub)
+		c.SetUserContext(ctx)
 
 	} else if id, ok := claims["id"].(string); ok {
 		c.Locals("userID", id)
 		c.Locals("userId", id)
 
-        // Inject into UserContext
-        ctx := c.UserContext()
-        if ctx == nil {
-            ctx = c.Context()
-        }
-        ctx = context.WithValue(ctx, "userID", id)
-        c.SetUserContext(ctx)
+		// Inject into UserContext
+		ctx := c.UserContext()
+		if ctx == nil {
+			ctx = c.Context()
+		}
+		ctx = context.WithValue(ctx, "userID", id)
+		c.SetUserContext(ctx)
 	}
 
 	if email, ok := claims["email"].(string); ok {
@@ -136,13 +136,25 @@ func AuthMiddleware(c *fiber.Ctx) error {
 
 	// 4. Set Workspace Context
 	userIDVal := c.Locals("userID")
+
+	fmt.Printf("DEBUG: AuthMiddleware - Claims keys: %v\n", getKeys(claims))
 	if userIDVal != nil {
+		fmt.Printf("DEBUG: AuthMiddleware - Extracted userID: %v\n", userIDVal)
 		setWorkspaceContext(c, userIDVal.(string))
 	} else {
+		fmt.Printf("DEBUG: AuthMiddleware - NO userID extracted. Fallthrough.\n")
 		c.Locals("workspaceID", "")
 	}
 
 	return c.Next()
+}
+
+func getKeys(m map[string]interface{}) []string {
+	keys := make([]string, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	return keys
 }
 
 // extractToken retrieves JWT from Authorization header or cookie
@@ -156,6 +168,12 @@ func extractToken(c *fiber.Ctx) string {
 		}
 	}
 
+	// Try query parameter (for WebSockets or direct downloads)
+	queryToken := c.Query("token")
+	if queryToken != "" {
+		return queryToken
+	}
+
 	// Try next-auth.session-token cookie (NextAuth default)
 	cookie := c.Cookies("next-auth.session-token")
 	if cookie != "" {
@@ -166,12 +184,6 @@ func extractToken(c *fiber.Ctx) string {
 	cookie = c.Cookies("__Secure-next-auth.session-token")
 	if cookie != "" {
 		return cookie
-	}
-
-	// Try query parameter (for WebSockets)
-	queryToken := c.Query("token")
-	if queryToken != "" {
-		return queryToken
 	}
 
 	return ""

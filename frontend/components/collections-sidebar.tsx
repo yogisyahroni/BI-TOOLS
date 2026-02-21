@@ -1,26 +1,26 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { _useCollections } from '@/hooks/use-collections';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { useState } from "react";
+import { useCollections } from "@/hooks/use-collections";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Plus, MoreHorizontal, _Folder, _FolderOpen, Trash2 } from 'lucide-react';
+} from "@/components/ui/dropdown-menu";
+import { Plus, MoreHorizontal, Folder, FolderOpen, Trash2 } from "lucide-react";
 
 interface CollectionsSidebarProps {
   onSelectCollection?: (collectionId: string) => void;
   selectedCollectionId?: string;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   collections?: any[];
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   isLoading?: boolean;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   createCollection?: (data: any) => Promise<void>;
   deleteCollection?: (id: string) => Promise<void>;
 }
@@ -34,14 +34,14 @@ export function CollectionsSidebar({
   deleteCollection,
 }: CollectionsSidebarProps) {
   const [showNewCollection, setShowNewCollection] = useState(false);
-  const [newCollectionName, setNewCollectionName] = useState('');
+  const [newCollectionName, setNewCollectionName] = useState("");
 
   const handleCreateCollection = async () => {
     if (newCollectionName.trim()) {
       await createCollection({
         name: newCollectionName,
       });
-      setNewCollectionName('');
+      setNewCollectionName("");
       setShowNewCollection(false);
     }
   };
@@ -50,11 +50,7 @@ export function CollectionsSidebar({
     <div className="flex flex-col h-full">
       <div className="border-b border-border px-4 py-3 flex-shrink-0">
         <h3 className="text-sm font-semibold text-foreground mb-3">Collections</h3>
-        <Button
-          size="sm"
-          className="w-full gap-2"
-          onClick={() => setShowNewCollection(true)}
-        >
+        <Button size="sm" className="w-full gap-2" onClick={() => setShowNewCollection(true)}>
           <Plus className="w-4 h-4" />
           New Collection
         </Button>
@@ -63,8 +59,11 @@ export function CollectionsSidebar({
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="space-y-2 p-3">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="flex items-center gap-2 p-2 rounded-lg bg-muted/5 animate-pulse">
+            {[1, 2, 3].map((i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 p-2 rounded-lg bg-muted/5 animate-pulse"
+              >
                 <div className="w-4 h-4 rounded bg-muted/40" />
                 <div className="h-4 w-24 bg-muted/40 rounded" />
               </div>
@@ -73,17 +72,16 @@ export function CollectionsSidebar({
         ) : (
           <>
             {collections.length === 0 ? (
-              <div className="px-4 py-2 text-xs text-muted-foreground">
-                No collections yet
-              </div>
+              <div className="px-4 py-2 text-xs text-muted-foreground">No collections yet</div>
             ) : (
               <div className="space-y-1 p-2">
                 {collections.map((collection) => (
                   <div
                     key={collection.id}
-                    className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${selectedCollectionId === collection.id
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-muted'
+                    className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors ${
+                      selectedCollectionId === collection.id
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted"
                     }`}
                     onClick={() => onSelectCollection?.(collection.id)}
                   >
@@ -92,9 +90,7 @@ export function CollectionsSidebar({
                       <div className="min-w-0">
                         <p className="text-sm font-medium truncate">{collection.name}</p>
                         {collection.description && (
-                          <p className="text-xs opacity-75 truncate">
-                            {collection.description}
-                          </p>
+                          <p className="text-xs opacity-75 truncate">{collection.description}</p>
                         )}
                       </div>
                     </div>
@@ -130,7 +126,7 @@ export function CollectionsSidebar({
             value={newCollectionName}
             onChange={(e) => setNewCollectionName(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === 'Enter') {
+              if (e.key === "Enter") {
                 handleCreateCollection();
               }
             }}
@@ -143,7 +139,7 @@ export function CollectionsSidebar({
               className="flex-1 bg-transparent"
               onClick={() => {
                 setShowNewCollection(false);
-                setNewCollectionName('');
+                setNewCollectionName("");
               }}
             >
               Cancel

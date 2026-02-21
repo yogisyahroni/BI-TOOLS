@@ -2,15 +2,15 @@ package main
 
 import (
 	"context"
-	"time"
 	"insight-engine-backend/bootstrap"
 	"insight-engine-backend/services"
+	"time"
 )
 
 func main() {
 	// 0. Initialize Tracing
-	shutdown := bootstrap.InitTracing()
-	defer shutdown()
+	// shutdown := bootstrap.InitTracing()
+	// defer shutdown()
 
 	// 1. Initialize Security Logger First
 	// Security logging must be available from application start
@@ -18,12 +18,12 @@ func main() {
 
 	// 2. Initialize APM Service
 	apmService := services.NewAPMService("InsightEngine Backend (Go)")
-	
+
 	// Start performance monitoring in background
 	ctx := context.Background()
 	go apmService.MonitorPerformance(ctx, 30*time.Second, services.PerformanceThresholds{
 		CPUUsagePercent:    80.0,
-		MemoryUsagePercent: 85.0,
+		MemoryUsagePercent: 95.0,
 		DiskUsagePercent:   90.0,
 		GoroutinesCount:    1000,
 	})

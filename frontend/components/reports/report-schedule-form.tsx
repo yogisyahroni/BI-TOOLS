@@ -1,48 +1,36 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import {
-  _Calendar,
-  Clock,
-  Mail,
-  FileText,
-  Settings,
-  ChevronRight,
-} from 'lucide-react';
+} from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Calendar, Clock, Mail, FileText, Settings, ChevronRight } from "lucide-react";
 import type {
   ScheduleFormData,
-  _ReportResourceType,
-  _ReportFormat,
+  ReportResourceType,
+  ReportFormat,
   CreateScheduledReportRequest,
-} from '@/types/scheduled-reports';
+} from "@/types/scheduled-reports";
 import {
   REPORT_FORMATS,
   RESOURCE_TYPES,
   _SCHEDULE_TYPES,
   _DAYS_OF_WEEK,
-} from '@/types/scheduled-reports';
-import { RecipientManager } from './recipient-manager';
-import { SchedulePicker } from './schedule-picker';
-import { scheduledReportsApi } from '@/lib/api/scheduled-reports';
+} from "@/types/scheduled-reports";
+import { RecipientManager } from "./recipient-manager";
+import { SchedulePicker } from "./schedule-picker";
+import { scheduledReportsApi } from "@/lib/api/scheduled-reports";
 
 interface ReportScheduleFormProps {
   initialData?: Partial<ScheduleFormData>;
@@ -52,22 +40,22 @@ interface ReportScheduleFormProps {
 }
 
 const defaultFormData: ScheduleFormData = {
-  name: '',
-  description: '',
-  resourceType: 'dashboard',
-  resourceId: '',
-  resourceName: '',
-  scheduleType: 'daily',
-  cronExpr: '0 9 * * *',
-  timeOfDay: '09:00',
+  name: "",
+  description: "",
+  resourceType: "dashboard",
+  resourceId: "",
+  resourceName: "",
+  scheduleType: "daily",
+  cronExpr: "0 9 * * *",
+  timeOfDay: "09:00",
   dayOfWeek: 1,
   dayOfMonth: 1,
-  timezone: 'UTC',
+  timezone: "UTC",
   recipients: [],
-  format: 'pdf',
+  format: "pdf",
   includeFilters: false,
-  subject: '',
-  message: '',
+  subject: "",
+  message: "",
 };
 
 export function ReportScheduleForm({
@@ -90,8 +78,8 @@ export function ReportScheduleForm({
     });
   }, []);
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChange = (field: keyof ScheduleFormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
@@ -114,17 +102,17 @@ export function ReportScheduleForm({
     };
 
     // Add schedule-specific fields
-    if (formData.scheduleType === 'cron') {
+    if (formData.scheduleType === "cron") {
       request.cronExpr = formData.cronExpr;
     } else {
       request.timeOfDay = formData.timeOfDay;
     }
 
-    if (formData.scheduleType === 'weekly') {
+    if (formData.scheduleType === "weekly") {
       request.dayOfWeek = formData.dayOfWeek;
     }
 
-    if (formData.scheduleType === 'monthly') {
+    if (formData.scheduleType === "monthly") {
       request.dayOfMonth = formData.dayOfMonth;
     }
 
@@ -136,7 +124,7 @@ export function ReportScheduleForm({
       case 1:
         return formData.name && formData.resourceId;
       case 2:
-        return formData.timeOfDay || (formData.scheduleType === 'cron' && formData.cronExpr);
+        return formData.timeOfDay || (formData.scheduleType === "cron" && formData.cronExpr);
       case 3:
         return formData.recipients.length > 0;
       default:
@@ -151,9 +139,7 @@ export function ReportScheduleForm({
         {[1, 2, 3, 4].map((step) => (
           <div
             key={step}
-            className={`flex-1 h-2 rounded-full ${
-              step <= currentStep ? 'bg-primary' : 'bg-muted'
-            }`}
+            className={`flex-1 h-2 rounded-full ${step <= currentStep ? "bg-primary" : "bg-muted"}`}
           />
         ))}
       </div>
@@ -174,7 +160,7 @@ export function ReportScheduleForm({
                 <Input
                   id="name"
                   value={formData.name}
-                  onChange={(e) => handleChange('name', e.target.value)}
+                  onChange={(e) => handleChange("name", e.target.value)}
                   placeholder="e.g., Weekly Sales Report"
                   required
                 />
@@ -185,7 +171,7 @@ export function ReportScheduleForm({
                 <Textarea
                   id="description"
                   value={formData.description}
-                  onChange={(e) => handleChange('description', e.target.value)}
+                  onChange={(e) => handleChange("description", e.target.value)}
                   placeholder="Brief description of this report"
                   rows={3}
                 />
@@ -208,8 +194,8 @@ export function ReportScheduleForm({
                     <Button
                       key={type.value}
                       type="button"
-                      variant={formData.resourceType === type.value ? 'default' : 'outline'}
-                      onClick={() => handleChange('resourceType', type.value)}
+                      variant={formData.resourceType === type.value ? "default" : "outline"}
+                      onClick={() => handleChange("resourceType", type.value)}
                       className="flex-1"
                     >
                       {type.label}
@@ -220,12 +206,12 @@ export function ReportScheduleForm({
 
               <div className="space-y-2">
                 <Label htmlFor="resourceId">
-                  {formData.resourceType === 'dashboard' ? 'Dashboard ID' : 'Query ID'} *
+                  {formData.resourceType === "dashboard" ? "Dashboard ID" : "Query ID"} *
                 </Label>
                 <Input
                   id="resourceId"
                   value={formData.resourceId}
-                  onChange={(e) => handleChange('resourceId', e.target.value)}
+                  onChange={(e) => handleChange("resourceId", e.target.value)}
                   placeholder={`Enter ${formData.resourceType} ID`}
                   required
                 />
@@ -238,8 +224,8 @@ export function ReportScheduleForm({
                     <Button
                       key={fmt.value}
                       type="button"
-                      variant={formData.format === fmt.value ? 'default' : 'outline'}
-                      onClick={() => handleChange('format', fmt.value)}
+                      variant={formData.format === fmt.value ? "default" : "outline"}
+                      onClick={() => handleChange("format", fmt.value)}
                       size="sm"
                     >
                       {fmt.label}
@@ -252,7 +238,7 @@ export function ReportScheduleForm({
                 <Switch
                   id="includeFilters"
                   checked={formData.includeFilters}
-                  onCheckedChange={(checked) => handleChange('includeFilters', checked)}
+                  onCheckedChange={(checked) => handleChange("includeFilters", checked)}
                 />
                 <Label htmlFor="includeFilters">Include current filters</Label>
               </div>
@@ -288,7 +274,7 @@ export function ReportScheduleForm({
                 <Label htmlFor="timezone">Timezone</Label>
                 <Select
                   value={formData.timezone}
-                  onValueChange={(value) => handleChange('timezone', value)}
+                  onValueChange={(value) => handleChange("timezone", value)}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Select timezone" />
@@ -320,7 +306,7 @@ export function ReportScheduleForm({
             <CardContent>
               <RecipientManager
                 recipients={formData.recipients}
-                onChange={(recipients) => handleChange('recipients', recipients)}
+                onChange={(recipients) => handleChange("recipients", recipients)}
               />
             </CardContent>
           </Card>
@@ -343,7 +329,7 @@ export function ReportScheduleForm({
                 <Input
                   id="subject"
                   value={formData.subject}
-                  onChange={(e) => handleChange('subject', e.target.value)}
+                  onChange={(e) => handleChange("subject", e.target.value)}
                   placeholder={`[Scheduled Report] ${formData.name}`}
                 />
               </div>
@@ -353,7 +339,7 @@ export function ReportScheduleForm({
                 <Textarea
                   id="message"
                   value={formData.message}
-                  onChange={(e) => handleChange('message', e.target.value)}
+                  onChange={(e) => handleChange("message", e.target.value)}
                   placeholder="Custom message to include in the email"
                   rows={4}
                 />
@@ -407,7 +393,7 @@ export function ReportScheduleForm({
           variant="outline"
           onClick={currentStep === 1 ? onCancel : () => setCurrentStep(currentStep - 1)}
         >
-          {currentStep === 1 ? 'Cancel' : 'Back'}
+          {currentStep === 1 ? "Cancel" : "Back"}
         </Button>
 
         {currentStep < 4 ? (
@@ -421,7 +407,7 @@ export function ReportScheduleForm({
           </Button>
         ) : (
           <Button type="submit" disabled={isSubmitting || !isStepValid()}>
-            {isSubmitting ? 'Creating...' : initialData ? 'Update Schedule' : 'Create Schedule'}
+            {isSubmitting ? "Creating..." : initialData ? "Update Schedule" : "Create Schedule"}
           </Button>
         )}
       </div>

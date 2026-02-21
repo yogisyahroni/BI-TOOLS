@@ -22,7 +22,11 @@ func NewDashboardHandler() *DashboardHandler {
 
 // GetDashboards retrieves all dashboards for the authenticated user
 func (h *DashboardHandler) GetDashboards(c *fiber.Ctx) error {
-	userID, _ := c.Locals("userId").(string)
+	userIDStr := c.Locals("userId").(string)
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid User ID"})
+	}
 
 	var dashboards []models.Dashboard
 	result := database.DB.Where("user_id = ?", userID).
@@ -47,14 +51,16 @@ func (h *DashboardHandler) GetDashboards(c *fiber.Ctx) error {
 // CreateDashboard creates a new dashboard
 func (h *DashboardHandler) CreateDashboard(c *fiber.Ctx) error {
 	log.Println("CreateDashboard: Handler started")
-	userID, ok := c.Locals("userId").(string)
-	log.Printf("CreateDashboard: UserID from locals: %v, ok: %v", userID, ok)
+	userIDStr, ok := c.Locals("userId").(string)
 	if !ok {
-		log.Println("CreateDashboard: UserID missing from locals")
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
 			"message": "User ID not found in context",
 		})
+	}
+	userID, err := uuid.Parse(userIDStr)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid User ID"})
 	}
 
 	type CreateDashboardRequest struct {
@@ -81,11 +87,16 @@ func (h *DashboardHandler) CreateDashboard(c *fiber.Ctx) error {
 		})
 	}
 
+	parsedCollectionID, err := uuid.Parse(req.CollectionID)
+	if err != nil {
+		return c.Status(400).JSON(fiber.Map{"error": "Invalid Collection ID"})
+	}
+
 	dashboard := models.Dashboard{
-		ID:           uuid.New().String(),
+		ID:           uuid.New(),
 		Name:         req.Name,
 		Description:  req.Description,
-		CollectionID: req.CollectionID,
+		CollectionID: parsedCollectionID,
 		UserID:       userID,
 		Layout:       &datatypes.JSON{}, // Default empty layout
 		IsPublic:     false,
@@ -114,7 +125,8 @@ func (h *DashboardHandler) CreateDashboard(c *fiber.Ctx) error {
 // GetDashboard retrieves a single dashboard by ID
 func (h *DashboardHandler) GetDashboard(c *fiber.Ctx) error {
 	dashboardID := c.Params("id")
-	userID, _ := c.Locals("userId").(string)
+	userIDStr, _ := c.Locals("userId").(string)
+	userID, _ := uuid.Parse(userIDStr)
 
 	var dashboard models.Dashboard
 	result := database.DB.Where("id = ? AND user_id = ?", dashboardID, userID).
@@ -137,7 +149,8 @@ func (h *DashboardHandler) GetDashboard(c *fiber.Ctx) error {
 // UpdateDashboard updates a dashboard (metadata or layout)
 func (h *DashboardHandler) UpdateDashboard(c *fiber.Ctx) error {
 	dashboardID := c.Params("id")
-	userID, _ := c.Locals("userId").(string)
+	userIDStr, _ := c.Locals("userId").(string)
+	userID, _ := uuid.Parse(userIDStr)
 
 	// Check if dashboard exists and belongs to user
 	var dashboard models.Dashboard
@@ -192,9 +205,11 @@ func (h *DashboardHandler) UpdateDashboard(c *fiber.Ctx) error {
 		for _, cardData := range cards {
 			cardMap := cardData.(map[string]interface{})
 
-			var queryID *string
+			var queryID *uuid.UUID
 			if qid, ok := cardMap["queryId"].(string); ok && qid != "" {
-				queryID = &qid
+				if parsedQID, err := uuid.Parse(qid); err == nil {
+					queryID = &parsedQID
+				}
 			}
 
 			var title *string
@@ -211,16 +226,20 @@ func (h *DashboardHandler) UpdateDashboard(c *fiber.Ctx) error {
 				vizConfigJSON = datatypes.JSON(vizBytes)
 			}
 
+			parsedDashboardID, _ := uuid.Parse(dashboardID)
+
 			card := models.DashboardCard{
-				DashboardID:         dashboardID,
+				DashboardID:         parsedDashboardID,
 				QueryID:             queryID,
 				Title:               title,
 				Position:            datatypes.JSON(positionJSON),
 				VisualizationConfig: vizConfigJSON,
 			}
 
-			if cardID, ok := cardMap["id"].(string); ok && cardID != "" {
-				card.ID = cardID
+			if cardIDString, ok := cardMap["id"].(string); ok && cardIDString != "" {
+				if parsedCardID, err := uuid.Parse(cardIDString); err == nil {
+					card.ID = parsedCardID
+				}
 			}
 
 			database.DB.Create(&card)

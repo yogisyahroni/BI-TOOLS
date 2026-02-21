@@ -23,4 +23,5 @@ func LoadConfig() {
 // ConnectDatabase initializes DB connection and runs migrations
 func ConnectDatabase() {
 	database.Connect()
+	database.Migrate()
 }

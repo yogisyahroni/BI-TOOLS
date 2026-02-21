@@ -1,20 +1,15 @@
-'use client';
+"use client";
 
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 import {
   Play,
   Pause,
@@ -27,9 +22,9 @@ import {
   FileText,
   CheckCircle2,
   XCircle,
-  _AlertCircle,
-} from 'lucide-react';
-import type { ScheduledReportResponse } from '@/types/scheduled-reports';
+  AlertCircle,
+} from "lucide-react";
+import type { ScheduledReportResponse } from "@/types/scheduled-reports";
 
 interface ReportScheduleCardProps {
   report: ScheduledReportResponse;
@@ -50,14 +45,14 @@ export function ReportScheduleCard({
 }: ReportScheduleCardProps) {
   const formatSchedule = () => {
     switch (report.scheduleType) {
-      case 'daily':
-        return `Daily at ${report.timeOfDay || '09:00'}`;
-      case 'weekly':
-        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-        return `Weekly on ${days[report.dayOfWeek || 1]} at ${report.timeOfDay || '09:00'}`;
-      case 'monthly':
-        return `Monthly on day ${report.dayOfMonth || 1} at ${report.timeOfDay || '09:00'}`;
-      case 'cron':
+      case "daily":
+        return `Daily at ${report.timeOfDay || "09:00"}`;
+      case "weekly":
+        const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        return `Weekly on ${days[report.dayOfWeek || 1]} at ${report.timeOfDay || "09:00"}`;
+      case "monthly":
+        return `Monthly on day ${report.dayOfMonth || 1} at ${report.timeOfDay || "09:00"}`;
+      case "cron":
         return `Custom: ${report.cronExpr}`;
       default:
         return report.scheduleType;
@@ -65,13 +60,13 @@ export function ReportScheduleCard({
   };
 
   const formatNextRun = () => {
-    if (!report.nextRunAt) return 'Not scheduled';
+    if (!report.nextRunAt) return "Not scheduled";
     const date = new Date(report.nextRunAt);
-    return date.toLocaleString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -79,10 +74,10 @@ export function ReportScheduleCard({
     if (!report.isActive) {
       return <Pause className="w-4 h-4" />;
     }
-    if (report.lastRunStatus === 'failed') {
+    if (report.lastRunStatus === "failed") {
       return <XCircle className="w-4 h-4 text-destructive" />;
     }
-    if (report.lastRunStatus === 'success') {
+    if (report.lastRunStatus === "success") {
       return <CheckCircle2 className="w-4 h-4 text-green-500" />;
     }
     return <Clock className="w-4 h-4 text-primary" />;
@@ -95,14 +90,12 @@ export function ReportScheduleCard({
           <div className="flex-1 min-w-0 pr-2">
             <div className="flex items-center gap-2 mb-1">
               <h3 className="font-semibold truncate">{report.name}</h3>
-              <Badge variant={report.isActive ? 'default' : 'secondary'} className="text-[10px]">
-                {report.isActive ? 'Active' : 'Paused'}
+              <Badge variant={report.isActive ? "default" : "secondary"} className="text-[10px]">
+                {report.isActive ? "Active" : "Paused"}
               </Badge>
             </div>
             {report.description && (
-              <p className="text-xs text-muted-foreground line-clamp-1">
-                {report.description}
-              </p>
+              <p className="text-xs text-muted-foreground line-clamp-1">{report.description}</p>
             )}
           </div>
           <DropdownMenu>
@@ -185,7 +178,7 @@ export function ReportScheduleCard({
               )}
             </div>
             <span className="text-xs text-muted-foreground">
-              {report.recipients.length} recipient{report.recipients.length !== 1 ? 's' : ''}
+              {report.recipients.length} recipient{report.recipients.length !== 1 ? "s" : ""}
             </span>
           </div>
 
@@ -209,7 +202,7 @@ export function ReportScheduleCard({
             <span className="text-muted-foreground">
               {report.lastRunAt
                 ? `Last run: ${new Date(report.lastRunAt).toLocaleDateString()}`
-                : 'Never run'}
+                : "Never run"}
             </span>
           </div>
           <div className="flex items-center gap-1 text-muted-foreground">

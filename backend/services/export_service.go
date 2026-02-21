@@ -442,7 +442,7 @@ func (s *ExportService) generatePDF(ctx context.Context, job *ExportJob, options
 		}
 		filtered := make([]models.DashboardCard, 0, len(options.CardIDs))
 		for _, card := range cards {
-			if cardIDSet[card.ID] {
+			if cardIDSet[card.ID.String()] {
 				filtered = append(filtered, card)
 			}
 		}
@@ -464,8 +464,8 @@ func (s *ExportService) generatePDF(ctx context.Context, job *ExportJob, options
 		}
 
 		// If the card has a saved query, try to execute it and get real data
-		if card.QueryID != nil && *card.QueryID != "" {
-			headers, rows := s.fetchCardQueryData(ctx, *card.QueryID)
+		if card.QueryID != nil {
+			headers, rows := s.fetchCardQueryData(ctx, card.QueryID.String())
 			if len(headers) > 0 {
 				section.Headers = headers
 				section.Rows = rows
@@ -514,7 +514,7 @@ func (s *ExportService) generatePDF(ctx context.Context, job *ExportJob, options
 
 	// ---- 6. Generate PDF ----
 	metadata := map[string]string{
-		"Dashboard ID": dashboard.ID,
+		"Dashboard ID": dashboard.ID.String(),
 		"Export ID":    job.ID.String(),
 		"Cards":        fmt.Sprintf("%d", len(cards)),
 		"Quality":      string(options.Quality),
@@ -764,7 +764,7 @@ func (s *ExportService) generatePPTX(ctx context.Context, job *ExportJob, option
 		}
 		filteredCards := make([]models.DashboardCard, 0)
 		for _, card := range cards {
-			if cardIDSet[card.ID] {
+			if cardIDSet[card.ID.String()] {
 				filteredCards = append(filteredCards, card)
 			}
 		}
@@ -779,8 +779,8 @@ func (s *ExportService) generatePPTX(ctx context.Context, job *ExportJob, option
 		}
 
 		// Use direct QueryID field
-		if card.QueryID != nil && *card.QueryID != "" {
-			headers, rows := s.fetchCardQueryData(ctx, *card.QueryID)
+		if card.QueryID != nil {
+			headers, rows := s.fetchCardQueryData(ctx, card.QueryID.String())
 			if len(headers) > 0 {
 				deck.Slides = append(deck.Slides, models.Slide{
 					Title:        cardTitle,
@@ -890,7 +890,7 @@ func (s *ExportService) generateXLSX(ctx context.Context, job *ExportJob, option
 		}
 		filteredCards := make([]models.DashboardCard, 0)
 		for _, card := range cards {
-			if cardIDSet[card.ID] {
+			if cardIDSet[card.ID.String()] {
 				filteredCards = append(filteredCards, card)
 			}
 		}
@@ -904,8 +904,8 @@ func (s *ExportService) generateXLSX(ctx context.Context, job *ExportJob, option
 		}
 
 		// Try to fetch query data
-		if card.QueryID != nil && *card.QueryID != "" {
-			headers, rows := s.fetchCardQueryData(ctx, *card.QueryID)
+		if card.QueryID != nil {
+			headers, rows := s.fetchCardQueryData(ctx, card.QueryID.String())
 			if len(headers) > 0 {
 				sheets = append(sheets, XLSXSheet{
 					Name:    sheetName,
@@ -921,7 +921,7 @@ func (s *ExportService) generateXLSX(ctx context.Context, job *ExportJob, option
 			Name:    sheetName,
 			Headers: []string{"Property", "Value"},
 			Rows: [][]string{
-				{"Card ID", card.ID},
+				{"Card ID", card.ID.String()},
 				{"Type", card.Type},
 				{"Created", card.CreatedAt.Format("2006-01-02 15:04:05")},
 			},
@@ -963,64 +963,9 @@ func (s *ExportService) generateXLSX(ctx context.Context, job *ExportJob, option
 	}
 
 	LogInfo("generate_xlsx_complete", "XLSX export generated", map[string]interface{}{
-		"export_id":   job.ID,
-		"file_size":   info.Size(),
-		"sheet_count": len(sheets),
+		"export_id": job.ID,
+		"file_size": info.Size(),
 	})
 
 	return info.Size(), nil
-}
-
-// generateExportHTML generates HTML content for the export
-func (s *ExportService) generateExportHTML(job *ExportJob, options *ExportOptions) string {
-	title := "Dashboard Export"
-	if options.Title != nil {
-		title = *options.Title
-	}
-
-	subtitle := ""
-	if options.Subtitle != nil {
-		subtitle = fmt.Sprintf("<h2>%s</h2>", *options.Subtitle)
-	}
-
-	footer := ""
-	if options.FooterText != nil {
-		footer = *options.FooterText
-	}
-
-	watermark := ""
-	if options.Watermark != nil {
-		watermark = fmt.Sprintf("<div style=\"opacity:0.1;position:fixed;top:50%%;left:50%%;transform:translate(-50%%,-50%%);font-size:72px;color:#ccc;\">%s</div>", *options.Watermark)
-	}
-
-	timestamp := ""
-	if options.IncludeTimestamp {
-		timestamp = fmt.Sprintf("<div>Generated: %s</div>", time.Now().Format("2006-01-02 15:04:05"))
-	}
-
-	return fmt.Sprintf(`
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="UTF-8">
-	<title>%s</title>
-	<style>
-		body { font-family: Arial, sans-serif; margin: 20px; }
-		h1 { color: #333; }
-		.footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc; font-size: 12px; color: #666; }
-	</style>
-</head>
-<body>
-	%s
-	<h1>%s</h1>
-	%s
-	%s
-	<div class="content">
-		<p>Dashboard ID: %s</p>
-		<p>Export ID: %s</p>
-		<p>Format: %s | Orientation: %s | Quality: %s</p>
-	</div>
-	<div class="footer">%s</div>
-</body>
-</html>`, title, watermark, title, subtitle, timestamp, job.DashboardID, job.ID, options.Format, options.Orientation, options.Quality, footer)
 }

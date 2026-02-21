@@ -1,0 +1,8 @@
+{
+    "name": "Verification Pulse",
+    "dashboard_id": "9a4344bb-27f5-40c1-97a7-efa7e419c0b7",
+    "schedule": "* * * * *",
+    "webhook_url": "https://example.com/webhook",
+    "channel_type": "slack",
+    "is_active": true
+}

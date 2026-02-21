@@ -88,7 +88,7 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 	api.Delete("/connections/:id", m.AuthMiddleware, h.ConnectionHandler.DeleteConnection)
 	api.Post("/connections/:id/test", m.AuthMiddleware, h.ConnectionHandler.TestConnection)
 	api.Get("/connections/:id/schema", m.AuthMiddleware, h.ConnectionHandler.GetConnectionSchema)
-
+	api.Post("/connections/:id/sync-embeddings", m.AuthMiddleware, h.ConnectionHandler.SyncConnectionEmbeddings)
 	// Engine Analytics
 	api.Post("/engine/aggregate", m.AuthMiddleware, h.EngineHandler.Aggregate)
 	api.Post("/engine/forecast", m.AuthMiddleware, h.EngineHandler.Forecast)
@@ -100,11 +100,18 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 
 	// --- Stories & Presentations (TASK-161) ---
 	api.Post("/stories", m.AuthMiddleware, h.StoryHandler.CreateStory)
+	api.Post("/stories/manual", m.AuthMiddleware, h.StoryHandler.CreateManualStory) // Manual (no-AI) creation
 	api.Get("/stories", m.AuthMiddleware, h.StoryHandler.GetStories)
 	api.Get("/stories/:id", m.AuthMiddleware, h.StoryHandler.GetStory)
 	api.Put("/stories/:id", m.AuthMiddleware, h.StoryHandler.UpdateStory)
 	api.Delete("/stories/:id", m.AuthMiddleware, h.StoryHandler.DeleteStory)
 	api.Get("/stories/:id/export", m.AuthMiddleware, h.StoryHandler.ExportPPTX)
+
+	// Public Share Routes
+	api.Put("/stories/:id/share", m.AuthMiddleware, h.StoryHandler.TogglePublicShare)
+
+	// Open Public Route (no auth middleware)
+	app.Get("/api/public/stories/:token", h.StoryHandler.GetPublicStory)
 
 	api.Post("/engine/clustering", m.AuthMiddleware, h.EngineHandler.PerformClustering)
 
@@ -327,6 +334,11 @@ func SetupRoutes(app *fiber.App, h *HandlerContainer, m *MiddlewareContainer) {
 	// Alerts
 	h.AlertHandler.RegisterRoutes(app, m.AuthMiddleware)
 	h.AlertNotificationHandler.RegisterRoutes(app, m.AuthMiddleware)
+
+	// Pulses (TASK-156)
+	api.Post("/pulses", m.AuthMiddleware, h.PulseHandler.CreatePulse)
+	api.Get("/pulses", m.AuthMiddleware, h.PulseHandler.GetUserPulses)
+	api.Post("/pulses/:id/trigger", m.AuthMiddleware, h.PulseHandler.TriggerPulse)
 
 	// Webhooks (TASK-134)
 	api.Post("/webhooks", m.AuthMiddleware, h.WebhookHandler.CreateWebhook)

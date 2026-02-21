@@ -1,25 +1,30 @@
-import { BaseConnector, _ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
+import {
+  BaseConnector,
+  ConnectionConfig,
+  type SchemaInfo,
+  type QueryResult,
+} from "./base-connector";
 
 /**
  * MySQL Connector Implementation
  */
 export class MySQLConnector extends BaseConnector {
-    // TODO: Implement MySQL-specific logic
-    // For now, scaffolded to show the pattern
+  // TODO: Implement MySQL-specific logic
+  // For now, scaffolded to show the pattern
 
-    async testConnection(): Promise<{ success: boolean; error?: string }> {
-        throw new Error('MySQL connector not yet implemented');
-    }
+  async testConnection(): Promise<{ success: boolean; error?: string }> {
+    throw new Error("MySQL connector not yet implemented");
+  }
 
-    async fetchSchema(): Promise<SchemaInfo> {
-        throw new Error('MySQL connector not yet implemented');
-    }
+  async fetchSchema(): Promise<SchemaInfo> {
+    throw new Error("MySQL connector not yet implemented");
+  }
 
-    async executeQuery(_sql: string): Promise<QueryResult> {
-        throw new Error('MySQL connector not yet implemented');
-    }
+  async executeQuery(_sql: string): Promise<QueryResult> {
+    throw new Error("MySQL connector not yet implemented");
+  }
 
-    async disconnect(): Promise<void> {
-        // No-op
-    }
+  async disconnect(): Promise<void> {
+    // No-op
+  }
 }

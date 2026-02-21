@@ -8,10 +8,10 @@ import (
 )
 
 type Collection struct {
-	ID          string    `json:"id" gorm:"primaryKey"`
+	ID          uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
 	Name        string    `json:"name" gorm:"not null"`
 	Description *string   `json:"description"`
-	UserID      string    `json:"userId" gorm:"not null"`
+	UserID      uuid.UUID `json:"userId" gorm:"type:uuid;not null"`
 	WorkspaceID *string   `json:"workspaceId"`
 	CreatedAt   time.Time `json:"createdAt"`
 	UpdatedAt   time.Time `json:"updatedAt"`
@@ -21,23 +21,23 @@ type Collection struct {
 }
 
 func (c *Collection) BeforeCreate(tx *gorm.DB) (err error) {
-	if c.ID == "" {
-		c.ID = uuid.New().String()
+	if c.ID == uuid.Nil {
+		c.ID = uuid.New()
 	}
 	return
 }
 
 type CollectionItem struct {
-	ID           string    `json:"id" gorm:"primaryKey"`
-	CollectionID string    `json:"collectionId" gorm:"not null"`
+	ID           uuid.UUID `json:"id" gorm:"primaryKey;type:uuid;default:uuid_generate_v4()"`
+	CollectionID uuid.UUID `json:"collectionId" gorm:"type:uuid;not null"`
 	ItemType     string    `json:"itemType" gorm:"not null"` // 'pipeline' or 'dataflow'
 	ItemID       string    `json:"itemId" gorm:"not null"`
 	CreatedAt    time.Time `json:"createdAt"`
 }
 
 func (ci *CollectionItem) BeforeCreate(tx *gorm.DB) (err error) {
-	if ci.ID == "" {
-		ci.ID = uuid.New().String()
+	if ci.ID == uuid.Nil {
+		ci.ID = uuid.New()
 	}
 	return
 }

@@ -208,7 +208,9 @@ func (h *AIProviderHandler) TestProvider(c *fiber.Ctx) error {
 	id := c.Params("id")
 
 	// Create AI service
-	aiService := services.NewAIService(h.encryptionService)
+	embeddingService := services.NewEmbeddingService(h.encryptionService)
+	semanticLayerService := services.NewSemanticLayerService(database.DB)
+	aiService := services.NewAIService(h.encryptionService, embeddingService, semanticLayerService)
 
 	// Test provider
 	if err := aiService.TestProvider(c.Context(), id, userID); err != nil {

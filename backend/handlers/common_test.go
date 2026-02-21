@@ -11,17 +11,46 @@ import (
 )
 
 func SetupTestDB() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared"), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	if err != nil {
 		panic("failed to connect database")
 	}
 	database.DB = db
+
+	// Manually create users table to avoid SQLite error with uuid_generate_v4()
+	db.Exec(`CREATE TABLE IF NOT EXISTS users (
+		id TEXT PRIMARY KEY,
+		email TEXT NOT NULL UNIQUE,
+		username TEXT UNIQUE,
+		name TEXT,
+		password TEXT,
+		role TEXT DEFAULT 'user',
+		email_verified NUMERIC DEFAULT 0,
+		email_verified_at TIMESTAMP,
+		email_verification_token TEXT,
+		email_verification_expires TIMESTAMP,
+		password_reset_token TEXT,
+		password_reset_expires TIMESTAMP,
+		provider TEXT,
+		provider_id TEXT,
+		created_at DATETIME,
+		updated_at DATETIME,
+		status TEXT DEFAULT 'active',
+		deactivated_at TIMESTAMP,
+		deactivated_by TEXT,
+		deactivation_reason TEXT,
+		impersonation_token TEXT,
+		impersonation_expires TIMESTAMP,
+		impersonated_by TEXT
+	)`)
+
 	// AutoMigrate all models used in handler tests
 	db.AutoMigrate(
 		&models.Connection{},
 		&models.VisualQuery{},
 		&models.Collection{},
-		&models.User{},
 		&models.QueryExecutionLog{},
 	)
 	return db

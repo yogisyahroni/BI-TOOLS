@@ -7,41 +7,48 @@ InsightEngine AI is now production-ready with full feature parity to Metabase an
 ## Completed Frontend Architecture
 
 ### 1. Database Schema & API Routes
+
 - Complete TypeScript types for all data models (User, Collection, SavedQuery, Dashboard, etc.)
 - RESTful API endpoints for query execution, collections, connections, and schema discovery
 - Mock data and error handling implemented
 
 ### 2. Query Execution Engine
+
 - `useQueryExecution` hook with full state management
 - Real-time query execution with loading states
 - Error handling and result caching support
 - SQL + AI prompt dual-engine support
 
 ### 3. Collections & Saved Queries
+
 - Collections sidebar with create/delete functionality
 - Saved queries list with search, filter, and pin operations
 - Query templates library
 - Full CRUD operations
 
 ### 4. Dashboard Builder
+
 - Dashboard creation and editing
 - Card management with drag-and-drop ready structure
 - Grid layout system (responsive, 2-column on larger screens)
 - Share and publish functionality
 
 ### 5. User Authentication
+
 - UserProvider context with login/logout/signup
 - Demo user for testing
 - localStorage persistence
 - User profile management ready
 
 ### 6. Query Caching & History
+
 - `useQueryCache` hook with TTL support (5min default)
 - `useQueryHistory` hook with localStorage persistence
 - Query statistics and performance metrics
 - Last 100 queries stored
 
 ### 7. Sharing & Collaboration
+
 - Share modal with email-based sharing
 - Permission levels (view, edit, admin)
 - Activity feed showing team activities
@@ -50,52 +57,61 @@ InsightEngine AI is now production-ready with full feature parity to Metabase an
 ## Backend Integration Checklist
 
 ### Authentication
+
 - [ ] Implement Supabase Auth or Auth.js for secure authentication
 - [ ] Set up OAuth providers (Google, GitHub, Microsoft)
 - [ ] Implement JWT token management
 - [ ] Add password reset and email verification flows
 
 ### Database Connection
+
 - [ ] Implement actual database drivers (pg, mysql2, etc.)
 - [ ] Add connection pooling
 - [ ] Implement secure credential encryption
 - [ ] Add connection health checks
 
 ### Query Execution
+
 - [ ] Implement actual SQL query execution
 - [ ] Add query result pagination
 - [ ] Implement real-time WebSocket updates
 - [ ] Add query timeout and resource limits
 
 ### Data Persistence
+
 - [ ] Implement database schema (migrations)
 - [ ] Set up PostgreSQL/MySQL for production
 - [ ] Implement connection pooling
 - [ ] Add data backup and recovery
 
 ### File Storage
+
 - [ ] Implement file upload for imports
 - [ ] Add CSV/JSON export functionality
 - [ ] Set up cloud storage (S3, Vercel Blob, etc.)
 
 ### Caching Layer
+
 - [ ] Implement Redis for distributed caching
 - [ ] Add cache invalidation logic
 - [ ] Implement stale-while-revalidate patterns
 - [ ] Add cache statistics dashboard
 
 ### Search & Indexing
+
 - [ ] Implement Elasticsearch or similar for full-text search
 - [ ] Add search across queries, dashboards, collections
 - [ ] Index query history and execution data
 
 ### Monitoring & Analytics
+
 - [ ] Add error tracking (Sentry)
 - [ ] Implement analytics (Mixpanel, Amplitude)
 - [ ] Add performance monitoring
 - [ ] Create admin dashboard for system health
 
 ### Security
+
 - [ ] Implement Row-Level Security (RLS)
 - [ ] Add SQL injection prevention
 - [ ] Implement rate limiting
@@ -103,6 +119,7 @@ InsightEngine AI is now production-ready with full feature parity to Metabase an
 - [ ] CORS configuration
 
 ### Email
+
 - [ ] Set up transactional emails (SendGrid, AWS SES)
 - [ ] Create email templates for invitations, notifications
 - [ ] Implement email verification
@@ -110,6 +127,7 @@ InsightEngine AI is now production-ready with full feature parity to Metabase an
 ## API Routes Implementation Plan
 
 ### Priority 1 (Critical)
+
 ```
 POST /api/queries/execute - Execute query (implemented)
 POST /api/queries/saved - Save query (implemented)
@@ -122,6 +140,7 @@ GET /api/schema - Fetch database schema (implemented)
 ```
 
 ### Priority 2 (High)
+
 ```
 POST /api/auth/login - User login
 POST /api/auth/signup - User registration
@@ -134,6 +153,7 @@ POST /api/dashboards - Create dashboard
 ```
 
 ### Priority 3 (Medium)
+
 ```
 POST /api/alerts - Create data alert
 DELETE /api/alerts/:id - Delete alert
@@ -145,6 +165,7 @@ GET /api/search - Full-text search
 ## Deployment Steps
 
 ### 1. Environment Setup
+
 ```bash
 # Copy environment template
 cp .env.example .env.local
@@ -155,9 +176,21 @@ REDIS_URL=redis://host:6379
 JWT_SECRET=your-secret-key
 NEXTAUTH_URL=https://yourdomain.com
 NEXTAUTH_SECRET=your-secret
+
+# Optional: Read Replicas for Scaling
+DB_READ_REPLICAS="postgres://user:pass@replica1:5432/db,postgres://user:pass@replica2:5432/db"
+
+# Slack Integration (Optional)
+# If provided, critical alerts will be sent to the default webhook channel.
+SLACK_WEBHOOK_URL="https://hooks.slack.com/services/..."
+SLACK_BOT_TOKEN="xoxb-..."
+
+# Microsoft Teams Integration (Planned)
+# TEAMS_WEBHOOK_URL="..."
 ```
 
 ### 2. Database Migration
+
 ```bash
 # Run migrations
 npm run db:migrate
@@ -167,6 +200,7 @@ npm run db:seed
 ```
 
 ### 3. Build & Deploy
+
 ```bash
 # Build
 npm run build
@@ -179,6 +213,7 @@ vercel deploy --prod
 ```
 
 ### 4. Post-Deployment
+
 - [ ] Run health checks
 - [ ] Test all API endpoints
 - [ ] Verify email delivery
@@ -234,18 +269,21 @@ vercel deploy --prod
 ## Performance Optimization
 
 ### Frontend
+
 - Code splitting implemented via Next.js
 - Image optimization with next/image
 - Font optimization with next/font
 - Dynamic imports for heavy components
 
 ### Backend
+
 - [ ] Implement query result pagination
 - [ ] Add database query optimization
 - [ ] Use prepared statements
 - [ ] Implement connection pooling
 
 ### Caching
+
 - 5-minute default cache TTL
 - Query result caching
 - User history caching (localStorage)
@@ -254,13 +292,16 @@ vercel deploy --prod
 ## Monitoring & Debugging
 
 ### Logging
+
 All API routes include debug logging with `[v0]` prefix:
+
 ```typescript
 console.log('[v0] Query executed:', { connectionId, rowCount });
 console.error('[v0] Query error:', error);
 ```
 
 ### Available Debug Hooks
+
 - `useQueryExecution` - Query execution state
 - `useQueryCache` - Cache statistics
 - `useQueryHistory` - Query history stats

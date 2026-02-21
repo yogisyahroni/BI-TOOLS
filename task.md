@@ -41,6 +41,7 @@ Phase 2: Query & Visualization (Weeks 5-8)
 [NEW] Heatmap, Radar, Waterfall
 [NEW] Small Multiples (Tableau-style)
 [MODIFY] ECharts → extend with custom types
+[x] Expand frontend unit test coverage for complex components (e.g., `DataTable`, `Charts`) and hooks (e.g., `useQueryExecution`) **[TESTS PASSING]**
 2.3 Advanced Chart Features
 [NEW] Trendlines, Reference Lines
 [NEW] Conditional Formatting
@@ -72,6 +73,11 @@ Phase 4: Enterprise Features (Weeks 13-20)
 AlertService
  → Real Email (Resend/SendGrid)
 [NEW] Alert Rule Builder UI
+[x] **Pulse (Scheduled Screenshots)**
+  - [x] Backend: PulseService & ScreenshotService (Chromedp)
+  - [x] Backend: Slack/Teams Integration (File Upload)
+  - [x] Frontend: Pulse Management UI (PulseDialog & PulseList)
+  - [x] Frontend: Admin Page & Sidebar Link
 [NEW] Subscription Scheduler (Cron)
 [NEW] Delivery Channels: Email, Slack, Webhook
 4.2 Scheduling / ETL

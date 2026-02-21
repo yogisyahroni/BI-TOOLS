@@ -3,14 +3,15 @@ package models
 import (
 	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/datatypes"
 )
 
 // DashboardCard represents a visualization or text card on a dashboard
 type DashboardCard struct {
-	ID                  string         `gorm:"primaryKey;type:varchar(255)" json:"id"`
-	DashboardID         string         `gorm:"type:varchar(255);not null;index" json:"dashboardId"`
-	QueryID             *string        `gorm:"type:varchar(255)" json:"queryId"`
+	ID                  uuid.UUID      `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()" json:"id"`
+	DashboardID         uuid.UUID      `gorm:"type:uuid;not null;index" json:"dashboardId"`
+	QueryID             *uuid.UUID     `gorm:"type:uuid" json:"queryId"`
 	Type                string         `gorm:"type:varchar(50);default:'visualization'" json:"type"` // visualization | text
 	Title               *string        `gorm:"type:varchar(255)" json:"title"`
 	TextContent         *string        `gorm:"type:text" json:"textContent"`
@@ -27,5 +28,5 @@ type DashboardCard struct {
 
 // TableName specifies the table name for DashboardCard
 func (DashboardCard) TableName() string {
-	return "DashboardCard"
+	return "dashboard_cards"
 }

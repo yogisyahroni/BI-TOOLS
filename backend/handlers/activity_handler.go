@@ -24,18 +24,14 @@ func NewActivityHandler(activityService *services.ActivityService) *ActivityHand
 // GET /api/v1/activity?limit=20&offset=0
 func (h *ActivityHandler) GetUserActivity(c *fiber.Ctx) error {
 	userIDStr := c.Locals("userID").(string)
-	userID, err := uuid.Parse(userIDStr)
-	if err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid user ID",
-		})
-	}
+
+	// Parse pagination params
 
 	// Parse pagination params
 	limit, _ := strconv.Atoi(c.Query("limit", "20"))
 	offset, _ := strconv.Atoi(c.Query("offset", "0"))
 
-	activities, total, err := h.activityService.GetUserActivity(userID, limit, offset)
+	activities, total, err := h.activityService.GetUserActivity(userIDStr, limit, offset)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"error": "Failed to get activities",

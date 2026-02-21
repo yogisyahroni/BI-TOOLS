@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { useState, _useEffect } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   ArrowLeft,
   Trash2,
@@ -11,55 +11,48 @@ import {
   Share2,
   MoreVertical,
   Calendar,
-  _Users,
-  _TrendingUp,
+  Users,
+  TrendingUp,
   Search,
   Pin,
   Play,
   FileCode,
   Sparkles,
   Eye,
-  _Loader2,
+  Loader2,
   Menu,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Skeleton } from '@/components/ui/skeleton';
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useSavedQueries } from '@/hooks/use-saved-queries';
-import type { SavedQuery } from '@/lib/types';
-import { SidebarLayout } from '@/components/sidebar-layout';
-import { useSidebar } from '@/contexts/sidebar-context';
-import { EditQueryDialog } from '@/components/saved-queries/edit-query-dialog';
-import { Edit } from 'lucide-react';
+} from "@/components/ui/dropdown-menu";
+import { useSavedQueries } from "@/hooks/use-saved-queries";
+import type { SavedQuery } from "@/lib/types";
+import { SidebarLayout } from "@/components/sidebar-layout";
+import { useSidebarStore } from "@/stores/useSidebarStore";
+import { EditQueryDialog } from "@/components/saved-queries/edit-query-dialog";
+import { Edit } from "lucide-react";
 
 export default function SavedQueriesPage() {
-  const { open: openSidebar } = useSidebar();
-  const {
-    queries,
-    isLoading,
-    _error,
-    _fetchQueries,
-    deleteQuery,
-    pinQuery,
-    updateQuery,
-  } = useSavedQueries({ autoFetch: true });
+  const openSidebar = useSidebarStore((state) => state.open);
+  const { queries, isLoading, error, fetchQueries, deleteQuery, pinQuery, updateQuery } =
+    useSavedQueries({ autoFetch: true });
 
   const [editingQuery, setEditingQuery] = useState<SavedQuery | null>(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
-  const [searchQuery, setSearchQuery] = useState('');
-  const [sortBy, setSortBy] = useState<'recent' | 'popular' | 'name'>('recent');
-  const [activeTab, setActiveTab] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<"recent" | "popular" | "name">("recent");
+  const [activeTab, setActiveTab] = useState("all");
 
   // Filter and sort queries
   const filteredQueries = queries
@@ -69,18 +62,18 @@ export default function SavedQueriesPage() {
         query.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         query.tags?.some((tag) => tag.toLowerCase().includes(searchQuery.toLowerCase()));
 
-      if (activeTab === 'pinned') return matchesSearch && query.pinned;
-      if (activeTab === 'ai') return matchesSearch && !!query.aiPrompt;
+      if (activeTab === "pinned") return matchesSearch && query.pinned;
+      if (activeTab === "ai") return matchesSearch && !!query.aiPrompt;
       return matchesSearch;
     })
     .sort((a, b) => {
-      if (sortBy === 'recent') {
+      if (sortBy === "recent") {
         return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
       }
-      if (sortBy === 'popular') {
+      if (sortBy === "popular") {
         return (b.views || 0) - (a.views || 0);
       }
-      if (sortBy === 'name') {
+      if (sortBy === "name") {
         return a.name.localeCompare(b.name);
       }
       return 0;
@@ -94,10 +87,10 @@ export default function SavedQueriesPage() {
     const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffHours < 1) return 'Just now';
+    if (diffHours < 1) return "Just now";
     if (diffHours < 24) return `${diffHours}h ago`;
     if (diffDays < 7) return `${diffDays}d ago`;
-    return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
   };
 
   // Handle delete with confirmation
@@ -136,7 +129,7 @@ export default function SavedQueriesPage() {
               <div className="flex-1">
                 <h1 className="text-2xl font-bold text-foreground">Saved Queries</h1>
                 <p className="text-sm text-muted-foreground mt-0.5">
-                  {queries.length} saved quer{queries.length !== 1 ? 'ies' : 'y'}
+                  {queries.length} saved quer{queries.length !== 1 ? "ies" : "y"}
                 </p>
               </div>
               <Link href="/">
@@ -195,21 +188,19 @@ export default function SavedQueriesPage() {
             {/* Query List */}
             <TabsContent value={activeTab} className="space-y-3">
               {isLoading ? (
-                [...Array(4)].map((_, i) => (
-                  <Skeleton key={i} className="h-32 w-full rounded-lg" />
-                ))
+                [...Array(4)].map((_, i) => <Skeleton key={i} className="h-32 w-full rounded-lg" />)
               ) : filteredQueries.length === 0 ? (
                 <Card className="p-12 text-center">
                   <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
                     <FileCode className="w-8 h-8 text-muted-foreground" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mb-2">
-                    {searchQuery ? 'No queries found' : 'No saved queries yet'}
+                    {searchQuery ? "No queries found" : "No saved queries yet"}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-4 max-w-md mx-auto">
                     {searchQuery
-                      ? 'Try adjusting your search terms'
-                      : 'Save your first query from the editor to see it here'}
+                      ? "Try adjusting your search terms"
+                      : "Save your first query from the editor to see it here"}
                   </p>
                   {!searchQuery && (
                     <Link href="/">
@@ -310,7 +301,7 @@ export default function SavedQueriesPage() {
                             </DropdownMenuItem>
                             <DropdownMenuItem onClick={() => pinQuery(query.id)}>
                               <Pin className="w-4 h-4 mr-2" />
-                              {query.pinned ? 'Unpin' : 'Pin'}
+                              {query.pinned ? "Unpin" : "Pin"}
                             </DropdownMenuItem>
                             <DropdownMenuItem>
                               <Share2 className="w-4 h-4 mr-2" />

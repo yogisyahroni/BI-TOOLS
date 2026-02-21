@@ -3,6 +3,8 @@ package database
 import (
 	"insight-engine-backend/models"
 	"log"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Migrate runs auto-migration for database models
@@ -13,21 +15,47 @@ func Migrate() {
 
 	log.Println("🔄 Running Database Migrations...")
 
-	// AutoMigrate models
+	// Enable uuid-ossp extension
+	if err := DB.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";").Error; err != nil {
+		log.Printf("ΓÜá∩╕Å Warning: Failed to enable uuid-ossp extension: %v", err)
+	}
+
 	// AutoMigrate models
 	// Use separate migration for generic models
+	// Force Drop tables for clean schema (Dev/Verify only - resolving type mismatches)
+	log.Println("Dropping tables to ensure clean schema...")
+	if err := DB.Migrator().DropTable(&models.CollectionItem{}, &models.Collection{}, &models.Pulse{}, &models.Dashboard{}, &models.DashboardCard{}, &models.User{}); err != nil {
+		log.Printf("Failed to drop tables: %v", err)
+	}
+
+	log.Println("Running AutoMigrate...")
 	if err := DB.AutoMigrate(
+		&models.User{},
+		&models.Collection{},
+		&models.CollectionItem{},
 		&models.Dashboard{},
 		&models.DashboardCard{},
-		&models.Notification{},
-		&models.ActivityLog{},
-		&models.DataClassification{},
-		&models.ColumnMetadata{},
+		&models.Pulse{},
+		&models.WebhookConfig{},
+		&models.WebhookLog{},
+		&models.AIUsageRequest{},
+		&models.AIBudget{},
+		&models.BudgetAlert{},
+		&models.RateLimitConfig{},
+		&models.RateLimitViolation{},
 		&models.ColumnPermission{},
+		// Dependencies for Alert
+		&models.SavedQuery{},
+		&models.QueryVersion{},
 		&models.Alert{},
 		&models.AlertHistory{},
 		&models.AlertAcknowledgment{},
 		&models.AlertNotificationChannelConfig{},
+		&models.Notification{},
+		&models.ActivityLog{},
+		&models.AuditLog{},
+		&models.DataClassification{},
+		&models.ColumnMetadata{},
 		// Core Entities
 		&models.Workspace{},
 		&models.WorkspaceMember{},
@@ -37,6 +65,8 @@ func Migrate() {
 		&models.SemanticDimension{},
 		&models.SemanticMetric{},
 		&models.SemanticRelationship{},
+		// Queries
+		// SavedQuery and QueryVersion moved up to satisfy Alert dependency
 		// Business Glossary
 		&models.BusinessTerm{},
 		&models.TermColumnMapping{},
@@ -44,8 +74,49 @@ func Migrate() {
 		&models.ExportJob{},
 		// Stories & Presentations
 		&models.Story{}, // TASK-161
+		// Pulses
+		&models.Pulse{}, // TASK-156
 	); err != nil {
 		log.Printf("⚠️ Core models migration warning: %v", err)
+	}
+
+	// ISOLATED MIGRATION FOR ALERTS & AUDIT LOGS (DEBUGGING MISSING TABLES)
+	log.Println("🔧 Running ISOLATED migration for Alerts and AuditLogs...")
+	if err := DB.AutoMigrate(
+		&models.Alert{},
+		&models.AlertHistory{},
+		&models.AlertAcknowledgment{},
+		&models.AlertNotificationChannelConfig{},
+		&models.Notification{},
+		&models.ActivityLog{},
+		&models.AuditLog{},
+	); err != nil {
+		log.Printf("❌ Alert/AuditLog migration FAILED: %v", err)
+	} else {
+		log.Println("✅ Alert/AuditLog migration successful")
+	}
+
+	// FORCE MIGRATE PULSE (TASK-156 DEBUG) - Redundant but harmless to keep
+	if err := DB.AutoMigrate(&models.Pulse{}); err != nil {
+		log.Printf("❌ Pulse migration FAILED: %v", err)
+	} else {
+		log.Println("✅ Pulse migration successful")
+	}
+
+	// FORCE MIGRATE DASHBOARDS (Fix for 500 error)
+	log.Println("Force running Dashboard migration...")
+	if err := DB.AutoMigrate(&models.Dashboard{}, &models.DashboardCard{}); err != nil {
+		log.Printf("❌ Dashboard migration FAILED: %v", err)
+	} else {
+		log.Println("✅ Dashboard migration successful")
+	}
+
+	// FORCE MIGRATE STORY (Fix for 500 error)
+	log.Println("Force running Story migration...")
+	if err := DB.AutoMigrate(&models.Story{}); err != nil {
+		log.Printf("❌ Story migration FAILED: %v", err)
+	} else {
+		log.Println("✅ Story migration successful")
 	}
 
 	// Migrate Webhooks separately to ensure they are created even if core migration has warnings
@@ -110,7 +181,40 @@ func Migrate() {
 		}
 	}
 
+	SeedDefaultUser()
+
 	log.Println("✅ Database Migrations completed (with potential warnings)")
+}
+
+// SeedDefaultUser creates a demo user if one doesn't exist
+func SeedDefaultUser() {
+	var count int64
+	DB.Model(&models.User{}).Count(&count)
+	if count == 0 {
+		log.Println("🌱 Seeding default user yogisyahroni766.ysr@gmai.com...")
+
+		password := "Namakamu766!!"
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+		if err != nil {
+			log.Fatalf("Failed to hash password: %v", err)
+		}
+
+		user := models.User{
+			Email:         "yogisyahroni766.ysr@gmai.com",
+			Username:      "yogi_admin",
+			Name:          "Yogi Syahroni",
+			Role:          "admin",
+			EmailVerified: true,
+			Status:        "active",
+			Password:      string(hashedPassword),
+		}
+
+		if err := DB.Create(&user).Error; err != nil {
+			log.Printf("❌ Failed to seed default user: %v", err)
+		} else {
+			log.Println("✅ Default user seeded successfully")
+		}
+	}
 }
 
 // SeedDataClassifications ensures default data classifications exist

@@ -16,14 +16,47 @@ import (
 // setupAuthServiceTestDB initializes in-memory SQLite DB for AuthService tests
 func setupAuthServiceTestDB(t *testing.T) *gorm.DB {
 	t.Helper()
-	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared&_busy_timeout=5000"), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("file::memory:?cache=shared&_busy_timeout=5000"), &gorm.Config{
+		DisableForeignKeyConstraintWhenMigrating: true,
+	})
 	require.NoError(t, err, "Failed to connect to test database")
 
 	sqlDB, err := db.DB()
 	require.NoError(t, err)
 	sqlDB.SetMaxOpenConns(1)
 
-	err = db.AutoMigrate(&models.User{})
+	sqlDB.SetMaxOpenConns(1)
+
+	// Manually create users table to avoid SQLite error with uuid_generate_v4()
+	db.Exec(`CREATE TABLE IF NOT EXISTS users (
+		id TEXT PRIMARY KEY,
+		email TEXT NOT NULL UNIQUE,
+		username TEXT UNIQUE,
+		name TEXT,
+		password TEXT,
+		role TEXT DEFAULT 'user',
+		email_verified NUMERIC DEFAULT 0,
+		email_verified_at TIMESTAMP,
+		email_verification_token TEXT,
+		email_verification_expires TIMESTAMP,
+		password_reset_token TEXT,
+		password_reset_expires TIMESTAMP,
+		provider TEXT,
+		provider_id TEXT,
+		created_at DATETIME,
+		updated_at DATETIME,
+		status TEXT DEFAULT 'active',
+		deactivated_at TIMESTAMP,
+		deactivated_by TEXT,
+		deactivation_reason TEXT,
+		impersonation_token TEXT,
+		impersonation_expires TIMESTAMP,
+		impersonated_by TEXT
+	)`)
+
+	// Skip AutoMigrate for User to avoid SQLite syntax error
+	// err = db.AutoMigrate(&models.User{})
+	err = nil
 	require.NoError(t, err, "Failed to migrate test database")
 
 	database.DB = db
@@ -226,7 +259,7 @@ func TestAuthService_ChangePassword_Success(t *testing.T) {
 	require.NoError(t, err)
 
 	// Change password
-	err = authSvc.ChangePassword(result.User.ID, "OldPass123!", "NewPass456!")
+	err = authSvc.ChangePassword(result.User.ID.String(), "OldPass123!", "NewPass456!")
 	assert.NoError(t, err)
 
 	// Verify old password no longer works
@@ -249,7 +282,7 @@ func TestAuthService_ChangePassword_WrongCurrentPassword(t *testing.T) {
 	result, err := authSvc.Register("wrong@example.com", "wronguser", "CurrentPass123!", "Wrong User")
 	require.NoError(t, err)
 
-	err = authSvc.ChangePassword(result.User.ID, "WrongCurrentPass!", "NewPass456!")
+	err = authSvc.ChangePassword(result.User.ID.String(), "WrongCurrentPass!", "NewPass456!")
 	assert.Error(t, err)
 }
 
@@ -262,7 +295,7 @@ func TestAuthService_ChangePassword_ShortNewPassword(t *testing.T) {
 	result, err := authSvc.Register("short@example.com", "shortuser", "CurrentPass123!", "Short User")
 	require.NoError(t, err)
 
-	err = authSvc.ChangePassword(result.User.ID, "CurrentPass123!", "short")
+	err = authSvc.ChangePassword(result.User.ID.String(), "CurrentPass123!", "short")
 	assert.Error(t, err)
 }
 

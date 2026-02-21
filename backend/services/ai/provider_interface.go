@@ -47,3 +47,23 @@ type ProviderConfig struct {
 	Model   string
 	Config  map[string]interface{}
 }
+
+// EmbeddingRequest parameters for vector generation
+type EmbeddingRequest struct {
+	Input      []string `json:"input"`
+	Model      string   `json:"model"`
+	Dimensions int      `json:"dimensions,omitempty"`
+}
+
+// EmbeddingResponse format standardizing vector responses
+type EmbeddingResponse struct {
+	Embeddings [][]float32 `json:"embeddings"`
+	TokensUsed int         `json:"tokens_used"`
+	Model      string      `json:"model"`
+}
+
+// EmbeddingProvider defines the interface for creating vector embeddings
+type EmbeddingProvider interface {
+	CreateEmbeddings(ctx context.Context, req EmbeddingRequest) (*EmbeddingResponse, error)
+	GetInfo() ProviderInfo
+}

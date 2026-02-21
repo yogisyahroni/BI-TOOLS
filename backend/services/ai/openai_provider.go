@@ -152,6 +152,88 @@ func (p *OpenAIProvider) GetInfo() ProviderInfo {
 			"gpt-4-turbo-preview",
 			"gpt-3.5-turbo",
 			"gpt-3.5-turbo-16k",
+			"text-embedding-3-small",
+			"text-embedding-3-large",
+			"text-embedding-ada-002",
 		},
 	}
+}
+
+// CreateEmbeddings generates vector embeddings using OpenAI API (e.g. text-embedding-ada-002 or text-embedding-3-small)
+func (p *OpenAIProvider) CreateEmbeddings(ctx context.Context, req EmbeddingRequest) (*EmbeddingResponse, error) {
+	// Build OpenAI embeddings request
+	openAIReq := map[string]interface{}{
+		"model": req.Model,
+		"input": req.Input,
+	}
+
+	if req.Dimensions > 0 {
+		openAIReq["dimensions"] = req.Dimensions
+	}
+
+	// Marshal request
+	reqBody, err := json.Marshal(openAIReq)
+	if err != nil {
+		return nil, err
+	}
+
+	// Create HTTP request
+	httpReq, err := http.NewRequestWithContext(ctx, "POST", p.baseURL+"/embeddings", bytes.NewBuffer(reqBody))
+	if err != nil {
+		return nil, err
+	}
+
+	httpReq.Header.Set("Content-Type", "application/json")
+	httpReq.Header.Set("Authorization", "Bearer "+p.apiKey)
+
+	// Execute request
+	resp, err := p.client.Do(httpReq)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	// Read response
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	// Check status code
+	if resp.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf("OpenAI Embeddings API error (status %d): %s", resp.StatusCode, string(body))
+	}
+
+	// Parse response
+	var openAIResp struct {
+		Data []struct {
+			Object    string    `json:"object"`
+			Embedding []float32 `json:"embedding"`
+			Index     int       `json:"index"`
+		} `json:"data"`
+		Model string `json:"model"`
+		Usage struct {
+			PromptTokens int `json:"prompt_tokens"`
+			TotalTokens  int `json:"total_tokens"`
+		} `json:"usage"`
+	}
+
+	if err := json.Unmarshal(body, &openAIResp); err != nil {
+		return nil, err
+	}
+
+	if len(openAIResp.Data) == 0 {
+		return nil, errors.New("no embeddings in OpenAI response")
+	}
+
+	embeddings := make([][]float32, len(openAIResp.Data))
+	for i, item := range openAIResp.Data {
+		embeddings[i] = item.Embedding
+	}
+
+	return &EmbeddingResponse{
+		Embeddings: embeddings,
+		TokensUsed: openAIResp.Usage.TotalTokens,
+		Model:      openAIResp.Model,
+	}, nil
 }

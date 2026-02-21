@@ -14,20 +14,23 @@ import (
 func InitServices() *ServiceContainer {
 	// ... (imports) ...
 	// 1. Encryption Service
+	// 1. Encryption Service
 	encryptionService, err := services.NewEncryptionService()
 	if err != nil {
 		services.LogFatal("encryption_init", "Failed to initialize encryption service. Set ENCRYPTION_KEY environment variable (32 bytes). Generate with: openssl rand -base64 32", map[string]interface{}{"error": err})
 	}
 	services.LogInfo("encryption_init", "Encryption service initialized successfully", nil)
 
-	// 2. Security Log Service
-	securityLogService := services.NewSecurityLogService("InsightEngine Backend (Go)")
-
-	// 3. AI Services
-	aiService := services.NewAIService(encryptionService)
+	// Initialize generic services
+	embeddingService := services.NewEmbeddingService(encryptionService)
+	semanticLayerService := services.NewSemanticLayerService(database.DB) // Moved up for AI Service dependency
+	aiService := services.NewAIService(encryptionService, embeddingService, semanticLayerService)
 	aiReasoningService := services.NewAIReasoningService(aiService)
 	aiOptimizerService := services.NewAIOptimizerService(aiService)
 	storyGeneratorService := services.NewStoryGeneratorService(aiService)
+
+	// 2. Security Log Service
+	securityLogService := services.NewSecurityLogService("InsightEngine Backend (Go)")
 
 	// 3. Database-dependent Services
 	rateLimiterService := services.NewRateLimiter(database.DB)
@@ -130,7 +133,6 @@ func InitServices() *ServiceContainer {
 
 	pptxGenerator := services.NewPPTXGenerator() // TASK-161
 
-	semanticLayerService := services.NewSemanticLayerService(database.DB)
 	modelingService := services.NewModelingService(database.DB)
 
 	// Alerts
@@ -156,6 +158,7 @@ func InitServices() *ServiceContainer {
 
 	return &ServiceContainer{
 		EncryptionService:  encryptionService,
+		EmbeddingService:   embeddingService,
 		AIService:          aiService,
 		AIReasoningService: aiReasoningService,
 		AIOptimizerService: aiOptimizerService,

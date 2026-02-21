@@ -1,0 +1,40 @@
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"log"
+
+	"insight-engine-backend/database"
+	"insight-engine-backend/models"
+
+	"github.com/joho/godotenv"
+	"gorm.io/datatypes"
+	"gorm.io/gorm"
+)
+
+func main() {
+	_ = godotenv.Load()
+	database.Connect()
+
+	story := models.Story{
+		UserID:      "060714ee-e806-4444-baa1-a8bbbcad081c", // from yogi_admin? Wait, I will just get any user ID
+		Title:       "Test Manual Story",
+		Description: "Testing ID population",
+		Content:     datatypes.JSON([]byte(`{"slides":[]}`)),
+	}
+
+	// Just print user ID of the yogisyahroni766 user first
+	var u models.User
+	database.DB.Where("email = ?", "yogisyahroni766.ysr@gmail.com").First(&u)
+	story.UserID = u.ID
+
+	if err := database.DB.Session(&gorm.Session{FullSaveAssociations: false}).Create(&story).Error; err != nil {
+		log.Fatalf("Error creating story: %v", err)
+	}
+
+	fmt.Printf("Created story ID: '%s'\n", story.ID)
+
+	b, _ := json.Marshal(story)
+	fmt.Printf("JSON: %s\n", string(b))
+}

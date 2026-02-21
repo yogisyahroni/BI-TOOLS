@@ -1,8 +1,28 @@
-remote: error: Trace: 37479552bf0700a88d9bd59b19c2afdca764ea5907bda2f3b09e167e2427bd51        
-remote: error: See https://gh.io/lfs for more information.        
-remote: error: File backend/insight-engine.exe is 124.02 MB; this exceeds GitHub's file size limit of 100.00 MB        
-remote: error: File backend/insight-engine-backend.exe is 123.26 MB; this exceeds GitHub's file size limit of 100.00 MB        
-remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        
+remote: error: GH013: Repository rule violations found for refs/heads/main.        
+remote: 
+remote: - GITHUB PUSH PROTECTION        
+remote:   ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:     Resolve the following violations before pushing again        
+remote: 
+remote:     - Push cannot contain secrets        
+remote: 
+remote:             
+remote:      (?) Learn how to resolve a blocked push        
+remote:      https://docs.github.com/code-security/secret-scanning/working-with-secret-scanning-and-push-protection/working-with-push-protection-from-the-command-line#resolving-a-blocked-push        
+remote:             
+remote:             
+remote:       ΓÇöΓÇö Slack Incoming Webhook URL ΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇöΓÇö        
+remote:        locations:        
+remote:          - commit: 582ba11d454d1f24f13eaadd761cfad08d9b4d6c        
+remote:            path: backend/pulse_payload.json:5        
+remote:          - commit: 582ba11d454d1f24f13eaadd761cfad08d9b4d6c        
+remote:            path: backend/services/slack_service_test.go:30        
+remote:             
+remote:        (?) To push, remove secret from commit(s) or follow this URL to allow the secret.        
+remote:        https://github.com/yogisyahroni/BI-TOOLS/security/secret-scanning/unblock-secret/39xzJcjp3kMWPYJYtAo1U3Rc0hm        
+remote:             
+remote: 
+remote: 
 To https://github.com/yogisyahroni/BI-TOOLS.git
- ! [remote rejected] main -> main (pre-receive hook declined)
+ ! [remote rejected] main -> main (push declined due to repository rule violations)
 error: failed to push some refs to 'https://github.com/yogisyahroni/BI-TOOLS.git'

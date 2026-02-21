@@ -78,7 +78,7 @@ func (s *AuthService) Register(email, username, password, fullName string) (*Reg
 
 	// Create user - Anti-Mass Assignment: Explicit field mapping
 	user := &models.User{
-		ID:                       uuid.New().String(),
+		ID:                       uuid.New(),
 		Email:                    email,
 		Username:                 username,
 		Password:                 string(hashedPassword),

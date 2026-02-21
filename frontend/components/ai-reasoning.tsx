@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ChevronDown, ChevronUp, Copy, _AlertTriangle, Check } from 'lucide-react';
-import { useState } from 'react';
+import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ChevronDown, ChevronUp, Copy, AlertTriangle, Check } from "lucide-react";
+import { useState } from "react";
 
 interface AIReasoningProps {
   isOpen?: boolean;
@@ -21,9 +21,9 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
   });
 
   const toggleSection = (section: keyof typeof expandedSections) => {
-    setExpandedSections(prev => ({
+    setExpandedSections((prev) => ({
       ...prev,
-      [section]: !prev[section]
+      [section]: !prev[section],
     }));
   };
 
@@ -46,7 +46,7 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
       {/* Context Retrieval */}
       <Card className="p-3 border-0 bg-background">
         <button
-          onClick={() => toggleSection('context')}
+          onClick={() => toggleSection("context")}
           className="w-full flex items-center justify-between mb-2"
         >
           <div className="flex items-center gap-2">
@@ -56,15 +56,15 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
               <ChevronDown className="w-4 h-4" />
             )}
             <span className="text-xs font-semibold text-foreground">1. Context Retrieval</span>
-            <Badge variant="outline" className="text-xs">Using RAG</Badge>
+            <Badge variant="outline" className="text-xs">
+              Using RAG
+            </Badge>
           </div>
           <Check className="w-4 h-4 text-green-600" />
         </button>
         {expandedSections.context && (
           <div className="text-xs text-muted-foreground space-y-2 mt-3">
-            <p>
-              Found relevant tables in Kamus Data:
-            </p>
+            <p>Found relevant tables in Kamus Data:</p>
             <ul className="list-disc list-inside space-y-1 ml-2">
               <li>
                 <code className="bg-muted px-1 rounded">orders</code> - Transaction records
@@ -83,7 +83,7 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
       {/* Semantic Mapping */}
       <Card className="p-3 border-0 bg-background">
         <button
-          onClick={() => toggleSection('mapping')}
+          onClick={() => toggleSection("mapping")}
           className="w-full flex items-center justify-between mb-2"
         >
           <div className="flex items-center gap-2">
@@ -93,7 +93,9 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
               <ChevronDown className="w-4 h-4" />
             )}
             <span className="text-xs font-semibold text-foreground">2. Semantic Mapping</span>
-            <Badge variant="outline" className="text-xs">Matched</Badge>
+            <Badge variant="outline" className="text-xs">
+              Matched
+            </Badge>
           </div>
           <Check className="w-4 h-4 text-green-600" />
         </button>
@@ -118,7 +120,9 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
                 <code className="bg-primary/10 text-primary px-1 rounded">"last month"</code>
                 <span>→</span>
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <code className="bg-muted px-1 rounded">DATE_TRUNC('month', orders.created_at)</code>
+                <code className="bg-muted px-1 rounded">
+                  DATE_TRUNC('month', orders.created_at)
+                </code>
               </div>
             </div>
           </div>
@@ -128,7 +132,7 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
       {/* SQL Generation */}
       <Card className="p-3 border-0 bg-background">
         <button
-          onClick={() => toggleSection('sql')}
+          onClick={() => toggleSection("sql")}
           className="w-full flex items-center justify-between mb-2"
         >
           <div className="flex items-center gap-2">
@@ -138,14 +142,16 @@ export function AIReasoning({ isOpen = true, onClose }: AIReasoningProps) {
               <ChevronDown className="w-4 h-4" />
             )}
             <span className="text-xs font-semibold text-foreground">3. SQL Generation</span>
-            <Badge variant="outline" className="text-xs">Generated</Badge>
+            <Badge variant="outline" className="text-xs">
+              Generated
+            </Badge>
           </div>
           <Check className="w-4 h-4 text-green-600" />
         </button>
         {expandedSections.sql && (
           <div className="mt-3 bg-muted p-2 rounded text-xs font-mono overflow-x-auto">
             <div className="text-muted-foreground">
-{`SELECT 
+              {`SELECT 
   c.customer_name,
   SUM(o.amount) as total_sales,
   COUNT(o.id) as orders_count
@@ -160,7 +166,7 @@ LIMIT 5`}
               variant="outline"
               size="sm"
               className="mt-2 w-full text-xs bg-transparent"
-              onClick={() => navigator.clipboard.writeText('SELECT...')}
+              onClick={() => navigator.clipboard.writeText("SELECT...")}
             >
               <Copy className="w-3 h-3 mr-1" />
               Copy SQL
@@ -172,7 +178,7 @@ LIMIT 5`}
       {/* Validation */}
       <Card className="p-3 border-0 bg-background">
         <button
-          onClick={() => toggleSection('validation')}
+          onClick={() => toggleSection("validation")}
           className="w-full flex items-center justify-between mb-2"
         >
           <div className="flex items-center gap-2">
@@ -182,7 +188,9 @@ LIMIT 5`}
               <ChevronDown className="w-4 h-4" />
             )}
             <span className="text-xs font-semibold text-foreground">4. Validation</span>
-            <Badge variant="outline" className="text-xs">Passed</Badge>
+            <Badge variant="outline" className="text-xs">
+              Passed
+            </Badge>
           </div>
           <Check className="w-4 h-4 text-green-600" />
         </button>
@@ -212,7 +220,9 @@ LIMIT 5`}
 
       {/* Feedback */}
       <div className="pt-2 border-t border-border">
-        <p className="text-xs text-muted-foreground mb-2">Confidence: <span className="text-primary font-semibold">94%</span></p>
+        <p className="text-xs text-muted-foreground mb-2">
+          Confidence: <span className="text-primary font-semibold">94%</span>
+        </p>
         <div className="flex gap-2">
           <Button variant="outline" size="sm" className="text-xs bg-transparent">
             👍 Correct

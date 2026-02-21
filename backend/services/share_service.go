@@ -481,7 +481,7 @@ func (s *ShareService) checkUserCanShare(userID string, resourceType models.Reso
 		if err := s.db.Where("id = ?", resourceID).First(&dashboard).Error; err != nil {
 			return false, err
 		}
-		if dashboard.UserID == userID {
+		if dashboard.UserID.String() == userID {
 			return true, nil
 		}
 	case models.ResourceTypeQuery:

@@ -19,6 +19,7 @@ type App struct {
 // ServiceContainer holds all initialized services
 type ServiceContainer struct {
 	EncryptionService        *services.EncryptionService
+	EmbeddingService         *services.EmbeddingService
 	AIService                *services.AIService
 	AIReasoningService       *services.AIReasoningService
 	AIOptimizerService       *services.AIOptimizerService
@@ -31,6 +32,7 @@ type ServiceContainer struct {
 	CronService              *services.CronService
 	WebSocketHub             *services.WebSocketHub
 	NotificationService      *services.NotificationService
+	SlackService             *services.SlackService // TASK-156
 	ActivityService          *services.ActivityService
 	SchedulerService         *services.SchedulerService
 	AuditService             *services.AuditService
@@ -64,9 +66,12 @@ type ServiceContainer struct {
 	CommentService           *services.CommentService
 	ScheduledReportService   *services.ScheduledReportService
 	SecurityLogService       *services.SecurityLogService
-	SystemHealthService      *services.SystemHealthService
-	FormulaEngine            *formula_engine.FormulaEngine
-	RedisCache               *services.RedisCache
+
+	SystemHealthService *services.SystemHealthService
+	PulseService        *services.PulseService      // TASK-156
+	ScreenshotService   *services.ScreenshotService // TASK-156
+	FormulaEngine       *formula_engine.FormulaEngine
+	RedisCache          *services.RedisCache
 }
 
 // NewApp initializes the entire application

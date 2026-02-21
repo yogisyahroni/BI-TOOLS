@@ -1,142 +1,142 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
+import { useState } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  Plus,
-  Search,
-  RefreshCw,
-  Clock,
-  Calendar,
-  _FileText,
-  _Settings,
-} from 'lucide-react';
-import { scheduledReportsApi } from '@/lib/api/scheduled-reports';
-import type {
-  ScheduledReportResponse,
-  ScheduledReportFilter,
-} from '@/types/scheduled-reports';
-import { ReportScheduleCard } from '@/components/reports/report-schedule-card';
-import { ReportScheduleForm } from '@/components/reports/report-schedule-form';
-import { ReportHistory } from '@/components/reports/report-history';
-import { toast } from 'sonner';
+} from "@/components/ui/dialog";
+import { Plus, Search, RefreshCw, Clock, Calendar } from "lucide-react";
+import { scheduledReportsApi } from "@/lib/api/scheduled-reports";
+import type { ScheduledReportResponse, ScheduledReportFilter } from "@/types/scheduled-reports";
+import { ReportScheduleCard } from "@/components/reports/report-schedule-card";
+import { ReportScheduleForm } from "@/components/reports/report-schedule-form";
+import { ReportHistory } from "@/components/reports/report-history";
+import { toast } from "sonner";
 
 export default function ScheduledReportsPage() {
-  const [reports, setReports] = useState<ScheduledReportResponse[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const queryClient = useQueryClient();
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isHistoryDialogOpen, setIsHistoryDialogOpen] = useState(false);
   const [selectedReport, setSelectedReport] = useState<ScheduledReportResponse | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [filter, _setFilter] = useState<ScheduledReportFilter>({
     page: 1,
     limit: 20,
   });
 
-  // Fetch reports
-  const fetchReports = async () => {
-    try {
-      setLoading(true);
-      const response = await scheduledReportsApi.list({
+  const {
+    data: response,
+    isLoading: loading,
+    refetch: fetchReports,
+  } = useQuery({
+    queryKey: ["scheduledReports", filter, searchQuery],
+    queryFn: () =>
+      scheduledReportsApi.list({
         ...filter,
         search: searchQuery || undefined,
-      });
-      setReports(response.reports);
-    } catch (error) {
-      toast.error('Failed to load scheduled reports');
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
-  };
+      }),
+  });
 
-  useEffect(() => {
-    fetchReports();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter, searchQuery]);
+  const reports = response?.reports || [];
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  // Handle create
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleCreate = async (data: any) => {
-    try {
-      await scheduledReportsApi.create(data);
-      toast.success('Scheduled report created successfully');
+  const createMutation = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mutationFn: (data: any) => scheduledReportsApi.create(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["scheduledReports"] });
+      toast.success("Scheduled report created successfully");
       setIsCreateDialogOpen(false);
-      fetchReports();
-    } catch (error) {
-      toast.error('Failed to create scheduled report');
+    },
+    onError: (error) => {
+      toast.error("Failed to create scheduled report");
       console.error(error);
-    }
-  };
+    },
+  });
 
-  // Handle edit
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleEdit = async (data: any) => {
-    if (!selectedReport) return;
-    try {
-      await scheduledReportsApi.update(selectedReport.id, data);
-      toast.success('Scheduled report updated successfully');
+  const updateMutation = useMutation({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    mutationFn: ({ id, data }: { id: string; data: any }) => scheduledReportsApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["scheduledReports"] });
+      toast.success("Scheduled report updated successfully");
       setIsEditDialogOpen(false);
       setSelectedReport(null);
-      fetchReports();
-    } catch (error) {
-      toast.error('Failed to update scheduled report');
+    },
+    onError: (error) => {
+      toast.error("Failed to update scheduled report");
       console.error(error);
-    }
-  };
+    },
+  });
 
-  // Handle delete
-  const handleDelete = async (report: ScheduledReportResponse) => {
+  const deleteMutation = useMutation({
+    mutationFn: (id: string) => scheduledReportsApi.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["scheduledReports"] });
+      toast.success("Scheduled report deleted");
+    },
+    onError: (error) => {
+      toast.error("Failed to delete scheduled report");
+      console.error(error);
+    },
+  });
+
+  const toggleMutation = useMutation({
+    mutationFn: (id: string) => scheduledReportsApi.toggleActive(id),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ["scheduledReports"] });
+      const report = reports.find((r) => r.id === variables);
+      if (report) {
+        toast.success(`Report ${report.isActive ? "paused" : "activated"}`);
+      } else {
+        toast.success(`Report status updated`);
+      }
+    },
+    onError: (error) => {
+      toast.error("Failed to update report status");
+      console.error(error);
+    },
+  });
+
+  const runNowMutation = useMutation({
+    mutationFn: (id: string) => scheduledReportsApi.trigger(id),
+    onSuccess: (res) => {
+      toast.success(`Report generation started. Run ID: ${res.runId}`);
+    },
+    onError: (error) => {
+      toast.error("Failed to trigger report");
+      console.error(error);
+    },
+  });
+
+  // Handlers
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleCreate = async (data: any) => {
+    createMutation.mutate(data);
+  };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleEdit = async (data: any) => {
+    if (selectedReport) updateMutation.mutate({ id: selectedReport.id, data });
+  };
+  const handleDelete = (report: ScheduledReportResponse) => {
     // eslint-disable-next-line no-alert
-    if (!confirm('Are you sure you want to delete this scheduled report?')) return;
-    try {
-      await scheduledReportsApi.delete(report.id);
-      toast.success('Scheduled report deleted');
-      fetchReports();
-    } catch (error) {
-      toast.error('Failed to delete scheduled report');
-      console.error(error);
-    }
+    if (!confirm("Are you sure you want to delete this scheduled report?")) return;
+    deleteMutation.mutate(report.id);
   };
+  const handleToggle = (report: ScheduledReportResponse) => toggleMutation.mutate(report.id);
+  const handleRunNow = (report: ScheduledReportResponse) => runNowMutation.mutate(report.id);
 
-  // Handle toggle
-  const handleToggle = async (report: ScheduledReportResponse) => {
-    try {
-      await scheduledReportsApi.toggleActive(report.id);
-      toast.success(`Report ${report.isActive ? 'paused' : 'activated'}`);
-      fetchReports();
-    } catch (error) {
-      toast.error('Failed to update report status');
-      console.error(error);
-    }
-  };
-
-  // Handle run now
-  const handleRunNow = async (report: ScheduledReportResponse) => {
-    try {
-      const response = await scheduledReportsApi.trigger(report.id);
-      toast.success(`Report generation started. Run ID: ${response.runId}`);
-    } catch (error) {
-      toast.error('Failed to trigger report');
-      console.error(error);
-    }
-  };
-
-  // Handle view history
   const handleViewHistory = (report: ScheduledReportResponse) => {
     setSelectedReport(report);
     setIsHistoryDialogOpen(true);
@@ -156,8 +156,8 @@ export default function ScheduledReportsPage() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          <Button variant="outline" onClick={fetchReports} disabled={loading}>
-            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
+          <Button variant="outline" onClick={() => fetchReports()} disabled={loading}>
+            <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
             Refresh
           </Button>
           <Button onClick={() => setIsCreateDialogOpen(true)}>
@@ -225,9 +225,7 @@ export default function ScheduledReportsPage() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create Scheduled Report</DialogTitle>
-            <DialogDescription>
-              Set up automated report generation and delivery
-            </DialogDescription>
+            <DialogDescription>Set up automated report generation and delivery</DialogDescription>
           </DialogHeader>
           <ReportScheduleForm
             onSubmit={handleCreate}
@@ -241,27 +239,25 @@ export default function ScheduledReportsPage() {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Scheduled Report</DialogTitle>
-            <DialogDescription>
-              Update your scheduled report configuration
-            </DialogDescription>
+            <DialogDescription>Update your scheduled report configuration</DialogDescription>
           </DialogHeader>
           {selectedReport && (
             <ReportScheduleForm
               initialData={{
                 name: selectedReport.name,
-                description: selectedReport.description || '',
+                description: selectedReport.description || "",
                 resourceType: selectedReport.resourceType,
                 resourceId: selectedReport.resourceId,
                 scheduleType: selectedReport.scheduleType,
-                cronExpr: selectedReport.cronExpr || '',
-                timeOfDay: selectedReport.timeOfDay || '09:00',
+                cronExpr: selectedReport.cronExpr || "",
+                timeOfDay: selectedReport.timeOfDay || "09:00",
                 dayOfWeek: selectedReport.dayOfWeek ?? 1,
                 dayOfMonth: selectedReport.dayOfMonth ?? 1,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 timezone: selectedReport.timezone,
-                recipients: selectedReport.recipients.map(r => ({
+                recipients: selectedReport.recipients.map((r) => ({
                   email: r.email,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   type: r.type as any,
                 })),
                 format: selectedReport.format,
@@ -284,13 +280,9 @@ export default function ScheduledReportsPage() {
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Report History</DialogTitle>
-            <DialogDescription>
-              View past runs for {selectedReport?.name}
-            </DialogDescription>
+            <DialogDescription>View past runs for {selectedReport?.name}</DialogDescription>
           </DialogHeader>
-          {selectedReport && (
-            <ReportHistory reportId={selectedReport.id} />
-          )}
+          {selectedReport && <ReportHistory reportId={selectedReport.id} />}
         </DialogContent>
       </Dialog>
     </div>

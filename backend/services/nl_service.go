@@ -148,10 +148,19 @@ func (s *NLService) GenerateDashboardFromText(ctx context.Context, text string, 
 	layout := datatypes.JSON(layoutJSON)
 	desc := "Generated from prompt: " + text
 
+	parsedWorkspaceID, err := uuid.Parse(workspaceID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid workspace ID: %w", err)
+	}
+	parsedUserID, err := uuid.Parse(userID)
+	if err != nil {
+		return nil, fmt.Errorf("invalid user ID: %w", err)
+	}
+
 	dashboard := &models.Dashboard{
-		ID:           uuid.New().String(),
-		CollectionID: workspaceID, // Assuming workspace mapping for now
-		UserID:       userID,
+		ID:           uuid.New(),
+		CollectionID: parsedWorkspaceID, // Assuming workspace mapping for now
+		UserID:       parsedUserID,
 		Name:         "AI Generated Dashboard: " + text,
 		Description:  &desc,
 		Layout:       &layout,

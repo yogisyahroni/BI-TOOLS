@@ -29,8 +29,8 @@ func (s *ActivityService) LogActivity(activity *models.ActivityLog) error {
 	}
 
 	// Push activity update via WebSocket if user is connected
-	if activity.UserID != nil && s.wsHub.IsUserConnected(activity.UserID.String()) {
-		s.wsHub.BroadcastToUser(activity.UserID.String(), "activity", activity)
+	if activity.UserID != nil && s.wsHub.IsUserConnected(*activity.UserID) {
+		s.wsHub.BroadcastToUser(*activity.UserID, "activity", activity)
 	}
 
 	// Also broadcast to workspace if applicable
@@ -43,7 +43,7 @@ func (s *ActivityService) LogActivity(activity *models.ActivityLog) error {
 }
 
 // LogUserActivity is a convenience method to log user activities
-func (s *ActivityService) LogUserActivity(userID uuid.UUID, action, entityType string, entityID *uuid.UUID, metadata map[string]interface{}, ipAddress, userAgent string) error {
+func (s *ActivityService) LogUserActivity(userID string, action, entityType string, entityID *uuid.UUID, metadata map[string]interface{}, ipAddress, userAgent string) error {
 	activity := &models.ActivityLog{
 		UserID:     &userID,
 		Action:     action,
@@ -63,7 +63,7 @@ func (s *ActivityService) LogUserActivity(userID uuid.UUID, action, entityType s
 }
 
 // LogWorkspaceActivity logs an activity for a workspace
-func (s *ActivityService) LogWorkspaceActivity(workspaceID uuid.UUID, userID *uuid.UUID, action, entityType string, entityID *uuid.UUID, metadata map[string]interface{}) error {
+func (s *ActivityService) LogWorkspaceActivity(workspaceID uuid.UUID, userID *string, action, entityType string, entityID *uuid.UUID, metadata map[string]interface{}) error {
 	activity := &models.ActivityLog{
 		WorkspaceID: &workspaceID,
 		UserID:      userID,
@@ -76,7 +76,7 @@ func (s *ActivityService) LogWorkspaceActivity(workspaceID uuid.UUID, userID *uu
 }
 
 // GetUserActivity retrieves activity logs for a user with pagination
-func (s *ActivityService) GetUserActivity(userID uuid.UUID, limit, offset int) ([]models.ActivityLog, int64, error) {
+func (s *ActivityService) GetUserActivity(userID string, limit, offset int) ([]models.ActivityLog, int64, error) {
 	var activities []models.ActivityLog
 	var total int64
 

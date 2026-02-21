@@ -1,140 +1,145 @@
-import { BaseConnector, _ConnectionConfig, type SchemaInfo, type QueryResult } from './base-connector';
+import {
+  BaseConnector,
+  ConnectionConfig,
+  type SchemaInfo,
+  type QueryResult,
+} from "./base-connector";
 
 /**
  * BigQuery Connector Implementation
  * Google Cloud Data Warehouse
- * 
+ *
  * Uses @google-cloud/bigquery SDK
  */
 export class BigQueryConnector extends BaseConnector {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private client: any; // BigQuery client (lazy loaded)
+
+  async testConnection(): Promise<{ success: boolean; error?: string }> {
+    try {
+      const startTime = Date.now();
+
+      // Lazy load BigQuery client
+      const { BigQuery } = await import("@google-cloud/bigquery");
+
+      this.client = new BigQuery({
+        projectId: this.config.project,
+        credentials: this.config.extraConfig?.credentials || undefined,
+        keyFilename: this.config.extraConfig?.keyFilename || undefined,
+      });
+
+      // Test with simple query
+      const query = "SELECT 1 as test";
+      await this.client.query({ query, maxResults: 1 });
+
+      const _latency = Date.now() - startTime;
+
+      return {
+        success: true,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    private client: any; // BigQuery client (lazy loaded)
+      };
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      return {
+        success: false,
+        error: `BigQuery connection failed: ${error.message}`,
+      };
+    }
+  }
 
-    async testConnection(): Promise<{ success: boolean; error?: string }> {
-        try {
-            const startTime = Date.now();
-
-            // Lazy load BigQuery client
-            const { BigQuery } = await import('@google-cloud/bigquery');
-
-            this.client = new BigQuery({
-                projectId: this.config.project,
-                credentials: this.config.extraConfig?.credentials || undefined,
-                keyFilename: this.config.extraConfig?.keyFilename || undefined,
-            });
-
-            // Test with simple query
-            const query = 'SELECT 1 as test';
-            await this.client.query({ query, maxResults: 1 });
-
-            const _latency = Date.now() - startTime;
-
-            return {
-                success: true
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            };
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            return {
-                success: false,
-                error: `BigQuery connection failed: ${error.message}`
-            };
-        }
+  async fetchSchema(): Promise<SchemaInfo> {
+    if (!this.client) {
+      const { BigQuery } = await import("@google-cloud/bigquery");
+      this.client = new BigQuery({
+        projectId: this.config.project,
+        credentials: this.config.extraConfig?.credentials || undefined,
+        keyFilename: this.config.extraConfig?.keyFilename || undefined,
+      });
     }
 
-    async fetchSchema(): Promise<SchemaInfo> {
-        if (!this.client) {
-            const { BigQuery } = await import('@google-cloud/bigquery');
-            this.client = new BigQuery({
-                projectId: this.config.project,
-                credentials: this.config.extraConfig?.credentials || undefined,
-                keyFilename: this.config.extraConfig?.keyFilename || undefined,
-            });
-        }
+    const dataset = this.client.dataset(this.config.database || this.config.extraConfig?.dataset);
+    const [tables] = await dataset.getTables();
 
-        const dataset = this.client.dataset(this.config.database || this.config.extraConfig?.dataset);
-        const [tables] = await dataset.getTables();
+    const schemaInfo: SchemaInfo = { tables: [] };
 
-        const schemaInfo: SchemaInfo = { tables: [] };
+    for (const table of tables) {
+      const [metadata] = await table.getMetadata();
+      const fields = metadata.schema?.fields || [];
 
-        for (const table of tables) {
-            const [metadata] = await table.getMetadata();
-            const fields = metadata.schema?.fields || [];
-
-            schemaInfo.tables.push({
-                name: table.id!,
+      schemaInfo.tables.push({
+        name: table.id!,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                schema: this.config.database || this.config.extraConfig?.dataset,
-                rowCount: parseInt(metadata.numRows || '0'),
+        schema: this.config.database || this.config.extraConfig?.dataset,
+        rowCount: parseInt(metadata.numRows || "0"),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                columns: fields.map((field: any) => ({
-                    name: field.name,
-                    type: field.type,
-                    nullable: field.mode !== 'REQUIRED',
-                    isPrimary: false, // BigQuery doesn't enforce primary keys
-                    isForeign: false,
-                    description: field.description || undefined,
-                })),
-            });
-        }
-
-        return schemaInfo;
+        columns: fields.map((field: any) => ({
+          name: field.name,
+          type: field.type,
+          nullable: field.mode !== "REQUIRED",
+          isPrimary: false, // BigQuery doesn't enforce primary keys
+          isForeign: false,
+          description: field.description || undefined,
+        })),
+      });
     }
 
-    async executeQuery(sql: string): Promise<QueryResult> {
-        const startTime = Date.now();
+    return schemaInfo;
+  }
 
-        if (!this.client) {
-            const { BigQuery } = await import('@google-cloud/bigquery');
-            this.client = new BigQuery({
-                projectId: this.config.project,
-                credentials: this.config.extraConfig?.credentials || undefined,
-                keyFilename: this.config.extraConfig?.keyFilename || undefined,
-            });
-        }
+  async executeQuery(sql: string): Promise<QueryResult> {
+    const startTime = Date.now();
 
-        const [job] = await this.client.createQueryJob({
-            query: sql,
-            location: this.config.extraConfig?.location || 'US',
-        });
-
-        const [rows] = await job.getQueryResults();
-        const executionTime = Date.now() - startTime;
-
-        const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
-
-        return {
-            columns,
-            rows,
-            rowCount: rows.length,
-            executionTime,
-        };
+    if (!this.client) {
+      const { BigQuery } = await import("@google-cloud/bigquery");
+      this.client = new BigQuery({
+        projectId: this.config.project,
+        credentials: this.config.extraConfig?.credentials || undefined,
+        keyFilename: this.config.extraConfig?.keyFilename || undefined,
+      });
     }
 
-    async disconnect(): Promise<void> {
-        // BigQuery SDK handles connection pooling internally
-        this.client = null;
+    const [job] = await this.client.createQueryJob({
+      query: sql,
+      location: this.config.extraConfig?.location || "US",
+    });
+
+    const [rows] = await job.getQueryResults();
+    const executionTime = Date.now() - startTime;
+
+    const columns = rows.length > 0 ? Object.keys(rows[0]) : [];
+
+    return {
+      columns,
+      rows,
+      rowCount: rows.length,
+      executionTime,
+    };
+  }
+
+  async disconnect(): Promise<void> {
+    // BigQuery SDK handles connection pooling internally
+    this.client = null;
+  }
+
+  validateConfig(): { valid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    if (!this.config.project) {
+      errors.push("Google Cloud project ID is required for BigQuery");
     }
 
-    validateConfig(): { valid: boolean; errors: string[] } {
-        const errors: string[] = [];
-
-        if (!this.config.project) {
-            errors.push('Google Cloud project ID is required for BigQuery');
-        }
-
-        if (!this.config.database && !this.config.extraConfig?.dataset) {
-            errors.push('Dataset is required for BigQuery');
-        }
-
-        if (!this.config.extraConfig?.credentials && !this.config.extraConfig?.keyFilename) {
-            errors.push('Either credentials JSON or keyFilename is required for BigQuery authentication');
-        }
-
-        return {
-            valid: errors.length === 0,
-            errors: [...super.validateConfig().errors, ...errors],
-        };
+    if (!this.config.database && !this.config.extraConfig?.dataset) {
+      errors.push("Dataset is required for BigQuery");
     }
+
+    if (!this.config.extraConfig?.credentials && !this.config.extraConfig?.keyFilename) {
+      errors.push("Either credentials JSON or keyFilename is required for BigQuery authentication");
+    }
+
+    return {
+      valid: errors.length === 0,
+      errors: [...super.validateConfig().errors, ...errors],
+    };
+  }
 }

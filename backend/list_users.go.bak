@@ -1,0 +1,24 @@
+package main
+
+import (
+	"fmt"
+	"log"
+
+	"insight-engine-backend/database"
+	"insight-engine-backend/models"
+
+	"github.com/joho/godotenv"
+)
+
+func main() {
+	if err := godotenv.Load(); err != nil {
+		log.Println("No .env file found")
+	}
+	database.Connect()
+
+	var users []models.User
+	database.DB.Find(&users)
+	for _, u := range users {
+		fmt.Printf("User: ID=%v Email='%s' Username='%s' Verified=%v\n", u.ID, u.Email, u.Username, u.EmailVerified)
+	}
+}

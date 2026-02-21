@@ -5,10 +5,11 @@ import {
   ConsoleSpanExporter,
   SimpleSpanProcessor,
   BatchSpanProcessor,
+  SpanProcessor,
 } from "@opentelemetry/sdk-trace-base";
 import { registerInstrumentations } from "@opentelemetry/instrumentation";
 import { ZoneContextManager } from "@opentelemetry/context-zone";
-import { Resource } from "@opentelemetry/resources";
+import { resourceFromAttributes } from "@opentelemetry/resources";
 import { SemanticResourceAttributes } from "@opentelemetry/semantic-conventions";
 
 const serviceName = "insight-engine-frontend";
@@ -16,26 +17,31 @@ const serviceName = "insight-engine-frontend";
 export const initializeTracing = () => {
   if (typeof window === "undefined") return;
 
-  const provider = new WebTracerProvider({
-    // @ts-expect-error Resource type mismatch workaround
-    resource: new Resource({
-      [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
-    }),
-  });
   // Exporter
+  // Only enable if explicitly configured
+  if (process.env.NEXT_PUBLIC_ENABLE_TRACING !== "true") {
+    // eslint-disable-next-line no-console
+    console.log("Tracing disabled (NEXT_PUBLIC_ENABLE_TRACING != true)");
+    return;
+  }
+
   const exporter = new OTLPTraceExporter({
     url: "http://localhost:4318/v1/traces", // Jaeger OTLP HTTP endpoint
   });
 
-  // Use BatchSpanProcessor for better performance in production
-  // @ts-expect-error addSpanProcessor missing in type definition
-  provider.addSpanProcessor(new BatchSpanProcessor(exporter));
+  const spanProcessors: SpanProcessor[] = [new BatchSpanProcessor(exporter)];
 
   // Also log to console for dev debugging
   if (process.env.NODE_ENV === "development") {
-    // @ts-expect-error addSpanProcessor missing in type definition
-    provider.addSpanProcessor(new SimpleSpanProcessor(new ConsoleSpanExporter()));
+    spanProcessors.push(new SimpleSpanProcessor(new ConsoleSpanExporter()));
   }
+
+  const provider = new WebTracerProvider({
+    resource: resourceFromAttributes({
+      [SemanticResourceAttributes.SERVICE_NAME]: serviceName,
+    }),
+    spanProcessors,
+  });
 
   provider.register({
     contextManager: new ZoneContextManager(),

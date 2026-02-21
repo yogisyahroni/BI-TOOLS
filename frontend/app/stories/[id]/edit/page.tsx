@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card as CardUI } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { _Tabs, _TabsContent, _TabsList, _TabsTrigger } from '@/components/ui/tabs';
-import { Plus, _Trash2, Save, Eye } from 'lucide-react';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card as CardUI } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Trash2, Save, Eye } from "lucide-react";
 
 interface Page {
   id: string;
@@ -21,19 +21,19 @@ interface Page {
 interface Card {
   id: string;
   title: string;
-  type: 'chart' | 'metric' | 'text';
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  type: "chart" | "metric" | "text";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   content?: any;
 }
 
-export default function StoryBuilderPage({ _params }: { params: Promise<{ id: string }> }) {
+export default function StoryBuilderPage({ params }: { params: Promise<{ id: string }> }) {
   const [pages, setPages] = useState<Page[]>([
     {
-      id: 'page_1',
-      title: 'Overview',
-      subtitle: 'Q1 2024 Performance Summary',
-      narrative: 'This story explores our Q1 performance across all key metrics...',
+      id: "page_1",
+      title: "Overview",
+      subtitle: "Q1 2024 Performance Summary",
+      narrative: "This story explores our Q1 performance across all key metrics...",
       cards: [],
     },
   ]);
@@ -65,7 +65,7 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
     setPages(updated);
   };
 
-  const addCardToPage = (type: 'chart' | 'metric' | 'text') => {
+  const addCardToPage = (type: "chart" | "metric" | "text") => {
     const updated = [...pages];
     const newCard: Card = {
       id: `card_${Date.now()}`,
@@ -79,7 +79,7 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
 
   const removePage = (index: number) => {
     if (pages.length === 1) {
-      alert('You must have at least one page');
+      alert("You must have at least one page");
       return;
     }
     const updated = pages.filter((_, i) => i !== index);
@@ -124,10 +124,11 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
                 <div key={page.id}>
                   <button
                     onClick={() => setCurrentPageIndex(index)}
-                    className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${currentPageIndex === index
-                      ? 'bg-primary text-primary-foreground'
-                      : 'hover:bg-muted'
-                      }`}
+                    className={`w-full text-left px-3 py-2 rounded-lg transition-colors ${
+                      currentPageIndex === index
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted"
+                    }`}
                   >
                     <div className="text-sm font-medium">{page.title}</div>
                     <div className="text-xs opacity-75">{page.cards.length} cards</div>
@@ -173,7 +174,7 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
                   <div>
                     <Label className="text-sm font-medium">Page Description</Label>
                     <textarea
-                      value={currentPage.narrative || ''}
+                      value={currentPage.narrative || ""}
                       onChange={(e) => updatePageNarrative(e.target.value)}
                       placeholder="Add context and narrative for this page..."
                       className="w-full border border-border rounded-lg p-3 bg-muted text-foreground resize-none min-h-24"
@@ -190,10 +191,7 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
                   {currentPage.cards.length === 0 ? (
                     <CardUI className="p-8 text-center border-dashed">
                       <p className="text-muted-foreground mb-4">No cards added yet</p>
-                      <Button
-                        onClick={() => setShowAddCard(!showAddCard)}
-                        className="gap-2"
-                      >
+                      <Button onClick={() => setShowAddCard(!showAddCard)} className="gap-2">
                         <Plus className="w-4 h-4" />
                         Add Card
                       </Button>
@@ -203,12 +201,8 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
                       {currentPage.cards.map((card) => (
                         <CardUI key={card.id} className="p-4">
                           <div className="flex items-start justify-between mb-2">
-                            <h3 className="font-medium text-foreground">
-                              {card.title}
-                            </h3>
-                            <span className="text-xs bg-muted px-2 py-1 rounded">
-                              {card.type}
-                            </span>
+                            <h3 className="font-medium text-foreground">{card.title}</h3>
+                            <span className="text-xs bg-muted px-2 py-1 rounded">{card.type}</span>
                           </div>
                           <div className="aspect-video bg-muted rounded flex items-center justify-center text-muted-foreground">
                             Click to edit
@@ -220,36 +214,18 @@ export default function StoryBuilderPage({ _params }: { params: Promise<{ id: st
 
                   {showAddCard && (
                     <CardUI className="p-4 mt-4 border-dashed space-y-2">
-                      <p className="text-sm font-medium text-foreground">
-                        Select card type:
-                      </p>
+                      <p className="text-sm font-medium text-foreground">Select card type:</p>
                       <div className="flex gap-2">
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => addCardToPage('chart')}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => addCardToPage("chart")}>
                           Chart
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => addCardToPage('metric')}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => addCardToPage("metric")}>
                           Metric
                         </Button>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => addCardToPage('text')}
-                        >
+                        <Button variant="outline" size="sm" onClick={() => addCardToPage("text")}>
                           Text
                         </Button>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => setShowAddCard(false)}
-                        >
+                        <Button variant="ghost" size="sm" onClick={() => setShowAddCard(false)}>
                           Cancel
                         </Button>
                       </div>

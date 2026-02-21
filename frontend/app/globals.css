@@ -1,58 +1,58 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
+@import "tailwindcss";
+@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
- 
+
 /* Modern Analytics Design System */
 :root {
   /* Primary: Deep Indigo */
   --primary: #6366f1;
   --primary-foreground: #ffffff;
   --primary-muted: #e0e7ff;
-  
+
   /* Background System */
   --background: #fafafa;
   --foreground: #0f172a;
-  
+
   /* Surface Layers (Glassmorphism Lite) */
   --surface: #ffffff;
   --surface-foreground: #0f172a;
   --surface-elevated: #f8fafc;
   --surface-hover: #f1f5f9;
-  
+
   /* Cards with subtle transparency */
   --card: rgba(255, 255, 255, 0.9);
   --card-foreground: #0f172a;
-  
+
   /* Secondary & Muted */
   --secondary: #f1f5f9;
   --secondary-foreground: #334155;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
-  
+
   /* Popover & Overlay */
   --popover: #ffffff;
   --popover-foreground: #0f172a;
-  
+
   /* Destructive */
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
-  
+
   /* Border & Input */
   --border: rgba(148, 163, 184, 0.2);
   --input: #f1f5f9;
   --ring: #6366f1;
-  
+
   /* Radius System */
   --radius: 0.75rem;
-  
+
   /* Chart Colors */
   --chart-1: #6366f1;
   --chart-2: #06b6d4;
   --chart-3: #10b981;
   --chart-4: #f59e0b;
   --chart-5: #ef4444;
-  
+
   /* Sidebar */
   --sidebar: #0f172a;
   --sidebar-foreground: #f1f5f9;
@@ -63,53 +63,53 @@
   --sidebar-border: rgba(255, 255, 255, 0.1);
   --sidebar-ring: #6366f1;
 }
- 
+
 .dark {
   /* Primary: Deep Indigo */
   --primary: #818cf8;
   --primary-foreground: #0f172a;
   --primary-muted: #312e81;
-  
+
   /* Background System - Rich Dark Slate */
   --background: #020617;
   --foreground: #f8fafc;
-  
+
   /* Surface Layers */
   --surface: #0f172a;
   --surface-foreground: #f8fafc;
   --surface-elevated: #1e293b;
   --surface-hover: #334155;
-  
+
   /* Cards with subtle transparency */
   --card: rgba(15, 23, 42, 0.95);
   --card-foreground: #f8fafc;
-  
+
   /* Secondary & Muted */
   --secondary: #1e293b;
   --secondary-foreground: #e2e8f0;
   --muted: #1e293b;
   --muted-foreground: #94a3b8;
-  
+
   /* Popover & Overlay */
   --popover: #0f172a;
   --popover-foreground: #f8fafc;
-  
+
   /* Destructive */
   --destructive: #f87171;
   --destructive-foreground: #450a0a;
-  
+
   /* Border & Input */
   --border: rgba(148, 163, 184, 0.15);
   --input: #1e293b;
   --ring: #818cf8;
-  
+
   /* Chart Colors */
   --chart-1: #818cf8;
   --chart-2: #22d3ee;
   --chart-3: #34d399;
   --chart-4: #fbbf24;
   --chart-5: #f87171;
-  
+
   /* Sidebar */
   --sidebar: #0f172a;
   --sidebar-foreground: #f1f5f9;
@@ -117,7 +117,7 @@
   --sidebar-primary-foreground: #0f172a;
   --sidebar-accent: #1e293b;
   --sidebar-accent-foreground: #f1f5f9;
-  --sidebar-border: rgba(255, 255, 255, 0.1);
+  --sidebar-border: rgba(255, 255, 255, 0.2);
   --sidebar-ring: #818cf8;
 }
 
@@ -159,21 +159,23 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
- 
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  
+
   html {
     @apply scroll-smooth;
   }
-  
+
   body {
     @apply bg-background text-foreground antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
   }
-  
+
   /* Premium focus indicators */
   *:focus-visible {
     @apply outline-2 outline-offset-2 outline-primary;
@@ -185,25 +187,25 @@
   .glass {
     @apply bg-white/80 backdrop-blur-xl border border-white/20;
   }
-  
+
   .glass-dark {
     @apply bg-slate-900/80 backdrop-blur-xl border border-white/10;
   }
-  
+
   /* Card hover effect */
   .card-hover {
     @apply transition-all duration-300 ease-out;
   }
-  
+
   .card-hover:hover {
     @apply -translate-y-1 shadow-xl;
   }
-  
+
   /* Gradient text */
   .gradient-text {
     @apply bg-gradient-to-r from-primary to-cyan-500 bg-clip-text text-transparent;
   }
-  
+
   /* Subtle shimmer loading */
   .shimmer {
     @apply animate-pulse bg-gradient-to-r from-muted via-muted-foreground/10 to-muted bg-[length:200%_100%];

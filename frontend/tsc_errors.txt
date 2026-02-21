@@ -1,0 +1,696 @@
+app/(authenticated)/admin/page.tsx(195,37): error TS2322: Type '"default" | "destructive" | "warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+  Type '"warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+app/(authenticated)/admin/page.tsx(286,45): error TS2322: Type '"default" | "destructive" | "warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+  Type '"warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+app/(authenticated)/admin/system/page.tsx(60,20): error TS2322: Type '"default" | "destructive" | "outline" | "secondary" | "warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+  Type '"warning"' is not assignable to type '"default" | "destructive" | "outline" | "secondary" | null | undefined'.
+app/(authenticated)/admin/system/page.tsx(95,51): error TS2339: Property 'lastActive' does not exist on type 'SystemHealth'.
+app/(authenticated)/admin/system/page.tsx(95,80): error TS2339: Property 'lastActive' does not exist on type 'SystemHealth'.
+app/(authenticated)/admin/system/page.tsx(108,64): error TS2339: Property 'heapUsed' does not exist on type 'MemoryMetrics'.
+app/(authenticated)/admin/system/page.tsx(111,67): error TS2339: Property 'heapTotal' does not exist on type 'MemoryMetrics'.
+app/(authenticated)/admin/system/page.tsx(122,57): error TS2339: Property 'uptime' does not exist on type 'SystemMetrics'.
+app/(authenticated)/admin/system/page.tsx(122,95): error TS2339: Property 'uptime' does not exist on type 'SystemMetrics'.
+app/(authenticated)/admin/users/page.tsx(337,73): error TS2339: Property 'newUsersLastMonth' does not exist on type 'UserStats'.
+app/admin/pulses/page.tsx(24,17): error TS2345: Argument of type 'Pulse[]' is not assignable to parameter of type 'SetStateAction<Pulse[]>'.
+  Type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/services/pulse-service").Pulse[]' is not assignable to type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/types/pulses").Pulse[]'.
+    Type 'Pulse' is missing the following properties from type 'Pulse': dashboardId, schedule, config, isActive, and 4 more.
+app/admin/roles/page.tsx(595,46): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+app/admin/roles/page.tsx(615,36): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+app/admin/roles/page.tsx(636,38): error TS2345: Argument of type 'number' is not assignable to parameter of type 'string'.
+app/api/auth/webauthn/authenticate/route.ts(8,45): error TS2307: Cannot find module '@simplewebauthn/types' or its corresponding type declarations.
+app/api/auth/webauthn/register/route.ts(11,45): error TS2307: Cannot find module '@simplewebauthn/types' or its corresponding type declarations.
+app/api/auth/webauthn/register/route.ts(88,21): error TS2339: Property 'credentialID' does not exist on type '{ fmt: AttestationFormat; aaguid: string; credential: WebAuthnCredential; credentialType: "public-key"; attestationObject: Uint8Array<ArrayBuffer>; ... 5 more ...; authenticatorExtensionResults?: unknown; }'.
+app/api/auth/webauthn/register/route.ts(88,35): error TS2339: Property 'credentialPublicKey' does not exist on type '{ fmt: AttestationFormat; aaguid: string; credential: WebAuthnCredential; credentialType: "public-key"; attestationObject: Uint8Array<ArrayBuffer>; ... 5 more ...; authenticatorExtensionResults?: unknown; }'.
+app/api/auth/webauthn/register/route.ts(88,56): error TS2339: Property 'counter' does not exist on type '{ fmt: AttestationFormat; aaguid: string; credential: WebAuthnCredential; credentialType: "public-key"; attestationObject: Uint8Array<ArrayBuffer>; ... 5 more ...; authenticatorExtensionResults?: unknown; }'.
+app/api/upload/route.ts(5,10): error TS2305: Module '"@/lib/db"' has no exported member '_db'.
+app/apps/builder/[id]/page.tsx(11,30): error TS2724: '"lucide-react"' has no exported member named '_Save'. Did you mean 'Save'?
+app/ask/page.tsx(21,10): error TS2724: '"@/components/ui/tabs"' has no exported member named '_Tabs'. Did you mean 'Tabs'?
+app/ask/page.tsx(21,17): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsContent'. Did you mean 'TabsContent'?
+app/ask/page.tsx(21,31): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsList'. Did you mean 'TabsList'?
+app/ask/page.tsx(21,42): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsTrigger'. Did you mean 'TabsTrigger'?
+app/auth/register/page.tsx(213,29): error TS2322: Type '{ onChange: ChangeHandler; onBlur: ChangeHandler; ref: RefCallBack; name: "password"; min?: string | number | undefined; max?: string | number | undefined; ... 10 more ...; value: string; }' is not assignable to type 'IntrinsicAttributes & PasswordInputProps & RefAttributes<HTMLInputElement>'.
+  Property 'strength' does not exist on type 'IntrinsicAttributes & PasswordInputProps & RefAttributes<HTMLInputElement>'.
+app/auth/reset-password/page.tsx(16,10): error TS2724: '"@/components/ui/form-error"' has no exported member named '_FormError'. Did you mean 'FormError'?
+app/collections/page.tsx(20,5): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenu'. Did you mean 'DropdownMenu'?
+app/collections/page.tsx(21,5): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuContent'. Did you mean 'DropdownMenuContent'?
+app/collections/page.tsx(22,5): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuItem'. Did you mean 'DropdownMenuItem'?
+app/collections/page.tsx(23,5): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuTrigger'. Did you mean 'DropdownMenuTrigger'?
+app/collections/page.tsx(27,10): error TS2724: '"lucide-react"' has no exported member named '_MoreHorizontal'. Did you mean 'MoreHorizontal'?
+app/connections/components/rest-api-form.tsx(17,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+app/dashboards/[id]/page.tsx(6,74): error TS2724: '"lucide-react"' has no exported member named '_MoreVertical'. Did you mean 'MoreVertical'?
+app/dataflows/[id]/page.tsx(8,16): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+app/dataflows/[id]/page.tsx(9,22): error TS2724: '"lucide-react"' has no exported member named '_Box'. Did you mean 'Box'?
+app/dataflows/[id]/page.tsx(9,28): error TS2724: '"lucide-react"' has no exported member named '_ArrowDown'. Did you mean 'ArrowDown'?
+app/dataflows/[id]/page.tsx(10,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+app/dataflows/[id]/page.tsx(12,10): error TS2724: '"next/navigation"' has no exported member named '_useRouter'. Did you mean 'useRouter'?
+app/dataflows/page.tsx(7,52): error TS2724: '"@/components/ui/card"' has no exported member named '_CardDescription'. Did you mean 'CardDescription'?
+app/dataflows/page.tsx(9,16): error TS2724: '"lucide-react"' has no exported member named '_Play'. Did you mean 'Play'?
+app/docs/layout.tsx(6,22): error TS2724: '"lucide-react"' has no exported member named '_Home'. Did you mean 'Home'?
+app/docs/layout.tsx(6,35): error TS2724: '"lucide-react"' has no exported member named '_StickyNote'. Did you mean 'StickyNote'?
+app/docs/layout.tsx(101,43): error TS2339: Property 'icon' does not exist on type '{ title: string; href: string; } | { title: string; href: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }'.
+  Property 'icon' does not exist on type '{ title: string; href: string; }'.
+app/docs/layout.tsx(101,57): error TS2339: Property 'icon' does not exist on type '{ title: string; href: string; } | { title: string; href: string; icon: ForwardRefExoticComponent<Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>>; }'.
+  Property 'icon' does not exist on type '{ title: string; href: string; }'.
+app/docs/page.tsx(3,38): error TS2724: '"lucide-react"' has no exported member named '_Layers'. Did you mean 'Layers'?
+app/explorer/page.tsx(89,20): error TS2345: Argument of type '(prev: Partial<VisualizationConfig>) => { annotations: (Record<string, unknown> | Annotation)[]; type?: VisualizationType | undefined; ... 21 more ...; tooltipTemplate?: string | undefined; }' is not assignable to parameter of type 'SetStateAction<Partial<VisualizationConfig>>'.
+  Type '(prev: Partial<VisualizationConfig>) => { annotations: (Record<string, unknown> | Annotation)[]; type?: VisualizationType | undefined; ... 21 more ...; tooltipTemplate?: string | undefined; }' is not assignable to type '(prevState: Partial<VisualizationConfig>) => Partial<VisualizationConfig>'.
+    Call signature return types '{ annotations: (Record<string, unknown> | Annotation)[]; type?: VisualizationType | undefined; xAxis?: string | undefined; yAxis?: string[] | undefined; ... 19 more ...; tooltipTemplate?: string | undefined; }' and 'Partial<VisualizationConfig>' are incompatible.
+      The types of 'annotations' are incompatible between these types.
+        Type '(Record<string, unknown> | Annotation)[]' is not assignable to type 'Annotation[]'.
+          Type 'Record<string, unknown> | Annotation' is not assignable to type 'Annotation'.
+            Type 'Record<string, unknown>' is missing the following properties from type 'Annotation': id, label, xValue, yValue
+app/governance/glossary/page.tsx(11,60): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogTrigger'. Did you mean 'DialogTrigger'?
+app/metadata/page.tsx(301,31): error TS2322: Type 'string | number | undefined' is not assignable to type 'number | undefined'.
+  Type 'string' is not assignable to type 'number'.
+app/modeling/[id]/page.tsx(23,30): error TS2724: '"@/types/semantic"' has no exported member named '_SemanticMetric'. Did you mean 'SemanticMetric'?
+app/onboarding/page.tsx(12,10): error TS2724: '"@/components/ui/textarea"' has no exported member named '_Textarea'. Did you mean 'Textarea'?
+app/onboarding/page.tsx(37,45): error TS2339: Property '_activeConnection' does not exist on type '{ connections: DatabaseConnection[]; activeConnection: DatabaseConnection | null; schema: SchemaInfo | null; isLoading: boolean; ... 10 more ...; selectConnection: (connection: DatabaseConnection | null) => void; }'.
+app/onboarding/page.tsx(37,85): error TS2339: Property '_selectConnection' does not exist on type '{ connections: DatabaseConnection[]; activeConnection: DatabaseConnection | null; schema: SchemaInfo | null; isLoading: boolean; ... 10 more ...; selectConnection: (connection: DatabaseConnection | null) => void; }'.
+app/reports/schedule/page.tsx(22,3): error TS2724: '"lucide-react"' has no exported member named '_FileText'. Did you mean 'FileText'?
+app/reports/schedule/page.tsx(23,3): error TS2724: '"lucide-react"' has no exported member named '_Settings'. Did you mean 'Settings'?
+app/saved-queries/page.tsx(5,20): error TS2724: '"react"' has no exported member named '_useEffect'. Did you mean 'useEffect'?
+app/saved-queries/page.tsx(14,3): error TS2724: '"lucide-react"' has no exported member named '_Users'. Did you mean 'Users'?
+app/saved-queries/page.tsx(15,3): error TS2724: '"lucide-react"' has no exported member named '_TrendingUp'. Did you mean 'TrendingUp'?
+app/saved-queries/page.tsx(22,3): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+app/saved-queries/page.tsx(50,5): error TS2339: Property '_error' does not exist on type '{ queries: SavedQuery[]; isLoading: boolean; error: string | null; fetchQueries: () => Promise<void>; saveQuery: (query: Omit<SavedQuery, "id" | "createdAt" | "updatedAt" | "pinned" | "views">) => Promise<...>; deleteQuery: (queryId: string) => Promise<...>; pinQuery: (queryId: string) => Promise<...>; updateQuery: ...'.
+app/saved-queries/page.tsx(51,5): error TS2339: Property '_fetchQueries' does not exist on type '{ queries: SavedQuery[]; isLoading: boolean; error: string | null; fetchQueries: () => Promise<void>; saveQuery: (query: Omit<SavedQuery, "id" | "createdAt" | "updatedAt" | "pinned" | "views">) => Promise<...>; deleteQuery: (queryId: string) => Promise<...>; pinQuery: (queryId: string) => Promise<...>; updateQuery: ...'.
+app/settings/security/page.tsx(11,10): error TS2724: '"@/components/ui/separator"' has no exported member named '_Separator'. Did you mean 'Separator'?
+app/stories/[id]/edit/page.tsx(10,10): error TS2724: '"@/components/ui/tabs"' has no exported member named '_Tabs'. Did you mean 'Tabs'?
+app/stories/[id]/edit/page.tsx(10,17): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsContent'. Did you mean 'TabsContent'?
+app/stories/[id]/edit/page.tsx(10,31): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsList'. Did you mean 'TabsList'?
+app/stories/[id]/edit/page.tsx(10,42): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsTrigger'. Did you mean 'TabsTrigger'?
+app/stories/[id]/edit/page.tsx(11,16): error TS2724: '"lucide-react"' has no exported member named '_Trash2'. Did you mean 'Trash2'?
+app/stories/[id]/edit/page.tsx(30,44): error TS2339: Property '_params' does not exist on type '{ params: Promise<{ id: string; }>; }'.
+app/stories/[id]/page.tsx(1,10): error TS2724: '"@/types/presentation"' has no exported member named '_SlideDeck'. Did you mean 'SlideDeck'?
+app/stories/[id]/page.tsx(11,37): error TS2339: Property '_params' does not exist on type 'StoryPageProps'.
+app/stories/page.tsx(17,11): error TS2322: Type '{ isCollapsed: boolean; onToggle: () => void; }' is not assignable to type 'IntrinsicAttributes & SidebarProps'.
+  Property 'onToggle' does not exist on type 'IntrinsicAttributes & SidebarProps'.
+app/templates/page.tsx(7,44): error TS2724: '"lucide-react"' has no exported member named '_Trash2'. Did you mean 'Trash2'?
+app/templates/page.tsx(12,10): error TS2724: '"@/components/ui/tabs"' has no exported member named '_Tabs'. Did you mean 'Tabs'?
+app/templates/page.tsx(12,17): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsContent'. Did you mean 'TabsContent'?
+app/templates/page.tsx(12,31): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsList'. Did you mean 'TabsList'?
+app/templates/page.tsx(12,42): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsTrigger'. Did you mean 'TabsTrigger'?
+app/workspace/[workspaceId]/pipelines/[id]/page.tsx(8,21): error TS2724: '"lucide-react"' has no exported member named '_Play'. Did you mean 'Play'?
+app/workspace/[workspaceId]/pipelines/[id]/page.tsx(11,10): error TS2724: '"@/components/ui/separator"' has no exported member named '_Separator'. Did you mean 'Separator'?
+app/workspace/[workspaceId]/pipelines/[id]/page.tsx(69,38): error TS2322: Type '{ executions: { error: string | null; status: string; id: string; pipelineId: string; startedAt: Date; completedAt: Date | null; durationMs: number | null; rowsProcessed: number; logs: JsonValue; }[]; }' is not assignable to type 'IntrinsicAttributes & PipelineHistoryProps'.
+  Property 'executions' does not exist on type 'IntrinsicAttributes & PipelineHistoryProps'.
+app/workspace/[workspaceId]/pipelines/dashboard/page.tsx(144,37): error TS2322: Type '{ id: string; pipelineName: string; startedAt: string; error: string | number | true | JsonObject | JsonArray; }[]' is not assignable to type 'Failure[]'.
+  Type '{ id: string; pipelineName: string; startedAt: string; error: string | number | true | JsonObject | JsonArray; }' is not assignable to type 'Failure'.
+    Types of property 'error' are incompatible.
+      Type 'string | number | true | JsonObject | JsonArray' is not assignable to type 'string'.
+        Type 'number' is not assignable to type 'string'.
+components/activity-feed.tsx(5,10): error TS2724: '"lucide-react"' has no exported member named '_User'. Did you mean 'User'?
+components/activity-feed.tsx(5,47): error TS2724: '"lucide-react"' has no exported member named '_Trash2'. Did you mean 'Trash2'?
+components/activity-feed.tsx(32,44): error TS2339: Property '_autoRefresh' does not exist on type 'ActivityFeedProps'.
+components/ai-model-selector.tsx(4,38): error TS2724: '"lucide-react"' has no exported member named '_Search'. Did you mean 'Search'?
+components/ai-model-selector.tsx(4,47): error TS2724: '"lucide-react"' has no exported member named '_Sparkles'. Did you mean 'Sparkles'?
+components/ai-model-selector.tsx(5,10): error TS2305: Module '"@/lib/utils"' has no exported member '_cn'.
+components/ai-reasoning.tsx(7,40): error TS2724: '"lucide-react"' has no exported member named '_AlertTriangle'. Did you mean 'AlertTriangle'?
+components/ai-usage/ai-usage-dashboard.tsx(8,10): error TS2724: '"lucide-react"' has no exported member named '_BarChart3'. Did you mean 'BarChart3'?
+components/ai/ai-chat-assistant.tsx(14,5): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/ai/ai-chat-assistant.tsx(19,5): error TS2724: '"lucide-react"' has no exported member named '_MessageSquare'. Did you mean 'MessageSquare'?
+components/ai/ai-chat-assistant.tsx(39,56): error TS2724: '"@/components/ui/sheet"' has no exported member named '_SheetTrigger'. Did you mean 'SheetTrigger'?
+components/ai/ai-chat-assistant.tsx(63,5): error TS2339: Property '_currentPrompt' does not exist on type 'AIChatAssistantProps'.
+components/ai/ai-chat-assistant.tsx(65,5): error TS2339: Property '_className' does not exist on type 'AIChatAssistantProps'.
+components/ai/ai-chat-assistant.tsx(305,98): error TS2339: Property '_node' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
+components/ai/ai-chat-assistant.tsx(305,105): error TS2339: Property '_inline' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
+components/ai/ai-chat-assistant.tsx(310,81): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: SyntaxHighlighterProps): SyntaxHighlighter', gave the following error.
+    Type 'CSSProperties | { [key: string]: CSSProperties; }' is not assignable to type '{ [key: string]: CSSProperties; } | undefined'.
+      Type 'CSSProperties' is not assignable to type '{ [key: string]: CSSProperties; }'.
+        Index signature for type 'string' is missing in type 'Properties<string | number, string & {}>'.
+  Overload 2 of 2, '(props: SyntaxHighlighterProps, context: any): SyntaxHighlighter', gave the following error.
+    Type 'CSSProperties | { [key: string]: CSSProperties; }' is not assignable to type '{ [key: string]: CSSProperties; } | undefined'.
+      Type 'CSSProperties' is not assignable to type '{ [key: string]: CSSProperties; }'.
+        Index signature for type 'string' is missing in type 'Properties<string | number, string & {}>'.
+components/ai/ai-chat.tsx(6,16): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/ai/ai-chat.tsx(6,30): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/ai/ai-chat.tsx(6,43): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/ai/ai-chat.tsx(14,5): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/ai/ai-chat.tsx(15,5): error TS2724: '"lucide-react"' has no exported member named '_RefreshCw'. Did you mean 'RefreshCw'?
+components/ai/ai-chat.tsx(20,5): error TS2724: '"lucide-react"' has no exported member named '_CheckCircle2'. Did you mean 'CheckCircle2'?
+components/ai/ai-chat.tsx(71,13): error TS2339: Property '_generateStream' does not exist on type '{ messages: StreamMessage[]; currentResponse: string; isStreaming: boolean; generateStream: (prompt: string, context?: Record<string, any>, providerId?: string | undefined) => Promise<...>; stopStream: () => void; clearMessages: () => void; }'.
+components/ai/ai-chat.tsx(71,57): error TS2339: Property '_isStreaming' does not exist on type '{ messages: StreamMessage[]; currentResponse: string; isStreaming: boolean; generateStream: (prompt: string, context?: Record<string, any>, providerId?: string | undefined) => Promise<...>; stopStream: () => void; clearMessages: () => void; }'.
+components/ai/ai-chat.tsx(71,71): error TS2339: Property '_stopStream' does not exist on type '{ messages: StreamMessage[]; currentResponse: string; isStreaming: boolean; generateStream: (prompt: string, context?: Record<string, any>, providerId?: string | undefined) => Promise<...>; stopStream: () => void; clearMessages: () => void; }'.
+components/ai/ai-chat.tsx(294,86): error TS2339: Property '_node' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
+components/ai/ai-chat.tsx(294,93): error TS2339: Property '_inline' does not exist on type 'ClassAttributes<HTMLElement> & HTMLAttributes<HTMLElement> & ExtraProps'.
+components/ai/provider-list.tsx(45,9): error TS2339: Property '_isDeleting' does not exist on type '{ providers: AIProvider[]; isLoading: boolean; error: Error | null; createProvider: UseMutateFunction<AIProvider, Error, CreateAIProviderInput, { ...; }>; ... 6 more ...; isTesting: boolean; }'.
+components/ai/provider-list.tsx(46,9): error TS2339: Property '_isTesting' does not exist on type '{ providers: AIProvider[]; isLoading: boolean; error: Error | null; createProvider: UseMutateFunction<AIProvider, Error, CreateAIProviderInput, { ...; }>; ... 6 more ...; isTesting: boolean; }'.
+components/alert-manager.tsx(8,22): error TS2724: '"lucide-react"' has no exported member named '_CheckCircle'. Did you mean 'CheckCircle'?
+components/alert-manager.tsx(8,36): error TS2724: '"lucide-react"' has no exported member named '_AlertTriangle'. Did you mean 'AlertTriangle'?
+components/alerts/alert-create-dialog.tsx(23,10): error TS2724: '"@/components/ui/tabs"' has no exported member named '_Tabs'. Did you mean 'Tabs'?
+components/alerts/alert-create-dialog.tsx(23,17): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsContent'. Did you mean 'TabsContent'?
+components/alerts/alert-create-dialog.tsx(23,31): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsList'. Did you mean 'TabsList'?
+components/alerts/alert-create-dialog.tsx(23,42): error TS2724: '"@/components/ui/tabs"' has no exported member named '_TabsTrigger'. Did you mean 'TabsTrigger'?
+components/alerts/alert-list.tsx(4,29): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/alerts/alert-list.tsx(4,42): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/alerts/notification-config.tsx(14,46): error TS2724: '"lucide-react"' has no exported member named '_Plus'. Did you mean 'Plus'?
+components/analytics/analytics-view.tsx(5,5): error TS2724: '"lucide-react"' has no exported member named '_Calculator'. Did you mean 'Calculator'?
+components/analytics/analytics-view.tsx(29,10): error TS2724: '"@/components/analytics/forecast-view"' has no exported member named '_ForecastView'. Did you mean 'ForecastView'?
+components/analytics/analytics-view.tsx(30,10): error TS2724: '"@/components/analytics/anomaly-view"' has no exported member named '_AnomalyView'. Did you mean 'AnomalyView'?
+components/analytics/analytics-view.tsx(33,10): error TS2724: '"@/components/visualizations/anomaly-chart"' has no exported member named '_AnomalyDataPoint'. Did you mean 'AnomalyDataPoint'?
+components/analytics/analytics-view.tsx(35,10): error TS2305: Module '"@/lib/utils"' has no exported member '_cn'.
+components/analytics/anomaly-config.tsx(4,20): error TS2724: '"lucide-react"' has no exported member named '_Settings2'. Did you mean 'Settings2'?
+components/analytics/anomaly-config.tsx(15,10): error TS2724: '"@/components/ui/input"' has no exported member named '_Input'. Did you mean 'Input'?
+components/analytics/anomaly-view.tsx(3,10): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/analytics/anomaly-view.tsx(3,20): error TS2724: '"lucide-react"' has no exported member named '_AlertTriangle'. Did you mean 'AlertTriangle'?
+components/analytics/auto-insights.tsx(2,10): error TS2724: '"@/components/ui/card"' has no exported member named '_Card'. Did you mean 'Card'?
+components/analytics/auto-insights.tsx(2,17): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/analytics/auto-insights.tsx(2,31): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/analytics/auto-insights.tsx(2,44): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/analytics/auto-insights.tsx(12,5): error TS2724: '"lucide-react"' has no exported member named '_Zap'. Did you mean 'Zap'?
+components/analytics/auto-insights.tsx(14,5): error TS2724: '"lucide-react"' has no exported member named '_Lightbulb'. Did you mean 'Lightbulb'?
+components/analytics/auto-insights.tsx(15,5): error TS2724: '"lucide-react"' has no exported member named '_CheckCircle2'. Did you mean 'CheckCircle2'?
+components/analytics/forecast-config.tsx(4,10): error TS2724: '"lucide-react"' has no exported member named '_CalendarIcon'. Did you mean 'CalendarIcon'?
+components/analytics/forecast-view.tsx(3,10): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/analytics/key-drivers.tsx(2,10): error TS2724: '"@/components/ui/card"' has no exported member named '_Card'. Did you mean 'Card'?
+components/analytics/key-drivers.tsx(2,17): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/analytics/key-drivers.tsx(2,31): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/analytics/key-drivers.tsx(2,44): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/analytics/key-drivers.tsx(2,56): error TS2724: '"@/components/ui/card"' has no exported member named '_CardDescription'. Did you mean 'CardDescription'?
+components/analytics/key-drivers.tsx(4,10): error TS2724: '"@/components/ui/progress"' has no exported member named '_Progress'. Did you mean 'Progress'?
+components/analytics/key-drivers.tsx(11,5): error TS2724: '"lucide-react"' has no exported member named '_Minus'. Did you mean 'Minus'?
+components/analytics/key-drivers.tsx(12,5): error TS2724: '"lucide-react"' has no exported member named '_Target'. Did you mean 'Target'?
+components/analytics/key-drivers.tsx(13,5): error TS2724: '"lucide-react"' has no exported member named '_Zap'. Did you mean 'Zap'?
+components/analytics/report-generator.tsx(4,10): error TS2724: '"lucide-react"' has no exported member named '_Download'. Did you mean 'Download'?
+components/analytics/report-generator.tsx(23,5): error TS2339: Property '_title' does not exist on type 'ReportGeneratorProps'.
+components/breadcrumbs.tsx(3,10): error TS2724: '"react"' has no exported member named '_useMemo'. Did you mean 'useMemo'?
+components/canvas/canvas-board.tsx(3,28): error TS2724: '"react"' has no exported member named '_useEffect'. Did you mean 'useEffect'?
+components/canvas/canvas-board.tsx(3,40): error TS2724: '"react"' has no exported member named '_useCallback'. Did you mean 'useCallback'?
+components/canvas/canvas-board.tsx(5,10): error TS2724: '"usehooks-ts"' has no exported member named '_useResizeObserver'. Did you mean 'useResizeObserver'?
+components/canvas/canvas-board.tsx(6,10): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/canvas/canvas-board.tsx(6,44): error TS2724: '"lucide-react"' has no exported member named '_Settings'. Did you mean 'Settings'?
+components/canvas/properties/text-property.tsx(4,10): error TS2724: '"@/components/ui/input"' has no exported member named '_Input'. Did you mean 'Input'?
+components/canvas/widgets/chart-widget.tsx(11,39): error TS2339: Property '_readOnly' does not exist on type 'WidgetProps'.
+components/canvas/widgets/filter-widget.tsx(11,40): error TS2339: Property '_readOnly' does not exist on type 'WidgetProps'.
+components/canvas/widgets/image-widget.tsx(12,39): error TS2339: Property '_readOnly' does not exist on type 'WidgetProps'.
+components/canvas/widgets/metric-widget.tsx(11,40): error TS2339: Property '_readOnly' does not exist on type 'WidgetProps'.
+components/chart-visualization.tsx(20,10): error TS2724: '"./visualizations/small-multiples"' has no exported member named '_SmallMultiples'. Did you mean 'SmallMultiples'?
+components/charts/annotation-toolbar.tsx(14,5): error TS2724: '"lucide-react"' has no exported member named '_MousePointer2'. Did you mean 'MousePointer2'?
+components/charts/annotation-toolbar.tsx(21,15): error TS2724: '"@/types/comments"' has no exported member named '_Annotation'. Did you mean 'Annotation'?
+components/charts/chart-annotations.tsx(3,41): error TS2724: '"react"' has no exported member named '_useEffect'. Did you mean 'useEffect'?
+components/collaboration-sidebar.tsx(16,3): error TS2339: Property '_queryId' does not exist on type 'CollaborationSidebarProps'.
+components/collaboration-sidebar.tsx(17,3): error TS2339: Property '_dashboardId' does not exist on type 'CollaborationSidebarProps'.
+components/collaboration/comment-input.tsx(24,5): error TS2339: Property '_currentUserId' does not exist on type 'CommentInputProps'.
+components/collaboration/comment-input.tsx(40,17): error TS2322: Type 'string | null' is not assignable to type 'string | undefined'.
+  Type 'null' is not assignable to type 'string | undefined'.
+components/collaboration/comment-thread.tsx(26,65): error TS2724: '"@/types/comments"' has no exported member named '_CommentUser'. Did you mean 'CommentUser'?
+components/collection-sidebar.tsx(3,10): error TS2724: '"react"' has no exported member named '_useMemo'. Did you mean 'useMemo'?
+components/collections-sidebar.tsx(4,10): error TS2724: '"@/hooks/use-collections"' has no exported member named '_useCollections'. Did you mean 'useCollections'?
+components/collections-sidebar.tsx(13,32): error TS2724: '"lucide-react"' has no exported member named '_Folder'. Did you mean 'Folder'?
+components/collections-sidebar.tsx(13,41): error TS2724: '"lucide-react"' has no exported member named '_FolderOpen'. Did you mean 'FolderOpen'?
+components/collections-sidebar.tsx(41,13): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+components/collections-sidebar.tsx(110,42): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+components/combo-chart.tsx(3,10): error TS2724: '"react"' has no exported member named '_useMemo'. Did you mean 'useMemo'?
+components/conditional-formatting.tsx(6,10): error TS2724: '"@/components/ui/input"' has no exported member named '_Input'. Did you mean 'Input'?
+components/dashboard-card.tsx(37,3): error TS2339: Property '_queryId' does not exist on type 'DashboardCardProps'.
+components/dashboard-card.tsx(39,3): error TS2339: Property '_columns' does not exist on type 'DashboardCardProps'.
+components/dashboard-card.tsx(52,5): error TS2353: Object literal may only specify known properties, and 'data' does not exist in type 'UseAggregationOptions'.
+components/dashboard/add-card-dialog.tsx(4,60): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogFooter'. Did you mean 'DialogFooter'?
+components/dashboard/add-to-dashboard-dialog.tsx(109,17): error TS2322: Type '(DashboardCard | { id: string; dashboardId: string; queryId: string; position: { x: number; y: number; w: number; h: number; }; visualizationConfig: { type: VisualizationType; ... 22 more ...; tooltipTemplate?: string | undefined; }; })[]' is not assignable to type 'DashboardCard[]'.
+  Type 'DashboardCard | { id: string; dashboardId: string; queryId: string; position: { x: number; y: number; w: number; h: number; }; visualizationConfig: { type: VisualizationType; ... 22 more ...; tooltipTemplate?: string | undefined; }; }' is not assignable to type 'DashboardCard'.
+    Type '{ id: string; dashboardId: string; queryId: string; position: { x: number; y: number; w: number; h: number; }; visualizationConfig: { type: VisualizationType; xAxis: string; yAxis: string[]; ... 20 more ...; tooltipTemplate?: string | undefined; }; }' is missing the following properties from type 'DashboardCard': type, title
+components/dashboard/add-widget-dialog.tsx(8,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogFooter'. Did you mean 'DialogFooter'?
+components/dashboard/add-widget-dialog.tsx(14,24): error TS2724: '"lucide-react"' has no exported member named '_LayoutGrid'. Did you mean 'LayoutGrid'?
+components/dashboard/add-widget-dialog.tsx(14,37): error TS2724: '"lucide-react"' has no exported member named '_FileText'. Did you mean 'FileText'?
+components/dashboard/ai-text-widget.tsx(1,10): error TS2724: '"@/components/ui/card"' has no exported member named '_Card'. Did you mean 'Card'?
+components/dashboard/ai-text-widget.tsx(1,17): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/dashboard/ai-text-widget.tsx(1,31): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/dashboard/ai-text-widget.tsx(1,44): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/dashboard/ai-text-widget.tsx(1,56): error TS2724: '"@/components/ui/card"' has no exported member named '_CardDescription'. Did you mean 'CardDescription'?
+components/dashboard/ai-text-widget.tsx(13,32): error TS2339: Property '_title' does not exist on type 'AiTextWidgetProps'.
+components/dashboard/ai-text-widget.tsx(13,40): error TS2339: Property '_description' does not exist on type 'AiTextWidgetProps'.
+components/dashboard/auto-refresh.tsx(29,5): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/dashboard/dashboard-card.tsx(3,29): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/dashboard/dashboard-card.tsx(3,42): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/dashboard/dashboard-card.tsx(24,10): error TS2724: '"@/components/catalog/status-badge"' has no exported member named '_StatusBadge'. Did you mean 'StatusBadge'?
+components/dashboard/dashboard-card.tsx(62,5): error TS2339: Property '_isEditing' does not exist on type 'DashboardCardProps'.
+components/dashboard/dashboard-filters.tsx(15,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+components/dashboard/dashboard-filters.tsx(21,5): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuSeparator'. Did you mean 'DropdownMenuSeparator'?
+components/dashboard/dashboard-filters.tsx(26,10): error TS2305: Module '"@/lib/utils"' has no exported member '_cn'.
+components/dashboard/dashboard-grid.tsx(6,51): error TS2724: '"@/lib/types"' has no exported member named '_VisualizationConfig'. Did you mean 'VisualizationConfig'?
+components/dashboard/dashboard-grid.tsx(102,14): error TS2578: Unused '@ts-expect-error' directive.
+components/dashboard/dashboard-grid.tsx(112,17): error TS2578: Unused '@ts-expect-error' directive.
+components/dashboard/dashboard-share-dialog.tsx(12,5): error TS2724: '"lucide-react"' has no exported member named '_Eye'. Did you mean 'Eye'?
+components/dashboard/dashboard-share-dialog.tsx(25,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+components/dashboard/dashboard-tabs.tsx(14,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogTrigger'. Did you mean 'DialogTrigger'?
+components/dashboard/drill-navigation.tsx(5,26): error TS2724: '"@/lib/drill-config"' has no exported member named '_DrillLevel'. Did you mean 'DrillLevel'?
+components/dashboard/drill-navigation.tsx(21,5): error TS2724: '"lucide-react"' has no exported member named '_ExternalLink'. Did you mean 'ExternalLink'?
+components/dashboard/drill-through-modal.tsx(11,10): error TS2724: '"@/components/ui/scroll-area"' has no exported member named '_ScrollArea'. Did you mean 'ScrollArea'?
+components/dashboard/edit-card-dialog.tsx(13,10): error TS2724: '"@/hooks/use-saved-queries"' has no exported member named '_useSavedQueries'. Did you mean 'useSavedQueries'?
+components/dashboard/edit-card-dialog.tsx(15,10): error TS2724: '"@/components/ui/separator"' has no exported member named '_Separator'. Did you mean 'Separator'?
+components/dashboard/export-dialog.tsx(15,10): error TS2724: '"@/components/ui/textarea"' has no exported member named '_Textarea'. Did you mean 'Textarea'?
+components/dashboard/export-dialog.tsx(26,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+components/dashboard/export-dialog.tsx(32,5): error TS2724: '"lucide-react"' has no exported member named '_Settings2'. Did you mean 'Settings2'?
+components/dashboard/export-dialog.tsx(38,10): error TS2305: Module '"@/lib/utils"' has no exported member '_cn'.
+components/dashboard/export-dialog.tsx(199,5): error TS2339: Property '_dashboardId' does not exist on type 'ExportDialogProps'.
+components/dashboard/export-dialog.tsx(387,5): error TS2339: Property '_availableCardIds' does not exist on type '{ options: ExportOptions; onUpdateOption: <K extends keyof ExportOptions>(key: K, value: ExportOptions[K]) => void; availableCardIds: string[]; currentTabId?: string | undefined; }'.
+components/dashboard/global-filters.tsx(3,40): error TS2724: '"react"' has no exported member named '_useMemo'. Did you mean 'useMemo'?
+components/dashboard/global-filters.tsx(30,5): error TS2724: '"lucide-react"' has no exported member named '_Plus'. Did you mean 'Plus'?
+components/dashboard/global-filters.tsx(34,5): error TS2724: '"lucide-react"' has no exported member named '_Check'. Did you mean 'Check'?
+components/dashboard/global-filters.tsx(38,10): error TS2724: '"react-day-picker"' has no exported member named '_DateRange'. Did you mean 'DateRange'?
+components/dashboard/global-filters.tsx(107,5): error TS2339: Property '_allowCustomFilters' does not exist on type 'GlobalFiltersProps'.
+components/dashboard/mobile-dashboard-layout.tsx(29,5): error TS2724: '"lucide-react"' has no exported member named '_GripVertical'. Did you mean 'GripVertical'?
+components/dashboard/mobile-dashboard-layout.tsx(32,5): error TS2724: '"lucide-react"' has no exported member named '_Menu'. Did you mean 'Menu'?
+components/dashboard/mobile-dashboard-layout.tsx(134,5): error TS2339: Property '_onToggleVisibility' does not exist on type '{ widget: MobileWidget; renderWidget: (id: string) => ReactNode; onToggleVisibility: (id: string) => void; }'.
+components/dashboard/mobile-dashboard-layout.tsx(199,5): error TS2339: Property '_dashboardId' does not exist on type 'MobileDashboardLayoutProps'.
+components/dashboard/query-builder-dialog.tsx(13,10): error TS2724: '"@/components/ui/button"' has no exported member named '_Button'. Did you mean 'Button'?
+components/dashboard/query-builder-dialog.tsx(14,10): error TS2305: Module '"lucide-react"' has no exported member '_X'.
+components/dashboard/snapshot-viewer.tsx(171,5): error TS2339: Property '_dashboardId' does not exist on type 'SnapshotViewerProps'.
+components/dashboard/snapshot-viewer.tsx(181,5): error TS2339: Property '_isLoading' does not exist on type 'SnapshotViewerProps'.
+components/data-import/file-uploader.tsx(3,27): error TS2724: '"react"' has no exported member named '_useCallback'. Did you mean 'useCallback'?
+components/data-import/file-uploader.tsx(8,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_Dialog'. Did you mean 'Dialog'?
+components/data-import/file-uploader.tsx(9,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogContent'. Did you mean 'DialogContent'?
+components/data-import/file-uploader.tsx(10,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogDescription'. Did you mean 'DialogDescription'?
+components/data-import/file-uploader.tsx(11,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogFooter'. Did you mean 'DialogFooter'?
+components/data-import/file-uploader.tsx(12,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogHeader'. Did you mean 'DialogHeader'?
+components/data-import/file-uploader.tsx(13,5): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogTitle'. Did you mean 'DialogTitle'?
+components/data-import/file-uploader.tsx(44,5): error TS2305: Module '"lucide-react"' has no exported member '_X'.
+components/data-import/file-uploader.tsx(45,5): error TS2724: '"lucide-react"' has no exported member named '_AlertCircle'. Did you mean 'AlertCircle'?
+components/data-import/file-uploader.tsx(124,5): error TS2339: Property '_showAdvanced' does not exist on type 'FileUploaderProps'.
+components/dual-engine-editor.tsx(18,3): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenu'. Did you mean 'DropdownMenu'?
+components/dual-engine-editor.tsx(19,3): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuContent'. Did you mean 'DropdownMenuContent'?
+components/dual-engine-editor.tsx(20,3): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuItem'. Did you mean 'DropdownMenuItem'?
+components/dual-engine-editor.tsx(21,3): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuSeparator'. Did you mean 'DropdownMenuSeparator'?
+components/dual-engine-editor.tsx(22,3): error TS2724: '"@/components/ui/dropdown-menu"' has no exported member named '_DropdownMenuTrigger'. Did you mean 'DropdownMenuTrigger'?
+components/dual-engine-editor.tsx(25,3): error TS2724: '"lucide-react"' has no exported member named '_Send'. Did you mean 'Send'?
+components/dual-engine-editor.tsx(32,3): error TS2724: '"lucide-react"' has no exported member named '_ChevronDown'. Did you mean 'ChevronDown'?
+components/dual-engine-editor.tsx(33,3): error TS2724: '"lucide-react"' has no exported member named '_History'. Did you mean 'History'?
+components/dual-engine-editor.tsx(100,46): error TS2339: Property '_columns' does not exist on type '{ execute: (options: ExecuteOptions) => Promise<{ success: boolean; data: Record<string, any>[] | undefined; columns: string[] | undefined; rowCount: number; executionTime: number; error?: undefined; } | { ...; }>; ... 10 more ...; pagination: PaginationState; }'.
+components/forecast-chart.tsx(5,32): error TS2307: Cannot find module '@/components/echarts-wrapper' or its corresponding type declarations.
+components/forecast-chart.tsx(16,46): error TS2339: Property '_metricLabel' does not exist on type 'ForecastChartProps'.
+components/home-page-content.tsx(96,31): error TS2339: Property '_connections' does not exist on type '{ connections: DatabaseConnection[]; activeConnection: DatabaseConnection | null; schema: SchemaInfo | null; isLoading: boolean; ... 10 more ...; selectConnection: (connection: DatabaseConnection | null) => void; }'.
+components/lineage/lineage-graph.tsx(22,10): error TS2724: '"@/components/ui/card"' has no exported member named '_Card'. Did you mean 'Card'?
+components/lineage/lineage-graph.tsx(22,17): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/lineage/lineage-graph.tsx(22,31): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/lineage/lineage-graph.tsx(22,44): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/lineage/lineage-graph.tsx(23,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+components/move-collection-dialog.tsx(29,5): error TS2339: Property '_currentCollectionId' does not exist on type 'MoveToCollectionDialogProps'.
+components/notifications/activity-feed.tsx(16,5): error TS2724: '"lucide-react"' has no exported member named '_AlertCircle'. Did you mean 'AlertCircle'?
+components/notifications/notification-bell.tsx(4,23): error TS2724: '"lucide-react"' has no exported member named '_Trash2'. Did you mean 'Trash2'?
+components/notifications/notification-panel.tsx(11,43): error TS2724: '"lucide-react"' has no exported member named '_AlertCircle'. Did you mean 'AlertCircle'?
+components/notifications/scheduler-manager.tsx(47,10): error TS2305: Module '"@/lib/utils"' has no exported member '_cn'.
+components/notifications/scheduler-manager.tsx(126,32): error TS2345: Argument of type 'string' is not assignable to parameter of type 'void'.
+components/notifications/scheduler-manager.tsx(129,33): error TS2345: Argument of type 'string' is not assignable to parameter of type 'void'.
+components/page-header.tsx(5,10): error TS2724: '"@/components/ui/button"' has no exported member named '_Button'. Did you mean 'Button'?
+components/pipelines/pipeline-builder.tsx(16,5): error TS2724: '"lucide-react"' has no exported member named '_Shield'. Did you mean 'Shield'?
+components/pipelines/pipeline-builder.tsx(18,5): error TS2724: '"lucide-react"' has no exported member named '_ChevronDown'. Did you mean 'ChevronDown'?
+components/pipelines/pipeline-card.tsx(8,5): error TS2724: '"lucide-react"' has no exported member named '_Pause'. Did you mean 'Pause'?
+components/pipelines/pipeline-list.tsx(6,24): error TS2724: '"lucide-react"' has no exported member named '_Filter'. Did you mean 'Filter'?
+components/pipelines/pipeline-stats-overview.tsx(8,5): error TS2724: '"lucide-react"' has no exported member named '_TrendingUp'. Did you mean 'TrendingUp'?
+components/pipelines/pipeline-stats-overview.tsx(10,5): error TS2724: '"lucide-react"' has no exported member named '_Database'. Did you mean 'Database'?
+components/pipelines/transformation-builder.tsx(4,10): error TS2724: '"react"' has no exported member named '_useState'. Did you mean 'useState'?
+components/pipelines/transformation-builder.tsx(8,41): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/pipelines/transformation-builder.tsx(9,17): error TS2724: '"lucide-react"' has no exported member named '_Plus'. Did you mean 'Plus'?
+components/pipelines/transformation-builder.tsx(9,24): error TS2724: '"lucide-react"' has no exported member named '_ArrowDown'. Did you mean 'ArrowDown'?
+components/pipelines/transformation-builder.tsx(9,36): error TS2724: '"lucide-react"' has no exported member named '_ArrowUp'. Did you mean 'ArrowUp'?
+components/presentation/slide-view.tsx(3,10): error TS2724: '"@/components/ui/card"' has no exported member named '_Card'. Did you mean 'Card'?
+components/presentation/slide-view.tsx(3,17): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/presentation/slide-view.tsx(3,31): error TS2724: '"@/components/ui/card"' has no exported member named '_CardHeader'. Did you mean 'CardHeader'?
+components/presentation/slide-view.tsx(3,44): error TS2724: '"@/components/ui/card"' has no exported member named '_CardTitle'. Did you mean 'CardTitle'?
+components/providers/websocket-provider.tsx(8,5): error TS2724: '"@/lib/types/notifications"' has no exported member named '_NotificationWebSocketPayload'. Did you mean 'NotificationWebSocketPayload'?
+components/providers/websocket-provider.tsx(9,5): error TS2724: '"@/lib/types/notifications"' has no exported member named '_ActivityWebSocketPayload'. Did you mean 'ActivityWebSocketPayload'?
+components/providers/websocket-provider.tsx(10,5): error TS2724: '"@/lib/types/notifications"' has no exported member named '_SystemWebSocketPayload'. Did you mean 'SystemWebSocketPayload'?
+components/pulse/pulse-dialog.tsx(120,40): error TS2345: Argument of type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/types/pulses").CreatePulseRequest' is not assignable to parameter of type 'import("E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/services/pulse-service").CreatePulseRequest'.
+  Type 'CreatePulseRequest' is missing the following properties from type 'CreatePulseRequest': dashboard_id, schedule_interval, channel
+components/query-builder/data-blend-builder.tsx(13,5): error TS2724: '"@xyflow/react"' has no exported member named '_addEdge'. Did you mean 'addEdge'?
+components/query-builder/data-blend-builder.tsx(48,5): error TS2724: '"lucide-react"' has no exported member named '_ChevronRight'. Did you mean 'ChevronRight'?
+components/query-builder/data-blend-builder.tsx(52,5): error TS2724: '"lucide-react"' has no exported member named '_Settings2'. Did you mean 'Settings2'?
+components/query-builder/data-blend-builder.tsx(253,18): error TS2345: Argument of type 'Node[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'Node[]' is not assignable to type 'never[]'.
+    Type 'Node' is not assignable to type 'never'.
+components/query-builder/data-blend-builder.tsx(270,18): error TS2345: Argument of type 'Edge[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'Edge[]' is not assignable to type 'never[]'.
+    Type 'Edge' is not assignable to type 'never'.
+components/query-builder/load-query-dialog.tsx(23,5): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/query-builder/table-picker.tsx(5,10): error TS2724: '"@/components/ui/button"' has no exported member named '_Button'. Did you mean 'Button'?
+components/query-builder/visual-builder.tsx(3,20): error TS2724: '"react"' has no exported member named '_useCallback'. Did you mean 'useCallback'?
+components/query-builder/visual-query-workspace.tsx(370,25): error TS2322: Type 'TableSelection[]' is not assignable to type 'TableSchema[]'.
+  Property 'columns' is missing in type 'TableSelection' but required in type 'TableSchema'.
+components/query-history.tsx(6,23): error TS2724: '"lucide-react"' has no exported member named '_Trash2'. Did you mean 'Trash2'?
+components/query-optimizer/optimizer-panel.tsx(5,16): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/query-optimizer/optimizer-panel.tsx(6,29): error TS2724: '"lucide-react"' has no exported member named '_AlertTriangle'. Did you mean 'AlertTriangle'?
+components/query-results/connect-feed-dialog.tsx(10,32): error TS2724: '"lucide-react"' has no exported member named '_RefreshCw'. Did you mean 'RefreshCw'?
+components/query-results/spreadsheet-view.backup.tsx(48,39): error TS2322: Type '"exportFile"' is not assignable to type 'PredefinedMenuItemKey'.
+components/query-results/spreadsheet-view.tsx(48,39): error TS2322: Type '"exportFile"' is not assignable to type 'PredefinedMenuItemKey'.
+components/reports/report-schedule-card.tsx(30,3): error TS2724: '"lucide-react"' has no exported member named '_AlertCircle'. Did you mean 'AlertCircle'?
+components/reports/report-schedule-form.tsx(24,3): error TS2724: '"lucide-react"' has no exported member named '_Calendar'. Did you mean 'Calendar'?
+components/reports/report-schedule-form.tsx(33,3): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_ReportResourceType'. Did you mean 'ReportResourceType'?
+components/reports/report-schedule-form.tsx(34,3): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_ReportFormat'. Did you mean 'ReportFormat'?
+components/reports/report-schedule-form.tsx(40,3): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_SCHEDULE_TYPES'. Did you mean 'SCHEDULE_TYPES'?
+components/reports/report-schedule-form.tsx(41,3): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_DAYS_OF_WEEK'. Did you mean 'DAYS_OF_WEEK'?
+components/reports/schedule-picker.tsx(3,20): error TS2724: '"react"' has no exported member named '_useEffect'. Did you mean 'useEffect'?
+components/reports/schedule-picker.tsx(21,35): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_DayOfWeek'. Did you mean 'DayOfWeek'?
+components/resizable-client.tsx(4,10): error TS2724: '"react"' has no exported member named '_Suspense'. Did you mean 'Suspense'?
+components/results-panel.tsx(6,71): error TS2724: '"lucide-react"' has no exported member named '_Loader2'. Did you mean 'Loader2'?
+components/results-panel.tsx(17,10): error TS2724: '"@/components/catalog/status-badge"' has no exported member named '_StatusBadge'. Did you mean 'StatusBadge'?
+components/results-panel.tsx(62,3): error TS2339: Property '_certificationStatus' does not exist on type 'ResultsPanelProps'.
+components/results-panel.tsx(66,3): error TS2339: Property '_onPageSizeChange' does not exist on type 'ResultsPanelProps'.
+components/saved-queries-list.tsx(3,10): error TS2724: '"react"' has no exported member named '_useState'. Did you mean 'useState'?
+components/schema-browser.tsx(4,10): error TS2305: Module '"lucide-react"' has no exported member '_X'.
+components/schema-browser.tsx(27,3): error TS2339: Property '_onClose' does not exist on type 'SchemaBrowserProps'.
+components/security/policy-editor.tsx(13,19): error TS2724: '"lucide-react"' has no exported member named '_HelpCircle'. Did you mean 'HelpCircle'?
+components/semantic/ai-chat-interface.tsx(28,13): error TS2339: Property '_sendMessage' does not exist on type '{ sendMessage: UseMutateFunction<unknown, Error, void, unknown>; sendMessageAsync: UseMutateAsyncFunction<unknown, Error, void, unknown>; streamMessage: (data: ChatRequest) => Promise<...>; ... 4 more ...; error: Error | null; }'.
+components/semantic/ai-chat-interface.tsx(222,41): error TS7006: Parameter 'msg' implicitly has an 'any' type.
+components/semantic/ai-chat-interface.tsx(222,46): error TS7006: Parameter 'index' implicitly has an 'any' type.
+components/semantic/ai-chat-interface.tsx(288,70): error TS7006: Parameter 'm' implicitly has an 'any' type.
+components/semantic/ai-chat-interface.tsx(288,93): error TS2339: Property 'id' does not exist on type '{}'.
+components/semantic/ai-chat-interface.tsx(291,47): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/ai-chat-interface.tsx(292,49): error TS2339: Property 'createdAt' does not exist on type '{}'.
+components/semantic/ai-settings.tsx(18,61): error TS2724: '"lucide-react"' has no exported member named '_AlertTriangle'. Did you mean 'AlertTriangle'?
+components/semantic/column-display-settings.tsx(6,10): error TS2724: '"@/components/ui/label"' has no exported member named '_Label'. Did you mean 'Label'?
+components/semantic/column-display-settings.tsx(9,18): error TS2724: '"lucide-react"' has no exported member named '_Eye'. Did you mean 'Eye'?
+components/semantic/column-display-settings.tsx(9,24): error TS2724: '"lucide-react"' has no exported member named '_EyeOff'. Did you mean 'EyeOff'?
+components/semantic/column-display-settings.tsx(35,5): error TS2339: Property '_connectionId' does not exist on type 'ColumnDisplaySettingsProps'.
+components/semantic/create-calculated-field-dialog.tsx(49,5): error TS2339: Property '_connectionId' does not exist on type 'CreateCalculatedFieldDialogProps'.
+components/semantic/create-relationship-dialog.tsx(43,5): error TS2339: Property '_connectionId' does not exist on type 'CreateRelationshipDialogProps'.
+components/semantic/data-explainer.tsx(28,15): error TS2724: '"@/lib/types/semantic"' has no exported member named '_ExplainDataRequest'. Did you mean 'ExplainDataRequest'?
+components/semantic/data-explainer.tsx(56,21): error TS2345: Argument of type '{ type: "data" | "query" | "chart"; prompt: string; context: Record<string, any>; }' is not assignable to parameter of type 'void'.
+components/semantic/data-explainer.tsx(64,27): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(67,61): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(163,13): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/semantic/data-explainer.tsx(230,46): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(232,42): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(234,51): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(245,50): error TS2339: Property 'response' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(268,34): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/data-explainer.tsx(270,82): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/formula-autocomplete-dropdown.tsx(131,41): error TS2322: Type '(el: HTMLDivElement | null) => HTMLDivElement | null' is not assignable to type 'Ref<HTMLDivElement> | undefined'.
+  Type '(el: HTMLDivElement | null) => HTMLDivElement | null' is not assignable to type '(instance: HTMLDivElement | null) => void | (() => VoidOrUndefinedOnly)'.
+    Type 'HTMLDivElement | null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+      Type 'null' is not assignable to type 'void | (() => VoidOrUndefinedOnly)'.
+components/semantic/formula-editor-ai.tsx(10,5): error TS2724: '"@/components/ui/select"' has no exported member named '_Select'. Did you mean 'Select'?
+components/semantic/formula-editor-ai.tsx(11,5): error TS2724: '"@/components/ui/select"' has no exported member named '_SelectContent'. Did you mean 'SelectContent'?
+components/semantic/formula-editor-ai.tsx(12,5): error TS2724: '"@/components/ui/select"' has no exported member named '_SelectItem'. Did you mean 'SelectItem'?
+components/semantic/formula-editor-ai.tsx(13,5): error TS2724: '"@/components/ui/select"' has no exported member named '_SelectTrigger'. Did you mean 'SelectTrigger'?
+components/semantic/formula-editor-ai.tsx(14,5): error TS2724: '"@/components/ui/select"' has no exported member named '_SelectValue'. Did you mean 'SelectValue'?
+components/semantic/formula-editor-ai.tsx(64,25): error TS2345: Argument of type '{ description: string; availableColumns: string[]; }' is not assignable to parameter of type 'void'.
+components/semantic/formula-editor-ai.tsx(69,53): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(70,49): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(92,32): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(95,66): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(151,13): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/semantic/formula-editor-ai.tsx(254,47): error TS2339: Property 'isValid' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(272,51): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(274,47): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(276,56): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(287,50): error TS2339: Property 'isValid' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(293,51): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(315,39): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(317,87): error TS2339: Property 'error' does not exist on type '{}'.
+components/semantic/formula-editor-ai.tsx(322,39): error TS2339: Property 'isValid' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(18,20): error TS2724: '"lucide-react"' has no exported member named '_Play'. Did you mean 'Play'?
+components/semantic/formula-editor.tsx(22,10): error TS2724: '"react-syntax-highlighter/dist/esm/styles/prism"' has no exported member named '_oneDark'. Did you mean 'oneDark'?
+components/semantic/formula-editor.tsx(56,19): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(57,38): error TS2339: Property 'generatedFormula' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(67,25): error TS2345: Argument of type '{ prompt: string; dataSourceId: string | undefined; context: {}; }' is not assignable to parameter of type 'void'.
+components/semantic/formula-editor.tsx(218,25): error TS2322: Type 'unknown' is not assignable to type 'ReactNode'.
+components/semantic/formula-editor.tsx(289,39): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(291,47): error TS2339: Property 'tokensUsed' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(294,39): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(294,66): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/formula-editor.tsx(296,48): error TS2339: Property 'cost' does not exist on type '{}'.
+components/semantic/query-builder-ai.tsx(58,13): error TS2353: Object literal may only specify known properties, and 'prompt' does not exist in type 'SemanticQueryRequest'.
+components/semantic/query-builder-ai.tsx(62,49): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(63,45): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(68,30): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(71,64): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(81,30): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(84,77): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(193,45): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(211,49): error TS2339: Property 'tokensUsed' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(213,45): error TS2339: Property 'cost' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(215,54): error TS2339: Property 'cost' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(226,48): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(232,49): error TS2339: Property 'generatedSql' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(254,37): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(256,85): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder-ai.tsx(261,37): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+components/semantic/query-builder.tsx(34,13): error TS2339: Property 'mutate' does not exist on type '{ generateQuery: UseMutateFunction<SemanticQueryResponse, Error, SemanticQueryRequest, unknown>; generateQueryAsync: UseMutateAsyncFunction<...>; isGenerating: boolean; generatedQuery: SemanticQueryResponse | undefined; error: Error | null; }'.
+components/semantic/query-builder.tsx(34,36): error TS2339: Property 'isPending' does not exist on type '{ generateQuery: UseMutateFunction<SemanticQueryResponse, Error, SemanticQueryRequest, unknown>; generateQueryAsync: UseMutateAsyncFunction<...>; isGenerating: boolean; generatedQuery: SemanticQueryResponse | undefined; error: Error | null; }'.
+components/semantic/query-builder.tsx(34,47): error TS2339: Property 'data' does not exist on type '{ generateQuery: UseMutateFunction<SemanticQueryResponse, Error, SemanticQueryRequest, unknown>; generateQueryAsync: UseMutateAsyncFunction<...>; isGenerating: boolean; generatedQuery: SemanticQueryResponse | undefined; error: Error | null; }'.
+components/semantic/query-optimization-panel.tsx(20,15): error TS2724: '"@/lib/types/semantic"' has no exported member named '_QueryAnalysisResult'. Did you mean 'QueryAnalysisResult'?
+components/semantic/relationship-editor.tsx(26,5): error TS2724: '"lucide-react"' has no exported member named '_Plus'. Did you mean 'Plus'?
+components/semantic/relationship-editor.tsx(31,5): error TS2724: '"lucide-react"' has no exported member named '_Move'. Did you mean 'Move'?
+components/semantic/semantic-history.tsx(180,38): error TS7006: Parameter 'request' implicitly has an 'any' type.
+components/semantic/semantic-query-builder.tsx(14,29): error TS2724: '"@/hooks/use-semantic-layer"' has no exported member named '_useSemanticMetrics'. Did you mean 'useSemanticMetrics'?
+components/settings/developer-settings.tsx(10,10): error TS2724: '"@/components/ui/badge"' has no exported member named '_Badge'. Did you mean 'Badge'?
+components/share/embed-dialog.tsx(17,3): error TS2724: '"lucide-react"' has no exported member named '_RefreshCw'. Did you mean 'RefreshCw'?
+components/share/share-dialog.tsx(4,79): error TS2724: '"@/components/ui/dialog"' has no exported member named '_DialogFooter'. Did you mean 'DialogFooter'?
+components/share/share-resource-dialog.tsx(7,3): error TS2724: '"lucide-react"' has no exported member named '_Copy'. Did you mean 'Copy'?
+components/share/share-resource-dialog.tsx(9,3): error TS2305: Module '"lucide-react"' has no exported member '_X'.
+components/share/share-resource-dialog.tsx(50,3): error TS2724: '"@/lib/api/shares"' has no exported member named '_updateShare'. Did you mean 'updateShare'?
+components/table-visualization.tsx(6,10): error TS2724: '"lucide-react"' has no exported member named '_ArrowUp'. Did you mean 'ArrowUp'?
+components/table-visualization.tsx(6,20): error TS2724: '"lucide-react"' has no exported member named '_ArrowDown'. Did you mean 'ArrowDown'?
+components/table-visualization.tsx(6,32): error TS2724: '"lucide-react"' has no exported member named '_Minus'. Did you mean 'Minus'?
+components/theme/theme-provider.tsx(6,10): error TS2724: '"@/lib/utils"' has no exported member named '_fetchWithAuth'. Did you mean 'fetchWithAuth'?
+components/theme/theme-provider.tsx(41,13): error TS2339: Property '_setTheme' does not exist on type 'UseThemeProps'.
+components/ui/button.test.tsx(4,1): error TS2582: Cannot find name 'describe'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(5,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(8,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(9,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(10,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(13,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(16,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(17,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(20,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(23,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(24,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(27,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(30,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(33,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(36,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(37,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(40,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(42,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(45,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(48,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(51,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(52,25): error TS2304: Cannot find name 'vi'.
+components/ui/button.test.tsx(56,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(59,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(66,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(67,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(68,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(71,3): error TS2582: Cannot find name 'it'. Do you need to install type definitions for a test runner? Try `npm i --save-dev @types/jest` or `npm i --save-dev @types/mocha`.
+components/ui/button.test.tsx(74,5): error TS2304: Cannot find name 'expect'.
+components/ui/button.test.tsx(75,5): error TS2304: Cannot find name 'expect'.
+components/ui/use-toast.ts(32,26): error TS2552: Cannot find name 'actionTypes'. Did you mean '_actionTypes'?
+components/ui/use-toast.ts(74,56): error TS2366: Function lacks ending return statement and return type does not include 'undefined'.
+components/ui/use-toast.ts(79,25): error TS2339: Property 'toast' does not exist on type 'Action'.
+  Property 'toast' does not exist on type '{ type: any; toastId?: string | undefined; }'.
+components/ui/use-toast.ts(86,27): error TS2339: Property 'toast' does not exist on type 'Action'.
+  Property 'toast' does not exist on type '{ type: any; toastId?: string | undefined; }'.
+components/ui/use-toast.ts(86,56): error TS2339: Property 'toast' does not exist on type 'Action'.
+  Property 'toast' does not exist on type '{ type: any; toastId?: string | undefined; }'.
+components/ui/use-toast.ts(91,15): error TS2339: Property 'toastId' does not exist on type 'Action'.
+components/ui/use-toast.ts(116,18): error TS2339: Property 'toastId' does not exist on type 'Action'.
+  Property 'toastId' does not exist on type '{ type: any; toast: ToasterToast; }'.
+components/ui/use-toast.ts(124,60): error TS2339: Property 'toastId' does not exist on type 'Action'.
+  Property 'toastId' does not exist on type '{ type: any; toast: ToasterToast; }'.
+components/ui/video-player.tsx(9,43): error TS2339: Property '_poster' does not exist on type 'VideoPlayerProps'.
+components/version-control/version-card.tsx(12,3): error TS2724: '"lucide-react"' has no exported member named '_User'. Did you mean 'User'?
+components/version-control/version-diff.tsx(26,10): error TS2305: Module '"@/lib/utils"' has no exported member '_Utils'.
+components/version-control/version-diff.tsx(33,3): error TS2724: '"@/types/versions"' has no exported member named '_VersionCard'. Did you mean 'VersionCard'?
+components/version-control/version-history.tsx(4,10): error TS2724: '"date-fns"' has no exported member named '_format'. Did you mean 'format'?
+components/version-control/version-history.tsx(5,25): error TS7016: Could not find a declaration file for module 'lodash'. 'E:/antigraviti google/inside engine/insight-engine-ai-ui/frontend/node_modules/lodash/lodash.js' implicitly has an 'any' type.
+  Try `npm i --save-dev @types/lodash` if it exists or add a new declaration (.d.ts) file containing `declare module 'lodash';`
+components/version-control/version-history.tsx(8,3): error TS2305: Module '"lucide-react"' has no exported member '_X'.
+components/version-control/version-history.tsx(37,3): error TS2305: Module '"@/lib/api/versions"' has no exported member 'MAX_COMPARE_VERSIONS'.
+components/version-control/version-history.tsx(112,46): error TS7006: Parameter 'version' implicitly has an 'any' type.
+components/version-control/version-restore-dialog.tsx(8,3): error TS2305: Module '"lucide-react"' has no exported member '_X'.
+components/version-control/version-restore-dialog.tsx(25,10): error TS2724: '"@/components/ui/scroll-area"' has no exported member named '_ScrollArea'. Did you mean 'ScrollArea'?
+components/visual-query/ColumnSelector.tsx(4,10): error TS2724: '"lucide-react"' has no exported member named '_Check'. Did you mean 'Check'?
+components/visual-query/FilterBuilder.tsx(15,10): error TS2724: '"@/components/ui/card"' has no exported member named '_Card'. Did you mean 'Card'?
+components/visual-query/FilterBuilder.tsx(15,17): error TS2724: '"@/components/ui/card"' has no exported member named '_CardContent'. Did you mean 'CardContent'?
+components/visual-query/TableSelector.tsx(44,34): error TS2339: Property 'tables' does not exist on type 'ConnectionSchema'.
+components/visualizations/anomaly-chart.tsx(4,69): error TS2724: '"recharts"' has no exported member named '_Tooltip'. Did you mean 'Tooltip'?
+components/visualizations/anomaly-chart.tsx(4,79): error TS2724: '"recharts"' has no exported member named '_Legend'. Did you mean 'Legend'?
+components/visualizations/anomaly-chart.tsx(13,5): error TS2724: '"@/components/ui/chart"' has no exported member named '_ChartTooltipContent'. Did you mean 'ChartTooltipContent'?
+components/visualizations/anomaly-chart.tsx(79,50): error TS2339: Property '_label' does not exist on type 'Props<ValueType, NameType> & { accessibilityLayer?: boolean | undefined; active?: boolean | undefined; includeHidden?: boolean | undefined; allowEscapeViewBox?: AllowInDimension | undefined; ... 16 more ...; wrapperStyle?: CSSProperties | undefined; }'.
+components/visualizations/bullet-chart.tsx(40,5): error TS2339: Property '_height' does not exist on type 'BulletChartProps'.
+components/visualizations/chart-formatting.tsx(17,5): error TS2724: '"@/lib/chart-palettes"' has no exported member named '_ALL_PALETTES'. Did you mean 'ALL_PALETTES'?
+components/visualizations/chart-formatting.tsx(20,10): error TS2724: '"@/lib/chart-palettes"' has no exported member named '_ColorPalette'. Did you mean 'ColorPalette'?
+components/visualizations/chart-formatting.tsx(24,5): error TS2724: '"@/lib/chart-templates"' has no exported member named '_ALL_CHART_TEMPLATES'. Did you mean 'ALL_CHART_TEMPLATES'?
+components/visualizations/chart-formatting.tsx(26,5): error TS2724: '"@/lib/chart-templates"' has no exported member named '_getTemplateById'. Did you mean 'getTemplateById'?
+components/visualizations/chart-formatting.tsx(118,5): error TS2339: Property '_chartType' does not exist on type 'ChartFormattingProps'.
+components/visualizations/choropleth-map.tsx(13,5): error TS2724: '"./map-utils"' has no exported member named '_bboxToBounds'. Did you mean 'bboxToBounds'?
+components/visualizations/choropleth-map.tsx(18,5): error TS2724: '"./map-utils"' has no exported member named '_DEFAULT_COLOR_SCALES'. Did you mean 'DEFAULT_COLOR_SCALES'?
+components/visualizations/choropleth-map.tsx(273,29): error TS2769: No overload matches this call.
+  Overload 1 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>, context?: any): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type 'GeoJSONFeatureCollection' is not assignable to type 'GeoJsonObject'.
+      Types of property 'bbox' are incompatible.
+        Type 'number[] | undefined' is not assignable to type 'BBox | undefined'.
+          Type 'number[]' is not assignable to type 'BBox | undefined'.
+            Type 'number[]' is not assignable to type '[number, number, number, number] | [number, number, number, number, number, number]'.
+              Type 'number[]' is not assignable to type '[number, number, number, number, number, number]'.
+                Target requires 6 element(s) but source may have fewer.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type 'GeoJSONFeatureCollection' is not assignable to type 'GeoJsonObject'.
+      Types of property 'bbox' are incompatible.
+        Type 'number[] | undefined' is not assignable to type 'BBox | undefined'.
+          Type 'number[]' is not assignable to type 'BBox | undefined'.
+            Type 'number[]' is not assignable to type '[number, number, number, number] | [number, number, number, number, number, number]'.
+              Type 'number[]' is not assignable to type '[number, number, number, number, number, number]'.
+                Target requires 6 element(s) but source may have fewer.
+components/visualizations/choropleth-map.tsx(300,18): error TS2769: No overload matches this call.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type 'GeoJSONFeatureCollection' is not assignable to type 'GeoJsonObject'.
+      Types of property 'bbox' are incompatible.
+        Type 'number[] | undefined' is not assignable to type 'BBox | undefined'.
+          Type 'number[]' is not assignable to type 'BBox | undefined'.
+            Type 'number[]' is not assignable to type '[number, number, number, number] | [number, number, number, number, number, number]'.
+              Type 'number[]' is not assignable to type '[number, number, number, number, number, number]'.
+                Target requires 6 element(s) but source may have fewer.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type '(feature: GeoJSONFeature) => { fillColor: string; fillOpacity: number; color: string; weight: number; opacity: number; }' is not assignable to type 'PathOptions | StyleFunction<any> | undefined'.
+      Type '(feature: GeoJSONFeature) => { fillColor: string; fillOpacity: number; color: string; weight: number; opacity: number; }' is not assignable to type 'StyleFunction<any>'.
+        Types of parameters 'feature' and 'feature' are incompatible.
+          Type 'Feature<Geometry, any> | undefined' is not assignable to type 'GeoJSONFeature'.
+            Type 'undefined' is not assignable to type 'GeoJSONFeature'.
+  Overload 2 of 2, '(props: GeoJSONProps & RefAttributes<GeoJSON<any, Geometry>>): string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<...>> | ... 4 more ... | undefined', gave the following error.
+    Type '(feature: GeoJSONFeature, layer: any) => void' is not assignable to type '(feature: Feature<Geometry, any>, layer: Layer) => void'.
+      Types of parameters 'feature' and 'feature' are incompatible.
+        Type 'Feature<Geometry, any>' is not assignable to type 'GeoJSONFeature'.
+          Types of property 'geometry' are incompatible.
+            Type 'Geometry' is not assignable to type '{ type: string; coordinates: any; }'.
+              Property 'coordinates' is missing in type 'GeometryCollection<Geometry>' but required in type '{ type: string; coordinates: any; }'.
+components/visualizations/diverging-bar-chart.tsx(33,5): error TS2339: Property '_baselineLabel' does not exist on type 'DivergingBarChartProps'.
+components/visualizations/donut-chart.tsx(85,29): error TS2322: Type '({ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; } | { type: "text"; left: string; top: string; style: { text: string; fontSize: number; fill: string; textAlign: "center"; }; })[] | undefined' is not assignable to type 'GraphicComponentLooseOption | GraphicComponentLooseOption[] | undefined'.
+  Type '({ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; } | { type: "text"; left: string; top: string; style: { text: string; fontSize: number; fill: string; textAlign: "center"; }; })[]' is not assignable to type 'GraphicComponentLooseOption | GraphicComponentLooseOption[] | undefined'.
+    Type '({ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; } | { type: "text"; left: string; top: string; style: { text: string; fontSize: number; fill: string; textAlign: "center"; }; })[]' is not assignable to type 'GraphicComponentLooseOption[]'.
+      Type '{ type: "text"; left: string; top: string; style: { text: string; fontSize: number; fontWeight: "bold"; fill: string; textAlign: "center"; }; }' is not assignable to type 'GraphicComponentLooseOption'.
+        Types of property 'style' are incompatible.
+          Object literal may only specify known properties, and 'textAlign' does not exist in type '(PathStyleProps & TransitionOptionMixin<PathStyleProps>) | (TextStyleProps & TransitionOptionMixin<TextStyleProps>)'.
+components/visualizations/forecast-chart.tsx(44,15): error TS7034: Variable 'combined' implicitly has type 'any[]' in some locations where its type cannot be determined.
+components/visualizations/forecast-chart.tsx(80,16): error TS7005: Variable 'combined' implicitly has an 'any[]' type.
+components/visualizations/gantt-chart.tsx(37,5): error TS2339: Property '_showDependencies' does not exist on type 'GanttChartProps'.
+components/visualizations/gantt-chart.tsx(38,5): error TS2339: Property '_showMilestones' does not exist on type 'GanttChartProps'.
+components/visualizations/map-config.tsx(7,18): error TS2724: '"lucide-react"' has no exported member named '_MapPin'. Did you mean 'MapPin'?
+components/visualizations/map-config.tsx(7,27): error TS2724: '"lucide-react"' has no exported member named '_Layers'. Did you mean 'Layers'?
+components/visualizations/map-config.tsx(7,36): error TS2724: '"lucide-react"' has no exported member named '_Palette'. Did you mean 'Palette'?
+components/visualizations/map-config.tsx(7,56): error TS2724: '"lucide-react"' has no exported member named '_FileJson'. Did you mean 'FileJson'?
+components/visualizations/map-config.tsx(7,67): error TS2724: '"lucide-react"' has no exported member named '_Trash2'. Did you mean 'Trash2'?
+components/visualizations/map-config.tsx(8,10): error TS2724: '"@/components/ui/button"' has no exported member named '_Button'. Did you mean 'Button'?
+components/visualizations/map-config.tsx(18,31): error TS2724: '"./map-types"' has no exported member named '_GeoJSONFile'. Did you mean 'GeoJSONFile'?
+components/visualizations/map-utils.ts(126,35): error TS2339: Property '_steps' does not exist on type 'ColorScale'.
+components/visualizations/mekko-chart.tsx(4,10): error TS2724: '"./echarts-wrapper"' has no exported member named '_EChartsWrapper'. Did you mean 'EChartsWrapper'?
+components/visualizations/mekko-chart.tsx(5,15): error TS2724: '"echarts"' has no exported member named '_EChartsOption'. Did you mean 'EChartsOption'?
+components/visualizations/mekko-chart.tsx(35,13): error TS2339: Property '_seriesData' does not exist on type '{ seriesData: any[]; segmentNames: string[]; }'.
+components/visualizations/parallel-coordinates.tsx(43,5): error TS2339: Property '_onLineSelect' does not exist on type 'ParallelCoordinatesProps'.
+components/visualizations/sankey-chart.tsx(78,21): error TS2322: Type '{ type: "sankey"; layout: string; layoutIterations: number; orient: "horizontal" | "vertical"; emphasis: { focus: "adjacency"; }; nodeWidth: number; nodeGap: number; data: { name: string; value: number | undefined; itemStyle: { ...; } | undefined; label: { ...; } | undefined; }[]; links: { ...; }[]; lineStyle: { ......' is not assignable to type 'SeriesOption | SeriesOption[] | undefined'.
+  Type '{ type: "sankey"; layout: string; layoutIterations: number; orient: "horizontal" | "vertical"; emphasis: { focus: "adjacency"; }; nodeWidth: number; nodeGap: number; data: { name: string; value: number | undefined; itemStyle: { ...; } | undefined; label: { ...; } | undefined; }[]; links: { ...; }[]; lineStyle: { ......' is not assignable to type 'MapSeriesOption$1 | CustomSeriesOption | LineSeriesOption$1 | BarSeriesOption | PieSeriesOption$1 | ... 18 more ... | SeriesOption[]'.
+    Type '{ type: "sankey"; layout: string; layoutIterations: number; orient: "horizontal" | "vertical"; emphasis: { focus: "adjacency"; }; nodeWidth: number; nodeGap: number; data: { name: string; value: number | undefined; itemStyle: { ...; } | undefined; label: { ...; } | undefined; }[]; links: { ...; }[]; lineStyle: { ......' is not assignable to type 'SeriesOption[]'.
+      Object literal may only specify known properties, and 'layout' does not exist in type 'SankeySeriesOption$1'.
+components/visualizations/small-multiples.tsx(18,29): error TS2339: Property '_xAxis' does not exist on type 'VisualizationConfig'.
+components/visualizations/small-multiples.tsx(18,37): error TS2339: Property '_yAxis' does not exist on type 'VisualizationConfig'.
+components/visualizations/small-multiples.tsx(59,25): error TS2353: Object literal may only specify known properties, and 'showLegend' does not exist in type 'VisualizationConfig'.
+components/visualizations/stream-graph.tsx(38,5): error TS2339: Property '_smooth' does not exist on type 'StreamGraphProps'.
+components/visualizations/stream-graph.tsx(80,9): error TS2322: Type '{ type: "themeRiver"; data: (string | number)[][]; emphasis: { itemStyle: { shadowBlur: number; shadowColor: string; }; }; label: { show: true; fontSize: number; color: string; }; itemStyle: { borderWidth: number; }; color: string[]; }[]' is not assignable to type 'SeriesOption | SeriesOption[] | undefined'.
+  Type '{ type: "themeRiver"; data: (string | number)[][]; emphasis: { itemStyle: { shadowBlur: number; shadowColor: string; }; }; label: { show: true; fontSize: number; color: string; }; itemStyle: { borderWidth: number; }; color: string[]; }[]' is not assignable to type 'MapSeriesOption$1 | CustomSeriesOption | LineSeriesOption$1 | BarSeriesOption | PieSeriesOption$1 | ... 18 more ... | SeriesOption[]'.
+    Type '{ type: "themeRiver"; data: (string | number)[][]; emphasis: { itemStyle: { shadowBlur: number; shadowColor: string; }; }; label: { show: true; fontSize: number; color: string; }; itemStyle: { borderWidth: number; }; color: string[]; }' is not assignable to type 'SeriesOption'.
+      Types of property 'data' are incompatible.
+        Type '(string | number)[][]' is not assignable to type 'ThemerRiverDataItem[]'.
+          Type '(string | number)[]' is not assignable to type 'ThemerRiverDataItem'.
+            Target requires 3 element(s) but source may have fewer.
+components/visualizations/treemap-enhanced.tsx(76,21): error TS2322: Type '{ type: "treemap"; data: { itemStyle: { color?: string | undefined; borderColor?: string | undefined; }; name: string; value: number; children?: TreemapEnhancedNode[] | undefined; }[]; ... 8 more ...; levels: ({ ...; } | { ...; })[]; }[]' is not assignable to type 'SeriesOption | SeriesOption[] | undefined'.
+  Type '{ type: "treemap"; data: { itemStyle: { color?: string | undefined; borderColor?: string | undefined; }; name: string; value: number; children?: TreemapEnhancedNode[] | undefined; }[]; ... 8 more ...; levels: ({ ...; } | { ...; })[]; }[]' is not assignable to type 'MapSeriesOption$1 | CustomSeriesOption | LineSeriesOption$1 | BarSeriesOption | PieSeriesOption$1 | ... 18 more ... | SeriesOption[]'.
+    Type '{ type: "treemap"; data: { itemStyle: { color?: string; borderColor?: string; }; name: string; value: number; children?: TreemapEnhancedNode[]; }[]; leafDepth: number; roam: false; nodeClick: "zoomToNode"; ... 5 more ...; levels: ({ ...; } | { ...; })[]; }' is not assignable to type 'SeriesOption'.
+      Types of property 'breadcrumb' are incompatible.
+        Object literal may only specify known properties, and 'textStyle' does not exist in type 'BoxLayoutOptionMixin & { show?: boolean | undefined; height?: number | undefined; emptyItemWidth?: number | undefined; itemStyle?: BreadcrumbItemStyleOption | undefined; emphasis?: { ...; } | undefined; }'.
+components/visualizations/waterfall-chart.tsx(36,5): error TS2339: Property '_showConnectors' does not exist on type 'WaterfallChartProps'.
+contexts/workspace-context.tsx(55,29): error TS2345: Argument of type 'Workspace' is not assignable to parameter of type 'SetStateAction<Workspace | null>'.
+  Type 'Workspace' is missing the following properties from type 'Workspace': slug, plan, role
+contexts/workspace-context.tsx(65,31): error TS2345: Argument of type 'Workspace' is not assignable to parameter of type 'SetStateAction<Workspace | null>'.
+  Type 'Workspace' is missing the following properties from type 'Workspace': slug, plan, role
+hooks/use-analyze-query.ts(7,52): error TS2339: Property 'analyzeQuery' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-estimate-cost.ts(25,25): error TS2339: Property 'estimateCost' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-estimate-cost.ts(32,25): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<EstimateCostResponse | null>'.
+hooks/use-formula-autocomplete.ts(17,25): error TS2339: Property 'formulaAutocomplete' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-formula-autocomplete.ts(23,28): error TS2345: Argument of type 'unknown' is not assignable to parameter of type 'SetStateAction<AutocompleteResponse | null>'.
+hooks/use-scheduler.ts(96,34): error TS2339: Property 'pauseJob' does not exist on type '{ listJobs: () => Promise<SchedulerJob[]>; createJob: (job: CreateSchedulerJobInput) => Promise<SchedulerJob>; updateJob: (id: string, job: UpdateSchedulerJobInput) => Promise<...>; deleteJob: (id: string) => Promise<...>; triggerJob: (id: string) => Promise<...>; getJobHistory: (id: string) => Promise<...>; }'.
+hooks/use-scheduler.ts(104,35): error TS2367: This comparison appears to be unintentional because the types 'string' and 'void' have no overlap.
+hooks/use-scheduler.ts(125,34): error TS2339: Property 'resumeJob' does not exist on type '{ listJobs: () => Promise<SchedulerJob[]>; createJob: (job: CreateSchedulerJobInput) => Promise<SchedulerJob>; updateJob: (id: string, job: UpdateSchedulerJobInput) => Promise<...>; deleteJob: (id: string) => Promise<...>; triggerJob: (id: string) => Promise<...>; getJobHistory: (id: string) => Promise<...>; }'.
+hooks/use-scheduler.ts(133,35): error TS2367: This comparison appears to be unintentional because the types 'string' and 'void' have no overlap.
+hooks/use-scheduler.ts(187,37): error TS2339: Property 'getJob' does not exist on type '{ listJobs: () => Promise<SchedulerJob[]>; createJob: (job: CreateSchedulerJobInput) => Promise<SchedulerJob>; updateJob: (id: string, job: UpdateSchedulerJobInput) => Promise<...>; deleteJob: (id: string) => Promise<...>; triggerJob: (id: string) => Promise<...>; getJobHistory: (id: string) => Promise<...>; }'.
+hooks/use-semantic.ts(21,33): error TS2339: Property 'explainData' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(26,17): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(28,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(60,23): error TS2339: Property 'isValid' does not exist on type 'SemanticQueryResponse'.
+hooks/use-semantic.ts(60,39): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+hooks/use-semantic.ts(62,39): error TS2339: Property 'error' does not exist on type 'SemanticQueryResponse'.
+hooks/use-semantic.ts(89,33): error TS2339: Property 'generateFormula' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(94,18): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(94,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(96,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(125,33): error TS2339: Property 'chat' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(130,17): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(132,57): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(136,17): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(138,34): error TS18046: 'data' is of type 'unknown'.
+hooks/use-semantic.ts(155,31): error TS2339: Property 'chatStream' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(155,49): error TS7006: Parameter 'chunk' implicitly has an 'any' type.
+hooks/use-semantic.ts(200,36): error TS2339: Property 'getRequests' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(213,36): error TS2339: Property 'getRequest' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(227,25): error TS2339: Property 'getRequests' does not exist on type '{ getModels: () => Promise<SemanticModel[]>; getModel: (id: string) => Promise<SemanticModel>; createModel: (data: CreateSemanticModelRequest) => Promise<...>; updateModel: (id: string, data: CreateSemanticModelRequest) => Promise<...>; deleteModel: (id: string) => Promise<...>; getMetrics: (modelId?: string | undef...'.
+hooks/use-semantic.ts(233,38): error TS7006: Parameter 'req' implicitly has an 'any' type.
+lib/ai/providers/base-provider.ts(1,24): error TS2724: '"../registry"' has no exported member named '_AIProvider'. Did you mean 'AIProvider'?
+lib/api/ai-usage.ts(3,5): error TS2724: '"@/lib/types/ai-usage"' has no exported member named '_AIUsageRequest'. Did you mean 'AIUsageRequest'?
+lib/api/auth.ts(47,17): error TS2339: Property '_confirmPassword' does not exist on type '{ password: string; email: string; username: string; confirmPassword: string; agreeTerms: boolean; fullName?: string | undefined; }'.
+lib/api/auth.ts(47,35): error TS2339: Property '_agreeTerms' does not exist on type '{ password: string; email: string; username: string; confirmPassword: string; agreeTerms: boolean; fullName?: string | undefined; }'.
+lib/api/comments.ts(5,5): error TS2724: '"@/types/comments"' has no exported member named '_ResolveCommentRequest'. Did you mean 'ResolveCommentRequest'?
+lib/api/index.ts(1,10): error TS2724: '"sonner"' has no exported member named '_toast'. Did you mean 'toast'?
+lib/api/presentation.ts(2,10): error TS2724: '"@/types/presentation"' has no exported member named '_SlideDeck'. Did you mean 'SlideDeck'?
+lib/api/presentation.ts(3,10): error TS2724: '"@/lib/api"' has no exported member named '_api'. Did you mean 'api'?
+lib/api/scheduled-reports.ts(4,5): error TS2724: '"@/types/scheduled-reports"' has no exported member named '_ScheduledReportRun'. Did you mean 'ScheduledReportRun'?
+lib/api/shares.ts(13,5): error TS2724: '"@/types/share"' has no exported member named '_ShareWithDetails'. Did you mean 'ShareWithDetails'?
+lib/api/versions.ts(21,3): error TS2724: '"@/types/versions"' has no exported member named '_CompareVersionsRequest'. Did you mean 'CompareVersionsRequest'?
+lib/chart-templates.ts(5,10): error TS2724: '"./chart-palettes"' has no exported member named '_getPaletteById'. Did you mean 'getPaletteById'?
+lib/connectors/bigquery-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/connection-pool.ts(77,42): error TS2339: Property 'disconnect' does not exist on type 'BaseConnector'.
+lib/connectors/connection-pool.ts(96,34): error TS2339: Property 'disconnect' does not exist on type 'BaseConnector'.
+lib/connectors/csv-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/databricks-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/excel-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/graphql-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/hubspot-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/json-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/mysql-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/parquet-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/redshift-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/rest-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/salesforce-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/connectors/snowflake-connector.ts(1,25): error TS2724: '"./base-connector"' has no exported member named '_ConnectionConfig'. Did you mean 'ConnectionConfig'?
+lib/db-connectors/base-connector.ts(1,27): error TS2724: '"@/lib/services/connection-service"' has no exported member named '_ColumnInfo'. Did you mean 'ColumnInfo'?
+lib/db-connectors/live-query-runner.ts(1,10): error TS2724: '"pg"' has no exported member named '_Client'. Did you mean 'Client'?
+lib/queue/reporting-worker.ts(23,32): error TS2339: Property 'reportSchedule' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/queue/reporting-worker.ts(50,54): error TS2322: Type '"new"' is not assignable to type 'boolean | "shell" | undefined'.
+lib/queue/reporting-worker.ts(80,22): error TS2339: Property 'reportSchedule' does not exist on type 'PrismaClient<PrismaClientOptions, never, DefaultArgs>'.
+lib/repositories/dashboard-repo.ts(61,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/repositories/dashboard-repo.ts(76,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/repositories/settings-repo.ts(8,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/repositories/settings-repo.ts(24,13): error TS2578: Unused '@ts-expect-error' directive.
+lib/security/rls.ts(3,10): error TS2724: '"@/lib/sql-utils"' has no exported member named '_applyFiltersToSql'. Did you mean 'applyFiltersToSql'?
+lib/services/agent-service.ts(6,10): error TS2724: '"@prisma/client"' has no exported member named '_Agent'. Did you mean 'Agent'?
+lib/services/aggregation-service.ts(4,10): error TS2724: '"@/lib/sql-utils"' has no exported member named '_replaceQueryVariables'. Did you mean 'replaceQueryVariables'?
+lib/services/audit-service.ts(2,10): error TS2724: '"pg"' has no exported member named '_Client'. Did you mean 'Client'?
+lib/services/audit-service.ts(3,10): error TS2724: '"@/lib/services/connection-service"' has no exported member named '_connectionService'. Did you mean 'connectionService'?
+lib/services/dashboard-service.ts(1,46): error TS2724: '"@/lib/types"' has no exported member named '_VisualizationConfig'. Did you mean 'VisualizationConfig'?
+lib/services/ingestion-service.ts(3,10): error TS2305: Module '"@/lib/db"' has no exported member '_db'.
+lib/services/insights-service.ts(1,10): error TS2305: Module '"@/lib/db"' has no exported member '_db'.
+lib/services/metric-service.ts(2,23): error TS2724: '"@prisma/client"' has no exported member named '_Dimension'. Did you mean 'Dimension'?
+lib/websocket-context.tsx(6,5): error TS2724: '"@/lib/types/notifications"' has no exported member named '_NotificationWebSocketPayload'. Did you mean 'NotificationWebSocketPayload'?
+lib/websocket-context.tsx(7,5): error TS2724: '"@/lib/types/notifications"' has no exported member named '_ActivityWebSocketPayload'. Did you mean 'ActivityWebSocketPayload'?
+lib/websocket-context.tsx(8,5): error TS2724: '"@/lib/types/notifications"' has no exported member named '_SystemWebSocketPayload'. Did you mean 'SystemWebSocketPayload'?
+types/scheduled-reports.ts(151,18): error TS2430: Interface 'ScheduledReportResponse' incorrectly extends interface 'ScheduledReport'.
+  Types of property 'recipients' are incompatible.
+    Type 'RecipientResponse[]' is not assignable to type 'ScheduledReportRecipient[]'.
+      Type 'RecipientResponse' is missing the following properties from type 'ScheduledReportRecipient': reportId, createdAt
+vitest.setup.ts(4,1): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(6,15): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(7,18): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(8,19): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(9,15): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(10,18): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(11,18): error TS2304: Cannot find name 'vi'.
+vitest.setup.ts(19,1): error TS2304: Cannot find name 'vi'.

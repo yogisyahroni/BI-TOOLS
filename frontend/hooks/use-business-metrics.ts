@@ -1,80 +1,77 @@
-'use client';
+"use client";
 
-import { useState, useCallback, useEffect } from 'react';
-import { type BusinessMetric } from '@/lib/types';
-import { fetchWithAuth } from '@/lib/utils';
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { type BusinessMetric } from "@/lib/types";
+import { fetchWithAuth } from "@/lib/utils";
 
 interface UseBusinessMetricsOptions {
-    status?: string;
-    autoFetch?: boolean;
+  status?: string;
+  autoFetch?: boolean;
 }
 
 export function useBusinessMetrics(options: UseBusinessMetricsOptions = {}) {
-    const [metrics, setMetrics] = useState<BusinessMetric[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<string | null>(null);
+  const queryClient = useQueryClient();
 
-    const fetchMetrics = useCallback(async () => {
-        setIsLoading(true);
-        setError(null);
+  const {
+    data: metrics = [],
+    isLoading,
+    error: queryError,
+    refetch,
+  } = useQuery({
+    queryKey: ["metrics", options.status],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (options.status) params.append("status", options.status);
 
-        try {
-            const params = new URLSearchParams();
-            if (options.status) params.append('status', options.status);
+      const response = await fetchWithAuth(`/api/go/metrics?${params.toString()}`);
 
-            const response = await fetchWithAuth(`/api/go/metrics?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch metrics: ${response.status}`);
+      }
 
-            if (!response.ok) {
-                throw new Error(`Failed to fetch metrics: ${response.status}`);
-            }
+      const data = (await response.json()) as { success: boolean; data: BusinessMetric[] };
 
-            const data = (await response.json()) as { success: boolean; data: BusinessMetric[] };
+      if (!data.success) {
+        throw new Error("Failed to fetch metrics");
+      }
+      return data.data;
+    },
+    enabled: options.autoFetch !== false,
+  });
 
-            if (data.success) {
-                setMetrics(data.data);
-            } else {
-                throw new Error('Failed to fetch metrics');
-            }
-        } catch (err) {
-            const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-            setError(errorMessage);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [options.status]);
+  const createMutation = useMutation({
+    mutationFn: async (metric: Omit<BusinessMetric, "id" | "createdAt" | "updatedAt">) => {
+      const response = await fetchWithAuth("/api/go/metrics", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(metric),
+      });
 
-    const saveMetric = useCallback(async (metric: Omit<BusinessMetric, 'id' | 'createdAt' | 'updatedAt'>) => {
-        try {
-            const response = await fetchWithAuth('/api/go/metrics', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(metric),
-            });
+      if (!response.ok) throw new Error("Failed to save metric");
 
-            if (!response.ok) throw new Error('Failed to save metric');
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error || "Failed to save metric");
+      return data.data as BusinessMetric;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["metrics"] });
+    },
+  });
 
-            const data = await response.json();
-            if (data.success) {
-                setMetrics(prev => [data.data, ...prev]);
-                return { success: true, data: data.data };
-            }
-            throw new Error(data.error || 'Failed to save metric');
-        } catch (err) {
-            return { success: false, error: err instanceof Error ? err.message : 'Unknown error' };
-        }
-    }, []);
+  const saveMetric = async (metric: Omit<BusinessMetric, "id" | "createdAt" | "updatedAt">) => {
+    try {
+      const data = await createMutation.mutateAsync(metric);
+      return { success: true, data };
+    } catch (err) {
+      return { success: false, error: err instanceof Error ? err.message : "Unknown error" };
+    }
+  };
 
-    useEffect(() => {
-        if (options.autoFetch !== false) {
-            fetchMetrics();
-        }
-    }, [fetchMetrics, options.autoFetch]);
-
-    return {
-        metrics,
-        isLoading,
-        error,
-        fetchMetrics,
-        saveMetric
-    };
+  return {
+    metrics,
+    isLoading,
+    error: queryError ? queryError.message : null,
+    fetchMetrics: refetch,
+    saveMetric,
+  };
 }

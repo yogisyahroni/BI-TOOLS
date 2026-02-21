@@ -1,29 +1,44 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Badge } from '@/components/ui/badge';
-import { Download, Copy, ChevronUp, ChevronDown, ArrowUpDown, Search, _Loader2, LayoutGrid, Table as TableIcon, Grid3X3 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
-import { AddToDashboardDialog } from '@/components/dashboard/add-to-dashboard-dialog';
-import { type VisualizationConfig } from '@/lib/types';
-import dynamic from 'next/dynamic';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { ConnectFeedDialog } from '@/components/query-results/connect-feed-dialog';
-import { Plug } from 'lucide-react';
+import { useState, useMemo } from "react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import {
+  Download,
+  Copy,
+  ChevronUp,
+  ChevronDown,
+  ArrowUpDown,
+  Search,
+  Loader2,
+  LayoutGrid,
+  Table as TableIcon,
+  Grid3X3,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
+import { AddToDashboardDialog } from "@/components/dashboard/add-to-dashboard-dialog";
+import { type VisualizationConfig } from "@/lib/types";
+import dynamic from "next/dynamic";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ConnectFeedDialog } from "@/components/query-results/connect-feed-dialog";
+import { Plug } from "lucide-react";
 
-import { _StatusBadge } from '@/components/catalog/status-badge';
+import { StatusBadge } from "@/components/catalog/status-badge";
 
-const SpreadsheetView = dynamic(
-  () => import('./query-results/spreadsheet-view'),
-  { ssr: false }
-);
+const SpreadsheetView = dynamic(() => import("./query-results/spreadsheet-view"), { ssr: false });
 
 interface ResultsPanelProps {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: Record<string, any>[] | null;
   columns: string[] | null;
   rowCount: number;
@@ -33,7 +48,7 @@ interface ResultsPanelProps {
   aiPrompt?: string;
   connectionId?: string;
   queryId?: string;
-  certificationStatus?: 'draft' | 'verified' | 'deprecated';
+  certificationStatus?: "draft" | "verified" | "deprecated";
   visualizationConfig?: Partial<VisualizationConfig>;
   isLoading?: boolean;
   pagination?: {
@@ -45,7 +60,7 @@ interface ResultsPanelProps {
   onPageSizeChange?: (pageSize: number) => void;
 }
 
-type SortDirection = 'asc' | 'desc' | null;
+type SortDirection = "asc" | "desc" | null;
 type SortConfig = { column: string; direction: SortDirection };
 
 export function ResultsPanel({
@@ -55,22 +70,22 @@ export function ResultsPanel({
   executionTime,
   isLoading = false,
   error = null,
-  sql = '',
+  sql = "",
   aiPrompt,
-  connectionId = 'db1',
+  connectionId = "db1",
   queryId,
-  _certificationStatus,
+  certificationStatus,
   visualizationConfig,
   pagination,
   onPageChange,
-  _onPageSizeChange,
+  onPageSizeChange,
 }: ResultsPanelProps) {
-  const [sortConfig, setSortConfig] = useState<SortConfig>({ column: '', direction: null });
-  const [searchQuery, setSearchQuery] = useState('');
+  const [sortConfig, setSortConfig] = useState<SortConfig>({ column: "", direction: null });
+  const [searchQuery, setSearchQuery] = useState("");
   const [localPage, setLocalPage] = useState(1); // Fallback if no server pagination
   const [isPinDialogOpen, setIsPinDialogOpen] = useState(false);
   const [isConnectDialogOpen, setIsConnectDialogOpen] = useState(false);
-  const [viewMode, setViewMode] = useState<'table' | 'spreadsheet'>('table');
+  const [viewMode, setViewMode] = useState<"table" | "spreadsheet">("table");
 
   // Use server pagination if available, else local
   const currentPage = pagination?.page || localPage;
@@ -82,10 +97,10 @@ export function ResultsPanel({
     setSortConfig((prev) => {
       if (prev.column === column) {
         // Cycle through: asc -> desc -> null
-        if (prev.direction === 'asc') return { column, direction: 'desc' };
-        if (prev.direction === 'desc') return { column: '', direction: null };
+        if (prev.direction === "asc") return { column, direction: "desc" };
+        if (prev.direction === "desc") return { column: "", direction: null };
       }
-      return { column, direction: 'asc' };
+      return { column, direction: "asc" };
     });
   };
 
@@ -99,9 +114,7 @@ export function ResultsPanel({
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       result = result.filter((row) =>
-        Object.values(row).some((value) =>
-          String(value).toLowerCase().includes(query)
-        )
+        Object.values(row).some((value) => String(value).toLowerCase().includes(query)),
       );
     }
 
@@ -115,13 +128,13 @@ export function ResultsPanel({
         if (bVal === null || bVal === undefined) return -1;
 
         let comparison = 0;
-        if (typeof aVal === 'number' && typeof bVal === 'number') {
+        if (typeof aVal === "number" && typeof bVal === "number") {
           comparison = aVal - bVal;
         } else {
           comparison = String(aVal).localeCompare(String(bVal));
         }
 
-        return sortConfig.direction === 'asc' ? comparison : -comparison;
+        return sortConfig.direction === "asc" ? comparison : -comparison;
       });
     }
 
@@ -139,10 +152,7 @@ export function ResultsPanel({
       return processedData;
     }
     // Client-side pagination
-    return processedData.slice(
-      (currentPage - 1) * rowsPerPage,
-      currentPage * rowsPerPage
-    );
+    return processedData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
   }, [processedData, isServerSide, currentPage, rowsPerPage]);
 
   const totalPages = Math.ceil((isServerSide ? totalCount : processedData.length) / rowsPerPage);
@@ -150,7 +160,7 @@ export function ResultsPanel({
   // Copy results to clipboard
   const handleCopy = async () => {
     if (!data) return;
-    const text = data.map((row) => Object.values(row).join('\t')).join('\n');
+    const text = data.map((row) => Object.values(row).join("\t")).join("\n");
     await navigator.clipboard.writeText(text);
   };
 
@@ -159,45 +169,51 @@ export function ResultsPanel({
     if (!data || !columns) return;
 
     const csvContent = [
-      columns.join(','),
+      columns.join(","),
       ...data.map((row) =>
-        columns.map((col) => {
-          const value = row[col];
-          // Escape quotes and wrap in quotes if contains comma
-          const strValue = String(value ?? '');
-          if (strValue.includes(',') || strValue.includes('"')) {
-            return `"${strValue.replace(/"/g, '""')}"`;
-          }
-          return strValue;
-        }).join(',')
+        columns
+          .map((col) => {
+            const value = row[col];
+            // Escape quotes and wrap in quotes if contains comma
+            const strValue = String(value ?? "");
+            if (strValue.includes(",") || strValue.includes('"')) {
+              return `"${strValue.replace(/"/g, '""')}"`;
+            }
+            return strValue;
+          })
+          .join(","),
       ),
-    ].join('\n');
+    ].join("\n");
 
-    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
+    const a = document.createElement("a");
     a.href = url;
     a.download = `query-results-${Date.now()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   // Format cell value for display
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const formatCellValue = (value: any, column: string): React.ReactNode => {
     if (value === null || value === undefined) {
       return <span className="text-muted-foreground italic">null</span>;
     }
 
     // Detect and format numbers as currency if column name suggests it
-    if (typeof value === 'number') {
-      const currencyColumns = ['amount', 'total', 'price', 'sales', 'revenue', 'cost'];
+    if (typeof value === "number") {
+      const currencyColumns = ["amount", "total", "price", "sales", "revenue", "cost"];
       const isCurrency = currencyColumns.some((c) => column.toLowerCase().includes(c));
       if (isCurrency) {
         return (
           <span className="font-semibold text-emerald-400">
-            ${value.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })}
+            $
+            {value.toLocaleString(undefined, {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 2,
+            })}
           </span>
         );
       }
@@ -205,15 +221,15 @@ export function ResultsPanel({
     }
 
     // Format dates
-    if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}/.test(value)) {
+    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}/.test(value)) {
       return <span className="text-muted-foreground">{value}</span>;
     }
 
     // Format booleans
-    if (typeof value === 'boolean') {
+    if (typeof value === "boolean") {
       return (
-        <Badge variant={value ? 'default' : 'secondary'} className="text-xs">
-          {value ? 'true' : 'false'}
+        <Badge variant={value ? "default" : "secondary"} className="text-xs">
+          {value ? "true" : "false"}
         </Badge>
       );
     }
@@ -226,7 +242,7 @@ export function ResultsPanel({
     if (sortConfig.column !== column) {
       return <ArrowUpDown className="w-3 h-3 opacity-50" />;
     }
-    if (sortConfig.direction === 'asc') {
+    if (sortConfig.direction === "asc") {
       return <ChevronUp className="w-3 h-3 text-primary" />;
     }
     return <ChevronDown className="w-3 h-3 text-primary" />;
@@ -277,7 +293,8 @@ export function ResultsPanel({
           </div>
           <h3 className="text-lg font-semibold text-foreground">No Results</h3>
           <p className="text-sm text-muted-foreground">
-            Execute a query to see results here. Try the SQL editor or ask AI to help you write a query.
+            Execute a query to see results here. Try the SQL editor or ask AI to help you write a
+            query.
           </p>
         </div>
       </div>
@@ -295,7 +312,7 @@ export function ResultsPanel({
             <h2 className="text-sm font-semibold text-foreground">Query Results</h2>
             <p className="text-xs text-muted-foreground mt-0.5">
               {processedData.length.toLocaleString()} of {totalCount.toLocaleString()} rows
-              {searchQuery && ' (filtered)'}
+              {searchQuery && " (filtered)"}
             </p>
           </div>
           <div className="relative">
@@ -314,33 +331,64 @@ export function ResultsPanel({
           </div>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-2 text-green-600 border-green-200 hover:bg-green-50 dark:hover:bg-green-900/10" onClick={() => setIsConnectDialogOpen(true)}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2 text-green-600 border-green-200 hover:bg-green-50 dark:hover:bg-green-900/10"
+            onClick={() => setIsConnectDialogOpen(true)}
+          >
             <Plug className="w-4 h-4" />
             <span className="hidden sm:inline">Connect</span>
           </Button>
-          <Button variant="outline" size="sm" className="gap-2 border-primary/20 text-primary hover:bg-primary/5" onClick={() => setIsPinDialogOpen(true)} data-testid="pin-to-dashboard-button">
+          <Button
+            variant="outline"
+            size="sm"
+            className="gap-2 border-primary/20 text-primary hover:bg-primary/5"
+            onClick={() => setIsPinDialogOpen(true)}
+            data-testid="pin-to-dashboard-button"
+          >
             <LayoutGrid className="w-4 h-4" />
             <span className="hidden sm:inline">Pin to Dashboard</span>
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2" onClick={handleCopy} data-testid="copy-results-button">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+            onClick={handleCopy}
+            data-testid="copy-results-button"
+          >
             <Copy className="w-4 h-4" />
             <span className="hidden sm:inline">Copy</span>
           </Button>
-          <Button variant="ghost" size="sm" className="gap-2" onClick={handleExport} data-testid="export-results-button">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+            onClick={handleExport}
+            data-testid="export-results-button"
+          >
             <Download className="w-4 h-4" />
             <span className="hidden sm:inline">Export</span>
           </Button>
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any // eslint-disable-next-line
+          @typescript-eslint/no-explicit-any
           <div className="h-6 w-px bg-border mx-2" />
-
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          <ToggleGroup type="single" value={viewMode} onValueChange={(v) => v && setViewMode(v as any)} className="border rounded-md">
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          <ToggleGroup
+            type="single"
+            value={viewMode}
+            onValueChange={(v) => v && setViewMode(v as any)}
+            className="border rounded-md"
+          >
             <ToggleGroupItem value="table" size="sm" aria-label="Table View" className="h-8 px-2">
               <TableIcon className="w-4 h-4" />
             </ToggleGroupItem>
-            <ToggleGroupItem value="spreadsheet" size="sm" aria-label="Spreadsheet View" className="h-8 px-2">
+            <ToggleGroupItem
+              value="spreadsheet"
+              size="sm"
+              aria-label="Spreadsheet View"
+              className="h-8 px-2"
+            >
               <Grid3X3 className="w-4 h-4" />
             </ToggleGroupItem>
           </ToggleGroup>
@@ -362,11 +410,9 @@ export function ResultsPanel({
         />
       </div>
 
-
-
       {/* Table or Spreadsheet */}
       <div className="flex-1 overflow-auto" data-testid="results-table-container">
-        {viewMode === 'table' ? (
+        {viewMode === "table" ? (
           <Table>
             <TableHeader className="sticky top-0 bg-card border-b border-border z-10">
               <TableRow>
@@ -408,19 +454,15 @@ export function ResultsPanel({
             </TableBody>
           </Table>
         ) : (
-          <SpreadsheetView
-            data={processedData}
-            columns={displayColumns}
-          />
+          <SpreadsheetView data={processedData} columns={displayColumns} />
         )}
       </div>
 
       {/* Footer with Pagination */}
       <div className="border-t border-border px-6 py-3 bg-card flex items-center justify-between flex-shrink-0">
         <span className="text-xs text-muted-foreground">
-          Showing {((currentPage - 1) * rowsPerPage) + 1}-
-          {Math.min(currentPage * rowsPerPage, totalCount)} of{' '}
-          {totalCount.toLocaleString()} rows
+          Showing {(currentPage - 1) * rowsPerPage + 1}-
+          {Math.min(currentPage * rowsPerPage, totalCount)} of {totalCount.toLocaleString()} rows
         </span>
 
         <div className="flex items-center gap-4">
@@ -457,10 +499,10 @@ export function ResultsPanel({
           )}
 
           <span className="font-mono text-xs text-muted-foreground">
-            {executionTime > 0 ? `${executionTime}ms` : '—'}
+            {executionTime > 0 ? `${executionTime}ms` : "—"}
           </span>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
